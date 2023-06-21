@@ -1,0 +1,148 @@
+.hero-section {
+    min-height: 80vh;
+    padding: 1.5rem 0rem;
+    background-image: url('/assets/images/bg-1.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 0;
+}
+
+.hero-section .buttons-section {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.hero-section .buttons-section button {
+    background-color: #fff;
+    border-radius: 25px;
+    padding: 0.5rem 1rem;
+    color: #0151c1;
+    border-color: #0151c1;
+    transition: 0.2s;
+    white-space: nowrap;
+    margin-right: 0.5rem;
+}
+
+.hero-section .buttons-section button:hover {
+    background-color: #0151c1;
+    color: #fff;
+}
+
+.hero-section .buttons-section button.active {
+    background-color: #0151c1;
+    color: #fff;
+}
+
+.hero-section .hero-form {
+    padding: 1rem;
+    border: 1px solid #ededed;
+    background-color: #ffffffed;
+    border-radius: 5px;
+}
+
+.hero-section .hero-form .heading {
+    font-size: 20px;
+    font-weight: 600;
+    color: #0151c1;
+    border-bottom: 2px solid #ededed;
+    padding-bottom: 0.3rem;
+}
+
+.hero-section .hero-form .submit-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 0rem;
+}
+
+.hero-section .hero-form .submit-btn input {
+    padding: 0.5rem 1rem;
+    background-color: #0151c1;
+    color: #fff;
+    border-radius: 5px;
+    border-color: #0151c1;
+    transition: 0.2s;
+}
+
+.hero-section .hero-form .submit-btn input:hover {
+    background-color: #fff;
+    color: #0151c1;
+}
+
+.hero-section .hero-form .free-counselling {
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hero-section .hero-form .free-counselling p {
+    margin-bottom: 0;
+}
+
+.hero-section .hero-form .free-counselling p:nth-child(1) {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.hero-section .search-box {
+    /* background-color: red; */
+    margin: 2rem 0rem;
+    display: flex;
+    align-items: center;
+}
+
+.hero-section .search-box .search-bar {
+    background-color: #fff;
+    width: 100%;
+    padding: 1rem;
+    font-size: 14px;
+    color: #6b6969;
+    border-radius: 5px 0px 0px 5px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.hero-section .search-box .search-btn img {
+    width: 20px;
+    height: auto;
+    margin-right: 0.5rem;
+    vertical-align: text-top;
+    filter: invert(1);
+}
+
+.hero-section .search-box .search-btn {
+    background-color: #0151c1;
+    padding: 1rem;
+    border-radius: 0px 5px 5px 0px;
+    font-size: 14px;
+    text-align: center;
+    cursor: pointer;
+}
+
+@media screen and (max-width:768px) {
+    .hero-section .buttons-section {
+        justify-content: flex-start;
+    }
+
+    .hero-section .search-box .search-bar {
+        font-size: 0.8rem;
+    }
+}

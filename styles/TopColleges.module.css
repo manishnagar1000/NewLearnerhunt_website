@@ -1,0 +1,41 @@
+/* .card {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    grid-gap: 1rem;
+  } */
+  
+  .custom-card-footer{
+    border-top: none;
+    background-color: transparent;
+  }
+  .CustomCard{
+    position: relative;
+    height: 100%;
+    cursor: pointer;
+    transition: box-shadow 0.3s ease-in-out;
+  }
+
+  .CustomCard:hover{
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .CustomCard .Custombadge{
+    position:absolute;
+    top: 15px;
+    left: 0px;
+    background-color: green;
+    padding: 0.2rem 1rem;
+    text-align: center;
+    font-size: 18px;
+    color:#fff;
+    border-radius: 0 5px 5px 0;
+}
+
+.linkButton {
+  background-color: #0151c1;
+}
+.linkButton:hover {
+  border:1px solid #0151c1;
+  color: #0151c1;
+  background-color: transparent;
+}
