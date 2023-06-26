@@ -26,7 +26,7 @@ const [isLoading, setIsLoading] = useState(false);
         process.env.NEXT_PUBLIC_API_ENDPOINT + "/miscellaneous/testeligibility"
       );
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
       setPreferredCoursesData(data.courses);
     } catch (error) {
       console.log("Error fetching preferred courses:", error);
@@ -89,7 +89,7 @@ const [isLoading, setIsLoading] = useState(false);
   if (response.ok) {
     router.push('/thankyou')
   } else {
-    console.log('Data upload failed');
+    // console.log('Data upload failed');
   }
   setIsLoading(false);
 })

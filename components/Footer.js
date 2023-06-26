@@ -33,6 +33,8 @@ const Footer = () => {
             <h3>Quick Links</h3>
             <ul>
               <li><Link href="/privacy">Privacy policy</Link></li>
+              <li><Link href="/about-us">About Us</Link></li>
+
             </ul>
           </div>
           <div className="custom-col">

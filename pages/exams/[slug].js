@@ -17,7 +17,7 @@ const formatStringToList = (str) => {
   );
 };
 export default function ExamName({ examdata }) {
-  console.log(examdata)
+  // console.log(examdata)
 //   const dummyBannerImg = collegedata.banner_img_path && collegedata.banner_img_path != "" ? collegedata.banner_img_path : '/assets/images/DummyBG.jpg'
   const dummyLogoImg = examdata.exam_logo && examdata.exam_logo != "" ? examdata.exam_logo : '/assets/images/DummyLOGO.jpg'
   return (
@@ -297,10 +297,10 @@ export async function getServerSideProps(context) {
   if (slug) {
     const encodedSlug = encodeURIComponent(slug)
     const url = process.env.NEXT_PUBLIC_API_ENDPOINT + "/exam?slug=" + encodedSlug
-    console.log(url)
+    // console.log(url)
     const res = await fetch(url);
     const data = await res.json();
-    console.log(data.data)
+    // console.log(data.data)
     if (data.data && data.data.length > 0) {
       return {
         props: {examdata: data.data[0] },

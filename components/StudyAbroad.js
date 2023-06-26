@@ -15,7 +15,7 @@ export default function StudyAbroad() {
         </Link> */}
       </div>
         <div className="row">
-        <div className="col-md-3">
+        <div className="col-md-6  col-lg-3">
             <Card className={Classes.studyCard}>
               <Card.Header className={Classes.cardHeader}>
                 Study in USA

@@ -19,7 +19,7 @@ export default function index(testeligibility, filterCollege) {
 
   const collegeFilterData = async (zone, fee, course, rating) => {
     setIsLoading(true);
-    console.log(zone,fee,course,rating)
+    // console.log(zone,fee,course,rating)
     try {
       const newrating = testeligibility.ratings.find(
         (r) => r.label == rating
@@ -41,7 +41,7 @@ export default function index(testeligibility, filterCollege) {
         `${process.env.NEXT_PUBLIC_API_ENDPOINT}/colleges/filter${queryParams}`
       );
       const filterCollege = await filterCollege_res.json();
-      console.log(filterCollege)
+      // console.log(filterCollege)
       setSearchResults(filterCollege.data);
       setIsLoading(false);
     } catch (error) {
@@ -51,10 +51,10 @@ export default function index(testeligibility, filterCollege) {
   };
   useEffect(() => {
     const { query } = router;
-    console.log(query);
+    // console.log(query);
 
     if (Object.keys(query).length > 0) {
-      console.log('coming')
+      // console.log('coming')
       const course = query.course;
       const zone = query.zone;
       var rating = query.rating;
@@ -100,7 +100,7 @@ export default function index(testeligibility, filterCollege) {
     if(selectedCourse){
       url.searchParams.set("course", selectedCourse);
     }
-    console.log(selectedRating);
+    // console.log(selectedRating);
     const rating = testeligibility.ratings.find(
       (r) => r.label == selectedRating
     )?.value;
@@ -116,7 +116,7 @@ export default function index(testeligibility, filterCollege) {
   };
 
   const handleZoneSelect = (e) => {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     setSelectedZone(e.target.value);
     collegeFilterData(e.target.value, fee, selectedCourse, selectedRating);
 
@@ -125,7 +125,7 @@ export default function index(testeligibility, filterCollege) {
   };
   const handleRatingSelect = (e) => {
     // Handle zone selection
-    console.log(e.target.value);
+    // console.log(e.target.value);
     // const rating = testeligibility.ratings.find(
     //   (r) => r.label == e.target.value
     // ).value;
@@ -137,7 +137,7 @@ export default function index(testeligibility, filterCollege) {
   };
   const handleCourseSelect = (e) => {
     // Handle zone selection
-    console.log(e.target.value);
+    // console.log(e.target.value);
     // const rating = testeligibility.ratings.find(
     //   (r) => r.label == selectedRating
     // ).value;
@@ -237,7 +237,7 @@ export default function index(testeligibility, filterCollege) {
               ) : (
                 <div className="grid grid-cols-1 gap-4">
                   {searchResults.map((college) => (
-                    <CollegeCard key={college.name} college={college} />
+                    <CollegeCard college={college} />
                   ))}
                 </div>
               )}

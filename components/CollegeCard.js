@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { Image, Spinner ,Button } from 'react-bootstrap';
 import Classes from "/styles/TopColleges.module.css";
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 
 const CollegeCard = ({ college }) => {
@@ -14,10 +15,10 @@ const CollegeCard = ({ college }) => {
   };
 
   return (
-    <div className="bg-white shadow-md rounded-md p-4">
-      <div className="row border-bottom">
+    <div className="bg-white shadow-md rounded-md p-4" key={college.slug}>
+      <div className="row border-bottom" >
         <div className="col-md-9">
-          <div className='row'>
+          <div className='row' >
             <div className='col-2'>
           <Image
             src={square_img_path == null ||square_img_path == "" ? "/assets/images/DummySQUARE.jpg" : square_img_path}
@@ -44,7 +45,7 @@ const CollegeCard = ({ college }) => {
                         className={Classes.linkButton}
                           onClick={() => handleCollegeClick(slug)}
                         >
-                          <>View College</>
+                         <span style={{marginRight:"3px"}}><VisibilityIcon fontSize="inherit"/></span> View College
                         </Button>
                       )}
                     </Link>

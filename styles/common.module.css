@@ -123,15 +123,19 @@
 .sage-menu-item ul .sage-menu-list a {
     text-decoration: none;
     color: #000;
+    transition: 0.2s;
 }
 
+.sage-menu-item ul .sage-menu-list a:hover{
+color: #0151c1;
+}
 .sage-menu .sage-menu-item ul .sage-menu-list::after {
     position: absolute;
     content: "";
     bottom: 40%;
     right: 30px;
     display: inline-block;
-    background-image: url(/assets/images/01/down-arrow.svg);
+    /* background-image: url(/assets/images/01/down-arrow.svg); */
     background-repeat: no-repeat;
     width: 11px;
     height: 6px;

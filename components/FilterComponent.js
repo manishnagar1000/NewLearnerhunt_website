@@ -43,10 +43,10 @@ const FilterComponent = ({
             onChange={onSelect}
           >
             {
-                FilterType.map(s=>{
+                FilterType.map((s,i)=>{
                     // console.log(s,accessKey)
                     return(
-                        <FormControlLabel sx={{'& .MuiTypography-root':{
+                        <FormControlLabel key={i} sx={{'& .MuiTypography-root':{
                             fontSize:14
                         }}}  value={s[`${accessKey}`]} control={<Radio size="small" sx={{
                             '& .MuiSvgIcon-root': {

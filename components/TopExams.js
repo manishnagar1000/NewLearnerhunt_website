@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { Card, Button } from "react-bootstrap";
 import Link from "next/link";
 import Classes from "/styles/TopExam.module.css";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import ArrowOutwardOutlinedIcon from '@mui/icons-material/ArrowOutwardOutlined';
 
 export default function TopExams({ exams }) {
-  console.log(exams)
+  // console.log(exams)
   const [loadingExams, setLoadingExams] = useState([]);
 
   const handleExamClick = (examSlug) => {
@@ -16,12 +18,12 @@ export default function TopExams({ exams }) {
       <div className="d-flex justify-content-between align-items-center my-4">
         <h2>Top Exams</h2>
         <Link href={"/exams"}>
-          <Button className={Classes.linkButton}>Explore More</Button>
+          <Button className={Classes.linkButton}>Explore More<ArrowOutwardOutlinedIcon  style={{marginLeft:"2px"}}/></Button>
         </Link>
       </div>
       <div className="row">
-        {exams.map((exam) => (
-             <div className="col-lg-3 col-md-6 mb-3">
+        {exams.map((exam,i) => (
+             <div key={i} className="col-lg-3 col-md-6 mb-3">
           <div className={Classes.card} key={exam.slug}>
             <div className={Classes.logo}>
               <img src={exam.exam_logo} alt={exam.examname_short} />
@@ -57,7 +59,7 @@ export default function TopExams({ exams }) {
                 className={Classes.linkButton}
                   onClick={() => handleExamClick(exam.slug)}
                 >
-                  View Exams
+                   <span style={{marginRight:"3px"}}><VisibilityIcon fontSize="inherit"/></span>  View Exams
                 </Button>
               )}
             </Link>

@@ -17,7 +17,7 @@ const formatStringToList = (str) => {
   );
 };
 export default function CourseName({ coursedata }) {
-  console.log(coursedata);
+  // console.log(coursedata);
 
   return (
     <div className={Classes["colleges-slug"]}>
@@ -294,10 +294,10 @@ export async function getServerSideProps(context) {
     const encodedSlug = encodeURIComponent(slug);
     const url =
       process.env.NEXT_PUBLIC_API_ENDPOINT + "/course?slug=" + encodedSlug;
-    console.log(url);
+    // console.log(url);
     const res = await fetch(url);
     const data = await res.json();
-    console.log(data.data);
+    // console.log(data.data);
     if (data.data && data.data.length > 0) {
       return {
         props: { coursedata: data.data[0] },

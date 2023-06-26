@@ -3,7 +3,7 @@ import Classes from '/styles/colleges.module.css'
 import Link from 'next/link'
 
 export default function CollegeName({ collegedata }) {
-  console.log(collegedata)
+  // console.log(collegedata)
   const dummyBannerImg = collegedata.banner_img_path && collegedata.banner_img_path != "" ? collegedata.banner_img_path : '/assets/images/DummyBG.jpg'
   const dummyLogoImg = collegedata.logo_img_path && collegedata.logo_img_path != "" ? collegedata.logo_img_path : '/assets/images/DummyLOGO.jpg'
   return (
@@ -68,8 +68,10 @@ export default function CollegeName({ collegedata }) {
               </div>
               <div className="col-lg-4 col-md-6">
                 <div className={Classes['form-buttons']}>
+                  <Link className='/contact-us'>
                   <button>Apply Now</button>
-                  <button><img src="/assets/images/download.png" alt="" /> Brochure</button>
+                  </Link>
+                  {/* <button><img src="/assets/images/download.png" alt="" /> Brochure</button> */}
                 </div>
               </div>
             </div>
@@ -128,10 +130,10 @@ export async function getServerSideProps(context) {
   if (slug) {
     const encodedSlug = encodeURIComponent(slug)
     const url = process.env.NEXT_PUBLIC_API_ENDPOINT + "/college?slug=" + encodedSlug
-    console.log(url)
+    // console.log(url)
     const res = await fetch(url);
     const data = await res.json();
-    console.log(data.data)
+    // console.log(data.data)
     if (data.data && data.data.length > 0) {
       return {
         props: { collegedata: data.data[0] },

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { Image, Spinner ,Button } from 'react-bootstrap';
 import Classes from "/styles/TopColleges.module.css";
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 
 const examCard = ({ exam }) => {
@@ -12,7 +13,7 @@ const examCard = ({ exam }) => {
   };
 
   return (
-    <div className="bg-white shadow-md rounded-md p-4">
+    <div className="bg-white shadow-md rounded-md p-3">
       <div className="row border-bottom">
         <div className="col-md-9">
           <div className='row'>
@@ -21,8 +22,7 @@ const examCard = ({ exam }) => {
             src={exam.exam_logo == null ||exam.exam_logo == "" ? "/assets/images/DummyLOGO.jpg" : exam.exam_logo}
             alt="Not Found Image"
             width={80}
-            height={80}
-            className="me-4 rounded"
+            height="auto"
           />
           </div>
           <div className='col-md-10'>
@@ -33,7 +33,7 @@ const examCard = ({ exam }) => {
           
         </div>
 </div>
-        <div className="col-md-3">
+        <div className="col-md-3 d-flex align-items-center">
         <Link href={`/exams/${exam.slug}`}>
                       {loadingColleges.includes(exam.slug) ? (
                         <Button variant="danger">Loading...</Button>
@@ -42,7 +42,7 @@ const examCard = ({ exam }) => {
                         className={Classes.linkButton}
                           onClick={() => handleCollegeClick(exam.slug)}
                         >
-                          <>View Exam</>
+                          <span style={{marginRight:"3px"}}><VisibilityIcon fontSize="inherit"/></span>View Exam
                         </Button>
                       )}
                     </Link>

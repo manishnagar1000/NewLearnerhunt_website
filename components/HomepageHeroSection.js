@@ -53,6 +53,8 @@ const qualificationdata = {
 };
 
 const HomepageHeroSection = ({ data }) => {
+  // console.log(data)
+
   const [fee, setFee] = useState(200000);
   const [activeBtn, setActiveBtn] = useState(SelectionBtns[0].value);
   const [fullName, setFullName] = useState("");
@@ -69,7 +71,7 @@ const HomepageHeroSection = ({ data }) => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    console.log("working");
+    // console.log("working");
     if (activeBtn == "2") {
       router.push(
         `/colleges?course=${selectedCourse}&zone=${selectedLocation}&rating=${selectedRanking}`
@@ -80,7 +82,6 @@ const HomepageHeroSection = ({ data }) => {
       );
     }
   };
-  // console.log(data)
   const handleSliderChange = (event, newValue) => {
     setFee(newValue);
   };
@@ -177,7 +178,7 @@ const HomepageHeroSection = ({ data }) => {
                             <MenuItem value="" disabled>
                               <em>Select</em>
                             </MenuItem>
-                            {data.zones.map((zone, i) => {
+                            {data?.zones.map((zone, i) => {
                               return (
                                 <MenuItem key={i} value={zone.name}>
                                   {zone.name}
@@ -428,7 +429,7 @@ const HomepageHeroSection = ({ data }) => {
                               <MenuItem value="" disabled>
                                 <em>Select</em>
                               </MenuItem>
-                              {data.zones.map((zone, i) => {
+                              {data?.zones.map((zone, i) => {
                                 return (
                                   <MenuItem key={i} value={zone.name}>
                                     {zone.name}
@@ -446,10 +447,10 @@ const HomepageHeroSection = ({ data }) => {
                             fullWidth
                             margin="normal"
                           >
-                            <InputLabel>Ranking</InputLabel>
+                            <InputLabel>Ratings</InputLabel>
                             <Select
                               value={selectedRanking}
-                              label="Ranking"
+                              label="Ratings"
                               onChange={(e) =>
                                 setSelectedRanking(e.target.value)
                               }
