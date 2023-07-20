@@ -96,7 +96,7 @@ const HomepageHeroSection = ({ data }) => {
       <div className={Classes["overlay"]}></div>
       <div className="container" style={{ zIndex: 2, position: "relative" }}>
         <div className="row">
-          <div className="col-md-6 mx-auto">
+          <div className="col-md-10 col-lg-6 mx-auto">
             <div
               className={Classes["search-box"]}
               onClick={() => setIsSearchModalOpen(true)}

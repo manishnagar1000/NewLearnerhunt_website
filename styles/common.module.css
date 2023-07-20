@@ -194,6 +194,16 @@ color: #0151c1;
     color: #fff;
     transition: 0.3s;
 }
+.loginbutton {
+    text-decoration: none;
+    background-color: #0151c1;
+    padding: 0.2rem 1rem 0.5rem 1rem;
+    border-radius: 25px;
+    color: #fff;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
 
 .contact-cta a:hover {
     background-color: #013d8e;

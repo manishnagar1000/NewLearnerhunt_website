@@ -21,11 +21,14 @@ const CollegeCard = ({ college }) => {
           <div className='row' >
             <div className='col-2'>
           <Image
-            src={square_img_path == null ||square_img_path == "" ? "/assets/images/DummySQUARE.jpg" : square_img_path}
+            src={square_img_path}
+            onError={(e) =>
+              (e.target.src = "/assets/images/DummySQUARE.jpg")
+            }
             alt="Not Found Image"
             width={80}
             height={80}
-            className="me-4 rounded"
+            className="me-4 rounded img-fluid"
           />
           </div>
           <div className='col-md-10'>

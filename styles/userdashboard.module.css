@@ -1,0 +1,60 @@
+.stud-dashboard .sidebar{
+    width: 100%;
+    height: auto;
+    margin-top: 1rem;
+    padding: 1rem 0rem;
+    background-color: #fff;
+}
+.stud-dashboard .sidebar ul{
+    padding-left: 0 !important;
+    margin: 0;
+}
+.stud-dashboard .sidebar ul li{
+    list-style-type: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+.stud-dashboard .sidebar ul li:hover{
+    color: blue;
+}
+.stud-dashboard h2{
+    font-size: 22px;
+    margin-bottom: 0rem;
+}
+
+.active{
+    font-weight: bold;
+    color: #0151c1;
+}
+
+
+
+@media only screen and (max-width:768px){
+    .sidebar-parent{
+        width: 0;
+        overflow: hidden;
+        padding: 0;
+        transition: 0.2s;
+    }
+    .arrowbutton{
+        display: block;
+    }
+    .sidebar-parent.show{
+        width: 41.66%;
+        overflow: auto;
+        padding: 0rem 1rem;
+    }
+    .sidebar-content{
+        width: 100%;
+        transition: 0.2s;
+    }
+    .sidebar-content.show{
+        width: calc(100% - 41.66%);
+    }
+}
+
+@media only screen and (min-width: 769px){
+    .arrowbutton{
+        display: none;
+    }
+}

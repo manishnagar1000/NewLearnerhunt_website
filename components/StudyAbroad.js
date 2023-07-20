@@ -18,7 +18,7 @@ export default function StudyAbroad() {
         <div className="col-md-6  col-lg-3">
             <Card className={Classes.studyCard}>
               <Card.Header className={Classes.cardHeader}>
-                Study in USA
+                Study in UK
               </Card.Header>
               <Card.Body>
                 <p

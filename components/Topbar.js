@@ -1,261 +1,36 @@
 import React, { useEffect, useState } from "react";
 import Classes from "/styles/common.module.css";
 import Link from "next/link";
+import Button from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import LoginForm from "./Loginuc";
+import Box from "@mui/material/Box";
+import Drawer from "@mui/material/Drawer";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { useRouter } from "next/router";
 
-const navbarList = [
-  {
-    name: "QuickBooks Hosting",
-    href: "/quickbooks-hosting",
-    children: [
-      {
-        name: "QuickBooks Pro Hosting",
-        href: "/quickbooks-pro-hosting",
-      },
-      {
-        name: "QuickBooks Premier Hosting",
-        href: "/quickbooks-premier-hosting",
-      },
-      {
-        name: "QuickBooks Enterprise Hosting",
-        href: "/quickbooks-enterprise-hosting",
-      },
-      {
-        name: "QuickBooks POS Hosting",
-        href: "/quickbooks-pos-hosting",
-      },
-      {
-        name: "QuickBooks Add-ons Hosting",
-        href: "/quickbooks-add-ons-hosting",
-      },
-      {
-        name: "Buy QuickBooks",
-        href: "/buy-quickbooks-license",
-      },
-    ],
-  },
-  {
-    name: "Sage Hosting",
-    href: "/sage-hosting",
-    children: [
-      {
-        name: "Sage 50 Hosting",
-        href: "/sage-50-hosting",
-      },
-      {
-        name: "Sage 100 ERP Hosting",
-        href: "/sage-100-erp-hosting",
-      },
-      {
-        name: "Sage 300 ERP Hosting",
-        href: "/sage-300-erp-hosting",
-      },
-      {
-        name: "Sage 500 ERP Hosting",
-        href: "/sage-500-erp-hosting",
-      },
-    ],
-  },
-  {
-    name: "Tax Software Hosting",
-    href: "/tax-software-hosting",
-    children: [
-      {
-        name: "Drake Tax Software Hosting",
-        href: "/drake-tax-software-hosting",
-      },
-      {
-        name: "UltraTax CS Hosting",
-        href: "/ultratax-cs-hosting",
-      },
-      {
-        name: "Lacerte Hosting",
-        href: "/lacerte-hosting",
-      },
-      {
-        name: "ProSeries Tax Software Hosting",
-        href: "/proseries-taxsoftware-hosting",
-      },
-      {
-        name: "TaxWise Hosting",
-        href: "/taxwise-hosting",
-      },
-    ],
-  },
-  {
-    name: "Other Services",
-    href: "-1",
-    children: [
-      {
-        name: "Small Business",
-        href: "/small-business-hosting",
-      },
-      {
-        name: "Law Firm Hosting",
-        href: "/law-firms-hosting",
-      },
-      {
-        name: "Virtual Desktop",
-        href: "/virtual-desktop",
-      },
-    ],
-  },
-  {
-    name: "Resources",
-    href: "-1",
-    children: [
-      {
-        name: "Support",
-        href: "https://www.thesagenext.com/support/",
-      },
-      {
-        name: "Status Page",
-        href: "https://status.thesagenext.com/",
-      },
-      {
-        name: "About Us",
-        href: "/about-us",
-      },
-      {
-        name: "Blog",
-        href: "/blog",
-      },
-    ],
-  },
-];
-const mobNavbarList = [
-  {
-    name: "QuickBooks",
-    href: "-1",
-    children: [
-      {
-        name: "QuickBooks Hosting",
-        href: "/quickbooks-hosting",
-      },
-      {
-        name: "QuickBooks Pro Hosting",
-        href: "/quickbooks-pro-hosting",
-      },
-      {
-        name: "QuickBooks Premier Hosting",
-        href: "/quickbooks-premier-hosting",
-      },
-      {
-        name: "QuickBooks Enterprise Hosting",
-        href: "/quickbooks-enterprise-hosting",
-      },
-      {
-        name: "QuickBooks POS Hosting",
-        href: "/quickbooks-pos-hosting",
-      },
-      {
-        name: "QuickBooks Add-ons Hosting",
-        href: "/quickbooks-add-ons-hosting",
-      },
-      {
-        name: "Buy QuickBooks",
-        href: "/buy-quickbooks-license",
-      },
-    ],
-  },
-  {
-    name: "Sage Solutions",
-    href: "-1",
-    children: [
-      {
-        name: "Sage Hosting",
-        href: "/sage-hosting",
-      },
-      {
-        name: "Sage 50 Hosting",
-        href: "/sage-50-hosting",
-      },
-      {
-        name: "Sage 100 ERP Hosting",
-        href: "/sage-100-erp-hosting",
-      },
-      {
-        name: "Sage 300 ERP Hosting",
-        href: "/sage-300-erp-hosting",
-      },
-      {
-        name: "Sage 500 ERP Hosting",
-        href: "/sage-500-erp-hosting",
-      },
-    ],
-  },
-  {
-    name: "Tax Software",
-    href: "-1",
-    children: [
-      {
-        name: "Tax Software Hosting",
-        href: "/tax-software-hosting",
-      },
-      {
-        name: "Drake Tax Software Hosting",
-        href: "/drake-tax-software-hosting",
-      },
-      {
-        name: "UltraTax CS Hosting",
-        href: "/ultratax-cs-hosting",
-      },
-      {
-        name: "Lacerte Hosting",
-        href: "/lacerte-hosting",
-      },
-      {
-        name: "ProSeries Tax Software Hosting",
-        href: "/proseries-taxsoftware-hosting",
-      },
-      {
-        name: "TaxWise Hosting",
-        href: "/taxwise-hosting",
-      },
-    ],
-  },
-  {
-    name: "Other Services",
-    href: "-1",
-    children: [
-      {
-        name: "Small Business",
-        href: "/small-business-hosting",
-      },
-      {
-        name: "Law Firm Hosting",
-        href: "/law-firms-hosting",
-      },
-      {
-        name: "Virtual Desktop",
-        href: "/virtual-desktop",
-      },
-    ],
-  },
-  {
-    name: "Resources",
-    href: "-1",
-    children: [
-      {
-        name: "Support",
-        href: "https://www.thesagenext.com/support/",
-      },
-      {
-        name: "Status Page",
-        href: "https://status.thesagenext.com/",
-      },
-      {
-        name: "About Us",
-        href: "/about-us",
-      },
-    ],
-  },
-];
-
-const Topbar = () => {
+export default function Topbar() {
   const [isWindowScroll, setIsWindowScroll] = useState(false);
   const [showToggleMenu, setShowToggleMenu] = useState(false);
   const [screenWidth, setsCreenWidth] = useState(1200);
   const [selectedSmList, setSelectedSmList] = useState("");
+  const [isLoginFormOpen, setIsLoginFormOpen] = useState(false);
+  const [userrole, setUserRole] = useState(null);
+  const [userStatus, setUserStatus] = useState(false);
+  const [state, setState] = React.useState({
+    right: false,
+  });
+
+  const router = useRouter();
+
   const stickNavbar = () => {
     if (window !== undefined) {
       let windowHeight = window.scrollY;
@@ -273,6 +48,14 @@ const Topbar = () => {
       window.removeEventListener("scroll", stickNavbar);
     };
   }, []);
+
+  useEffect(() => {
+    const newstatus = localStorage.getItem("status");
+    // console.log(newstatus);
+    if (newstatus) {
+      setUserStatus(newstatus);
+    }
+  }, [userStatus]);
 
   const getSideList = (list, isMob) => {
     return list.map((el) => {
@@ -300,18 +83,20 @@ const Topbar = () => {
                 <img
                   src="/assets/images/01/down-arrow.svg"
                   alt=""
-                  className={`${selectedSmList == el.name ? Classes["dwp-img"] : ""
-                    }`}
+                  className={`${
+                    selectedSmList == el.name ? Classes["dwp-img"] : ""
+                  }`}
                   width={11}
                   height={7}
                 />
               ) : null}
             </div>
             <ul
-              className={`${Classes["drop-down-menu"]} ${isMob && selectedSmList == el.name
+              className={`${Classes["drop-down-menu"]} ${
+                isMob && selectedSmList == el.name
                   ? Classes["mob-dropdown"]
                   : ""
-                }`}
+              }`}
             >
               {getSideList(el.children, isMob)}
             </ul>
@@ -326,7 +111,101 @@ const Topbar = () => {
       }
     });
   };
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+    setShowToggleMenu(!showToggleMenu);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handlelogin = (role) => {
+    // console.log("studentClick");
+    setUserRole(role);
+    setAnchorEl(null);
+    setAnchorEl(null);
+    setIsLoginFormOpen(true);
+  };
+
   // console.log(getSideList(navbarList, 1));
+  const toggleDrawer = (anchor, open) => (event) => {
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
+
+    setState({ ...state, [anchor]: open });
+  };
+  const list = (anchor) => (
+    <Box
+      sx={{ width: 300 }}
+      role="presentation"
+      onClick={toggleDrawer(anchor, false)}
+      onKeyDown={toggleDrawer(anchor, false)}
+    >
+      <List>
+        {["Dashboard", "LogOut"].map((text, index) => (
+          <ListItem
+            onClick={(e) => handlebuttons(text, index)}
+            key={text}
+            disablePadding
+          >
+            <ListItemButton>
+              <ListItemIcon>
+                {index % 2 === 0 ? <DashboardIcon /> : <LogoutIcon />}
+              </ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </Box>
+  );
+
+  const handlebuttons = (text, index) => {
+    console.log(text, index);
+    if (text.toLowerCase() == "dashboard") {
+      router.push("/dashboard");
+    }
+    if (text.toLowerCase() == "logout") {
+
+      try {
+        const fd = new FormData();
+        fd.append("userid", localStorage.getItem("userid"));
+        fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/user/logout", {
+          method: "POST",
+          body: fd,
+        }).then(async(response) => {
+            var res =await response.json()
+            console.log(res.data)
+            console.log(res.data.status)
+            if(res.data.status == false){
+                      alert("Logout Successfully")
+                 localStorage.setItem("status", "");
+      localStorage.setItem("userid", "");
+      localStorage.setItem("useremail", "");
+      window.location.reload();
+      router.push("/");
+            }
+      
+
+        });
+      } catch (error) {
+        console.error("Failed to fetch OTP:", error);
+      }
+
+   
+    }
+  };
+
+  const handleProfile= (e,anchor)=>{
+    toggleDrawer(anchor, true)(e)
+    setShowToggleMenu(false)
+  }
   return (
     <>
       {screenWidth > 1199 ? (
@@ -351,7 +230,10 @@ const Topbar = () => {
 
                 <div className="col-9">
                   <marquee>
-                    <Link className="text-decoration-none" href="https://www.google.com/search?q=iit+hyderabad+jee+advanced+cut+off&oq=IIT+hyderabad+jee+advanced+cut+off&gs_lcrp=EgZjaHJvbWUqCQgAECMYJxiKBTIJCAAQIxgnGIoFMggIARAAGBYYHtIBCDExMzhqMGo5qAIAsAIA&sourceid=chrome&ie=UTF-8">
+                    <Link
+                      className="text-decoration-none"
+                      href="https://www.google.com/search?q=iit+hyderabad+jee+advanced+cut+off&oq=IIT+hyderabad+jee+advanced+cut+off&gs_lcrp=EgZjaHJvbWUqCQgAECMYJxiKBTIJCAAQIxgnGIoFMggIARAAGBYYHtIBCDExMzhqMGo5qAIAsAIA&sourceid=chrome&ie=UTF-8"
+                    >
                       <p className={`${Classes["top-header-para"]}`}>
                         <span className={`${Classes["top-header-news"]}`}>
                           News :-
@@ -410,8 +292,9 @@ const Topbar = () => {
 
           {/* Sage Menu start */}
           <div
-            className={`${Classes["sage-menu"]} ${isWindowScroll ? Classes["sage-sticky-menu"] : ""
-              }`}
+            className={`${Classes["sage-menu"]} ${
+              isWindowScroll ? Classes["sage-sticky-menu"] : ""
+            }`}
           >
             <div className={` ${Classes["con-large"]} container `}>
               <div className={`${Classes["sage-menu-container"]}`}>
@@ -459,6 +342,64 @@ const Topbar = () => {
                 </div>
                 <div className={`${Classes["contact-cta"]}`}>
                   {/* <Link href="#">Sign In</Link>&nbsp; */}
+                  {/* <Link href="#"> */}
+                  {!userStatus ? (
+                    <>
+                      <span
+                        className={Classes.loginbutton}
+                        aria-controls={open ? "basic-menu" : undefined}
+                        aria-haspopup="true"
+                        aria-expanded={open ? "true" : undefined}
+                        onClick={handleClick}
+                        // endIcon={<KeyboardArrowDownIcon />}
+                        // style={{ color: "white",background:"#0151c1",borderRadius:"25px",padding:"0.2rem 1rem 0.5rem 1rem"}}
+                      >
+                        Log In
+                      </span>
+                      <Menu
+                        id="basic-menu"
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
+                        MenuListProps={{
+                          "aria-labelledby": "basic-button",
+                        }}
+                      >
+                        <MenuItem onClick={() => handlelogin(3)}>
+                          Student
+                        </MenuItem>
+                        {/* <MenuItem onClick={()=>handlelogin(2)}>Counsellor</MenuItem>
+                      <MenuItem onClick={()=>handlelogin(1)}>College</MenuItem> */}
+                      </Menu>
+                    </>
+                  ) : (
+                    // <Link href="/dashboard"
+                    //   // onClick={handleClickDashboard}
+                    // >
+                    //   Go To Dashboard
+                    // </Link>
+                    <span>
+                      {["right"].map((anchor) => (
+                        <React.Fragment key={anchor}>
+                          <span
+                            className={Classes.loginbutton}
+                            onClick={toggleDrawer(anchor, true)}
+                          >
+                            Profile
+                          </span>
+                          <Drawer
+                            anchor={anchor}
+                            open={state[anchor]}
+                            onClose={toggleDrawer(anchor, false)}
+                          >
+                            {list(anchor)}
+                          </Drawer>
+                        </React.Fragment>
+                      ))}
+                    </span>
+                  )}
+                  {/* </Link> */}
+                  &nbsp;
                   <Link href="/contact-us">Contact Us</Link>
                 </div>
               </div>
@@ -469,8 +410,9 @@ const Topbar = () => {
       ) : (
         <>
           <div
-            className={`${Classes["sage-menu"]} ${isWindowScroll ? Classes["sage-sticky-menu"] : ""
-              }`}
+            className={`${Classes["sage-menu"]} ${
+              isWindowScroll ? Classes["sage-sticky-menu"] : ""
+            }`}
           >
             <div className="container">
               <div className="row">
@@ -504,8 +446,9 @@ const Topbar = () => {
           </div>
           <div className={Classes["sm-menu"]}>
             <div
-              className={`${Classes["toggle-menu-container"]} ${showToggleMenu ? Classes["show"] : ""
-                }`}
+              className={`${Classes["toggle-menu-container"]} ${
+                showToggleMenu ? Classes["show"] : ""
+              }`}
             >
               <div
                 className={`${Classes["left-toggle-menu"]}`}
@@ -518,9 +461,58 @@ const Topbar = () => {
                       <li onClick={() => setShowToggleMenu(!showToggleMenu)}>
                         <Link href="/contact-us">Contact US</Link>
                       </li>
-                      {/* <li>
-                        <Link href="#">Sign-In</Link>
-                      </li> */}
+
+                      <li>
+                        {!userStatus ? (
+                          <>
+                            <Button
+                              aria-controls={open ? "basic-menu" : undefined}
+                              aria-haspopup="true"
+                              aria-expanded={open ? "true" : undefined}
+                              onClick={handleClick}
+                            >
+                              Log IN
+                            </Button>
+                            <Menu
+                              id="basic-menu"
+                              anchorEl={anchorEl}
+                              open={open}
+                              onClose={handleClose}
+                              MenuListProps={{
+                                "aria-labelledby": "basic-button",
+                              }}
+                            >
+                              <MenuItem onClick={() => handlelogin(3)}>
+                                Student
+                              </MenuItem>
+                              {/* <MenuItem onClick={handleClose}>Counsellor</MenuItem>
+                          <MenuItem onClick={handleClose}>College</MenuItem> */}
+                            </Menu>
+                          </>
+                        ) : 
+                        <>
+                        {
+                          ["right"].map((anchor) => (
+                            <React.Fragment key={anchor}>
+                              <span
+                                onClick={(e)=>handleProfile(e,anchor)}
+                                // .then(()=>{setShowToggleMenu(false)})
+                              >
+                                Profile
+                              </span>
+                              <Drawer
+                                anchor={anchor}
+                                open={state[anchor]}
+                                onClose={toggleDrawer(anchor, false)}
+                              >
+                                {list(anchor)}
+                              </Drawer>
+                            </React.Fragment>
+                          ))
+                        }
+                        </>
+                        }
+                      </li>
                     </ul>
 
                     <span onClick={() => setShowToggleMenu(!showToggleMenu)}>
@@ -534,19 +526,34 @@ const Topbar = () => {
                   <div className={`${Classes["sage-toggle-menu-list"]}`}>
                     {/* <ul>{getSideList(mobNavbarList, 1)}</ul> */}
                     <ul>
-                      <li onClick={() => setShowToggleMenu(!showToggleMenu)} className={`${Classes["sage-menu-list"]}`}>
+                      <li
+                        onClick={() => setShowToggleMenu(!showToggleMenu)}
+                        className={`${Classes["sage-menu-list"]}`}
+                      >
                         <Link href="/">Home</Link>
                       </li>
-                      <li onClick={() => setShowToggleMenu(!showToggleMenu)} className={`${Classes["sage-menu-list"]}`}>
+                      <li
+                        onClick={() => setShowToggleMenu(!showToggleMenu)}
+                        className={`${Classes["sage-menu-list"]}`}
+                      >
                         <Link href="/colleges">Colleges</Link>
                       </li>
-                      <li onClick={() => setShowToggleMenu(!showToggleMenu)} className={`${Classes["sage-menu-list"]}`}>
+                      <li
+                        onClick={() => setShowToggleMenu(!showToggleMenu)}
+                        className={`${Classes["sage-menu-list"]}`}
+                      >
                         <Link href="/courses">Courses</Link>
                       </li>
-                      <li onClick={() => setShowToggleMenu(!showToggleMenu)} className={`${Classes["sage-menu-list"]}`}>
+                      <li
+                        onClick={() => setShowToggleMenu(!showToggleMenu)}
+                        className={`${Classes["sage-menu-list"]}`}
+                      >
                         <Link href="/exams">Exams</Link>
                       </li>
-                      <li onClick={() => setShowToggleMenu(!showToggleMenu)} className={`${Classes["sage-menu-list"]}`}>
+                      <li
+                        onClick={() => setShowToggleMenu(!showToggleMenu)}
+                        className={`${Classes["sage-menu-list"]}`}
+                      >
                         <Link href="/comingsoon">Study Abroad</Link>
                       </li>
                     </ul>
@@ -602,8 +609,13 @@ const Topbar = () => {
           {/* jhvnjvn */}
         </>
       )}
+      {isLoginFormOpen && (
+        <LoginForm
+          isOpen={isLoginFormOpen}
+          onClose={() => setIsLoginFormOpen(false)}
+          role={userrole}
+        />
+      )}
     </>
   );
-};
-
-export default Topbar;
+}

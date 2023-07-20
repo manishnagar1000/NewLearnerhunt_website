@@ -135,7 +135,7 @@ const CollegeRanking = ({ zones, departments, rankingtypes }) => {
                                             collegeData?.map((clg,i) => {
                                                 return (
                                                     <tr key={i}>
-                                                        <td className={Classes['clg-name']}><Link href={`/collegs/${clg.slug}`}>{clg.name}</Link></td>
+                                                        <td className={Classes['clg-name']}><Link href={`/colleges/${clg.slug}`}>{clg.name}</Link></td>
                                                         <td>#{clg.college_rank_no}</td>
                                                     </tr>
                                                 )

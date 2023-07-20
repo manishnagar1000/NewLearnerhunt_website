@@ -41,9 +41,9 @@ export default function TopCourses({ courses }) {
     fetchCourses();
   }, [selectedCourseType]);
 
-  const handleCollegeClick = (collegeId) => {
-    setLoadingColleges((prevLoadingColleges) => [...prevLoadingColleges, collegeId]);
-  };
+  // const handleCollegeClick = (collegeId) => {
+  //   setLoadingColleges((prevLoadingColleges) => [...prevLoadingColleges, collegeId]);
+  // };
 
   const coursesType = [
     {
@@ -79,14 +79,7 @@ export default function TopCourses({ courses }) {
           <Stack direction="row" spacing={1}>
             {coursesType.map((course)=>{
               return(
-                <Chip  key={course.type}   onClick={() => handleTabChange(course.type)} label={course.name} variant={active == course.type?"":"outlined"} />
-              //   <Button
-              //   key={course.type}
-              //   className={Classes.linkButton}
-              //   onClick={() => handleTabChange(course.type)}
-              // >
-              // {course.name}
-              // </Button>
+                <Chip  key={course.type}   onClick={() => handleTabChange(course.type)} label={course.name} className={`${Classes["customchip"]} ${active == course.type?Classes["active"]:""}`} />
               )
             })}
             </Stack>
@@ -128,19 +121,19 @@ export default function TopCourses({ courses }) {
                 </Card.Body>
                 <Card.Footer>
                   <Link href={`/courses/${s.slug}`}>
-                    {loadingColleges.includes(s.slug) ? (
+                    {/* {loadingColleges.includes(s.slug) ? (
                       <Button variant="danger">Loading...</Button>
-                    ) : (
+                    ) : ( */}
                       <Button
                         className={Classes.linkButton}
-                        onClick={() => handleCollegeClick(s.slug)}
+                        // onClick={() => handleCollegeClick(s.slug)}
                       >
                         <span style={{ marginRight: "3px" }}>
                           <VisibilityIcon fontSize="inherit" />
                         </span>
                         View Course
                       </Button>
-                    )}
+                    {/* )} */}
                   </Link>
                 </Card.Footer>
               </Card>

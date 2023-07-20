@@ -9,11 +9,11 @@ import ArrowOutwardOutlinedIcon from '@mui/icons-material/ArrowOutwardOutlined';
 export default function TopColleges({ colleges }) {
   // console.log(colleges);
   const [loadingColleges, setLoadingColleges] = useState([]); // Added loadingColleges state
-  const handleCollegeClick = (collegeId) => {
-    setLoadingColleges((prevLoadingColleges) => {
-      return [...prevLoadingColleges, collegeId]; // Add collegeId to the loadingColleges array
-    });
-  };
+  // const handleCollegeClick = (collegeId) => {
+  //   setLoadingColleges((prevLoadingColleges) => {
+  //     return [...prevLoadingColleges, collegeId]; // Add collegeId to the loadingColleges array
+  //   });
+  // };
 
   const handleImageError = (e) => {
     e.target.src = "/assets/images/DummySQUARE.jpg";
@@ -47,16 +47,16 @@ export default function TopColleges({ colleges }) {
                   </Card.Body>
                   <Card.Footer className={Classes["custom-card-footer"]}>
                     <Link href={`/colleges/${s.slug}`}>
-                      {loadingColleges.includes(s.slug) ? (
+                      {/* {loadingColleges.includes(s.slug) ? (
                         <Button variant="danger">Loading...</Button>
-                      ) : (
+                      ) : ( */}
                         <Button
                         className={Classes.linkButton}
-                          onClick={() => handleCollegeClick(s.slug)}
+                          // onClick={() => handleCollegeClick(s.slug)}
                         >
                           <span style={{marginRight:"3px"}}><VisibilityIcon fontSize="inherit"/></span>View College
                         </Button>
-                      )}
+                      {/* )} */}
                     </Link>
                   </Card.Footer>
                 </Card>

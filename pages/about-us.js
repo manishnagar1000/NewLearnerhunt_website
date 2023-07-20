@@ -64,9 +64,9 @@ const AboutUsPage = () => {
             </p>
           </div>
         </div>
-        <div class="row p-2">
+        <div className="row p-2">
           <div className=" col-md-4">
-            <div class="card text-center p-4">
+            <div className="card text-center p-4">
               <div style={{ width: "100%" }}>
                 <img
                   src="/assets/images/courseimg.png"
@@ -75,16 +75,16 @@ const AboutUsPage = () => {
                   height={50}
                 />
               </div>
-              <div class="card-body">
-                <h5 class="card-title">150+ Courses</h5>
-                <p class="card-text">
+              <div className="card-body">
+                <h5 className="card-title">150+ Courses</h5>
+                <p className="card-text">
                   Discover the year’s top best course and select the best
                 </p>
               </div>
             </div>
           </div>
           <div className=" col-md-4">
-            <div class="card text-center p-4">
+            <div className="card text-center p-4">
                 <div style={{ width: "100%" }}>
               <img
                 src="/assets/images/collegeimg.png"
@@ -93,16 +93,16 @@ const AboutUsPage = () => {
                 height={50}
               />
               </div>
-              <div class="card-body">
-                <h5 class="card-title">1000+ Colleges</h5>
-                <p class="card-text">
+              <div className="card-body">
+                <h5 className="card-title">1000+ Colleges</h5>
+                <p className="card-text">
                 Discover the best college with vivid choices
                 </p>
               </div>
             </div>
           </div>
-          <div class="col-md-4">
-            <div class="card text-center p-4">
+          <div className="col-md-4">
+            <div className="card text-center p-4">
             <div style={{ width: "100%" }}>
               <img
                 src="/assets/images/counsellors.png"
@@ -111,9 +111,9 @@ const AboutUsPage = () => {
                 height={50}
               />
               </div>
-              <div class="card-body">
-                <h5 class="card-title">25 Counsellors</h5>
-                <p class="card-text">
+              <div className="card-body">
+                <h5 className="card-title">25 Counsellors</h5>
+                <p className="card-text">
                 Get counselling from the best counsellors 
                 </p>
               </div>

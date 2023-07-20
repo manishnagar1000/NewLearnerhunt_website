@@ -24,8 +24,8 @@ const Footer = () => {
           <div className="custom-col">
             <h3>Top Exams</h3>
             <ul>
-              <li><Link href="/exams/Joint-Entrance-Examination-(Main)">JEE Mains</Link></li>
-              <li><Link href="/exams/Joint-Entrance-Examination-(Advanced)">JEE Advanced</Link></li>
+              <li><Link href="/exams/Joint-Entrance-Examination-Main">JEE Mains</Link></li>
+              <li><Link href="/exams/Joint-Entrance-Examination-Advanced">JEE Advanced</Link></li>
               <li><Link href="/exams/National-Eligibility-cum-Entrance-Test">NEET</Link></li>
             </ul>
           </div>
@@ -55,9 +55,9 @@ const Footer = () => {
             <div className="social-media">
               <Link target='_blank' href="https://www.facebook.com/learnerhunt/"><img src="/assets/images/footer/facebook.png" alt="" /></Link>
               <Link target='_blank' href="https://twitter.com/learnerhunt"><img src="/assets/images/footer/twitter.png" alt="" /></Link>
-              <Link target='_blank' href="https://www.instagram.com/learnerhunt/"><img src="/assets/images/footer/instagram.png" alt="" /></Link>
+              <Link target='_blank' href="https://www.instagram.com/learnerhunt_india/"><img src="/assets/images/footer/instagram.png" alt="" /></Link>
               <Link target='_blank' href="https://in.linkedin.com/company/learnerhunt-com"><img src="/assets/images/footer/linkedin.png" alt="" /></Link>
-              <Link target='_blank' href="https://www.youtube.com/channel/UCz4ZKdDFvEfRfXU68FFk8_g"><img src="/assets/images/footer/youtube.png" alt="" /></Link>
+              <Link target='_blank' href="https://www.youtube.com/@Learnerhunt"><img src="/assets/images/footer/youtube.png" alt="" /></Link>
             </div>
           </div>
         </div>

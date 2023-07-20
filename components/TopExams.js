@@ -9,9 +9,9 @@ export default function TopExams({ exams }) {
   // console.log(exams)
   const [loadingExams, setLoadingExams] = useState([]);
 
-  const handleExamClick = (examSlug) => {
-    setLoadingExams((prevLoadingExams) => [...prevLoadingExams, examSlug]);
-  };
+  // const handleExamClick = (examSlug) => {
+  //   setLoadingExams((prevLoadingExams) => [...prevLoadingExams, examSlug]);
+  // };
 
   return (
     <div id="examId" className="container  my-5">
@@ -52,16 +52,16 @@ export default function TopExams({ exams }) {
             </div>
             <div className={Classes.buttonContainer}>
             <Link href={`/exams/${exam.slug}`}>
-              {loadingExams.includes(exam.slug) ? (
+              {/* {loadingExams.includes(exam.slug) ? (
                 <Button variant="danger">Loading...</Button>
-              ) : (
+              ) : ( */}
                 <Button
                 className={Classes.linkButton}
-                  onClick={() => handleExamClick(exam.slug)}
+                  // onClick={() => handleExamClick(exam.slug)}
                 >
                    <span style={{marginRight:"3px"}}><VisibilityIcon fontSize="inherit"/></span>  View Exams
                 </Button>
-              )}
+              {/* )} */}
             </Link>
             </div>
           </div>
