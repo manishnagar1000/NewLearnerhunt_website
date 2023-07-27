@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Card, Button } from "react-bootstrap";
 import Link from "next/link";
 import Classes from "/styles/TopColleges.module.css";
@@ -6,40 +6,136 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import StarIcon from '@mui/icons-material/Star';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import ArrowOutwardOutlinedIcon from '@mui/icons-material/ArrowOutwardOutlined';
+import Stack from '@mui/material/Stack';
+import Chip from '@mui/material/Chip';
+import Skeleton from '@mui/material/Skeleton';
+
 export default function TopColleges({ colleges }) {
   // console.log(colleges);
-  const [loadingColleges, setLoadingColleges] = useState([]); // Added loadingColleges state
+  const [selectedCollegeType, setSelectedCollegeType] = useState("");
+  const [isColleges, setIsColleges] = useState(colleges);
+  const [active,setActive] =useState("MBA")
+  const [nameactive,setNameActive] =useState("MBA")
+
+  const [isLoading,setIsLoading] = useState(false)
+
   // const handleCollegeClick = (collegeId) => {
   //   setLoadingColleges((prevLoadingColleges) => {
   //     return [...prevLoadingColleges, collegeId]; // Add collegeId to the loadingColleges array
   //   });
   // };
 
-  const handleImageError = (e) => {
-    e.target.src = "/assets/images/DummySQUARE.jpg";
+  useEffect(() => {
+    const fetchCourses = async () => {
+
+      if (selectedCollegeType) {
+      setIsLoading(true);
+
+        const collegesRes = await fetch(
+          `${process.env.NEXT_PUBLIC_API_ENDPOINT}/colleges?limit=4&page=0&course=${selectedCollegeType}`
+        );
+        const collegesData = await collegesRes.json();
+        setIsColleges(collegesData.data);
+        setIsLoading(false);
+      } else {
+        setIsColleges(colleges);
+      }
+    };
+
+    fetchCourses();
+  }, [selectedCollegeType]);
+  const collegeType = [
+    {
+      name: "MBA",
+      type: "MBA",
+    },
+    {
+      name: "MCA",
+      type: "MCA",
+    },
+    {
+      name: "M.A",
+      type: "M.A",
+    },
+    {
+      name: "BSc",
+      type: "BSc",
+    },
+    {
+      name: "L.L.B",
+      type: "LLB",
+    },
+  
+    {
+      name: "B.com",
+      type: "B.com",
+    },
+    {
+      name: "BCA",
+      type: "BCA",
+    },
+    {
+      name: "BBA",
+      type: "BBA",
+    },
+    {
+      name: "B.A",
+      type: "B.A",
+    },
+    {
+      name: "M.COM",
+      type: "M.COM",
+    },
+    {
+      name: "PGDM",
+      type: "PGDM",
+    },
+  ];
+
+
+  const handleTabChange = (type,name) => {
+    setActive(type);
+    setNameActive(name)
+    setSelectedCollegeType(type);
   };
   return (
     <>
     
       <section id="collegeId" className=" container my-5">
         <div className="d-flex justify-content-between align-items-center my-4">
-          <h2>Top Colleges</h2>
-          <Link href={"/colleges"}>
+          <h2 style={{fontSize:"calc(1em + 1vw)"}}>Top Colleges in <span style={{color:"#0151c1"}}>{nameactive}</span></h2>
+          <Link href={`/colleges?course=${active}`}>
             <Button className={Classes.linkButton}>Explore More<ArrowOutwardOutlinedIcon  style={{marginLeft:"2px"}}/></Button>
           </Link>
         </div>
         <div className="row">
-          {colleges.map((s) => {
+          <div className="col-md-12 mb-4">
+          <Stack direction="row" spacing={1} style={{width:"100%",paddingBottom:"1.5rem",overflowX:"auto"}}>
+            {collegeType.map((college)=>{
+              return(
+                <Chip  key={college.type}   onClick={(e) => handleTabChange(college.type,college.name)} label={college.name} className={`${Classes["customchip"]} ${active == college.type?Classes["active"]:""}`} />
+              )
+            })}
+            </Stack>
+          </div>
+        </div>
+        <div className="row">
+          {isColleges.map((s) => {
             const cardImg =
               s.square_img_path && s.square_img_path !== ""
                 ? s.square_img_path
                 : "/assets/images/DummySQUARE.jpg";
             return (
               <div key={s._id} className="col-lg-3 col-md-6 mb-3">
+                  {isLoading?
+                     <div className="d-flex justify-content-center align-items-center h-100">
+                  <Skeleton variant="rectangular" width={210} height={118} />
+                   </div>
+                :
                 <Card  className={Classes.CustomCard}>
                   <span className={Classes.Custombadge}> <StarIcon fontSize="inherit" style={{marginRight:"2px"}}/> {s.ratings}</span>
                   <Card.Img 
-             onError={handleImageError}
+            //  onError={(e)=>e.target.src="/assets/images/DummySQUARE.jpg"}
   variant="top" src={cardImg} alt="Image not Found" />
                   <Card.Body className="card-body">
                     <Card.Title>{s.name}</Card.Title>
@@ -60,6 +156,7 @@ export default function TopColleges({ colleges }) {
                     </Link>
                   </Card.Footer>
                 </Card>
+          }
               </div>
             );
           })}

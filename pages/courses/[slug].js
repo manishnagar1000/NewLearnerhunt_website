@@ -37,43 +37,43 @@ export default function CourseName({ coursedata }) {
                     <tbody>
                       <tr>
                         <th scope="row">Name of degree</th>
-                        <td>{coursedata.course_description[0].degree_name}</td>
+                        <td style={{ wordBreak: 'break-all' }}>{coursedata.course_description[0].degree_name}</td>
                       </tr>
                       <tr>
                         <th scope="row">Commonly known as</th>
-                        <td>{coursedata.course_description[0].known_as}</td>
+                        <td style={{ wordBreak: 'break-all' }}>{coursedata.course_description[0].known_as}</td>
                       </tr>
                       <tr>
                         <th scope="row">Degree level</th>
-                        <td>{coursedata.course_description[0].degree_level}</td>
+                        <td style={{ wordBreak: 'break-all' }}>{coursedata.course_description[0].degree_level}</td>
                       </tr>
                       <tr>
                         <th scope="row">Course Duration</th>
-                        <td>
+                        <td style={{ wordBreak: 'break-all' }}>
                           {coursedata.course_description[0].course_duration}
                         </td>
                       </tr>
                       <tr>
                         <th scope="row">Admission Process</th>
-                        <td>
+                        <td style={{ wordBreak: 'break-all' }}>
                           {coursedata.course_description[0].admission_process}
                         </td>
                       </tr>
                       <tr>
                         <th scope="row">Annual Course Fee</th>
-                        <td>
+                        <td style={{ wordBreak: 'break-all' }}>
                           {coursedata.course_description[0].annual_course_fee}
                         </td>
                       </tr>
                       <tr>
                         <th scope="row">Top Institutes</th>
-                        <td>
+                        <td style={{ wordBreak: 'break-all' }}>
                           {coursedata.course_description[0].top_institutes}
                         </td>
                       </tr>{" "}
                       <tr>
                         <th scope="row">Specilaisations</th>
-                        <td>
+                        <td style={{ wordBreak: 'break-all' }}>
                           {coursedata.course_description[0].specialisation}
                         </td>
                       </tr>
@@ -115,9 +115,9 @@ export default function CourseName({ coursedata }) {
                           {coursedata.course_entrance_exams.map((s) => {
                             return (
                               <tr>
-                                <td>{s.entrance_exam_name}</td>
-                                <td>{s.registration_details}</td>
-                                <td>{s.exam_details}</td>
+                                <td style={{ wordBreak: 'break-all' }}>{s.entrance_exam_name}</td>
+                                <td style={{ wordBreak: 'break-all' }}>{s.registration_details}</td>
+                                <td style={{ wordBreak: 'break-all' }}>{s.exam_details}</td>
                               </tr>
                             );
                           })}
@@ -192,9 +192,9 @@ export default function CourseName({ coursedata }) {
                           {coursedata.top_ranked_colleges.map((s) => {
                             return (
                               <tr>
-                                <td>{s.institute}</td>
-                                <td>{s.eligibility}</td>
-                                <td>{s.course_fee}</td>
+                                <td style={{ wordBreak: 'break-all' }}>{s.institute}</td>
+                                <td style={{ wordBreak: 'break-all' }}>{s.eligibility}</td>
+                                <td style={{ wordBreak: 'break-all' }}>{s.course_fee}</td>
                               </tr>
                             );
                           })}
@@ -223,9 +223,9 @@ export default function CourseName({ coursedata }) {
                           {coursedata.top_ten_private_colleges.map((s) => {
                             return (
                               <tr>
-                                <td>{s.institute}</td>
-                                <td>{s.eligibility}</td>
-                                <td>{s.course_fee}</td>
+                                <td style={{ wordBreak: 'break-all' }}>{s.institute}</td>
+                                <td style={{ wordBreak: 'break-all' }}>{s.eligibility}</td>
+                                <td style={{ wordBreak: 'break-all' }}>{s.course_fee}</td>
                               </tr>
                             );
                           })}

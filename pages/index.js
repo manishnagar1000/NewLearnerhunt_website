@@ -32,7 +32,7 @@ export default function Home({colleges,courses,exams,testeligibility}) {
 export async function getServerSideProps() {
   try {
     // Fetch data from external API
-    const colleges_res = await fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/colleges?limit=4&page=0");
+    const colleges_res = await fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/colleges?limit=4&page=0&course=mba");
     const colleges = await colleges_res.json();
 
     const courses_res = await fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/courses?limit=-1&page=0&type=ug`);

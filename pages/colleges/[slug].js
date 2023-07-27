@@ -3,6 +3,7 @@ import Classes from '/styles/colleges.module.css'
 // import Link from 'next/link'
 import LoginForm from "../../components/Loginuc";
 import { Container,Row,Col, Modal,Form, Button } from 'react-bootstrap';
+import Swal from 'sweetalert2'
 
 export default function CollegeName({ collegedata }) {
   // console.log(collegedata)
@@ -104,21 +105,34 @@ export default function CollegeName({ collegedata }) {
     fd.append("gender", formData.gender);
     fd.append("state", formData.state);
     fd.append("course", formData.course);
-    fd.append("userid", userid);
     fd.append("collegeid", collegeid);
 
 
     fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/student/apply-college", {
       method: "POST",
       body: fd,
+      headers: {
+        'Authorization': `Bearer ${userid}`
+      }
     }).then(async(response) => {
         var res =await response.json()
         // console.log(res.error)
         if(res.error){
-          alert(res.error)
+          Swal.fire({
+            title: 'error',
+            text: `${res.error}`,
+            icon: 'error',
+            confirmButtonText: 'Ok'
+          })
         }else{
-          alert ("Applied Successfully")
           setIsApplyformOpen(false);
+          Swal.fire({
+            title: 'Success',
+            text: `${res.message}`,
+            icon: 'success',
+            confirmButtonText: 'Ok'
+          })
+
         }
     });
   } catch (error) {
@@ -159,23 +173,23 @@ export default function CollegeName({ collegedata }) {
                   <tbody>
                     <tr>
                       <th scope="row">Minimum Fees</th>
-                      <td>&#8377;{collegedata.min_fees}</td>
+                      <td style={{ wordBreak: 'break-all' }}>{collegedata.min_fees}</td>
                     </tr>
                     <tr>
                       <th scope="row">Maximum Fees</th>
-                      <td>&#8377;{collegedata.max_fees}</td>
+                      <td style={{ wordBreak: 'break-all' }}>{collegedata.max_fees}</td>
                     </tr>
                     <tr>
                       <th scope="row">Number of Courses</th>
-                      <td>{collegedata.courses_count}</td>
+                      <td style={{ wordBreak: 'break-all' }}>{collegedata.courses_count}</td>
                     </tr>
                     <tr>
                       <th scope="row">Courses Offered</th>
-                      <td>{collegedata.courses_offered}</td>
+                      <td style={{ wordBreak: 'break-all' }}>{collegedata.courses_offered}</td>
                     </tr>
                     <tr>
                       <th scope="row">Rating</th>
-                      <td>{collegedata.ratings}</td>
+                      <td style={{ wordBreak: 'break-all' }}>{collegedata.ratings}</td>
                     </tr>
                     {/* <tr>
                       <th scope="row">Application Mode</th>
@@ -183,7 +197,7 @@ export default function CollegeName({ collegedata }) {
                     </tr> */}
                     <tr>
                       <th scope="row">Highest Package</th>
-                      <td>{collegedata.placement}</td>
+                      <td style={{ wordBreak: 'break-all' }}>{collegedata.placement}</td>
                     </tr>
                   </tbody>
                 </table>

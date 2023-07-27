@@ -28,7 +28,11 @@ export default function CollegeComponent() {
   const studentdataget = async () => {
     const student_res = await fetch(
       process.env.NEXT_PUBLIC_API_ENDPOINT +
-        `/student/get-applied-colleges?userid=${localStorage.getItem("userid")}`
+        `/student/get-applied-colleges`, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem("userid")}`
+          }
+        }
     );
     const student = await student_res.json();
     // console.log(student);

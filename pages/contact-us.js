@@ -107,7 +107,7 @@ const [isLoading, setIsLoading] = useState(false);
       setErrors({});
     } else {
       // Form validation failed, display error messages
-      console.log("Form validation failed");
+      // console.log("Form validation failed");
     }
   };
   return (

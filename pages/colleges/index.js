@@ -157,7 +157,7 @@ export default function index(testeligibility, filterCollege) {
     return value;
   };
   return (
-    <div className="my-5">
+    <div className="my-md-2 my-lg-5 my-sm-10">
       <Container>
         <Row>
           <Col md={3}>

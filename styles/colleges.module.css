@@ -46,9 +46,11 @@
 .colleges-slug .content-section .small-description .form-buttons{
     display: flex;
     flex-direction: column;
-    min-height: 100px;
+    /* min-height: 100px; */
     justify-content: space-between;
     /* background-color: red; */
+
+    
 }
 .colleges-slug .content-section .small-description .form-buttons button{
     padding: 0.5rem;
@@ -62,8 +64,29 @@
     filter: invert(1);
     vertical-align: text-top;
 }
+
+
+
 @media screen and (max-width:992px) {
     .colleges-slug .banner-img{
         height: 300px;
+    }
+   
+}
+    
+@media screen and (max-width:767px) {
+    .colleges-slug .content-section .small-description .form-buttons button{
+        padding: 0.5rem;
+        background-color: #0151c1;
+        color: #fff;
+        border-radius: 25px;
+        bottom: 10px;
+        position:fixed;
+        z-index: 9;
+        width: 90%;
+    }
+    .colleges-slug .content-section .small-description .form-buttons{
+        justify-content: center;
+        align-items: center;
     }
 }

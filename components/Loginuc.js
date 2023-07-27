@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import Swal from 'sweetalert2'
+
 import {
   Tabs,
   Tab,
@@ -53,12 +55,24 @@ export default function Loginuc({ isOpen, onClose, role }) {
         }).then((response) => {
           if (response.ok) {
             // console.log("hello", response.data);
-            setIsloading(false);
-            alert("OTP has been sent to your mail id.")
-            setShowotp(true);
+            Swal.fire({
+              title: 'Success',
+              text: 'OTP has been sent to your mail id.',
+              icon: 'success',
+              confirmButtonText: 'Ok'
+            }).then(()=>{
+              setIsloading(false);
+              setShowotp(true);
+
+            })
             // router.push('/thankyou')
           } else {
-            // console.log("Data upload failed");
+            Swal.fire({
+              title: 'error',
+              text: 'OTP not send.',
+              icon: 'error',
+              confirmButtonText: 'Ok'
+            })
           }
         });
        
@@ -86,18 +100,24 @@ export default function Loginuc({ isOpen, onClose, role }) {
               // console.log(res.data)
               // console.log(res.data.email)
             var userstatus = res.data.status
-            var userid = res.data._id
+            var userid = res.data.token
             var useremail = res.data.email
 
-              alert("Successfully login.")
+              Swal.fire({
+                title: 'Success',
+                text: 'Successfully login.',
+                icon: 'success',
+                confirmButtonText: 'Ok'
+              }).then(()=>{
+                setIsloading(false)
+                onClose()
+                localStorage.setItem("status", userstatus);
+                localStorage.setItem("userid", userid);
+                localStorage.setItem("useremail", useremail);
+                window.location.reload()
+              })
 
-              setIsloading(false)
-              onClose()
-              localStorage.setItem("status", userstatus);
-              localStorage.setItem("userid", userid);
-              localStorage.setItem("useremail", useremail);
-
-              window.location.reload()
+         
           
           });
         } catch (error) {
@@ -137,7 +157,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
         <Modal.Body>
           <Container>
             <Row className="justify-content-center align-items-center">
-              <Col md={6}>
+              <Col md={12} lg={6}>
                 <div className="text-center mb-3">
                   <h1 className="text-2xl font-bold">Login and Apply</h1>
                   <h5 className="underline text-md font-bold my-2"> Student</h5>
@@ -209,7 +229,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
                   </Button>
                 </Form>
               </Col>
-              <Col md={6} className="d-none d-md-block">
+              <Col md={12} lg={6} className="d-none d-lg-block">
                 <img
                   src="/assets/images/loginpageavtar.png"
                   alt="loginpagemodal"

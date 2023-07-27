@@ -19,6 +19,7 @@ export default function TopCourses({ courses }) {
   const [isCourses, setIsCourses] = useState(courses);
   const [active,setActive] =useState("ug")
   const [isLoading,setIsLoading] = useState(false)
+  const [nameactive,setNameActive] =useState("Undergraduate")
  
 
   useEffect(() => {
@@ -28,7 +29,7 @@ export default function TopCourses({ courses }) {
       setIsLoading(true);
 
         const coursesRes = await fetch(
-          `${process.env.NEXT_PUBLIC_API_ENDPOINT}/courses?limit=-1&page=0&type=${selectedCourseType}`
+          `${process.env.NEXT_PUBLIC_API_ENDPOINT}/courses?limit=3&page=0&type=${selectedCourseType}`
         );
         const coursesData = await coursesRes.json();
         setIsCourses(coursesData.data);
@@ -56,8 +57,9 @@ export default function TopCourses({ courses }) {
     },
   ];
 
-  const handleTabChange = (type) => {
+  const handleTabChange = (type,name) => {
     setActive(type);
+    setNameActive(name)
     setSelectedCourseType(type);
   };
 
@@ -66,7 +68,7 @@ export default function TopCourses({ courses }) {
     <>
       <section id="courseId" className=" container  my-5">
         <div className=" d-flex justify-content-between align-items-center my-4">
-          <h2>Top Courses</h2>
+          <h2 style={{fontSize:"calc(1em + 1vw)"}}>Top Courses in <span style={{color:"#0151c1"}}>{nameactive}</span></h2>
           <Link href={`/courses?course=${active}`}>
             <Button className={Classes.linkButton} >
               Explore More
@@ -79,7 +81,7 @@ export default function TopCourses({ courses }) {
           <Stack direction="row" spacing={1}>
             {coursesType.map((course)=>{
               return(
-                <Chip  key={course.type}   onClick={() => handleTabChange(course.type)} label={course.name} className={`${Classes["customchip"]} ${active == course.type?Classes["active"]:""}`} />
+                <Chip  key={course.type}   onClick={(e) => handleTabChange(course.type,course.name)} label={course.name} className={`${Classes["customchip"]} ${active == course.type?Classes["active"]:""}`} />
               )
             })}
             </Stack>

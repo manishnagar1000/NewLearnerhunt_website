@@ -1,0 +1,18 @@
+.filterdropdownline{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.filterdropdown{
+    height: 0;
+    overflow: hidden;
+    transition: 0.2s;
+}
+.filterdropdown.show{
+   overflow: auto;
+    padding: 0.5rem;
+   height: 200px;
+}
+

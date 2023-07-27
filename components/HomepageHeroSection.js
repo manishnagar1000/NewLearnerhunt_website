@@ -178,7 +178,7 @@ const HomepageHeroSection = ({ data }) => {
                             <MenuItem value="" disabled>
                               <em>Select</em>
                             </MenuItem>
-                            {data?.zones.map((zone, i) => {
+                            {data.zones!==undefined&&data.zones.map((zone, i) => {
                               return (
                                 <MenuItem key={i} value={zone.name}>
                                   {zone.name}
@@ -429,7 +429,7 @@ const HomepageHeroSection = ({ data }) => {
                               <MenuItem value="" disabled>
                                 <em>Select</em>
                               </MenuItem>
-                              {data?.zones.map((zone, i) => {
+                              {data.zones!==undefined&& data.zones.map((zone, i) => {
                                 return (
                                   <MenuItem key={i} value={zone.name}>
                                     {zone.name}

@@ -16,6 +16,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useRouter } from "next/router";
+import Swal from 'sweetalert2'
 
 export default function Topbar() {
   const [isWindowScroll, setIsWindowScroll] = useState(false);
@@ -114,8 +115,9 @@ export default function Topbar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
+    event.stopPropagation()
     setAnchorEl(event.currentTarget);
-    setShowToggleMenu(!showToggleMenu);
+    // setShowToggleMenu(!showToggleMenu);
   };
   const handleClose = () => {
     setAnchorEl(null);
@@ -126,6 +128,7 @@ export default function Topbar() {
     setUserRole(role);
     setAnchorEl(null);
     setAnchorEl(null);
+    setShowToggleMenu(false)
     setIsLoginFormOpen(true);
   };
 
@@ -167,29 +170,37 @@ export default function Topbar() {
   );
 
   const handlebuttons = (text, index) => {
-    console.log(text, index);
+    // console.log(text, index);
     if (text.toLowerCase() == "dashboard") {
       router.push("/dashboard");
     }
     if (text.toLowerCase() == "logout") {
 
       try {
-        const fd = new FormData();
-        fd.append("userid", localStorage.getItem("userid"));
+   
         fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/user/logout", {
           method: "POST",
-          body: fd,
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem("userid")}`
+          }
         }).then(async(response) => {
             var res =await response.json()
-            console.log(res.data)
-            console.log(res.data.status)
+            // console.log(res.data)
+            // console.log(res.data.status)
             if(res.data.status == false){
-                      alert("Logout Successfully")
-                 localStorage.setItem("status", "");
-      localStorage.setItem("userid", "");
-      localStorage.setItem("useremail", "");
-      window.location.reload();
-      router.push("/");
+              Swal.fire({
+                title: 'Success',
+                text: `${res.message}`,
+                icon: 'success',
+                confirmButtonText: 'Ok'
+              }).then(()=>{
+                localStorage.clear()
+                window.location.href="/";
+              })
+      //            localStorage.setItem("status", "");
+      // localStorage.setItem("userid", "");
+      // localStorage.setItem("useremail", "");
+ 
             }
       
 
@@ -478,6 +489,7 @@ export default function Topbar() {
                               anchorEl={anchorEl}
                               open={open}
                               onClose={handleClose}
+                              style={{zIndex:"99999"}}
                               MenuListProps={{
                                 "aria-labelledby": "basic-button",
                               }}
