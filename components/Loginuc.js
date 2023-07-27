@@ -29,35 +29,37 @@ export default function Loginuc({ isOpen, onClose, role }) {
     setEmail(event.target.value);
   };
 
-  const generateNewOtp = () => {
-    // Simulate OTP sent to email
-    const randomotp = Math.floor(100000 + Math.random() * 9000);
-    // console.log(`OTP sent to ${email}: ${randomotp}`);
-    // Prompt user to enter OTP
-    // setGenratedotp(randomotp);
-    // setOnotpError(false);
-    // setUserotp("");
-    return randomotp;
-  };
+  // const generateNewOtp = () => {
+  //   // Simulate OTP sent to email
+  //   const randomotp = Math.floor(100000 + Math.random() * 9000);
+  //   // console.log(`OTP sent to ${email}: ${randomotp}`);
+  //   // Prompt user to enter OTP
+  //   // setGenratedotp(randomotp);
+  //   // setOnotpError(false);
+  //   // setUserotp("");
+  //   return randomotp;
+  // };
 
   const Studentregister = ()=>{
-    const otp = generateNewOtp();
-      setGenratedotp(otp);
+    // const otp = generateNewOtp();
+    //   setGenratedotp(otp);
       try {
         setIsloading(true);
         const fd = new FormData();
         fd.append("email", email);
-        fd.append("otp", otp);
+        // fd.append("otp", otp);
         fd.append("role", role);
         fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/user/register", {
           method: "POST",
           body: fd,
-        }).then((response) => {
+        }).then(async(response) => {
+          var res =await response.json()
+          // console.log(res.message)
           if (response.ok) {
             // console.log("hello", response.data);
             Swal.fire({
               title: 'Success',
-              text: 'OTP has been sent to your mail id.',
+              text: `${res.message}`,
               icon: 'success',
               confirmButtonText: 'Ok'
             }).then(()=>{
@@ -86,17 +88,22 @@ export default function Loginuc({ isOpen, onClose, role }) {
   const handleStudentSubmit =  (event) => {
     event.preventDefault();
     if (showotp) {
-      if (userotp === genratedotp.toString()) {
+      // if (userotp === genratedotp.toString()) {
         setOnotpError(false);
         setIsloading(true);
         try {
           const fd = new FormData();
           fd.append("email", email);
+          fd.append("otp",userotp)
           fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/user/login", {
             method: "POST",
             body: fd,
           }).then(async(response) => {
+
+            // console.log(response)
+            if(response.ok){
               var res =await response.json()
+              // console.log(res)
               // console.log(res.data)
               // console.log(res.data.email)
             var userstatus = res.data.status
@@ -105,7 +112,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
 
               Swal.fire({
                 title: 'Success',
-                text: 'Successfully login.',
+                text: `${res.message}`,
                 icon: 'success',
                 confirmButtonText: 'Ok'
               }).then(()=>{
@@ -116,6 +123,19 @@ export default function Loginuc({ isOpen, onClose, role }) {
                 localStorage.setItem("useremail", useremail);
                 window.location.reload()
               })
+            }else{
+              var res =await response.json()
+              Swal.fire({
+                    title: 'error',
+                    text: `${res.error}`,
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                  }).then(()=>{
+                        setIsloading(false)
+                        // onClose()
+                      })
+            }
+           
 
          
           
@@ -123,9 +143,9 @@ export default function Loginuc({ isOpen, onClose, role }) {
         } catch (error) {
           console.error("Failed to fetch OTP:", error);
         }
-      } else {
-        setOnotpError(true);
-      }
+      // } else {
+      //   setOnotpError(true);
+      // }
     } else {
       Studentregister()
     }
