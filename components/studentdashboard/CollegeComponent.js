@@ -63,7 +63,9 @@ export default function CollegeComponent() {
       </Box>
 
       <div style={{ marginTop: "20px" }}>
-        {studentdata?.map((s, i) => {
+        {
+        studentdata.length>0?
+        studentdata?.map((s, i) => {
           return (
             <Card key={i} style={{ marginBottom: "20px", padding: "1rem" }}>
               <Container>
@@ -96,7 +98,10 @@ export default function CollegeComponent() {
               </Container>
             </Card>
           );
-        })}
+        })
+        :<div className="d-flex justify-content-center align-items-center fw-bold " style={{height:"76vh"}}>No College Data found</div>
+      
+        }
       </div>
     </div>
   );

@@ -7,18 +7,17 @@ import { useRouter } from 'next/router'
 const Layout = ({ children }) => {
     const router = useRouter();
     const {pathname}  = router
-    const pagesnothaveheader = ["/portal"]
-    const pagesNotHaveFooter = [ "/dashboard","/portal"]
+
     return (
         
         <>
         {
-            !pathname.startsWith('/portal')&&<Topbar />
+              !pathname.startsWith('/adminportal')&&<Topbar />
         }
           
                 {children}
                 {
-            !pathname.startsWith('/dashboard')&&!pathname.startsWith('/portal')&&<Footer />
+            !pathname.startsWith('/dashboard')&&!pathname.startsWith('/adminportal')&&<Footer />
         }
         </>
     )

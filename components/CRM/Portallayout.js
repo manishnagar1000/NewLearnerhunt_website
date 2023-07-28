@@ -1,0 +1,246 @@
+import React, { Component } from "react";
+import MenuIcon from "@mui/icons-material/Menu";
+import IconButton from "@mui/material/IconButton";
+import Classes from  "/styles/portaldashboard.module.css";
+import Avatar from "@mui/material/Avatar";
+import HomeIcon from "@mui/icons-material/Home";
+import GroupIcon from "@mui/icons-material/Group";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import ContactsIcon from "@mui/icons-material/Contacts";
+import BadgeIcon from "@mui/icons-material/Badge";
+import CategoryIcon from "@mui/icons-material/Category";
+import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
+import ApartmentIcon from "@mui/icons-material/Apartment";
+import DatasetIcon from "@mui/icons-material/Dataset";
+import PostAddIcon from "@mui/icons-material/PostAdd";
+import ListAltIcon from "@mui/icons-material/ListAlt";
+import RecyclingIcon from "@mui/icons-material/Recycling";
+import SidebarItem from "./SidebarItem";
+// import { Route, Routes, useNavigate } from "react-router-dom";
+import Tooltip from "@mui/material/Tooltip";
+
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+
+import Logout from "@mui/icons-material/Logout";
+import WorkHistoryIcon from "@mui/icons-material/WorkHistory";
+const sidebarList = [
+  {
+    name: "Dashboard",
+    icon: <HomeIcon />,
+    path: "/adminportal",
+  },
+  {
+    name: "Users",
+    icon: <GroupIcon />,
+    children: [
+      {
+        name: "Add User",
+        icon: <PersonAddIcon />,
+        path: "/register",
+      },
+      {
+        name: "All Users",
+        icon: <ContactsIcon />,
+        path: "/user-list",
+      },
+    ],
+  },
+  {
+    name: "Employees",
+    icon: <BadgeIcon />,
+    path: "/employee",
+  },
+  {
+    name: "Asset Category",
+    icon: <CategoryIcon />,
+    path: "/category",
+  },
+  {
+    name: "Departmant",
+    icon: <SupervisedUserCircleIcon />,
+    path: "/department",
+  },
+  {
+    name: "Company Details",
+    icon: <ApartmentIcon />,
+    path: "/company",
+  },
+  {
+    name: "Asset Mangement",
+    icon: <DatasetIcon />,
+    children: [
+      {
+        name: "Add Asset",
+        icon: <PostAddIcon />,
+        path: "/assetform",
+      },
+      {
+        name: "All Assets",
+        icon: <ListAltIcon />,
+        path: "/list-asset",
+      },
+      {
+        name: "Disposed Assets",
+        icon: <RecyclingIcon />,
+        path: "/disposed-asset",
+      },
+    ],
+  },
+  {
+    name: "Feed",
+    icon: <WorkHistoryIcon />,
+    path: "/feed",
+  },
+];
+export default class Layout extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isSidebarOpen: true,
+      // selectedLi: "",
+      // selectedItem: "",
+      selectedPage: sidebarList[0].name,
+      anchorEl: null,
+    };
+  }
+
+  componentDidMount() {
+    if (sessionStorage.getItem("selectedPage")) {
+      this.setState({ selectedPage: sessionStorage.getItem("selectedPage") });
+    }
+  }
+
+  render() {
+    return (
+      <div className={Classes.dashboard}>
+        <div className={Classes.navbar}>
+          <div className={Classes["left-div"]}>
+            <IconButton
+              onClick={() =>
+                this.setState({ isSidebarOpen: !this.state.isSidebarOpen })
+              }
+            >
+              <MenuIcon />
+            </IconButton>
+            <span className={Classes["project-name"]}>AMS</span>
+            {/* <span className="project-name">Asset Management System</span> */}
+            <div className={Classes["page-desc"]}>
+              {/* <Tooltip title="Go Back">
+                <IconButton onClick={() => window.history.back(-1)}>
+                  <ArrowBackIcon />
+                </IconButton>
+              </Tooltip> */}
+              <span className={Classes.heading}>{this.state.selectedPage}</span>
+            </div>
+          </div>
+          <div className={Classes["right-div"]}>
+            <Tooltip title="Account settings">
+              <IconButton
+                onClick={(e) => this.setState({ anchorEl: e.currentTarget })}
+                size="small"
+                sx={{ ml: 2 }}
+                aria-controls={
+                  Boolean(this.state.anchorEl) ? "account-menu" : undefined
+                }
+                aria-haspopup="true"
+                aria-expanded={
+                  Boolean(this.state.anchorEl) ? "true" : undefined
+                }
+              >
+                <Avatar sx={{ width: 32, height: 32 }}></Avatar>
+              </IconButton>
+            </Tooltip>
+          </div>
+        </div>
+        <div className={Classes["bottom-section"]}>
+          <div className={`${Classes.sidebar} ${this.state.isSidebarOpen ? "" : Classes.hide} `}>
+            <div className={Classes["list-div"]}>
+              {sidebarList.map((item, index) => (
+                <SidebarItem
+                  key={index}
+                  item={item}
+                  setSelectedItem={(page) =>
+                    this.setState({ selectedPage: page })
+                  }
+                  selected={this.state.selectedPage}
+                />
+              ))}
+            </div>
+          </div>
+          <div
+            className={`${Classes["content-div"]} ${this.state.isSidebarOpen ? "" : Classes.full}`}
+          >
+          
+          </div>
+        </div>
+
+        <React.Fragment>
+          <Menu
+            anchorEl={this.state.anchorEl}
+            id="account-menu"
+            open={Boolean(this.state.anchorEl)}
+            onClose={() => this.setState({ anchorEl: null })}
+            onClick={() => this.setState({ anchorEl: null })}
+            PaperProps={{
+              elevation: 0,
+              sx: {
+                overflow: "visible",
+                filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                mt: 1.5,
+                "& .MuiAvatar-root": {
+                  width: 32,
+                  height: 32,
+                  ml: -0.5,
+                  mr: 1,
+                },
+                "&:before": {
+                  content: '""',
+                  display: "block",
+                  position: "absolute",
+                  top: 0,
+                  right: 14,
+                  width: 10,
+                  height: 10,
+                  bgcolor: "background.paper",
+                  transform: "translateY(-50%) rotate(45deg)",
+                  zIndex: 0,
+                },
+              },
+            }}
+            transformOrigin={{ horizontal: "right", vertical: "top" }}
+            anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+          >
+            {/* <MenuItem>
+              <Avatar /> Profile
+            </MenuItem>
+            <MenuItem>
+              <Avatar /> My account
+            </MenuItem>
+            <Divider />
+            <MenuItem>
+              <ListItemIcon>
+                <PersonAdd fontSize="small" />
+              </ListItemIcon>
+              Add another account
+            </MenuItem>
+            <MenuItem>
+              <ListItemIcon>
+                <Settings fontSize="small" />
+              </ListItemIcon>
+              Settings
+            </MenuItem> */}
+            <MenuItem onClick={() => this.props.onLogout()}>
+              <ListItemIcon>
+                <Logout fontSize="small" />
+              </ListItemIcon>
+              Logout
+            </MenuItem>
+          </Menu>
+        </React.Fragment>
+      </div>
+    );
+  }
+}
