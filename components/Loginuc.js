@@ -1,171 +1,379 @@
 import { useState } from "react";
-import { useRouter } from "next/router";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 
 import {
-  Tabs,
-  Tab,
   Form,
   Button,
   Modal,
-  Container,
   Row,
   Col,
 } from "react-bootstrap";
 import { CircularProgress } from "@mui/material";
+import Carousel, { CarouselItem } from "./CarouselItem";
 
 export default function Loginuc({ isOpen, onClose, role }) {
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [showotp, setShowotp] = useState(false);
+  const [loginpassword,setLoginPassword] = useState("");
+  const [loginwithpassword,setLoginwithPassword] = useState(false);
+
+  const [signupshowotp, setSignShowotp] = useState(false);
   const [userotp, setUserotp] = useState("");
-  const [genratedotp, setGenratedotp] = useState(null);
-
-  const [onotperror, setOnotpError] = useState(false);
-
+  const [signupuserotp,setSignupuserotp] = useState("");
   const [isloading, setIsloading] = useState(false);
+  const [showSignup, setShowSignup] = useState(false);
+
+  const [signupemail, setSignupEmail] = useState("");
+  const [name, setName] = useState(""); // Add state for name
+  const [mobile, setMobile] = useState(""); // Add state for mobile
+  const [stream, setStream] = useState(""); // Add state for stream
+  const [level, setLevel] = useState(""); // Add state for level
+  const [password, setPassword] = useState(""); // Add state for password
+  const handleSignupLinkClick = () => {
+    setShowSignup(true);
+    setShowotp(false); // Close OTP form if open
+  };
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
   };
 
-  // const generateNewOtp = () => {
-  //   // Simulate OTP sent to email
-  //   const randomotp = Math.floor(100000 + Math.random() * 9000);
-  //   // console.log(`OTP sent to ${email}: ${randomotp}`);
-  //   // Prompt user to enter OTP
-  //   // setGenratedotp(randomotp);
-  //   // setOnotpError(false);
-  //   // setUserotp("");
-  //   return randomotp;
-  // };
-
-  const Studentregister = ()=>{
-    // const otp = generateNewOtp();
-    //   setGenratedotp(otp);
+  const Studentregister = () => {
+    if(loginwithpassword){
       try {
-        setIsloading(true);
         const fd = new FormData();
         fd.append("email", email);
-        // fd.append("otp", otp);
-        fd.append("role", role);
-        fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/user/register", {
+        fd.append("password", loginpassword);
+        fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/user/login", {
           method: "POST",
           body: fd,
-        }).then(async(response) => {
-          var res =await response.json()
-          // console.log(res.message)
+        }).then(async (response) => {
+          // console.log(response)
           if (response.ok) {
-            // console.log("hello", response.data);
-            Swal.fire({
-              title: 'Success',
-              text: `${res.message}`,
-              icon: 'success',
-              confirmButtonText: 'Ok'
-            }).then(()=>{
-              setIsloading(false);
-              setShowotp(true);
+            var res = await response.json();
+            // console.log(res)
+            // console.log(res.data)
+            // console.log(res.data.email)
+            var userstatus = res.data.status;
+            var userid = res.data.token;
+            var useremail = res.data.email;
 
-            })
-            // router.push('/thankyou')
-          } else {
             Swal.fire({
-              title: 'error',
-              text: 'OTP not send.',
-              icon: 'error',
-              confirmButtonText: 'Ok'
-            })
+              title: "Success",
+              text: `${res.message}`,
+              icon: "success",
+              confirmButtonText: "Ok",
+            }).then(() => {
+              setIsloading(false);
+              onClose();
+              localStorage.setItem("status", userstatus);
+              localStorage.setItem("userid", userid);
+              localStorage.setItem("useremail", useremail);
+              window.location.reload();
+            });
+          } else {
+            var res = await response.json();
+            Swal.fire({
+              title: "error",
+              text: `${res.error}`,
+              icon: "error",
+              confirmButtonText: "Ok",
+            }).then(() => {
+              setIsloading(false);
+              // onClose()
+            });
           }
         });
-       
       } catch (error) {
-        // Handle network or fetch error
         console.error("Failed to fetch OTP:", error);
       }
+    }else{
+    try {
+      setIsloading(true);
+      const fd = new FormData();
+      fd.append("email", email);
+      // fd.append("otp", otp);
+      // fd.append("role", role);
+      fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/user/get-otp", {
+        method: "POST",
+        body: fd,
+      }).then(async (response) => {
+        var res = await response.json();
+        // console.log(res.message)
+        if (response.ok) {
+          // console.log("hello", response.data);
+          Swal.fire({
+            title: "Success",
+            text: `${res.message}`,
+            icon: "success",
+            confirmButtonText: "Ok",
+          }).then(() => {
+            setIsloading(false);
+            setShowotp(true);
+          });
+          // router.push('/thankyou')
+        } else {
+          Swal.fire({
+            title: "error",
+            text:`${res.error}`,
+            icon: "error",
+            confirmButtonText: "Ok",
+          }).then(() => {
+            setIsloading(false);
+          });
+        }
+      });
+    } catch (error) {
+      console.error("Failed to fetch OTP:", error);
+    }
+     
   }
+  
+  };
 
-
-  const handleStudentSubmit =  (event) => {
+  const handleStudentSubmit = (event) => {
     event.preventDefault();
-    if (showotp) {
-      // if (userotp === genratedotp.toString()) {
-        setOnotpError(false);
-        setIsloading(true);
+    if(showSignup){
+      if(signupshowotp){
         try {
           const fd = new FormData();
-          fd.append("email", email);
-          fd.append("otp",userotp)
+          fd.append("email", signupemail);
+          fd.append("otp", signupuserotp);
           fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/user/login", {
             method: "POST",
             body: fd,
-          }).then(async(response) => {
-
-            // console.log(response)
-            if(response.ok){
-              var res =await response.json()
-              // console.log(res)
-              // console.log(res.data)
-              // console.log(res.data.email)
-            var userstatus = res.data.status
-            var userid = res.data.token
-            var useremail = res.data.email
-
+          }).then(async (response) => {
+            if (response.ok) {
+              var res = await response.json();
+              var userstatus = res.data.status;
+              var userid = res.data.token;
+              var useremail = res.data.email;
+  
               Swal.fire({
-                title: 'Success',
+                title: "Success",
                 text: `${res.message}`,
-                icon: 'success',
-                confirmButtonText: 'Ok'
-              }).then(()=>{
-                setIsloading(false)
-                onClose()
+                icon: "success",
+                confirmButtonText: "Ok",
+              }).then(() => {
+                setIsloading(false);
+                onClose();
                 localStorage.setItem("status", userstatus);
                 localStorage.setItem("userid", userid);
                 localStorage.setItem("useremail", useremail);
-                window.location.reload()
-              })
-            }else{
-              var res =await response.json()
+                window.location.reload();
+              });
+            } else {
+              var res = await response.json();
               Swal.fire({
-                    title: 'error',
-                    text: `${res.error}`,
-                    icon: 'error',
-                    confirmButtonText: 'Ok'
-                  }).then(()=>{
-                        setIsloading(false)
-                        // onClose()
-                      })
+                title: "error",
+                text: `${res.error}`,
+                icon: "error",
+                confirmButtonText: "Ok",
+              }).then(() => {
+                setIsloading(false);
+                // onClose()
+              });
             }
-           
-
-         
-          
           });
         } catch (error) {
           console.error("Failed to fetch OTP:", error);
         }
-      // } else {
-      //   setOnotpError(true);
-      // }
-    } else {
-      Studentregister()
+      }else{
+        try {
+          const fd = new FormData();
+          fd.append("email", signupemail);
+          fd.append("name", name); // Add name to form data
+          fd.append("mobile", mobile); // Add mobile to form data
+          fd.append("stream", stream); // Add stream to form data
+          fd.append("level", level); // Add level to form data
+          fd.append("password", password); // Add password to form data
+          fd.append("role", role);
+          fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/user/signup", {
+            method: "POST",
+            body: fd,
+          }).then(async (response) => {
+            var res = await response.json();
+            // console.log(res.message)
+            if (response.ok) {
+              // console.log("hello", response.data);
+              Swal.fire({
+                title: "Success",
+                text: `${res.message}`,
+                icon: "success",
+                confirmButtonText: "Ok",
+              }).then(() => {
+                // console.log("done")
+                setSignShowotp(true)
+                // setIsloading(false);
+                // setShowotp(true);
+              });
+            } else {
+              Swal.fire({
+                title: "error",
+                text: `${res.error}`,
+                icon: "error",
+                confirmButtonText: "Ok",
+              });
+            }
+          });
+        } catch (error) {
+          // Handle network or fetch error
+          console.error("Failed to fetch OTP:", error);
+        }
+      }
+     
+    }else{
+      if (showotp) {
+        setIsloading(true);
+        try {
+          const fd = new FormData();
+          fd.append("email", email);
+          fd.append("otp", userotp);
+          fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/user/login", {
+            method: "POST",
+            body: fd,
+          }).then(async (response) => {
+            // console.log(response)
+            if (response.ok) {
+              var res = await response.json();
+              // console.log(res)
+              // console.log(res.data)
+              // console.log(res.data.email)
+              var userstatus = res.data.status;
+              var userid = res.data.token;
+              var useremail = res.data.email;
+  
+              Swal.fire({
+                title: "Success",
+                text: `${res.message}`,
+                icon: "success",
+                confirmButtonText: "Ok",
+              }).then(() => {
+                setIsloading(false);
+                onClose();
+                localStorage.setItem("status", userstatus);
+                localStorage.setItem("userid", userid);
+                localStorage.setItem("useremail", useremail);
+                window.location.reload();
+              });
+            } else {
+              var res = await response.json();
+              Swal.fire({
+                title: "error",
+                text: `${res.error}`,
+                icon: "error",
+                confirmButtonText: "Ok",
+              }).then(() => {
+                setIsloading(false);
+                // onClose()
+              });
+            }
+          });
+        } catch (error) {
+          console.error("Failed to fetch OTP:", error);
+        }
+    
+      } else {
+        Studentregister();
+      }
     }
+  
+
+   
   };
+
+  const handleSignupOtpChange = (event)=>{
+    setSignupuserotp(event.target.value)
+  }
 
   const handleOtpChange = (event) => {
     // console.log(event.target.value);
     setUserotp(event.target.value);
   };
-
-  const resendOtp = () => {
-    setShowotp(false)
-    setUserotp("")
-    setOnotpError(false)
-    Studentregister()
-
+  const handleNameChange = (event) => {
+    setName(event.target.value);
   };
+  const handleSignupEmailChange = (event) => {
+    setSignupEmail(event.target.value);
+  };
+  const handleMobileChange = (event) => {
+    const input = event.target.value;
+  
+    // Remove any non-numeric characters
+    const numericInput = input.replace(/\D/g, "");
+  
+    // Limit to 10 characters
+    const limitedInput = numericInput.slice(0, 10);
+  
+    setMobile(limitedInput);
+  };
+  
+  const handleStreamChange = (event) => {
+    setStream(event.target.value);
+  };
+  
+  const handleLevelChange = (event) => {
+    setLevel(event.target.value);
+  };
+  
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+  };
+  const handleLoginPasswordChange = (event) =>{
+    setLoginPassword(event.target.value)
+  }
+
+  const Streamdata = [
+    {
+        "id": 1,
+        "name": "Commerce and Banking"
+    },
+    {
+        "id": 2,
+        "name": "Design"
+    },
+    {
+        "id": 3,
+        "name": "Engineering"
+    },
+    {
+        "id": 4,
+        "name": "Management"
+    },
+    {
+        "id": 5,
+        "name": "Hotel Management"
+    },
+    {
+        "id": 6,
+        "name": "Information Technology"
+    },
+    {
+        "id": 7,
+        "name": "Media and Mass Communication"
+    },
+    {
+        "id": 8,
+        "name": "Medical"
+    },
+    {
+        "id": 9,
+        "name": "Retail"
+    },
+    {
+        "id": 12,
+        "name": "Arts and Humanities"
+    },
+    {
+        "id": 16,
+        "name": "Others"
+    }
+]
+
   return (
     <div>
       <Modal
+        id="sloginmodal"
         centered
         size="lg"
         animation={false}
@@ -173,37 +381,84 @@ export default function Loginuc({ isOpen, onClose, role }) {
         show={isOpen}
         onHide={onClose}
       >
-        <Modal.Header closeButton></Modal.Header>
+        {/* <Modal.Header closeButton>
+        <Modal.Title>Login and Apply</Modal.Title>
+        </Modal.Header> */}
         <Modal.Body>
-          <Container>
-            <Row className="justify-content-center align-items-center">
-              <Col md={12} lg={6}>
-                <div className="text-center mb-3">
-                  <h1 className="text-2xl font-bold">Login and Apply</h1>
-                  <h5 className="underline text-md font-bold my-2"> Student</h5>
-                  <p className="text-xs text-center">
-                    To keep connected with us, please login with your personal
-                    information using your contact number.
+          <Row>
+            <Col
+              md={0}
+              lg={5}
+              className="d-none d-lg-block"
+              style={{background:"linear-gradient(180deg, rgba(1,81,193,1) 22%, rgba(93,201,228,1) 100%)"}}
+            >
+              <Carousel>
+                <CarouselItem>
+                  <h3 style={{ color: "white" }}>Education Library </h3>
+                  <p style={{ color: "white", whiteSpace: "break-spaces" }}>
+                    Get detailed information about Colleges, Careers, Courses,
+                    and Exams at CollegeDekho. Register now and make informed
+                    decisions about your career.
                   </p>
-                </div>
+                </CarouselItem>
+                <CarouselItem>
+                  <h3 style={{ color: "white" }}>Guaranteed Admission </h3>
+                  <p style={{ color: "white", whiteSpace: "break-spaces" }}>
+                    Get detailed information about Colleges, Careers, Courses,
+                    and Exams at CollegeDekho. Register now and make informed
+                    decisions about your career.
+                  </p>
+                </CarouselItem>
+                <CarouselItem>
+                  <h3 style={{ color: "white" }}>Counselling </h3>
+                  <p style={{ color: "white", whiteSpace: "break-spaces" }}>
+                    Get detailed information about Colleges, Careers, Courses,
+                    and Exams at CollegeDekho. Register now and make informed
+                    decisions about your career.
+                  </p>
+                </CarouselItem>
+              </Carousel>
+            </Col>
+            <Col md={12} lg={7} style={{padding:"1rem"}}>
+              <div className="text-center mb-3">
+                <img src="/assets/images/Svglogo.svg" width={200} height={60}/>
+                <h3> {showSignup?"Welcome, Create your account":"Welcome Back!"}</h3>
+                <p style={{color:"gray"}}> {!showSignup && "Sign in to continue"}</p>
 
-                <Form onSubmit={handleStudentSubmit}>
-                  <Form.Group controlId="email">
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control
-                      type="email"
-                      placeholder="Enter your email"
-                      value={email}
-                      onChange={handleEmailChange}
-                      required
-                      autoComplete="on"
-                      style={{ marginBottom: "15px" }}
-                    />
-                  </Form.Group>
+              </div>
 
-                  {showotp && (
+              <Form style={{maxHeight:"550px",overflowY:"auto"}} onSubmit={handleStudentSubmit}>
+                {!showSignup?
+                <>
+                <Form.Group controlId="email">
+                  <Form.Label style={{fontWeight:"bold"}}>Email</Form.Label>
+                  <Form.Control
+                    type="email"
+                    placeholder="Enter your email"
+                    value={email}
+                    onChange={handleEmailChange}
+                    required
+                    autoComplete="on"
+                    style={{ marginBottom: "15px" }}
+                  />
+                </Form.Group>
+                {loginwithpassword &&
+                <Form.Group controlId="password">
+                <Form.Label style={{fontWeight:"bold"}}>Password</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="Enter your password"
+                  value={loginpassword}
+                  onChange={handleLoginPasswordChange}
+                  required
+                  autoComplete="new-password"
+                  style={{ marginBottom: "15px" }}
+                />
+              </Form.Group>}
+                
+                   {showotp && (
                     <Form.Group controlId="otp">
-                      <Form.Label>Enter OTP</Form.Label>
+                      <Form.Label style={{fontWeight:"bold"}}>Enter OTP</Form.Label>
                       <Form.Control
                         type="text"
                         placeholder="Enter the OTP"
@@ -216,49 +471,198 @@ export default function Loginuc({ isOpen, onClose, role }) {
                       />
                     </Form.Group>
                   )}
+                  </>
+                :
+                <>
+                <Form.Group controlId="name">
+  <Form.Label style={{fontWeight:"bold"}}>Name</Form.Label>
+  <Form.Control
+    type="text"
+    placeholder="Enter your name"
+    value={name}
+    onChange={handleNameChange}
+    required
+    autoComplete="on"
+    style={{ marginBottom: "15px" }}
+  />
+</Form.Group>
 
-                  {onotperror && (
-                    <>
-                      <p className="text-danger mb-2">Invalid OTP</p>
-                      <p className="text-primary mb-2" onClick={resendOtp}>
-                        Resend OTP
-                      </p>
-                    </>
+<Form.Group controlId="email">
+                  <Form.Label style={{fontWeight:"bold"}}>Email</Form.Label>
+                  <Form.Control
+                    type="email"
+                    placeholder="Enter your email"
+                    value={signupemail}
+                    onChange={handleSignupEmailChange}
+                    required
+                    autoComplete="on"
+                    style={{ marginBottom: "15px" }}
+                  />
+                </Form.Group>
+                <Form.Group controlId="mobile">
+  <Form.Label style={{ fontWeight: "bold" }}>Mobile</Form.Label>
+  <Form.Control
+    type="number"
+    placeholder="Enter your mobile number"
+    value={mobile}
+    onChange={handleMobileChange}
+    required
+    autoComplete="on"
+    style={{ marginBottom: "15px" }}
+    min="0"
+  />
+</Form.Group>
+
+<Form.Group controlId="stream">
+  <Form.Label style={{fontWeight:"bold"}}>Preferred Stream</Form.Label>
+  <Form.Control
+    as="select"
+    value={stream}
+    style={{ marginBottom: "15px" }}
+    onChange={handleStreamChange}
+    required
+  >
+    <option disabled value="">Select Stream</option>
+    {Streamdata.map((s)=>{
+      return(
+ <option value={s.name}>{s.name}</option>
+      )
+    })}
+   
+    {/* ... Other options ... */}
+  </Form.Control>
+</Form.Group>
+
+<Form.Group controlId="level">
+  <Form.Label style={{fontWeight:"bold"}}>Preferred Level</Form.Label>
+  <Form.Control
+    as="select"
+    value={level}
+    onChange={handleLevelChange}
+    style={{ marginBottom: "15px" }}
+    required
+  >
+    <option disabled value="">Select Level</option>
+    <option value="UG">UG</option>
+    <option value="PG">PG</option>
+    <option value="Diploma">Diploma</option>
+    <option value="Ph.D">Ph.D</option>
+    <option value="Certificate">Certificate</option>
+    {/* ... Other options ... */}
+  </Form.Control>
+</Form.Group>
+
+<Form.Group controlId="password">
+  <Form.Label style={{fontWeight:"bold"}}>Password</Form.Label>
+  <Form.Control
+    type="password"
+    placeholder="Enter your password"
+    value={password}
+    onChange={handlePasswordChange}
+    required
+    autoComplete="new-password"
+    style={{ marginBottom: "15px" }}
+  />
+</Form.Group>
+
+{signupshowotp && (
+                    <Form.Group controlId="otp">
+                      <Form.Label style={{fontWeight:"bold"}}>Enter OTP</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="Enter the OTP"
+                        value={signupuserotp}
+                        maxLength={6}
+                        minLength={6}
+                        onChange={handleSignupOtpChange}
+                        required
+                        style={{ marginBottom: "15px" }}
+                      />
+                    </Form.Group>
                   )}
+</>
+}
+                
 
-                  <Button
-                    className="w-100"
-                    style={{background:"#0151c1"}}
-                    type="submit"
-                    id="loginwithotp"
-                    disabled={isloading}
-                  >
-                    {isloading ? (
-                      <>
-                        Please Wait...
-                        <CircularProgress
-                          style={{ marginLeft: "1rem" }}
-                          color="inherit"
-                        />
-                      </>
-                    ) : showotp ? (
-                      "Verify OTP"
-                    ) : (
-                      "Get OTP"
-                    )}
-                  </Button>
-                </Form>
-              </Col>
-              <Col md={12} lg={6} className="d-none d-lg-block">
-                <img
-                  src="/assets/images/loginpageavtar.png"
-                  alt="loginpagemodal"
-                  width={400}
-                  height={400}
-                />
-              </Col>
-            </Row>
-          </Container>
+             
+
+            
+{!showSignup ? (
+  <>
+                <Button
+                  className="w-100"
+                  style={{ background: "#0151c1" }}
+                  type="submit"
+                  id="loginwithotp"
+                  disabled={isloading}
+                >
+                  {isloading ? (
+                    <>
+                      Please Wait...
+                      <CircularProgress
+                        style={{ marginLeft: "1rem" }}
+                        color="inherit"
+                      />
+                    </>
+                  ) : showotp ? (
+                    "Verify OTP"
+                  ) :loginwithpassword? (
+                    "Login"
+                    ):( "Get OTP"
+                  )}
+                </Button>
+                {!loginwithpassword?
+                      <div
+                      onClick={()=>setLoginwithPassword(true)}
+                      className="w-100 my-2"
+                      style={{ background: "#0151c1",cursor:"pointer" ,display:"flex", borderRadius:"0.3rem",color:"white",height:"2.2rem",justifyContent:"center",alignItems:"center",margin:"auto" }}
+                    >
+                     Login Via Password
+                      
+                    </div>
+                :
+                <div
+                      onClick={()=>setLoginwithPassword(false)}
+                      className="w-100 my-2"
+                      style={{ background: "#0151c1",cursor:"pointer" ,display:"flex", borderRadius:"0.3rem",color:"white",height:"2.2rem",justifyContent:"center",alignItems:"center",margin:"auto" }}
+                    >
+                     Login Via OTP
+                      
+                    </div>
+                }
+            
+                </>
+):(
+  <Button
+  className="w-100"
+  style={{ background: "#0151c1" }}
+  type="submit"
+  disabled={isloading}
+>
+  {signupshowotp?"Enter OTP":"Signup"}
+  
+</Button>
+)}
+                <div style={{display:"flex",justifyContent:"center",alignItems:"center",padding:"1rem"}}>
+               {showSignup ? (
+        <p>
+          Already have an account?{" "}
+          <span style={{ color: "blue" }} onClick={() => setShowSignup(false)}>
+            Login
+          </span>
+        </p>
+      ) : (
+        <p>
+          New to LearnerHunt?{" "}
+          <span style={{ color: "blue" }} onClick={handleSignupLinkClick}>
+            Signup
+          </span>
+        </p>
+      )}
+                </div>
+              </Form>
+            </Col>
+          </Row>
         </Modal.Body>
       </Modal>
     </div>

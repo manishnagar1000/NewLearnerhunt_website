@@ -10,9 +10,10 @@
   }
   .CustomCard{
     position: relative;
-    height: 100%;
+    margin: 0rem 0.5rem;
     cursor: pointer;
     transition: box-shadow 0.3s ease-in-out;
+    min-height: 490px;
   }
 
   .CustomCard:hover{

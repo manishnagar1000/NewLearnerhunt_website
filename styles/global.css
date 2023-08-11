@@ -1,4 +1,7 @@
 @import url('/assets/css/colors.css');
+h1{
+    font-size: 40px;
+}
 h2{
     font-size: 32px;
 }
@@ -112,3 +115,56 @@ p {
 html {
     scroll-behavior: smooth;
   }
+ 
+  #sloginmodal .modal-body{
+    padding: 0;
+    border-radius: 0 !important;
+
+}
+#sloginmodal .modal-content{
+    border-radius: 0;
+}
+
+.add-more-btn{
+    color: #013d8e;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-block;
+    padding: 0.5rem 0rem;
+}
+
+
+/* custom-table start */
+.custom-table tr td,
+.custom-table tr th{
+    border: 1px solid #dcd9d9;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+.custom-table tr{
+    cursor: pointer;
+}
+.custom-table thead{
+    background-color: var(--primary);
+    position: sticky;
+    /* top: 8vh; */
+    left: 0;
+    z-index: 100;
+}
+.custom-table thead th{
+    padding: 0.5rem;
+}
+.custom-table-nav{
+    /* background-color: red; */
+    background-color: #dcd9d9;
+    display: flex;
+    justify-content: space-between;
+    height: 8vh;
+    align-items: center;
+    padding: 0rem 1rem;
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 101;
+}
+/* custom-table end */

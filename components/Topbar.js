@@ -17,6 +17,8 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useRouter } from "next/router";
 import Swal from 'sweetalert2'
+import SearchIcon from '@mui/icons-material/Search';
+import SearchModal from "./SearchModal";
 
 export default function Topbar() {
   const [isWindowScroll, setIsWindowScroll] = useState(false);
@@ -26,6 +28,8 @@ export default function Topbar() {
   const [isLoginFormOpen, setIsLoginFormOpen] = useState(false);
   const [userrole, setUserRole] = useState(null);
   const [userStatus, setUserStatus] = useState(false);
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
+
   const [state, setState] = React.useState({
     right: false,
   });
@@ -239,7 +243,7 @@ export default function Topbar() {
                   </p>
                 </div>
 
-                <div className="col-9">
+                {/* <div className="col-9">
                   <marquee>
                     <Link
                       className="text-decoration-none"
@@ -253,7 +257,7 @@ export default function Topbar() {
                       </p>
                     </Link>
                   </marquee>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
@@ -354,6 +358,8 @@ export default function Topbar() {
                 <div className={`${Classes["contact-cta"]}`}>
                   {/* <Link href="#">Sign In</Link>&nbsp; */}
                   {/* <Link href="#"> */}
+                  <span style={{cursor:"pointer"}}   onClick={() => setIsSearchModalOpen(true)}><SearchIcon/ ></span>
+                  &nbsp;
                   {!userStatus ? (
                     <>
                       <span
@@ -440,7 +446,12 @@ export default function Topbar() {
                     </Link>
                   </div>
                 </div>
-                <div className="col-6">
+                <div className="col-2">
+                <div className={`${Classes["sage-toggle-icon"]} text-end`}>
+                <span style={{cursor:"pointer"}}   onClick={() => setIsSearchModalOpen(true)}><SearchIcon/ ></span>
+                </div>
+                </div>
+                <div className="col-4">
                   <div className={`${Classes["sage-toggle-icon"]} text-end`}>
                     <img
                       loading="lazy"
@@ -482,7 +493,7 @@ export default function Topbar() {
                               aria-expanded={open ? "true" : undefined}
                               onClick={handleClick}
                             >
-                              Log IN
+                              Log In
                             </Button>
                             <Menu
                               id="basic-menu"
@@ -627,6 +638,10 @@ export default function Topbar() {
           onClose={() => setIsLoginFormOpen(false)}
           role={userrole}
         />
+      )}
+
+{isSearchModalOpen && (
+        <SearchModal onHide={() => setIsSearchModalOpen(false)} />
       )}
     </>
   );

@@ -47,7 +47,7 @@
   .dashboard .bottom-section .sidebar {
     width: 280px;
     height: inherit;
-    background-color:red;
+    background-color:#fff;
     overflow-y: auto;
     overflow-x: hidden;
     transition: 0.3s;

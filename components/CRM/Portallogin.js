@@ -26,17 +26,7 @@ export default function SignIn(props) {
     const [errorMsg, setErrorMsg] = useState('');
     const router = useRouter();
     
-    const obj =[{
-      "name":"manish@gmail.com",
-      "password":"manish123",
-    },
-    {
-      "name":"sumit@gmail.com",
-      "password":"sumit123",
-    },
-  
 
-  ]
 
     const [showPassword, setShowPassword] = React.useState(false);
 
@@ -44,25 +34,63 @@ export default function SignIn(props) {
 
     const handleSubmit = (event) => {
       event.preventDefault();
-    
-      // Loop through each object in the array
-      for (let i = 0; i < obj.length; i++) {
-        const currentObj = obj[i];
-    
-        // Check if the submitted data matches the current object's username and password
-        if (formData.name === currentObj.name && formData.password === currentObj.password) {
-          Swal.fire({
-            title: 'Success',
-            text: 'Login successful!',
-            icon: 'success',
-            confirmButtonText: 'Ok'
-          }).then(() => props.onLogin("2",formData.name));
-          return; // Exit the function once a match is found
-        }
+      const { name, password } = formData;
+
+      // Check if email is empty
+      if (!name) {
+        setErrorMsg('Please enter your email.');
+        return;
       }
     
-      // If no match is found, show an error message
-      setErrorMsg('Invalid username or password');
+      // Email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(name)) {
+        setErrorMsg('Please enter a valid email address.');
+        return;
+      }
+    
+      // Check if password is empty
+      if (!password) {
+        setErrorMsg('Please enter your password.');
+        return;
+      }
+      try {
+        const fd = new FormData();
+        fd.append("email", formData.name);
+        fd.append("password", formData.password);
+        fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/user/login", {
+          method: "POST",
+          body: fd,
+        }).then(async(response) => {
+          var res =await response.json()
+          // console.log(res)
+          // console.log(res.message)
+          if (response.ok) {
+            // console.log("hello", response.data);
+            Swal.fire({
+              title: 'Success',
+              text: `${res.message}`,
+              icon: 'success',
+              confirmButtonText: 'Ok'
+            }).then(()=>{
+            props.onLogin(res.data.token)
+            
+            })
+            // router.push('/thankyou')
+          } else {
+            Swal.fire({
+              title: 'error',
+              text: `${res.error}`,
+              icon: 'error',
+              confirmButtonText: 'Ok'
+            })
+          }
+        });
+       
+      } catch (error) {
+        // Handle network or fetch error
+        console.error(error);
+      }
     };
     
     const handleChange = (event) => {
@@ -86,6 +114,7 @@ export default function SignIn(props) {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
+          
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
            label="Email" 
@@ -131,8 +160,10 @@ export default function SignIn(props) {
             >
               Sign In
             </Button>
-            {errorMsg && <p>{errorMsg}</p>}
+            {errorMsg && <p style={{color:"red"}}>{errorMsg}</p>}
           </Box>
+
+          
         </Box>
       </Container>
     </ThemeProvider>

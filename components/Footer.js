@@ -42,7 +42,7 @@ const Footer = () => {
           <div className="custom-col">
             <h3>Contact Us</h3>
             <ul className='last-ul'>
-              <li><Link href="mailto:ceo@learnerhunt.com">ceo@learnerhunt.com</Link></li>
+              <li><Link href="mailto:contact@learnerhunt.com">contact@learnerhunt.com</Link></li>
               <li><Link href="tel:+918800756846">+918800756846</Link></li>
               <li><address>SCF 1, 2nd Floor, Shopping Complex, Ashoka Enclave Part II, Sector 37, Faridabad, Haryana 121003</address></li>
             </ul>

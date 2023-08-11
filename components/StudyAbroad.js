@@ -16,6 +16,8 @@ export default function StudyAbroad() {
       </div>
         <div className="row">
         <div className="col-md-6  col-lg-3">
+        <Link href={"/comingsoon"} style={{textDecoration:"none"}}>
+
             <Card className={Classes.studyCard}>
               <Card.Header className={Classes.cardHeader}>
                 Study in UK
@@ -28,13 +30,13 @@ export default function StudyAbroad() {
                 </p>
               </Card.Body>
               <Card.Footer className={Classes.cardFooter}>
-                <Link href={"/comingsoon"}>
                   <Button className={Classes.linkButton}>
                     Learn More
                   </Button>
-                </Link>
               </Card.Footer>
             </Card>
+            </Link>
+
           </div>
     </div>
         </div>

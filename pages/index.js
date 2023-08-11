@@ -4,6 +4,10 @@ import StudyAbroad from '@/components/StudyAbroad'
 import TopColleges from '@/components/TopColleges'
 import TopCourses from '@/components/TopCourses'
 import TopExams from '@/components/TopExams'
+import Count from '@/components/Count'
+import WhyChoose from '@/components/WhyChoose'
+
+
 
 import Head from 'next/head'
 
@@ -19,6 +23,8 @@ export default function Home({colleges,courses,exams,testeligibility}) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <HomepageHeroSection data={testeligibility}/>
+      <Count/>
+      <WhyChoose/>
       <TopColleges colleges={colleges}/>
       <TopCourses  courses ={courses}/>
       <CollegeRanking zones={testeligibility.zones} departments={testeligibility.departments} rankingtypes={testeligibility.rankingtypes} />

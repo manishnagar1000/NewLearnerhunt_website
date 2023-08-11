@@ -86,6 +86,7 @@ const [isLoading, setIsLoading] = useState(false);
   body: formData
 })
 .then(response => {
+  
   if (response.ok) {
     router.push('/thankyou')
   } else {
@@ -262,7 +263,7 @@ const [isLoading, setIsLoading] = useState(false);
                       <h5 className="text-white font-weight-light mb-3 mt-4">
                         EMAIL ID
                       </h5>
-                      <p className="text-white op-7">ceo@learnerhunt.com</p>
+                      <p className="text-white op-7">contact@learnerhunt.com</p>
                     </div>
                   </Col>
                 </Row>
@@ -271,8 +272,6 @@ const [isLoading, setIsLoading] = useState(false);
           </Row>
         </Container>
       </div>
-
-     
     </div>
   );
 }

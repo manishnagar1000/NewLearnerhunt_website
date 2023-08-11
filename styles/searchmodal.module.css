@@ -18,8 +18,8 @@
     margin-right: 0.5rem;
 } */
 .custom-search-modal .results a{
-    text-decoration: none;
-    color: rgb(89, 88, 88);
+    text-decoration: underline;
+    color: blue;
 }
 
 .custom-search-modal .results .college {

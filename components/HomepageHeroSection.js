@@ -66,7 +66,7 @@ const HomepageHeroSection = ({ data }) => {
   const [examAppears, setExamAppears] = useState("");
   const [selectedExam, setSelectedExam] = useState("");
   const [selectedRanking, setSelectedRanking] = useState("");
-  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
+  // const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const router = useRouter();
 
   const handleFormSubmit = (e) => {
@@ -96,20 +96,50 @@ const HomepageHeroSection = ({ data }) => {
       <div className={Classes["overlay"]}></div>
       <div className="container" style={{ zIndex: 2, position: "relative" }}>
         <div className="row">
-          <div className="col-md-10 col-lg-6 mx-auto">
-            <div
+          <div className="col-lg-7 d-none d-lg-block ">
+            <div className={Classes["herosection-desc"]}>
+              <h1> Learner Hunt - Your Path to Exceptional Education</h1>
+              {/* <ul>
+              <li>
+              Forem ipsum dolor sit amet, consectetur adipiscing 
+              </li>
+              <li>
+              Forem ipsum dolor sit amet, consectetur adipiscing 
+              </li>
+              <li>
+              Forem ipsum dolor sit amet, consectetur adipiscing 
+              </li>
+              <li>
+              Forem ipsum dolor sit amet, consectetur adipiscing 
+              </li>
+              <li>
+              Forem ipsum dolor sit amet, consectetur adipiscing 
+              </li>
+
+            </ul> */}
+              <p>
+                Learner Hunt is your partner in education, offering a curated
+                selection of top colleges. We're dedicated to helping you find
+                the perfect academic fit, guiding you towards a brighter future.
+                Transform your educational journey with Learner Hunt's expert
+                guidance.
+              </p>
+            </div>
+          </div>
+          <div className="col-lg-5 mx-auto">
+            {/* <div
               className={Classes["search-box"]}
               onClick={() => setIsSearchModalOpen(true)}
             >
               <div className={Classes["search-bar"]}>
-                {/* <img src="/assets/images/search.png" alt="" /> */}
+          
                 <span>Search colleges, exams, courses & more.</span>
               </div>
               <div className={Classes["search-btn"]}>
                 {" "}
                 <img src="/assets/images/search.png" alt="" />{" "}
               </div>
-            </div>
+            </div> */}
             <div className={Classes["buttons-section"]}>
               {SelectionBtns.map((btn, i) => {
                 return (
@@ -151,10 +181,12 @@ const HomepageHeroSection = ({ data }) => {
                           required
                           margin="normal"
                           type="text"
-                        inputProps={{minLength:10,maxLength:10}}
+                          inputProps={{ minLength: 10, maxLength: 10 }}
                           label="Contact Number"
                           value={contact}
-                          onChange={(e) => setContact(e.target.value.replace(/\D/g, ""))}
+                          onChange={(e) =>
+                            setContact(e.target.value.replace(/\D/g, ""))
+                          }
                           size="small"
                           variant="outlined"
                         />
@@ -178,13 +210,14 @@ const HomepageHeroSection = ({ data }) => {
                             <MenuItem value="" disabled>
                               <em>Select</em>
                             </MenuItem>
-                            {data.zones!==undefined&&data.zones.map((zone, i) => {
-                              return (
-                                <MenuItem key={i} value={zone.name}>
-                                  {zone.name}
-                                </MenuItem>
-                              );
-                            })}
+                            {data.zones !== undefined &&
+                              data.zones.map((zone, i) => {
+                                return (
+                                  <MenuItem key={i} value={zone.name}>
+                                    {zone.name}
+                                  </MenuItem>
+                                );
+                              })}
                           </Select>
                         </FormControl>
                       </div>
@@ -354,7 +387,7 @@ const HomepageHeroSection = ({ data }) => {
                           margin="normal"
                         >
                           <Typography id="input-slider" gutterBottom>
-                            Fees
+                            College Fees
                           </Typography>
                           <Slider
                             value={fee}
@@ -429,13 +462,14 @@ const HomepageHeroSection = ({ data }) => {
                               <MenuItem value="" disabled>
                                 <em>Select</em>
                               </MenuItem>
-                              {data.zones!==undefined&& data.zones.map((zone, i) => {
-                                return (
-                                  <MenuItem key={i} value={zone.name}>
-                                    {zone.name}
-                                  </MenuItem>
-                                );
-                              })}
+                              {data.zones !== undefined &&
+                                data.zones.map((zone, i) => {
+                                  return (
+                                    <MenuItem key={i} value={zone.name}>
+                                      {zone.name}
+                                    </MenuItem>
+                                  );
+                                })}
                             </Select>
                           </FormControl>
                         </div>
@@ -482,9 +516,9 @@ const HomepageHeroSection = ({ data }) => {
           </div>
         </div>
       </div>
-      {isSearchModalOpen && (
+      {/* {isSearchModalOpen && (
         <SearchModal onHide={() => setIsSearchModalOpen(false)} />
-      )}
+      )} */}
     </div>
   );
 };

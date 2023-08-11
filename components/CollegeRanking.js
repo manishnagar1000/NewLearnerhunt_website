@@ -131,7 +131,7 @@ const CollegeRanking = ({ zones, departments, rankingtypes }) => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {
+                                        {collegeData.length>0?
                                             collegeData?.map((clg,i) => {
                                                 return (
                                                     <tr key={i}>
@@ -140,6 +140,10 @@ const CollegeRanking = ({ zones, departments, rankingtypes }) => {
                                                     </tr>
                                                 )
                                             })
+                                            :
+                                            <tr>
+                                                        <td style={{textAlign:"center"}} colSpan={2}>No Record Found</td>
+                                                    </tr>
                                         }
                                     </tbody>
                                 </table>

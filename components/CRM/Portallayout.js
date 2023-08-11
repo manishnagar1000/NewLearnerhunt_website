@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import IconButton from "@mui/material/IconButton";
 import Classes from  "/styles/portaldashboard.module.css";
+
 import Avatar from "@mui/material/Avatar";
 import HomeIcon from "@mui/icons-material/Home";
 import GroupIcon from "@mui/icons-material/Group";
@@ -30,72 +31,27 @@ const sidebarList = [
   {
     name: "Dashboard",
     icon: <HomeIcon />,
-    path: "/adminportal",
+    path: "/adminportal/dashboard",
   },
   {
-    name: "Users",
+    name: "Colleges",
     icon: <GroupIcon />,
     children: [
       {
-        name: "Add User",
+        name: "Add College",
         icon: <PersonAddIcon />,
-        path: "/register",
+        path: "/adminportal/addcollege",
       },
       {
-        name: "All Users",
+        name: "All Colleges",
         icon: <ContactsIcon />,
-        path: "/user-list",
+        path: "/adminportal/allcollege",
       },
     ],
   },
-  {
-    name: "Employees",
-    icon: <BadgeIcon />,
-    path: "/employee",
-  },
-  {
-    name: "Asset Category",
-    icon: <CategoryIcon />,
-    path: "/category",
-  },
-  {
-    name: "Departmant",
-    icon: <SupervisedUserCircleIcon />,
-    path: "/department",
-  },
-  {
-    name: "Company Details",
-    icon: <ApartmentIcon />,
-    path: "/company",
-  },
-  {
-    name: "Asset Mangement",
-    icon: <DatasetIcon />,
-    children: [
-      {
-        name: "Add Asset",
-        icon: <PostAddIcon />,
-        path: "/assetform",
-      },
-      {
-        name: "All Assets",
-        icon: <ListAltIcon />,
-        path: "/list-asset",
-      },
-      {
-        name: "Disposed Assets",
-        icon: <RecyclingIcon />,
-        path: "/disposed-asset",
-      },
-    ],
-  },
-  {
-    name: "Feed",
-    icon: <WorkHistoryIcon />,
-    path: "/feed",
-  },
+
 ];
-export default class Layout extends Component {
+export default class PortalLayout extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -111,7 +67,10 @@ export default class Layout extends Component {
     if (sessionStorage.getItem("selectedPage")) {
       this.setState({ selectedPage: sessionStorage.getItem("selectedPage") });
     }
+    // console.log(this.props)
   }
+
+  
 
   render() {
     return (
@@ -125,7 +84,7 @@ export default class Layout extends Component {
             >
               <MenuIcon />
             </IconButton>
-            <span className={Classes["project-name"]}>AMS</span>
+            <span className={Classes["project-name"]}>Learnerhunt</span>
             {/* <span className="project-name">Asset Management System</span> */}
             <div className={Classes["page-desc"]}>
               {/* <Tooltip title="Go Back">
@@ -173,7 +132,7 @@ export default class Layout extends Component {
           <div
             className={`${Classes["content-div"]} ${this.state.isSidebarOpen ? "" : Classes.full}`}
           >
-          
+      {this.props.children}
           </div>
         </div>
 
@@ -232,7 +191,7 @@ export default class Layout extends Component {
               </ListItemIcon>
               Settings
             </MenuItem> */}
-            <MenuItem onClick={() => this.props.onLogout()}>
+            <MenuItem onClick={()=>this.props.onLogout()}>
               <ListItemIcon>
                 <Logout fontSize="small" />
               </ListItemIcon>

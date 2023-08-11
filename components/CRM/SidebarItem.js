@@ -5,7 +5,7 @@ export default function SidebarItem({ item, setSelectedItem, selected }) {
   const [open, setOpen] = useState(false);
   const handleItemClick = (e,item) => {
     e.stopPropagation()
-      console.log(item);
+      // console.log(item);
       if (!item.children) {
       setSelectedItem(item.name);
       sessionStorage.setItem("selectedPage", item.name);
