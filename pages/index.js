@@ -6,6 +6,7 @@ import TopCourses from '@/components/TopCourses'
 import TopExams from '@/components/TopExams'
 import Count from '@/components/Count'
 import WhyChoose from '@/components/WhyChoose'
+import axios from 'axios'
 
 
 
@@ -35,20 +36,55 @@ export default function Home({colleges,courses,exams,testeligibility}) {
 }
 
 
+// export async function getServerSideProps() {
+//   try {
+//     // Fetch data from external API
+//     const colleges_res = await fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/colleges?limit=4&page=0&course=mba");
+//     const colleges = await colleges_res.json();
+
+//     const courses_res = await fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/courses?limit=-1&page=0&type=ug`);
+//     const courses = await courses_res.json();
+
+//     const exams_res = await fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/exams?limit=4&page=0");
+//     const exams = await exams_res.json();
+
+//     const testeligibility_res = await fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/miscellaneous/testeligibility");
+//     const testeligibility = await testeligibility_res.json();
+
+//     return {
+//       props: {
+//         colleges: colleges.data,
+//         courses: courses.data,
+//         exams: exams.data,
+//         testeligibility,
+//       },
+//     };
+//   } catch (error) {
+//     console.error("Error fetching data:", error);
+//     return {
+//       props: {
+//         colleges: [],
+//         courses: [],
+//         exams: [],
+//         testeligibility: {},
+//       },
+//     };
+//   }
+// }
 export async function getServerSideProps() {
   try {
-    // Fetch data from external API
-    const colleges_res = await fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/colleges?limit=4&page=0&course=mba");
-    const colleges = await colleges_res.json();
+    // Fetch data from external API using Axios
+    const colleges_res = await axios.get(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/colleges?limit=4&page=0&course=mba`);
+    const colleges = colleges_res.data;
 
-    const courses_res = await fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/courses?limit=-1&page=0&type=ug`);
-    const courses = await courses_res.json();
+    const courses_res = await axios.get(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/courses?limit=-1&page=0&type=ug`);
+    const courses = courses_res.data;
 
-    const exams_res = await fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/exams?limit=4&page=0");
-    const exams = await exams_res.json();
+    const exams_res = await axios.get(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/exams?limit=4&page=0`);
+    const exams = exams_res.data;
 
-    const testeligibility_res = await fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/miscellaneous/testeligibility");
-    const testeligibility = await testeligibility_res.json();
+    const testeligibility_res = await axios.get(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/miscellaneous/testeligibility`);
+    const testeligibility = testeligibility_res.data;
 
     return {
       props: {

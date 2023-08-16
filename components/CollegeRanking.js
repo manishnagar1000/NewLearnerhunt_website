@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Classes from '/styles/collegeranking.module.css'
+import axios from 'axios';
 import {
     FormControl,
     InputLabel,
@@ -9,18 +10,20 @@ import {
     Typography
 } from "@mui/material";
 import Link from 'next/link';
+
 const CollegeRanking = ({ zones, departments, rankingtypes }) => {
+
     const [selectedDiscipline, setSelectedDiscipline] = useState(departments[0].label)
     const [selectedZone, setSelectedZone] = useState(zones[0].name)
-    const [selectedChip, setSelectedChip] = useState(rankingtypes[0].label)
+    const [selectedChip, setSelectedChip] = useState(rankingtypes[0].value)
     const [collegeData, setCollegeData] = useState([])
     const [isApihitComplete, setIsApiHitComplete] = useState(true)
-    // console.log(zones, departments, rankingtypes)
+    console.log(zones, departments, rankingtypes)
 
     useEffect(() => {
         const fetchData = async () => {
-            const data = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/colleges/ranking?type=${selectedChip}&zone=${selectedZone}&department=${selectedDiscipline}`)
-            const response = await data.json()
+            const rankdata = await axios.get(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/colleges/ranking?type=${selectedChip}&zone=${selectedZone}&department=${selectedDiscipline}`)
+            const response = rankdata.data
             return response.data
         }
         try {
@@ -54,7 +57,7 @@ const CollegeRanking = ({ zones, departments, rankingtypes }) => {
                             {
                                 rankingtypes.map((r,i) => {
                                     return (
-                                        <span key={i} onClick={() => setSelectedChip(r.label)} className={`${Classes['chip']} ${selectedChip == r.label ? Classes['active'] : ""}`}>{r.label}</span>
+                                        <span key={i} onClick={() => setSelectedChip(r.value)} className={`${Classes['chip']} ${selectedChip == r.value ? Classes['active'] : ""}`}>{r.label}</span>
                                     )
                                 })
                             }
