@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import PortalLayout from "/components/CRM/PortalLayout";
+import PortalLayout from "@/components/CRM/PortalLayout";
 import { useRouter, notFound } from "next/router";
 import Dashboard from "@/components/CRM/Dashboard";
 import Addcollege from "@/components/CRM/addcollege/Addcollege";

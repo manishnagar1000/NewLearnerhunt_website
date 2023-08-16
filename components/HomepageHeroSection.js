@@ -31,29 +31,10 @@ const SelectionBtns = [
   },
 ];
 
-const qualificationdata = {
-  ug: [
-    "PCM 50%-55%",
-    "PCM 55%-60%",
-    "PCM 60%-65%",
-    "PCM 70%-75%",
-    "PCM 75%-80%",
-    "PCM 80%-85%",
-    "PCM 85%-above",
-  ],
-  pg: [
-    "Graduation 50%-55%",
-    "Graduation 55%-60%",
-    "Graduation 60%-65%",
-    "Graduation 70%-75%",
-    "Graduation 75%-80%",
-    "Graduation 80%-85%",
-    "Graduation 85%-above",
-  ],
-};
+
 
 const HomepageHeroSection = ({ data }) => {
-  // console.log(data)
+  console.log(data)
 
   const [fee, setFee] = useState(200000);
   const [activeBtn, setActiveBtn] = useState(SelectionBtns[0].value);
@@ -91,6 +72,10 @@ const HomepageHeroSection = ({ data }) => {
     }
     return value;
   };
+
+  const checkValue = (value)=>{
+    return value != undefined && value != null && value != ""
+  }
   return (
     <div className={Classes["hero-section"]}>
       <div className={Classes["overlay"]}></div>
@@ -210,7 +195,7 @@ const HomepageHeroSection = ({ data }) => {
                             <MenuItem value="" disabled>
                               <em>Select</em>
                             </MenuItem>
-                            {data.zones !== undefined &&
+                            {checkValue(data.zones) &&
                               data.zones.map((zone, i) => {
                                 return (
                                   <MenuItem key={i} value={zone.name}>
@@ -238,7 +223,8 @@ const HomepageHeroSection = ({ data }) => {
                             <MenuItem value="" disabled>
                               <em>Select</em>
                             </MenuItem>
-                            {data.courses.map((c, i) => {
+                            {checkValue(data.courses) &&
+                            data.courses.map((c, i) => {
                               return (
                                 <MenuItem key={i} value={c.course}>
                                   {c.course}
@@ -268,7 +254,7 @@ const HomepageHeroSection = ({ data }) => {
                                 <MenuItem value="" disabled>
                                   <em>Select</em>
                                 </MenuItem>
-                                {data.courses
+                                {checkValue(data.courses) && data.courses
                                   .find((c) => c.course == selectedCourse)
                                   .specialization.map((s, i) => {
                                     return (
@@ -299,11 +285,9 @@ const HomepageHeroSection = ({ data }) => {
                                 <MenuItem value="" disabled>
                                   <em>Select</em>
                                 </MenuItem>
-                                {qualificationdata[
-                                  data.courses.find(
+                                {checkValue(data.courses) && data.courses.find(
                                     (c) => c.course == selectedCourse
-                                  ).type
-                                ].map((q, i) => {
+                                  ).qualification.map((q, i) => {
                                   return (
                                     <MenuItem key={i} value={q}>
                                       {q}
@@ -366,7 +350,7 @@ const HomepageHeroSection = ({ data }) => {
                               <MenuItem value="" disabled>
                                 <em>Select</em>
                               </MenuItem>
-                              {data.courses
+                              {checkValue(data.courses) && data.courses
                                 .find((c) => c.course == selectedCourse)
                                 .entrance_exam.map((e, i) => {
                                   return (
@@ -433,7 +417,7 @@ const HomepageHeroSection = ({ data }) => {
                               <MenuItem value="" disabled>
                                 <em>Select</em>
                               </MenuItem>
-                              {data.courses.map((c, i) => {
+                              {checkValue(data.courses) && data.courses.map((c, i) => {
                                 return (
                                   <MenuItem key={i} value={c.course}>
                                     {c.course}
@@ -462,7 +446,7 @@ const HomepageHeroSection = ({ data }) => {
                               <MenuItem value="" disabled>
                                 <em>Select</em>
                               </MenuItem>
-                              {data.zones !== undefined &&
+                              {checkValue(data.zones) && 
                                 data.zones.map((zone, i) => {
                                   return (
                                     <MenuItem key={i} value={zone.name}>
@@ -492,7 +476,7 @@ const HomepageHeroSection = ({ data }) => {
                               <MenuItem value="" disabled>
                                 <em>Select</em>
                               </MenuItem>
-                              {data.ratings.map((r, i) => {
+                              {checkValue(data.ratings) && data.ratings.map((r, i) => {
                                 return (
                                   <MenuItem key={i} value={r.value}>
                                     {r.label}

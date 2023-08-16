@@ -275,34 +275,7 @@
 //             </div>
 //           </div>
 //         </div>
-//         <h2>Assigned Asset</h2>
-//         <div className="dashboard-card-wrapper">
-//           <div className="dashboard-card">
-//             <div className="row">
-//               <div className="col-9">
-//                 <p>Assigned Asset</p>
-//                 {this.state.isAssetApiHitComplete ? (
-//                   <span className="number">{this.state.assignedAssets}</span>
-//                 ) : (
-//                   <div style={{ margin: "0.6rem 0rem" }}>
-//                     <Spinner />
-//                   </div>
-//                 )}
-//               </div>
-//               <div className="col-3 d-flex justify-content-end">
-//                 <div className="img-div">
-//                   <img src="/assets/images/assignment.png" alt="" />
-//                 </div>
-//               </div>
-//               <div className="col-6">
-//                 <Link to="/assigned-asset">
-//                   <ArrowRightAltIcon />
-//                   goto
-//                 </Link>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
+    
 //       </div>
 //     );
 //   }
