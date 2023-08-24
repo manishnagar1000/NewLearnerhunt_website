@@ -11,6 +11,7 @@ import Placement from "./addcollegefields/Placement";
 import Scholorship from "./addcollegefields/Scholorship";
 import Cutoff from "./addcollegefields/Cutoff";
 import { Spinner } from "react-bootstrap";
+import CollegeRanking from "./addcollegefields/CollegeRanking";
 
 const Addcollege = () => {
   const [selectedTab, setSelectedTab] = useState("0");
@@ -27,6 +28,7 @@ const Addcollege = () => {
     "5":"scholorship",
     "6":"placement",
     "7":"cutoff",
+    "8":"clgrank"
 
   }
   const handleSelectTab = (k) => {
@@ -40,7 +42,7 @@ const Addcollege = () => {
       }
     }).then(async res => {
       let response = await res.json()
-      console.log(response)
+      // console.log(response)
       if (response.data.length > 0) {
         const data =  response.data.map((s)=>{
           let obj =  {
@@ -201,6 +203,24 @@ const Addcollege = () => {
           {isApiHitComplete ?
             isDataFound ?
               selectedTab == '7' && <Cutoff onSuccess={onSuccess} collegeList={clgList} />
+              :
+              <div style={{ display: "flex", width: "100%", height: '80vh', justifyContent: "center", alignItems: 'center' }}>
+                <div style={{ fontWeight: "500" }}>
+                  <span>Please <span style={{ color: "#0d6efd", cursor: 'pointer' }} onClick={() => setSelectedTab(0)}>+Create</span> a College General Info first</span>
+                </div>
+              </div>
+            :
+            <div style={{ display: "flex", width: "100%", height: '80vh', justifyContent: "center", alignItems: 'center' }}>
+              <Spinner animation="border" role="status" variant="info">
+                <span className="visually-hidden">Loading...</span>
+              </Spinner>
+            </div>
+          }
+        </Tab>
+        <Tab eventKey="8" title="College Ranking">
+          {isApiHitComplete ?
+            isDataFound ?
+              selectedTab == '8' && <CollegeRanking onSuccess={onSuccess} collegeList={clgList} />
               :
               <div style={{ display: "flex", width: "100%", height: '80vh', justifyContent: "center", alignItems: 'center' }}>
                 <div style={{ fontWeight: "500" }}>

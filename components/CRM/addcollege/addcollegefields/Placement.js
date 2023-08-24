@@ -78,7 +78,7 @@ headers: {
 body: formData
 })
 .then (async response => {
-  console.log(response)
+  // console.log(response)
   this.setState({  isLoading: false})
 
 if (response.ok) {

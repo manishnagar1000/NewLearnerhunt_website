@@ -794,6 +794,7 @@ export const IndianStates = {
   "Uttar Pradesh": [
     "Lucknow",
     "Kanpur",
+    "Gaziabad",
     "Firozabad",
     "Agra",
     "Meerut",

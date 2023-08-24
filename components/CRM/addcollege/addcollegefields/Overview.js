@@ -14,6 +14,14 @@ import PersonIcon from '@mui/icons-material/Person';
 import LiveHelpIcon from '@mui/icons-material/LiveHelp';
 import DomainVerificationIcon from '@mui/icons-material/DomainVerification';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
+import { coursenameList } from "@/components/Comps/type";
+import { courseduration } from "@/components/Comps/type";
+
+const courseLabels = coursenameList.map(course => course.label);
+const durationLabels = courseduration.map(course => course.label);
 export default class Overview extends Component {
   constructor(props) {
     super(props)
@@ -164,7 +172,7 @@ headers: {
 body: formData
 })
 .then (async response => {
-  console.log(response)
+  // console.log(response)
   this.setState({  isLoading: false})
 
 if (response.ok) {
@@ -260,9 +268,9 @@ console.error('Error:', error);
               </div>
               <div className="col-md-4">
                 <div className={Classes["form-group"]}>
-                  <label className={Classes["labelname"]} htmlFor="name">Foreign collaboration (Tags)</label>
+                  <label className={Classes["labelname"]} htmlFor="name">International Collabration (Tags)</label>
                   <MultipleTagsInput
-                    placeholder="Add foreign collaboration"
+                    placeholder="Add International Collabration"
                     value={this.state.foreignCollaborations}
                     onChange={(values) => this.setState({ foreignCollaborations: values })}
                   />
@@ -270,7 +278,7 @@ console.error('Error:', error);
               </div>
               <div className="col-md-4">
                 <div className={Classes["form-group"]}>
-                  <label className={Classes["labelname"]} htmlFor="name">Where to apply</label>
+                  <label className={Classes["labelname"]} htmlFor="name">Application Link</label>
                   <input
                     type="text"
                     className="form-control"
@@ -495,25 +503,69 @@ console.error('Error:', error);
                         <div className="col-md-4">
                           <div className={Classes["form-group"]}>
                             <label className={Classes["labelname"]} htmlFor="name">Course name</label>
-                            <input
+                            {/* <input
                               type="text"
                               className="form-control"
                               placeholder="ex: B.Tech"
                               value={course.course_name}
                               onChange={(e) => this.onFieldChange(i, 'course_name', e.target.value, this.state.offeredCourses, '1')}
-                            />
+                            /> */}
+                                    <Autocomplete
+  disablePortal
+  id="combo-box-demo"
+  options={courseLabels}
+  size="small"
+  onChange={(event, newValue) =>
+    this.onFieldChange(
+      i,
+      "course_name",
+      newValue,
+      this.state.offeredCourses,
+      "1"
+    )
+  }
+  style={{ background: "white" }}
+  renderInput={(params) => (
+    <TextField
+      {...params}
+      placeholder="Enter Course Name"
+    />
+  )}
+/>
                           </div>
                         </div>
                         <div className="col-md-4">
                           <div className={Classes["form-group"]}>
                             <label className={Classes["labelname"]} htmlFor="name">Course duration</label>
-                            <input
+                            {/* <input
                               type="text"
                               className="form-control"
                               placeholder="ex: 4 years"
                               value={course.course_duration}
                               onChange={(e) => this.onFieldChange(i, 'course_duration', e.target.value, this.state.offeredCourses, '1')}
-                            />
+                            /> */}
+                                                  <Autocomplete
+  disablePortal
+  id="combo-box-demo"
+  options={durationLabels}
+  size="small"
+  onChange={(event, newValue) =>
+    this.onFieldChange(
+      i,
+      "course_duration",
+      newValue,
+      this.state.offeredCourses,
+      "1"
+    )
+  }
+  style={{ background: "white" }}
+  renderInput={(params) => (
+    <TextField
+      {...params}
+      placeholder="Enter Course Duration"
+    />
+  )}
+/>
                           </div>
                         </div>
                         <div className="col-md-3">

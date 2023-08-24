@@ -4,41 +4,43 @@ import React, { Component } from "react";
 import Classes from "/styles/gernal.module.css";
 import CTA from "/components/Comps/CTA";
 import Swal from "sweetalert2";
-import Loading from "/components/Comps/Loading";
-import YearList from "@/components/Comps/YearList";
 import LeaderboardIcon from "@mui/icons-material/Leaderboard";
+import { TypeofCategory } from "/components/Comps/type";
 import Badge from "@mui/material/Badge";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Tooltip from "@mui/material/Tooltip";
-
-export default class Cutoff extends Component {
+const numberKeys = ["rank"]
+export default class CollegeRankings extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoading: false,
-      cutoffFields: [],
       selectedClg: '',
-
+      rankingFields:[]
     };
   }
 
   onFieldChange(index, field, value, curFields, box) {
     const updatedFields = [...curFields];
+    if(numberKeys.includes(field)){
+      updatedFields[index][field] = value.replace(/\D/g, "");
+    }else{
     updatedFields[index][field] = value;
+    }
 
     if (box === "1") {
       this.setState({
-        cutoffFields: updatedFields,
+        rankingFields: updatedFields,
       });
     }
   }
   addNewField = (box) => {
     if (box === "1") {
       this.setState((prevState) => ({
-        cutoffFields: [
-          ...prevState.cutoffFields,
-          { year: "", description: "" },
+        rankingFields: [
+          ...prevState.rankingFields,
+          { category: "", rank: "" },
         ],
       }));
     }
@@ -48,20 +50,20 @@ export default class Cutoff extends Component {
     fields.splice(i, 1);
     if (box === "1") {
       this.setState({
-        cutoffFields: fields,
+        rankingFields: fields,
       });
     }
   }
 
-  handleCutoff =(e)=>{
+  handleRanking =(e)=>{
     e.preventDefault()
     this.setState({isLoading:true})
     var formData = new FormData();
     formData.append("college_id", this.state.selectedClg);
-    formData.append("yearwise_description", JSON.stringify(this.state.cutoffFields));
+    formData.append("ranking", JSON.stringify(this.state.rankingFields));
  
 
-    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/admin/add-college-cutoff", {
+    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/admin/add-college-ranking", {
 method: 'POST',
 headers: {
   'Authorization': `Bearer ${localStorage.getItem("pt")}`
@@ -80,7 +82,7 @@ if (response.ok) {
     icon: "success",
     confirmButtonText: "Ok",
   }).then(() => {
-    this.setState({selectedClg:"",cutoffFields:[]},()=>this.props.onSuccess())
+    this.setState({selectedClg:"",rankingFields:[]},()=>this.props.onSuccess())
 
   });
 } else {
@@ -102,11 +104,11 @@ console.error('Error:', error);
 
   render() {
     const { collegeList } = this.props
-    // console.log(collegeList)
+    console.log(collegeList)
     return (
       <div className={Classes["add-user"]}>
         <div className={Classes["form-div"]}>
-        <form action="#" onSubmit={(e) => this.handleCutoff(e)}>
+        <form action="#" onSubmit={(e) => this.handleRanking(e)}>
         <div className="row">
               <div className="col-md-4">
                 <div className="form-group">
@@ -134,63 +136,84 @@ console.error('Error:', error);
               </div>
             </div>
             <hr />
-          <div className="row">
+            <div className="row">
             <div
               className="col-md-12 border mb-3"
               style={{ backgroundColor: "#ededed" }}
             >
               <h3 style={{ padding: "0.5rem 0rem" }}>
-                CutOffs{" "}
+                Ranking{" "}
                 <Badge
-                  badgeContent={this.state.cutoffFields.length}
+                  badgeContent={this.state.rankingFields.length}
                   color="primary"
                 >
                   <LeaderboardIcon color="action" />
                 </Badge>
               </h3>
-              {this.state.cutoffFields.map((field, i) => {
+              {this.state.rankingFields.map((field, i) => {
                 return (
                   
                   <div className="row">
                     <div className="col-md-5">
-                      <YearList
-                        label="Year"
-                        required
-                        selectedYear={field.year}
-                        onChange={(year) =>
-                          this.onFieldChange(
-                            i,
-                            "year",
-                            year,
-                            this.state.cutoffFields,
-                            "1"
-                          )
-                        }
-                      />
+                    <div className="form-group">
+                  <label className={Classes["labelname"]} htmlFor="categorytype">Category Type <span className={Classes["error"]}>*</span></label>
+                  <select
+                    name="categorytype"
+                    id="categorytype"
+                    className="form-select"
+                    required
+                    value={field.category}
+                    onChange={(e) =>
+                      this.onFieldChange(
+                        i,
+                        "category",
+                        e.target.value,
+                        this.state.rankingFields,
+                        "1"
+                      )
+                    }
+                 
+                  >
+                    <option disabled value="">Select a Category Type</option>
+                    {TypeofCategory.map((d, i) => {
+                      return (
+                        <option key={i} value={d.name}
+                        
+                        disabled={this.state.rankingFields.some(
+                          (field) => field.category === d.name
+                        )}>
+                          {d.name}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
                     </div>
                     <div className="col-md-6">
-                      <div className={Classes["form-group"]}>
-                        <label className={Classes["labelname"]} htmlFor="name">
-                          Description{" "}
-                        </label>
-                        <textarea
-                          type="text"
-                          rows={2}
-                          className="form-control"
-                          placeholder="Enter Description"
-                          required
-                          value={field.description}
-                          onChange={(e) =>
-                            this.onFieldChange(
-                              i,
-                              "description",
-                              e.target.value,
-                              this.state.cutoffFields,
-                              "1"
-                            )
-                          }
-                        />
-                      </div>
+                    <div className={Classes["form-group"]}>
+                  <label className={Classes["labelname"]} htmlFor="name">
+                    Rank{" "}<span className={Classes["error"]}>*</span>
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="eg: 5"
+                    minLength={0}
+                    maxLength={7}
+                    required
+                    value={field.rank}
+                    onChange={(e) =>
+                      this.onFieldChange(
+                        i,
+                        "rank",
+                        e.target.value,
+                        this.state.rankingFields,
+                        "1"
+                      )
+                    }
+                  
+                  />
+                </div>
                     </div>
 
                     <div className="col-md-1">
@@ -198,7 +221,7 @@ console.error('Error:', error);
                         <Tooltip
                           title="Delete"
                           onClick={() =>
-                            this.deleteField(i, this.state.cutoffFields, "1")
+                            this.deleteField(i, this.state.rankingFields, "1")
                           }
                         >
                           <IconButton>

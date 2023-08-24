@@ -23,15 +23,33 @@ export default function CollegeName({ collegedata }) {
   });
 
 
-  useEffect(()=>{
-    const newstatus = localStorage.getItem("status");
-    // console.log(newstatus)
+  useEffect(() => {
+    const newstatus = localStorage.getItem("userid");
+    // console.log(newstatus);
     if (newstatus) {
-      setUserStatus(newstatus);
-      setUseremail(localStorage.getItem("useremail"))
-      setUserid(localStorage.getItem("userid"))
+      fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/user/check-status", {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem("userid")}`
+        }
+    }).then(async(response) => {
+      var res =await response.json()
+      // console.log(res)
+      if(res.status){
+        setUserStatus(newstatus);
+      }else{
+        localStorage.removeItem("userid")
+        localStorage.removeItem("status")
+        localStorage.removeItem("useremail")
+      }
+    });
+      
+    }else{
+      localStorage.removeItem("userid")
+      localStorage.removeItem("status")
+      localStorage.removeItem("useremail")
+
     }
-  },[userStatus])
+  }, [userStatus]);
 
   const handlelogin = (e) => {
     setIsLoginFormOpen(true);

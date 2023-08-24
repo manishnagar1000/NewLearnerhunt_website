@@ -16,7 +16,13 @@ function Index() {
         var res =await response.json()
         // console.log(res)
         if(res.status){
-          window.location.href = "/adminportal/dashboard"
+          if(sessionStorage.getItem("selectedPath")){
+            
+          window.location.href = `${sessionStorage.getItem("selectedPath")}`
+        }else{
+            window.location.href = "/adminportal/dashboard"
+
+          }
         }
         // if (response.ok) {
         //   // console.log("hello", response.data);

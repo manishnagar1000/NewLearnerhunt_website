@@ -36,7 +36,7 @@ export default class Allcollege extends Component {
       },
     }).then(async (res) => {
       let response = await res.json();
-      console.log(response.data);
+      // console.log(response.data);
       if (response.data.length > 0) {
         this.setState({ clgList: response.data, isDataFound: true });
       }
@@ -67,10 +67,10 @@ export default class Allcollege extends Component {
                   return (
                     <>
                       <tr key={i}>
-                        <td>{clg.college_name}</td>
-                        <td>{clg.approved_by}</td>
-                        <td>{clg.college_type}</td>
-                        <td>{clg.state}</td>
+                        <td style={{wordWrap:"break-word",whiteSpace:"unset"}}>{clg.college_name}</td>
+                        <td style={{wordWrap:"break-word",whiteSpace:"unset"}}>{clg.approved_by}</td>
+                        <td style={{wordWrap:"break-word",whiteSpace:"unset"}}>{clg.college_type}</td>
+                        <td style={{wordWrap:"break-word",whiteSpace:"unset"}}>{clg.state}</td>
                       </tr>
                     </>
                   );

@@ -11,22 +11,26 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Tooltip from "@mui/material/Tooltip";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import MultipleTagsInput from "@/components/Comps/MultipleTagsInput";
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
+import { coursenameList } from "@/components/Comps/type";
+import { courseeligibiltyCriteria } from "@/components/Comps/type";
+import { coursestudymode } from "@/components/Comps/type";
+import { courseduration } from "@/components/Comps/type";
+
+const numberKeys = ["course_annual_fees","course_total_intake","avg_fees"]
+const courseLabels = coursenameList.map(course => course.label);
+const eligibilityLabels = courseeligibiltyCriteria.map(course => course.label);
+const studyLabels = coursestudymode.map(course => course.label);
+const durationLabels = courseduration.map(course => course.label);
+
 
 export default class Courses extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoading: false,
-      coursedesc: "",
-      coursename: "",
-      coursefee: "",
-      eligibilitycriteria: "",
-      coursetotalintake: "",
-      studymode: "",
-      examaccepted: "",
-      courseduration: "",
-      avaragefee: "",
-      coursespecilization: [],
+      courseFields: [],
       selectedClg: "",
     };
   }
@@ -37,17 +41,16 @@ export default class Courses extends Component {
     this.setState({ isLoading: true });
     var formData = new FormData();
     formData.append("college_id", this.state.selectedClg);
-    formData.append("course_description", this.state.courseduration);
-    formData.append("course_name", this.state.coursename);
-    formData.append("course_annual_fees", this.state.coursefee);
-    formData.append("eligibility_criteria", this.state.eligibilitycriteria);
-    formData.append("course_total_intake", this.state.coursetotalintake);
-    formData.append("study_mode", this.state.studymode);
-    formData.append("exam_accepted", this.state.examaccepted);
-    formData.append("course_duration", this.state.courseduration);
-    formData.append("avg_fees", this.state.avaragefee);
-    formData.append("course_specialization", this.state.coursespecilization);
+    let courses = this.state.courseFields.map((obj)=>{
+      let newobj =  {
+      ...obj,
+          course_specialization:obj.course_specialization.join(","),
+      }
+      return newobj
+    })
+    formData.append("courses", JSON.stringify(courses));
 
+    
 
     fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/admin/add-college-course", {
       method: "POST",
@@ -57,7 +60,7 @@ export default class Courses extends Component {
       body: formData,
     })
       .then(async (response) => {
-        console.log(response);
+        // console.log(response.data);
         this.setState({  isLoading: false})
         if (response.ok) {
         
@@ -70,15 +73,6 @@ export default class Courses extends Component {
           }).then(() => {
             this.setState(
               {
-                coursedesc: "",
-                coursename: "",
-                coursefee: "",
-                eligibilitycriteria: "",
-                coursetotalintake: "",
-                studymode: "",
-                examaccepted: "",
-                courseduration: "",
-                avaragefee: "",
                 coursespecilization: [],
                 selectedClg: ""},
               () => this.props.onSuccess()
@@ -100,6 +94,43 @@ export default class Courses extends Component {
         console.error("Error:", error);
       });
   };
+
+ 
+  onFieldChange(index, field, value, curFields, box) {
+    const updatedFields = [...curFields];
+    if(numberKeys.includes(field)){
+      updatedFields[index][field] = value.replace(/\D/g, "");
+    }else{
+    updatedFields[index][field] = value;
+    }
+
+    if (box === '1') {
+      this.setState({
+        courseFields: updatedFields
+      })
+    }
+  }
+  addNewField = (box) => {
+    if (box === '1') {
+      this.setState((prevState) => ({
+        courseFields: [
+          ...prevState.courseFields,
+          {  course_description: '',course_name:'',course_annual_fees:'',eligibility_criteria:'',course_total_intake:'',
+          study_mode:'',exam_accepted:'',course_duration:'',avg_fees:'',course_specialization:[] }
+        ]
+      }));
+    }
+
+  }
+  deleteField(i, curFields, box) {
+    const fields = [...curFields];
+    fields.splice(i, 1);
+    if (box === '1') {
+      this.setState({
+        courseFields: fields
+      })
+    }
+  }
   render() {
     const { collegeList } = this.props;
     return (
@@ -138,7 +169,23 @@ export default class Courses extends Component {
             </div>
             <hr />
             <div className="row">
-              <div className="col-md-12">
+            <div
+              className="col-md-12 border mb-3"
+              style={{ backgroundColor: "#ededed" }}
+            >
+               <h3 style={{ padding: "0.5rem 0rem" }}>
+                Courses{" "}
+                <Badge
+                  badgeContent={this.state.courseFields.length}
+                  color="primary"
+                >
+                  <ApartmentIcon color="action" />
+                </Badge>
+              </h3>
+                {this.state.courseFields.map((field, i) => {
+                return (
+            <div className="row">
+              <div className="col-md-11">
                 <div className={Classes["form-group"]}>
                   <label className={Classes["labelname"]} htmlFor="name">
                     Course Description{" "}
@@ -148,31 +195,68 @@ export default class Courses extends Component {
                     rows={4}
                     className="form-control"
                     placeholder="Enter Description"
-                    value={this.state.coursedesc}
+                    value={field.course_description}
                     onChange={(e) =>
-                      this.setState({ coursedesc: e.target.value })
+                      this.onFieldChange(
+                        i,
+                        "course_description",
+                        e.target.value,
+                        this.state.courseFields,
+                        "1"
+                      )
                     }
+                   
                   />
                 </div>
               </div>
+            
               <div className="col-md-4">
                 <div className={Classes["form-group"]}>
                   <label className={Classes["labelname"]} htmlFor="name">
                     Course Name <span className={Classes["error"]}>*</span>
                   </label>
-                  <input
+                  {/* <input
                     type="text"
                     className="form-control"
                     placeholder="Enter Course Name"
                     required
-                    value={this.state.coursename}
+                    value={field.course_name}
                     onChange={(e) =>
-                      this.setState({ coursename: e.target.value })
+                      this.onFieldChange(
+                        i,
+                        "course_name",
+                        e.target.value,
+                        this.state.courseFields,
+                        "1"
+                      )
                     }
-                  />
+                  /> */}
+              <Autocomplete
+  disablePortal
+  id="combo-box-demo"
+  options={courseLabels}
+  size="small"
+  onChange={(event, newValue) =>
+    this.onFieldChange(
+      i,
+      "course_name",
+      newValue,
+      this.state.courseFields,
+      "1"
+    )
+  }
+  style={{ background: "white" }}
+  renderInput={(params) => (
+    <TextField
+      {...params}
+      placeholder="Enter Course Name"
+      required
+    />
+  )}
+/>
                 </div>
               </div>
-              <div className="col-md-4">
+              <div className="col-md-3">
                 <div className={Classes["form-group"]}>
                   <label className={Classes["labelname"]} htmlFor="name">
                     Course Annual Fee{" "}<span className={Classes["error"]}>*</span>
@@ -184,12 +268,17 @@ export default class Courses extends Component {
                     minLength={2}
                     maxLength={7}
                     required
-                    value={this.state.coursefee}
+                    value={field.course_annual_fees}
                     onChange={(e) =>
-                      this.setState({
-                        coursefee: e.target.value.replace(/\D/g, ""),
-                      })
+                      this.onFieldChange(
+                        i,
+                        "course_annual_fees",
+                        e.target.value,
+                        this.state.courseFields,
+                        "1"
+                      )
                     }
+                  
                   />
                 </div>
               </div>
@@ -199,20 +288,48 @@ export default class Courses extends Component {
                     Eligibility Criteria (Percentage){" "}
                     <span className={Classes["error"]}>*</span>
                   </label>
-                  <input
+                  {/* <input
                     type="text"
                     minLength={0}
                     maxLength={2}
                     className="form-control"
                     placeholder="eg: 50"
                     required
-                    value={this.state.eligibilitycriteria}
+                    value={field.eligibility_criteria}
                     onChange={(e) =>
-                      this.setState({
-                        eligibilitycriteria: e.target.value.replace(/\D/g, ""),
-                      })
+                      this.onFieldChange(
+                        i,
+                        "eligibility_criteria",
+                        e.target.value,
+                        this.state.courseFields,
+                        "1"
+                      )
                     }
-                  />
+                
+                  /> */}
+                         <Autocomplete
+  disablePortal
+  id="combo-box-demo"
+  options={eligibilityLabels}
+  size="small"
+  onChange={(event, newValue) =>
+    this.onFieldChange(
+      i,
+      "eligibility_criteria",
+      newValue,
+      this.state.courseFields,
+      "1"
+    )
+  }
+  style={{ background: "white" }}
+  renderInput={(params) => (
+    <TextField
+      {...params}
+      placeholder="Enter Eligibility Criteria"
+      required
+    />
+  )}
+/>
                 </div>
               </div>
               <div className="col-md-4">
@@ -224,83 +341,170 @@ export default class Courses extends Component {
                     type="text"
                     className="form-control"
                     placeholder="Enter Course Total Intake"
-                    value={this.state.coursetotalintake}
+                    value={field.course_total_intake}
                     onChange={(e) =>
-                      this.setState({
-                        coursetotalintake: e.target.value.replace(/\D/g, ""),
-                      })
+                      this.onFieldChange(
+                        i,
+                        "course_total_intake",
+                        e.target.value,
+                        this.state.courseFields,
+                        "1"
+                      )
                     }
+                 
                   />
                 </div>
               </div>
-              <div className="col-md-4">
+              <div className="col-md-3">
                 <div className={Classes["form-group"]}>
                   <label className={Classes["labelname"]} htmlFor="name">
                     Study Mode <span className={Classes["error"]}>*</span>
                   </label>
-                  <input
+                  {/* <input
                     type="text"
                     className="form-control"
                     placeholder="Enter Course Study Mode"
                     required
-                    value={this.state.studymode}
+                    value={field.study_mode}
                     onChange={(e) =>
-                      this.setState({ studymode: e.target.value })
+                      this.onFieldChange(
+                        i,
+                        "study_mode",
+                        e.target.value,
+                        this.state.courseFields,
+                        "1"
+                      )
                     }
-                  />
+                 
+                  /> */}
+                                    <Autocomplete
+  disablePortal
+  id="combo-box-demo"
+  options={studyLabels}
+  size="small"
+  onChange={(event, newValue) =>
+    this.onFieldChange(
+      i,
+      "study_mode",
+      newValue,
+      this.state.courseFields,
+      "1"
+    )
+  }
+  style={{ background: "white" }}
+  renderInput={(params) => (
+    <TextField
+      {...params}
+      placeholder="Enter Eligibility Criteria"
+      required
+    />
+  )}
+/>
                 </div>
               </div>
               <div className="col-md-4">
                 <div className={Classes["form-group"]}>
                   <label className={Classes["labelname"]} htmlFor="name">
-                    Exam Accepted <span className={Classes["error"]}>*</span>
+                    Exam Accepted 
                   </label>
                   <input
                     type="text"
                     className="form-control"
                     placeholder="Enter Course Exam Accepted"
-                    required
-                    value={this.state.examaccepted}
+                    value={field.exam_accepted}
                     onChange={(e) =>
-                      this.setState({ examaccepted: e.target.value })
+                      this.onFieldChange(
+                        i,
+                        "exam_accepted",
+                        e.target.value,
+                        this.state.courseFields,
+                        "1"
+                      )
                     }
                   />
                 </div>
               </div>
+              <div className="col-md-1">
+                      <div className={Classes.dltIcon}>
+                        <Tooltip
+                          title="Delete"
+                          onClick={() =>
+                            this.deleteField(i, this.state.courseFields, "1")
+                          }
+                        >
+                          <IconButton>
+                            <DeleteIcon style={{ color: "red" }} />
+                          </IconButton>
+                        </Tooltip>
+                      </div>
+                    </div>
               <div className="col-md-4">
                 <div className={Classes["form-group"]}>
                   <label className={Classes["labelname"]} htmlFor="name">
                     Course Duration <span className={Classes["error"]}>*</span>
                   </label>
-                  <input
+                  {/* <input
                     type="text"
                     className="form-control"
                     placeholder="Enter Course Course Duration"
                     required
-                    value={this.state.courseduration}
+                    value={field.course_duration}
                     onChange={(e) =>
-                      this.setState({ courseduration: e.target.value })
+                      this.onFieldChange(
+                        i,
+                        "course_duration",
+                        e.target.value,
+                        this.state.courseFields,
+                        "1"
+                      )
                     }
-                  />
+                  /> */}
+                           <Autocomplete
+  disablePortal
+  id="combo-box-demo"
+  options={durationLabels}
+  size="small"
+  onChange={(event, newValue) =>
+    this.onFieldChange(
+      i,
+      "course_duration",
+      newValue,
+      this.state.courseFields,
+      "1"
+    )
+  }
+  style={{ background: "white" }}
+  renderInput={(params) => (
+    <TextField
+      {...params}
+      placeholder="Enter Course Duration"
+      required
+    />
+  )}
+/>
                 </div>
               </div>
-              <div className="col-md-4">
+              
+              <div className="col-md-3">
                 <div className={Classes["form-group"]}>
                   <label className={Classes["labelname"]} htmlFor="name">
-                    Avarage Fee <span className={Classes["error"]}>*</span>
+                    Avarage Fee 
                   </label>
                   <input
                     type="text"
                     className="form-control"
                     placeholder="eg: 5000000"
-                    required
                     minLength={2}
                     maxLength={7}
-                    value={this.state.avaragefee}
+                    value={field.avg_fees}
                     onChange={(e) =>
-                      this.setState({
-                        avaragefee: e.target.value.replace(/\D/g, ""),
-                      })
+                      this.onFieldChange(
+                        i,
+                        "avg_fees",
+                        e.target.value,
+                        this.state.courseFields,
+                        "1"
+                      )
                     }
                   />
                 </div>
@@ -311,24 +515,34 @@ export default class Courses extends Component {
                     Course Specialization (Tags){" "}
                     <span className={Classes["error"]}>*</span>
                   </label>
-                  {/* input tag  */}
                   <MultipleTagsInput
                     placeholder="Course Specialization"
-                    value={this.state.coursespecilization}
+                    value={field.course_specialization}
                     required
-                    onChange={(values) =>
-                      this.setState({ coursespecilization: values })
-                    }
+                    onChange={(values) => this.onFieldChange(i, 'course_specialization', values, this.state.courseFields, '1')}
+                   
                   />
                 </div>
               </div>
-              <div className="row">
+              <hr/>
+            </div>
+              );
+            })}
+            <span
+                className="add-more-btn"
+                onClick={() => this.addNewField("1")}
+              >
+                + Add More
+              </span>
+            </div>
+            </div>
+            <div className="row">
                 <div className="col-md-12">
-                  <CTA title="Create" />
+                  <CTA title="Create"/>
                 </div>
               </div>
-            </div>
           </form>
+      
         </div>
         {
           <Loading

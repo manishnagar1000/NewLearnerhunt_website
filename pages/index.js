@@ -7,12 +7,12 @@ import TopExams from '@/components/TopExams'
 import Count from '@/components/Count'
 import WhyChoose from '@/components/WhyChoose'
 import axios from 'axios'
-
-
-
 import Head from 'next/head'
+import { useEffect } from 'react'
 
 export default function Home({colleges,courses,exams,testeligibility}) {
+  console.log(testeligibility)
+
   return (
     <>
       <Head>

@@ -39,7 +39,7 @@ export default class Campus extends Component {
       body: formData,
     })
       .then(async (response) => {
-        console.log(response);
+        // console.log(response);
         this.setState({  isLoading: false})
         if (response.ok) {
           var res = await response.json();

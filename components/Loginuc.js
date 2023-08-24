@@ -397,7 +397,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
                   <h3 style={{ color: "white" }}>Education Library </h3>
                   <p style={{ color: "white", whiteSpace: "break-spaces" }}>
                     Get detailed information about Colleges, Careers, Courses,
-                    and Exams at CollegeDekho. Register now and make informed
+                    and Exams at LearnerHunt. Register now and make informed
                     decisions about your career.
                   </p>
                 </CarouselItem>
@@ -405,7 +405,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
                   <h3 style={{ color: "white" }}>Guaranteed Admission </h3>
                   <p style={{ color: "white", whiteSpace: "break-spaces" }}>
                     Get detailed information about Colleges, Careers, Courses,
-                    and Exams at CollegeDekho. Register now and make informed
+                    and Exams at LearnerHunt. Register now and make informed
                     decisions about your career.
                   </p>
                 </CarouselItem>
@@ -413,7 +413,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
                   <h3 style={{ color: "white" }}>Counselling </h3>
                   <p style={{ color: "white", whiteSpace: "break-spaces" }}>
                     Get detailed information about Colleges, Careers, Courses,
-                    and Exams at CollegeDekho. Register now and make informed
+                    and Exams at LearnerHunt. Register now and make informed
                     decisions about your career.
                   </p>
                 </CarouselItem>

@@ -9,6 +9,8 @@ export default function SidebarItem({ item, setSelectedItem, selected }) {
       if (!item.children) {
       setSelectedItem(item.name);
       sessionStorage.setItem("selectedPage", item.name);
+      sessionStorage.setItem("selectedPath", item.path);
+
       setOpen(false);
     }else{
       setOpen(!open);

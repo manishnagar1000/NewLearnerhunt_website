@@ -4,6 +4,8 @@ import { useRouter, notFound } from "next/router";
 import Dashboard from "@/components/CRM/Dashboard";
 import Addcollege from "@/components/CRM/addcollege/Addcollege";
 import Allcollege from "@/components/CRM/addcollege/Allcollege";
+import ApiIntegration from "@/components/CRM/ApiIntegration";
+
 
 import Swal from "sweetalert2";
 const componentList = [
@@ -19,6 +21,10 @@ const componentList = [
     comp: <Allcollege />,
     slug: "allcollege",
   },
+  {
+    comp:<ApiIntegration/>,
+    slug:"api"
+  }
 ];
 export default function AdminPortalSlug() {
   const router = useRouter();

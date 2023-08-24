@@ -54,11 +54,33 @@ export default function Topbar() {
     };
   }, []);
 
+  
+
   useEffect(() => {
-    const newstatus = localStorage.getItem("status");
+    const newstatus = localStorage.getItem("userid");
     // console.log(newstatus);
     if (newstatus) {
-      setUserStatus(newstatus);
+      fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/user/check-status", {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem("userid")}`
+        }
+    }).then(async(response) => {
+      var res =await response.json()
+      // console.log(res)
+      if(res.status){
+        setUserStatus(newstatus);
+      }else{
+        localStorage.removeItem("userid")
+        localStorage.removeItem("status")
+        localStorage.removeItem("useremail")
+      }
+    });
+      
+    }else{
+      localStorage.removeItem("userid")
+      localStorage.removeItem("status")
+      localStorage.removeItem("useremail")
+
     }
   }, [userStatus]);
 

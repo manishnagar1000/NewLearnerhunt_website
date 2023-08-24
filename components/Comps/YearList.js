@@ -6,7 +6,7 @@ export default class YearList extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            startYear: 1900,
+            startYear: 1800,
             endYear: currentYear,
         }
     }

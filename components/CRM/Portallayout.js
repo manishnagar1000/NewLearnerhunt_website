@@ -18,6 +18,7 @@ import PostAddIcon from "@mui/icons-material/PostAdd";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import RecyclingIcon from "@mui/icons-material/Recycling";
 import SidebarItem from "./SidebarItem";
+import ApiIcon from '@mui/icons-material/Api';
 // import { Route, Routes, useNavigate } from "react-router-dom";
 import Tooltip from "@mui/material/Tooltip";
 
@@ -49,7 +50,12 @@ const sidebarList = [
       },
     ],
   },
-
+  
+  {
+    name: "ApiIntegration",
+    icon: <ApiIcon/>,
+    path: "/adminportal/api",
+  },
 ];
 export default class PortalLayout extends Component {
   constructor(props) {

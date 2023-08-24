@@ -106,7 +106,7 @@ headers: {
 body: formData
 })
 .then (async response => {
-  console.log(response)
+  // console.log(response)
   this.setState({  isLoading: false})
 
 if (response.ok) {
@@ -308,7 +308,7 @@ console.error('Error:', error);
                 <span className="add-more-btn" onClick={() => this.addNewField('2')}>+ Add more</span>
               </div>
               <div className="col-md-12 border mb-3" style={{ backgroundColor: "#ededed" }}>
-                <h3 style={{ padding: "0.5rem 0rem" }}>Merit cum means scholarship{" "}
+                <h3 style={{ padding: "0.5rem 0rem" }}>Financial need scholarships{" "}
                   <Badge badgeContent={this.state.meritCumMeansScholorship.length} color="primary">
                     <MilitaryTechIcon color="action" />
                   </Badge>

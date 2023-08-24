@@ -10,6 +10,13 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Tooltip from '@mui/material/Tooltip';
 import ApartmentIcon from '@mui/icons-material/Apartment';
+import { coursenameList } from "@/components/Comps/type";
+import { coursefulleligibiltyCriteria } from "@/components/Comps/type";
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
+
+const courseFullname = coursenameList.map(course => course.fullName);
+const eligibilityLabels = coursefulleligibiltyCriteria.map(course => course.label);
 export default class Admission extends Component {
   constructor(props) {
     super(props);
@@ -67,7 +74,7 @@ headers: {
 body: formData
 })
 .then (async response => {
-  console.log(response)
+  // console.log(response)
   this.setState({  isLoading: false})
 
 if (response.ok) {
@@ -175,7 +182,7 @@ console.error('Error:', error);
                         <label className={Classes["labelname"]} htmlFor="name">
                           Course Name
                         </label>
-                        <input
+                        {/* <input
                           type="text"
                           className="form-control"
                           placeholder="Enter coursename"
@@ -190,7 +197,29 @@ console.error('Error:', error);
                               "1"
                             )
                           }
-                        />
+                        /> */}
+                                                <Autocomplete
+  disablePortal
+  id="combo-box-demo"
+  options={courseFullname}
+  size="small"
+  onChange={(event, newValue) =>
+    this.onFieldChange(
+      i,
+      "course_name",
+      newValue,
+      this.state.admissionFields,
+      "1"
+    )
+  }
+  style={{ background: "white" }}
+  renderInput={(params) => (
+    <TextField
+      {...params}
+      placeholder="Enter Course Full Name"
+    />
+  )}
+/>
                       </div>
                     </div>
 
@@ -199,7 +228,7 @@ console.error('Error:', error);
                         <label className={Classes["labelname"]} htmlFor="name">
                         Eligibility 
                         </label>
-                        <input
+                        {/* <input
                           type="text"
                           className="form-control"
                           placeholder="Enter eligibility"
@@ -214,7 +243,29 @@ console.error('Error:', error);
                               "1"
                             )
                           }
-                        />
+                        /> */}
+                                   <Autocomplete
+  disablePortal
+  id="combo-box-demo"
+  options={eligibilityLabels}
+  size="small"
+  onChange={(event, newValue) =>
+    this.onFieldChange(
+      i,
+      "eligibility_criteria",
+      newValue,
+      this.state.admissionFields,
+      "1"
+    )
+  }
+  style={{ background: "white" }}
+  renderInput={(params) => (
+    <TextField
+      {...params}
+      placeholder="Enter Eligibility Criteria"
+    />
+  )}
+/>
                       </div>
                     </div>
                     <div className="col-md-2">
