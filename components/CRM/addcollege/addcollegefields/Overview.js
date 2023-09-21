@@ -136,6 +136,15 @@ export default class Overview extends Component {
 
   handleSubmit =(e)=>{
     e.preventDefault()
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You want to save the data!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes'
+    }).then((result) => {
     this.setState({isLoading:true})
     var formData = new FormData();
     formData.append("college_id", this.state.selectedClg);
@@ -196,6 +205,7 @@ if (response.ok) {
   },()=>this.props.onSuccess())
 
   });
+  
 } else {
   var res = await response.json();
   Swal.fire({
@@ -211,6 +221,7 @@ if (response.ok) {
 .catch(error => {
 console.error('Error:', error);
 });
+    });
   }
 
 
@@ -503,14 +514,14 @@ console.error('Error:', error);
                         <div className="col-md-4">
                           <div className={Classes["form-group"]}>
                             <label className={Classes["labelname"]} htmlFor="name">Course name</label>
-                            {/* <input
+                            <input
                               type="text"
                               className="form-control"
                               placeholder="ex: B.Tech"
                               value={course.course_name}
                               onChange={(e) => this.onFieldChange(i, 'course_name', e.target.value, this.state.offeredCourses, '1')}
-                            /> */}
-                                    <Autocomplete
+                            />
+                                    {/* <Autocomplete
   disablePortal
   id="combo-box-demo"
   options={courseLabels}
@@ -531,7 +542,7 @@ console.error('Error:', error);
       placeholder="Enter Course Name"
     />
   )}
-/>
+/> */}
                           </div>
                         </div>
                         <div className="col-md-4">

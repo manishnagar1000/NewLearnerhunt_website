@@ -52,7 +52,18 @@ export default class Gernal extends Component {
 
   handleSubmit = async (e) => {
     e.preventDefault();
-    this.setState({isLoading:true})
+    
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You want to save the data!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.setState({isLoading:true})
     try {
       const fd = new FormData();
       fd.append("college_name", this.state.collegename);
@@ -61,6 +72,8 @@ export default class Gernal extends Component {
       fd.append("college_type", this.state.selectedcollegetype);
       fd.append("approved_by",this.state.selectedValues);
       fd.append("college_broucher_pdf", this.state.selectedFile);
+
+
 
       fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/admin/add-college-general-info", {
         headers: {
@@ -74,6 +87,8 @@ export default class Gernal extends Component {
         console.log(res.message)
         console.log(res.error)
         this.setState({isLoading:false})
+        
+     
 
         if (response.ok) {
           // console.log("hello", response.data);
@@ -116,6 +131,8 @@ export default class Gernal extends Component {
       // Handle network or fetch error
       console.error(error);
     }
+  }
+})
   };
   render() {
     return (
@@ -222,7 +239,7 @@ export default class Gernal extends Component {
               </div>
               <div className="col-md-4">
                 <div className={Classes["form-group"]}>
-                  <label className={Classes["labelname"]} htmlFor="name">Broucher Upload</label>
+                  <label className={Classes["labelname"]} htmlFor="name"> Brochure Upload</label>
                   <input type="file" className="form-control" ref={this.fileInputRef} accept="application/pdf" onChange={this.handleFileChange} />
 
                 </div>

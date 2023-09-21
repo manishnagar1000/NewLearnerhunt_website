@@ -12,6 +12,8 @@ import Scholorship from "./addcollegefields/Scholorship";
 import Cutoff from "./addcollegefields/Cutoff";
 import { Spinner } from "react-bootstrap";
 import CollegeRanking from "./addcollegefields/CollegeRanking";
+import Gallary from "./addcollegefields/Gallary";
+
 
 const Addcollege = () => {
   const [selectedTab, setSelectedTab] = useState("0");
@@ -28,7 +30,8 @@ const Addcollege = () => {
     "5":"scholorship",
     "6":"placement",
     "7":"cutoff",
-    "8":"clgrank"
+    "8":"clgrank",
+    "9":"gallery"
 
   }
   const handleSelectTab = (k) => {
@@ -87,6 +90,7 @@ const Addcollege = () => {
         className={`${Classes["custom-tabs mb-3"]}`}
         onSelect={(k) => handleSelectTab(k)}
         activeKey={selectedTab}
+        style={{background:"white",position:"sticky",top:"0",zIndex:'9'}}
       >
         <Tab eventKey="0" title="General Info">
           {selectedTab == '0' && <Gernal />}
@@ -235,6 +239,25 @@ const Addcollege = () => {
             </div>
           }
         </Tab>
+        <Tab eventKey="9" title="Gallery">
+          {isApiHitComplete ?
+            isDataFound ?
+              selectedTab == '9' && <Gallary onSuccess={onSuccess} collegeList={clgList} />
+              :
+              <div style={{ display: "flex", width: "100%", height: '80vh', justifyContent: "center", alignItems: 'center' }}>
+                <div style={{ fontWeight: "500" }}>
+                  <span>Please <span style={{ color: "#0d6efd", cursor: 'pointer' }} onClick={() => setSelectedTab(0)}>+Create</span> a College General Info first</span>
+                </div>
+              </div>
+            :
+            <div style={{ display: "flex", width: "100%", height: '80vh', justifyContent: "center", alignItems: 'center' }}>
+              <Spinner animation="border" role="status" variant="info">
+                <span className="visually-hidden">Loading...</span>
+              </Spinner>
+            </div>
+          }
+        </Tab>
+        
       </Tabs>
     </>
   );

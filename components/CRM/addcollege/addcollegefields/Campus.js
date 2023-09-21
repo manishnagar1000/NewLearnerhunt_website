@@ -26,6 +26,15 @@ export default class Campus extends Component {
 
   handleCampus = (e) => {
     e.preventDefault();
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You want to save the data!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes'
+    }).then((result) => {
     this.setState({ isLoading: true });
     var formData = new FormData();
     formData.append("college_id", this.state.selectedClg);
@@ -73,6 +82,7 @@ export default class Campus extends Component {
       .catch((error) => {
         console.error("Error:", error);
       });
+    });
   };
 
   render() {
@@ -129,7 +139,7 @@ export default class Campus extends Component {
             <div className="col-md-6">
               <div className={Classes["form-group"]}>
                 <label className={Classes["labelname"]} htmlFor="name">
-                  Hostal Fees Structure{" "}
+                  Hostel Fees Structure{" "}
                 </label>
                 <textarea
                   type="text"

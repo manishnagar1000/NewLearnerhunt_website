@@ -102,7 +102,7 @@ export default class PortalLayout extends Component {
             </div>
           </div>
           <div className={Classes["right-div"]}>
-            <Tooltip title="Account settings">
+            <Tooltip title="Profile">
               <IconButton
                 onClick={(e) => this.setState({ anchorEl: e.currentTarget })}
                 size="small"

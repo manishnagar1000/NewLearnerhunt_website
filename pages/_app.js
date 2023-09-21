@@ -2,7 +2,7 @@ import Layout from "@/components/Layout";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/global.css";
 import Head from "next/head";
-
+ 
 
 export default function App({ Component, pageProps }) {
   return (

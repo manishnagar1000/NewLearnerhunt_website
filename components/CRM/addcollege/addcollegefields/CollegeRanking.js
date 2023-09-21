@@ -10,6 +10,9 @@ import Badge from "@mui/material/Badge";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Tooltip from "@mui/material/Tooltip";
+
+
+
 const numberKeys = ["rank"]
 export default class CollegeRankings extends Component {
   constructor(props) {

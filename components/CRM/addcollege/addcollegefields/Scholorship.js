@@ -83,6 +83,15 @@ export default class Scholorship extends Component {
 
   handleSubmit =(e)=>{
     e.preventDefault()
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You want to save the data!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes'
+    }).then((result) => {
     this.setState({isLoading:true})
     var formData = new FormData();
     formData.append("college_id", this.state.selectedClg);
@@ -137,6 +146,7 @@ if (response.ok) {
 .catch(error => {
 console.error('Error:', error);
 });
+    });
   }
 
   render() {

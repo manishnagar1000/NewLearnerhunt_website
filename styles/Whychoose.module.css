@@ -69,6 +69,12 @@
     .contain p {
         padding: 0 1rem;
     }
+    .whychoosepara{
+        display: none;
+    }
+    .imageContainer {
+        flex-direction: column;
+    }
 }
 
 

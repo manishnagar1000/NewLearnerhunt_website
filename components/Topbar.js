@@ -245,13 +245,13 @@ export default function Topbar() {
   }
   return (
     <>
-      {screenWidth > 1199 ? (
+      {screenWidth > 1023 ? (
         <>
           {/* Top header start */}
           <div className={`${Classes["top-header"]}`}>
             <div className="container">
               <div className="row">
-                <div className="col-3">
+                <div className="col">
                   <p className={`${Classes["top-header-para"]}`}>
                     <img
                       loading="lazy"

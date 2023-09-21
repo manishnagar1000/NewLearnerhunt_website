@@ -8,7 +8,7 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
 export default function TopExams({ exams }) {
-  // console.log(exams)
+  console.log(exams)
   const [loadingExams, setLoadingExams] = useState([]);
 
   // const handleExamClick = (examSlug) => {
@@ -58,7 +58,7 @@ export default function TopExams({ exams }) {
  
            <div className={Classes.card} key={exam.slug}>
              <div className={Classes.logo}>
-               <img src={exam.exam_logo} alt={exam.examname_short} />
+               <img src={exam.exam_logo} alt={exam.logo} />
              </div>
              <div className={Classes.info}>
                <h4 className={Classes.name}>{exam.exam_name}</h4>

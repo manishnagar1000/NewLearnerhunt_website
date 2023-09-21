@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import Loading from "../../Comps/Loading";
+
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
@@ -51,6 +52,7 @@ export default class Allcollege extends Component {
   render() {
     return (
       <>
+      
         {this.state.isApiHitComplete ? (
           this.state.isDataFound ? (
             <table className={`table table-hover custom-table`}>

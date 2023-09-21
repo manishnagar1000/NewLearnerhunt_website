@@ -38,6 +38,15 @@ export default class Courses extends Component {
 
   handleCourse = (e) => {
     e.preventDefault();
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You want to save the data!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes'
+    }).then((result) => {
     this.setState({ isLoading: true });
     var formData = new FormData();
     formData.append("college_id", this.state.selectedClg);
@@ -93,6 +102,7 @@ export default class Courses extends Component {
       .catch((error) => {
         console.error("Error:", error);
       });
+    });
   };
 
  
@@ -215,7 +225,7 @@ export default class Courses extends Component {
                   <label className={Classes["labelname"]} htmlFor="name">
                     Course Name <span className={Classes["error"]}>*</span>
                   </label>
-                  {/* <input
+                  <input
                     type="text"
                     className="form-control"
                     placeholder="Enter Course Name"
@@ -230,8 +240,8 @@ export default class Courses extends Component {
                         "1"
                       )
                     }
-                  /> */}
-              <Autocomplete
+                  />
+              {/* <Autocomplete
   disablePortal
   id="combo-box-demo"
   options={courseLabels}
@@ -253,7 +263,7 @@ export default class Courses extends Component {
       required
     />
   )}
-/>
+/> */}
                 </div>
               </div>
               <div className="col-md-3">
@@ -395,7 +405,7 @@ export default class Courses extends Component {
   renderInput={(params) => (
     <TextField
       {...params}
-      placeholder="Enter Eligibility Criteria"
+      placeholder="Select Study Mode"
       required
     />
   )}
@@ -488,7 +498,7 @@ export default class Courses extends Component {
               <div className="col-md-3">
                 <div className={Classes["form-group"]}>
                   <label className={Classes["labelname"]} htmlFor="name">
-                    Avarage Fee 
+                    Avarage Fees
                   </label>
                   <input
                     type="text"

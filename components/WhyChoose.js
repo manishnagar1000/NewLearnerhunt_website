@@ -63,7 +63,7 @@ const MyComponent = () => {
       </div>
       <div>
         <Container>
-          <Row xs={1} md={2} lg={3}>
+          <Row xs={2} md={2} lg={3}>
             {data &&
               data.length > 0 &&
               data.map((e, i) => {
@@ -77,7 +77,7 @@ const MyComponent = () => {
                         <h5 className={styles.cardContent}>{e.title}</h5>
                       </div>
 
-                      <p>{e.content}</p>
+                      <p className={styles.whychoosepara}>{e.content}</p>
                     </div>
                   </Col>
                 );

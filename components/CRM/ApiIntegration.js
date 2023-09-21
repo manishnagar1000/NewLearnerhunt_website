@@ -4,12 +4,15 @@ import Classes from "/styles/gernal.module.css";
 import Loading from "/components/Comps/Loading";
 import CTA from "/components/Comps/CTA";
 import Swal from "sweetalert2";
+import Tablenav from "/components/Comps/Tablenav";
+import axios from "axios";
 
-
+import Dropdown from 'react-bootstrap/Dropdown';
 export default class ApiIntegration extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      exportOptions :[],
       isLoading: false,
       selectedInstituteId: "",
       selectedApiId:"",
@@ -32,7 +35,11 @@ export default class ApiIntegration extends Component {
       CourseNameList:[],
       medium:'',
       campaign:'',
+      iid:'',
+      aid:''
 
+
+     
     };
   }
 
@@ -45,12 +52,58 @@ export default class ApiIntegration extends Component {
       .then (async response => {
         const resp  =  await response.json()
         // console.log(resp)
-        this.setState({collegeList:resp.data})
+        
+        console.log(resp.data)
+        const expOpt = []
+        for(let i = 0; i<resp.data.length; i++){
+            let iid =  resp.data[i].institute_id,
+            i_name = resp.data[i].institute_name
+          for(let j = 0; j<resp.data[i].api_details.length;j++){
+            let obj = {
+              label:i_name + " (" + resp.data[i].api_details[j].api_name + ")",
+              iid,
+              aid:resp.data[i].api_details[j].id
+            }
+            expOpt.push(obj)
+            console.log(expOpt)
+          }
+        }
+
+            
+        this.setState({collegeList:resp.data,exportOptions:expOpt})
       })
       .catch(error => {
       console.error('Error:', error);
       });
   }
+  
+  // componentDidMount(){
+  //   axios.get(process.env.NEXT_PUBLIC_API_ENDPOINT + "/admin/export-excel-template?iid=1&aid=1" , { responseType: 'blob',
+  //   headers: {
+  //            'Authorization': `Bearer ${localStorage.getItem("pt")}`
+  //         },
+  // })
+  //   .then((response) => {
+  //     // Create a URL for the blob response
+  //     console.log(response)
+  //     console.log(process.env.ROOT_DIR_PATH)
+  //     // const url = window.URL.createObjectURL(new Blob([response.data]));
+  //     fetch.get(process.env.ROOT_DIR_PATH+response.href)
+  //     // Create a temporary anchor element to initiate the download
+  //     // const a = document.createElement('a');
+  //     // a.href = process.env.ROOT_DIR_PATH+response.data.href;
+  //     // a.download = 'sample.xlsx'; // Specify the filename
+  //     // document.body.appendChild(a);
+  //     // a.click();
+
+  //     // // Cleanup the temporary URL and anchor element
+  //     // window.URL.revokeObjectURL(url);
+  //     // document.body.removeChild(a);
+  //   })
+  //   .catch((error) => {
+  //     console.error('Error downloading file:', error);
+  //   });
+  // }
   
   handleInstituteChange = (selectedInstituteId) => {
     // console.log(selectedInstituteId)
@@ -127,12 +180,6 @@ export default class ApiIntegration extends Component {
       cityList: selectedStateNames || [],
     });
   }
-
-
-
-
-
-
 
   handleSubmit = async (e) => {
     e.preventDefault();
@@ -220,11 +267,116 @@ export default class ApiIntegration extends Component {
     }
   };
 
+  handleimportChange=async (s)=>{
+    // console.log(s)
+    // this.setState({aid:s.aid,iid:s.iid})
+    // axios.get(process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/export-excel-template?iid=${s.iid}&aid=${s.aid}` , { responseType: 'blob',
+    //   headers: {
+    //            'Authorization': `Bearer ${localStorage.getItem("pt")}`
+    //         },
+    // })
+    //   .then((response) => {
+    //     // Create a URL for the blob response
+    //     console.log(response)
+    //     // console.log(process.env.ROOT_DIR_PATH)
+    //     const url = window.URL.createObjectURL(new Blob([response.data]));
+    //     console.log(url)
+    //     // fetch.get(process.env.ROOT_DIR_PATH+response.href)
+    //     // Create a temporary anchor element to initiate the download
+    //     const a = document.createElement('a');
+    //     a.href = process.env.ROOT_DIR_PATH+response.data.href;
+    //     a.download = 'sample.xlsx'; // Specify the filename
+    //     document.body.appendChild(a);
+    //     a.click();
+  
+    //     // Cleanup the temporary URL and anchor element
+    //     window.URL.revokeObjectURL(url);
+    //     document.body.removeChild(a);
+    //   })
+    //   .catch((error) => {
+    //     console.error('Error downloading file:', error);
+    //   });
+
+    try {
+      // Make a GET request to fetch the Blob data
+      const response = await fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/export-excel-template?iid=${s.iid}&aid=${s.aid}`, { 
+        headers: {
+                 'Authorization': `Bearer ${localStorage.getItem("pt")}`
+              },
+              mode:"cors"
+      });
+      
+      if (response.ok) {
+    
+        const blob = await response.blob();
+
+    
+           const contentDispositionHeader = response.headers.get('Content-Disposition');
+           console.log(contentDispositionHeader)
+          var filename = "template.xlsx"
+        // Parse the filename from the header
+        if (contentDispositionHeader) {
+          const matches = contentDispositionHeader.split("filename=");
+          console.log(matches)
+          if (matches && matches.length > 1) {
+            filename = matches[1].replace(/['"]/g, ''); // Remove surrounding quotes if present
+            console.log('Filename:', filename);
+          }
+        }
+        // Create a File object from the Blob
+        const file = new File([blob], filename, { type: blob.type });
+
+        // You now have a File object that you can work with or save
+        // For example, you can create a download link
+        const url = window.URL.createObjectURL(file);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        link.click();
+
+        // Clean up the URL object
+        window.URL.revokeObjectURL(url);
+      } else {
+        console.error('Failed to fetch Blob data');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+ 
 
   render() {
-
+    
     return (
-      <div className={Classes["add-user"]}>
+      <>
+         <Tablenav
+          Actions={{
+            Actions: (
+             <>
+                 <Dropdown>
+      <Dropdown.Toggle variant="primary" id="dropdown-basic">
+        Import
+      </Dropdown.Toggle>
+
+      <Dropdown.Menu>
+        {this.state.exportOptions.map((s)=>{
+          return(
+            <Dropdown.Item onClick={(e)=>this.handleimportChange(s)} >{s.label}</Dropdown.Item>
+          )
+        })}
+        {/* <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
+        <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
+        <Dropdown.Item href="#/action-3">Something else</Dropdown.Item> */}
+      </Dropdown.Menu>
+    </Dropdown>
+    </>
+          
+            ),
+          }}
+        />
+   
+           <div className={Classes["add-user"]}>
         <div className={Classes["form-div"]}>
         <form action="#" onSubmit={(e) => this.handleSubmit(e)}>
             <div className="row">
@@ -497,6 +649,8 @@ export default class ApiIntegration extends Component {
         }
         
       </div>
+      </>
+   
     );
   }
 }
