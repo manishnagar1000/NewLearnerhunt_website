@@ -8,7 +8,7 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
 export default function TopExams({ exams }) {
-  console.log(exams)
+  // console.log(exams)
   const [loadingExams, setLoadingExams] = useState([]);
 
   // const handleExamClick = (examSlug) => {

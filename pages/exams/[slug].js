@@ -17,7 +17,7 @@ const formatStringToList = (str) => {
   );
 };
 export default function ExamName({ examdata }) {
-  // console.log(examdata)
+  console.log(examdata)
 //   const dummyBannerImg = collegedata.banner_img_path && collegedata.banner_img_path != "" ? collegedata.banner_img_path : '/assets/images/DummyBG.jpg'
   const dummyLogoImg = examdata.exam_logo && examdata.exam_logo != "" ? examdata.exam_logo : '/assets/images/DummyLOGO.jpg'
   return (
@@ -122,14 +122,20 @@ export default function ExamName({ examdata }) {
                           </tr>
                   </thead>
                   <tbody>
-                    {examdata.exam_syllabus.map((e)=>{
+                    {examdata.exam_syllabus.length>0?
+                    examdata.exam_syllabus.map((e)=>{
                       return(
                         <tr>
                         <td>{e.section}</td>
                         <td>{e.topics}</td>
                       </tr>
                       )
-                    })}
+                    })
+                    :
+                    <tr>
+                      <td colSpan={2}>No Record Found</td>
+                    </tr>
+                    }
                  
                     
                   </tbody>

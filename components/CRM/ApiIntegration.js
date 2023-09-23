@@ -53,7 +53,7 @@ export default class ApiIntegration extends Component {
         const resp  =  await response.json()
         // console.log(resp)
         
-        console.log(resp.data)
+        // console.log(resp.data)
         const expOpt = []
         for(let i = 0; i<resp.data.length; i++){
             let iid =  resp.data[i].institute_id,
@@ -65,7 +65,7 @@ export default class ApiIntegration extends Component {
               aid:resp.data[i].api_details[j].id
             }
             expOpt.push(obj)
-            console.log(expOpt)
+            // console.log(expOpt)
           }
         }
 
@@ -312,15 +312,15 @@ export default class ApiIntegration extends Component {
 
     
            const contentDispositionHeader = response.headers.get('Content-Disposition');
-           console.log(contentDispositionHeader)
+          //  console.log(contentDispositionHeader)
           var filename = "template.xlsx"
         // Parse the filename from the header
         if (contentDispositionHeader) {
           const matches = contentDispositionHeader.split("filename=");
-          console.log(matches)
+          // console.log(matches)
           if (matches && matches.length > 1) {
             filename = matches[1].replace(/['"]/g, ''); // Remove surrounding quotes if present
-            console.log('Filename:', filename);
+            // console.log('Filename:', filename);
           }
         }
         // Create a File object from the Blob
@@ -350,7 +350,7 @@ export default class ApiIntegration extends Component {
     
     return (
       <>
-         <Tablenav
+         {/* <Tablenav
           Actions={{
             Actions: (
              <>
@@ -365,16 +365,14 @@ export default class ApiIntegration extends Component {
             <Dropdown.Item onClick={(e)=>this.handleimportChange(s)} >{s.label}</Dropdown.Item>
           )
         })}
-        {/* <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-        <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-        <Dropdown.Item href="#/action-3">Something else</Dropdown.Item> */}
+        
       </Dropdown.Menu>
     </Dropdown>
     </>
           
             ),
           }}
-        />
+        /> */}
    
            <div className={Classes["add-user"]}>
         <div className={Classes["form-div"]}>

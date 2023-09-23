@@ -167,4 +167,8 @@ html {
     left: 0;
     z-index: 101;
 }
+
+#colleges option:disabled{
+color: red;
+}
 /* custom-table end */

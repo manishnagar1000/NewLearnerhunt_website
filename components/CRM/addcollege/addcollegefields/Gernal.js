@@ -83,9 +83,9 @@ export default class Gernal extends Component {
         body: fd,
       }).then(async (response) => {
         var res = await response.json()
-        console.log(res)
-        console.log(res.message)
-        console.log(res.error)
+        // console.log(res)
+        // console.log(res.message)
+        // console.log(res.error)
         this.setState({isLoading:false})
         
      

@@ -55,14 +55,7 @@ export default function TopColleges({ colleges }) {
       name: "MCA",
       type: "MCA",
     },
-    {
-      name: "M.A",
-      type: "M.A",
-    },
-    {
-      name: "BSc",
-      type: "BSc",
-    },
+   
     {
       name: "L.L.B",
       type: "LLB",
@@ -80,18 +73,12 @@ export default function TopColleges({ colleges }) {
       name: "BBA",
       type: "BBA",
     },
-    {
-      name: "B.A",
-      type: "B.A",
-    },
+   
     {
       name: "M.COM",
       type: "M.COM",
     },
-    {
-      name: "PGDM",
-      type: "PGDM",
-    },
+   
   ];
 
   const handleTabChange = (type, name) => {

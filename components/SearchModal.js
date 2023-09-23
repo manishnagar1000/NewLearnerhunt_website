@@ -50,8 +50,8 @@ const SearchModal = ({ onHide }) => {
                       : '';
                     return (
                      
-                      <Link href={typeCondition}>
-                        <div className={Classes['college']}>
+                      <Link href={typeCondition} >
+                        <div className={Classes['college']} onClick={onHide}>
                           <span>{el.title}</span>
                           <span>{el.type}</span>
                         </div>
@@ -70,10 +70,10 @@ const SearchModal = ({ onHide }) => {
               <div className={Classes['trending-searches']}>
                 <span>Trending Searches...</span>
                 <ul>
-                  <li><Link href="colleges?zone=North&fee=500000&course=BCA&rating=5">"BCA" in Colleges</Link></li>
-                  <li><Link href="/exams/Common-Admission-Test">"CAT" in Exams</Link></li>
-                  <li><Link href="colleges?zone=North&fee=500000&course=MBA&rating=5">"MBA Colleges" in Delhi/NCR</Link></li>
-                  <li><Link href="colleges?zone=North&fee=500000&course=MCA&rating=5">"MCA Colleges" in Delhi/NCR</Link></li>
+                  <li onClick={onHide}><Link href="/colleges?zone=North&fee=500000&course=BCA&rating=5">"BCA" in Colleges</Link></li>
+                  <li onClick={onHide}><Link href="/exams/Common-Admission-Test">"CAT" in Exams</Link></li>
+                  <li onClick={onHide}><Link href="/colleges?zone=North&fee=500000&course=MBA&rating=5">"MBA Colleges" in Delhi/NCR</Link></li>
+                  <li onClick={onHide}><Link href="/colleges?zone=North&fee=500000&course=MCA&rating=5">"MCA Colleges" in Delhi/NCR</Link></li>
                 </ul>
               </div>
           }

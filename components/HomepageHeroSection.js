@@ -34,7 +34,7 @@ const SelectionBtns = [
 
 
 const HomepageHeroSection = ({ data }) => {
-  console.log(data)
+  // console.log(data)
 
   const [fee, setFee] = useState(200000);
   const [activeBtn, setActiveBtn] = useState(SelectionBtns[0].value);
@@ -55,11 +55,11 @@ const HomepageHeroSection = ({ data }) => {
     // console.log("working");
     if (activeBtn == "2") {
       router.push(
-        `/colleges?course=${selectedCourse}&zone=${selectedLocation}&rating=${selectedRanking}`
+        `/colleges?course=${selectedCourse}&zone=${selectedLocation}&rating=${selectedRanking}&fee=${200000}`
       );
     } else if (activeBtn == "0") {
       router.push(
-        `/colleges?course=${selectedCourse}&zone=${selectedLocation}&fee=${fee}`
+        `/colleges?course=${selectedCourse}&zone=${selectedLocation}&fee=${fee}&name=${fullName}&mobile=${contact}&specialization=${selectedSpecialization}&qualification=${selectedQualification}&exam=${selectedExam}`
       );
     }
   };

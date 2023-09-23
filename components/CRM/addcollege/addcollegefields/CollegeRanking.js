@@ -107,7 +107,7 @@ console.error('Error:', error);
 
   render() {
     const { collegeList } = this.props
-    console.log(collegeList)
+    // console.log(collegeList)
     return (
       <div className={Classes["add-user"]}>
         <div className={Classes["form-div"]}>

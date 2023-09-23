@@ -11,7 +11,7 @@ import Head from 'next/head'
 import { useEffect } from 'react'
 
 export default function Home({colleges,courses,exams,testeligibility}) {
-  console.log(testeligibility)
+  // console.log(colleges)
 
   return (
     <>

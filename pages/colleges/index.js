@@ -15,21 +15,35 @@ export default function index(testeligibility, filterCollege) {
   const [selectedZone, setSelectedZone] = React.useState("");
   const [selectedRating, setSelectedRating] = React.useState("");
   const [selectedCourse, setSelectedCourse] = React.useState("");
+  
   const [fee, setFee] = React.useState("");
 
-  const collegeFilterData = async (zone, fee, course, rating) => {
+  const collegeFilterData = async (zone, fee, course, rating,name,mobile,qualification,specialization) => {
     setIsLoading(true);
-    // console.log(zone,fee,course,rating)
+    // console.log(zone,fee,course,rating,name,mobile,qualification,specialization)
     try {
       const newrating = testeligibility.ratings.find(
         (r) => r.label == rating
       )?.value;
       var queryParams = '?'
+     
       if(zone && zone != undefined){
         queryParams += `zone=${zone}`
       }
       if(fee && fee != undefined){
         queryParams += `&fee=${fee}`
+      }
+      if(name && name != undefined){
+        queryParams += `&name=${name}`
+      }
+      if(mobile && mobile != undefined){
+        queryParams += `&mobile=${mobile}`
+      }
+      if(qualification && qualification != undefined){
+        queryParams += `&qualification=${encodeURIComponent(qualification)}`
+      }
+      if(specialization && specialization != undefined){
+        queryParams += `&specialization=${encodeURIComponent(specialization)}`
       }
       if(course && course != undefined){
         queryParams += `&course=${course}`
@@ -59,6 +73,10 @@ export default function index(testeligibility, filterCollege) {
       const zone = query.zone;
       var rating = query.rating;
       const feeParam = query.fee;
+      const name =query.name;
+      const mobile = query.mobile;
+      const specialization = query.specialization;
+      const qualification = query.qualification;
       if (rating) {
         rating = testeligibility.ratings.find((r) => r.value == rating).label;
       }
@@ -75,7 +93,8 @@ export default function index(testeligibility, filterCollege) {
       if(feeParam){
         setFee(feeParam);
       }
-      collegeFilterData(zone, feeParam, course, rating);
+
+      collegeFilterData(zone, feeParam, course, rating,name,mobile,qualification,specialization);
     } else {
       const course = "MBA",
             zone = "North",
@@ -91,6 +110,7 @@ export default function index(testeligibility, filterCollege) {
 
   useEffect(() => {
     const url = new URL(window.location.href);
+    // console.log(url)
     if(selectedZone){
       url.searchParams.set("zone", selectedZone);
     }

@@ -44,7 +44,7 @@ export default class Gallary extends Component {
     e.preventDefault();
       // Now you can access the image data in this.state.imageLogo, this.state.imageSquare, and this.state.imageBanner
       const { imageLogo, imageSquare, imageBanner, selectedClg } = this.state;
-      console.log(imageLogo, imageBanner, imageSquare, selectedClg);
+    //   console.log(imageLogo, imageBanner, imageSquare, selectedClg);
       // Add your logic to handle the uploaded images and selected college here
     Swal.fire({
       title: 'Are you sure?',
@@ -75,9 +75,9 @@ export default class Gallary extends Component {
         body: fd,
       }).then(async (response) => {
         var res = await response.json()
-        console.log(res)
-        console.log(res.message)
-        console.log(res.error)
+        // console.log(res)
+        // console.log(res.message)
+        // console.log(res.error)
         this.setState({isLoading:false})
         
      

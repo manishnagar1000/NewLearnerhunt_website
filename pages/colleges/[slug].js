@@ -9,7 +9,7 @@ import Tabs from "react-bootstrap/Tabs";
 import Table from "react-bootstrap/Table";
 import Accordion from "react-bootstrap/Accordion";
 export default function CollegeName({ collegedata }) {
-  // console.log(collegedata)
+  console.log(collegedata);
   const collegeid = collegedata._id;
   const [userStatus, setUserStatus] = useState(false);
   const [userid, setUserid] = useState("");
@@ -170,127 +170,135 @@ export default function CollegeName({ collegedata }) {
         style={{ backgroundImage: `url(${dummyBannerImg})` }}
       ></div>
 
-      <Tabs
+      {/* <Tabs
         defaultActiveKey="overview"
         id="uncontrolled-tab-example"
         className={Classes["tabs-bar"]}
       >
-        {/* <Tab eventKey="general" title="General">
-       <div className="container">
-  
-        <div className={Classes['content-section']}>
-          <div className={Classes['heading-section']}>
-            <div className={Classes['left-div']}>
+        <Tab eventKey="general" title="General"> */}
+      <div className="container">
+        <div className={Classes["content-section"]}>
+          <div className={Classes["heading-section"]}>
+            <div className={Classes["left-div"]}>
               <img src={dummyLogoImg} alt="" />
             </div>
-            <div className={Classes['right-div']}>
-              <h1>SAGE University</h1>
+            <div className={Classes["right-div"]}>
+              <h1>{collegedata.name}</h1>
               <p>
                 <img src="/assets/images/location.png" alt="" />
                 <span>{collegedata.short_address}</span>&nbsp;&nbsp;
                 <img src="/assets/images/bookmark.png" alt="" />
                 <span>{collegedata.approved_by}</span>
               </p>
-
             </div>
           </div>
-          <div className={Classes['description-section']}>
+          <div className={Classes["description-section"]}>
             <p>{collegedata.clg_description}</p>
           </div>
-          <div className={Classes['small-description']}>
+          <div className={Classes["small-description"]}>
             <h2>Highlights</h2>
             <div className="row">
               <div className="col-md-6">
-                <table className='table table-bordered'>
+                <table className="table table-bordered">
                   <tbody>
                     <tr>
                       <th scope="row">Minimum Fees</th>
-                      <td style={{ wordBreak: 'break-all' }}>{collegedata.min_fees}</td>
+                      <td style={{ wordBreak: "break-all" }}>
+                        {collegedata.min_fees}
+                      </td>
                     </tr>
                     <tr>
                       <th scope="row">Maximum Fees</th>
-                      <td style={{ wordBreak: 'break-all' }}>{collegedata.max_fees}</td>
+                      <td style={{ wordBreak: "break-all" }}>
+                        {collegedata.max_fees}
+                      </td>
                     </tr>
                     <tr>
                       <th scope="row">Number of Courses</th>
-                      <td style={{ wordBreak: 'break-all' }}>{collegedata.courses_count}</td>
+                      <td style={{ wordBreak: "break-all" }}>
+                        {collegedata.courses_count}
+                      </td>
                     </tr>
                     <tr>
                       <th scope="row">Courses Offered</th>
-                      <td style={{ wordBreak: 'break-all' }}>{collegedata.courses_offered}</td>
+                      <td style={{ wordBreak: "break-all" }}>
+                        {collegedata.courses_offered}
+                      </td>
                     </tr>
                     <tr>
                       <th scope="row">Rating</th>
-                      <td style={{ wordBreak: 'break-all' }}>{collegedata.ratings}</td>
+                      <td style={{ wordBreak: "break-all" }}>
+                        {collegedata.ratings}
+                      </td>
                     </tr>
-                  
+
                     <tr>
                       <th scope="row">Highest Package</th>
-                      <td style={{ wordBreak: 'break-all' }}>{collegedata.placement}</td>
+                      <td style={{ wordBreak: "break-all" }}>
+                        {collegedata.placement}
+                      </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
               <div className="col-lg-4 col-md-6">
-                <div className={Classes['form-buttons']}>
-                  {userStatus?
-                     <button onClick={handleopenform}>Apply Form</button>:
-                        <button 
-                        onClick={handlelogin}
-                        >Apply Now</button>
-                     }
-               
-                 
+                <div className={Classes["form-buttons"]}>
+                  {userStatus ? (
+                    <button onClick={handleopenform}>Apply Form</button>
+                  ) : (
+                    <button onClick={handlelogin}>Apply Now</button>
+                  )}
                 </div>
               </div>
             </div>
           </div>
-          {
-            collegedata.top_rec_companies && collegedata.top_rec_companies != "" &&
-            <div className={Classes['small-description']}>
-              <h2>Top Companies</h2>
-              <p>{collegedata.top_rec_companies}</p>
-            </div>
-          }
-          {
-            collegedata.cut_off && collegedata.cut_off != "" &&
-            <div className={Classes['small-description']}>
+          {collegedata.top_rec_companies &&
+            collegedata.top_rec_companies != "" && (
+              <div className={Classes["small-description"]}>
+                <h2>Top Companies</h2>
+                <p>{collegedata.top_rec_companies}</p>
+              </div>
+            )}
+          {collegedata.cut_off && collegedata.cut_off != "" && (
+            <div className={Classes["small-description"]}>
               <h2>Cut off</h2>
               <p>{collegedata.cut_off}</p>
             </div>
-          }
-          {
-            collegedata.eligibility && collegedata.eligibility != "" &&
-            <div className={Classes['small-description']}>
+          )}
+          {collegedata.eligibility && collegedata.eligibility != "" && (
+            <div className={Classes["small-description"]}>
               <h2>Eligibility Selection</h2>
               <p>{collegedata.eligibility}</p>
             </div>
-          }
-          {
-            collegedata.scholarship && collegedata.scholarship != "" &&
-            <div className={Classes['small-description']}>
+          )}
+          {collegedata.scholarship && collegedata.scholarship != "" && (
+            <div className={Classes["small-description"]}>
               <h2>Scholarship</h2>
               <p>{collegedata.scholarship}</p>
             </div>
-          }
-          {
-            collegedata.application_process && collegedata.application_process != "" &&
-            <div className={Classes['small-description']}>
-              <h2>Application process</h2>
-              <p>{collegedata.application_process}</p>
-            </div>
-          }
-          {
-            collegedata.application_link && collegedata.application_link != "" &&
-            <div className={Classes['small-description']}>
-              <h2>Application Link</h2>
-              <p><a href={collegedata.application_link}>{collegedata.application_link}</a></p>
-            </div>
-          }
+          )}
+          {collegedata.application_process &&
+            collegedata.application_process != "" && (
+              <div className={Classes["small-description"]}>
+                <h2>Application process</h2>
+                <p>{collegedata.application_process}</p>
+              </div>
+            )}
+          {collegedata.application_link &&
+            collegedata.application_link != "" && (
+              <div className={Classes["small-description"]}>
+                <h2>Application Link</h2>
+                <p>
+                  <a href={collegedata.application_link}>
+                    {collegedata.application_link}
+                  </a>
+                </p>
+              </div>
+            )}
         </div>
       </div>
-      </Tab> */}
-        <Tab eventKey="overview" title="Overview">
+      {/* </Tab> */}
+      {/* <Tab eventKey="overview" title="Overview">
           <div className="container">
             <div className={Classes["content-section"]}>
               <div className={Classes["heading-section"]}>
@@ -888,8 +896,8 @@ export default function CollegeName({ collegedata }) {
               </div>
             </div>
           </div>
-        </Tab>
-      </Tabs>
+        </Tab> */}
+      {/* </Tabs> */}
 
       {isLoginFormOpen && (
         <LoginForm
@@ -1033,7 +1041,7 @@ export async function getServerSideProps(context) {
     // console.log(url)
     const res = await fetch(url);
     const data = await res.json();
-    // console.log(data.data)
+    console.log(data.data)
     if (data.data && data.data.length > 0) {
       return {
         props: { collegedata: data.data[0] },

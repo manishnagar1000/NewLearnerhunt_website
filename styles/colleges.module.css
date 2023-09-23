@@ -37,8 +37,8 @@
 }
 .colleges-slug .content-section .description-section{
     text-align: justify;
-    border: 1px solid rgb(239, 227, 227);
-    padding:2rem;
+    /* border: 1px solid rgb(239, 227, 227); */
+    /* padding:2rem; */
 }
 .colleges-slug .content-section .small-description h2{
     margin: 2rem 0rem 1rem 0rem;

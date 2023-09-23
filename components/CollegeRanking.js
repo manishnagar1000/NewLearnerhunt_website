@@ -18,7 +18,7 @@ const CollegeRanking = ({ zones, departments, rankingtypes }) => {
     const [selectedChip, setSelectedChip] = useState(rankingtypes[0].value)
     const [collegeData, setCollegeData] = useState([])
     const [isApihitComplete, setIsApiHitComplete] = useState(true)
-    console.log(zones, departments, rankingtypes)
+    // console.log(zones, departments, rankingtypes)
 
     useEffect(() => {
         const fetchData = async () => {
