@@ -40,7 +40,7 @@ const MyComponent = () => {
 
     },
     {
-      title: "25 Counsellors",
+      title: "50+ Counsellors",
       content: "Get counselling from the best counsellors ",
       src: <ContactMailIcon/>,
 

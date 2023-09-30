@@ -245,7 +245,7 @@ export default function Topbar() {
   }
   return (
     <>
-      {screenWidth > 1023 ? (
+      {screenWidth > 992 ? (
         <>
           {/* Top header start */}
           <div className={`${Classes["top-header"]}`}>

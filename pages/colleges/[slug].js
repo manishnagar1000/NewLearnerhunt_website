@@ -8,9 +8,12 @@ import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import Table from "react-bootstrap/Table";
 import Accordion from "react-bootstrap/Accordion";
+import Card from "react-bootstrap/Card";
+import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
+import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 export default function CollegeName({ collegedata }) {
-  console.log(collegedata);
-  const collegeid = collegedata._id;
+  // console.log(collegedata);
+  const collegeid = collegedata.generalinfo._id;
   const [userStatus, setUserStatus] = useState(false);
   const [userid, setUserid] = useState("");
   const [useremail, setUseremail] = useState("");
@@ -38,6 +41,7 @@ export default function CollegeName({ collegedata }) {
         // console.log(res)
         if (res.status) {
           setUserStatus(newstatus);
+          setUseremail(localStorage.getItem("useremail"));
         } else {
           localStorage.removeItem("userid");
           localStorage.removeItem("status");
@@ -89,7 +93,7 @@ export default function CollegeName({ collegedata }) {
     "West Bengal",
   ];
 
-  const listcoursesOffered = collegedata.courses_offered;
+  const listcoursesOffered = collegedata.overview.offered_courses;
   // console.log(listcoursesOffered)
 
   const handleChange = (e) => {
@@ -110,6 +114,20 @@ export default function CollegeName({ collegedata }) {
     }));
   };
 
+  const handleDownloadBrochure = (e) => {
+    // console.log(e);
+    if (userStatus) {
+      // window.href(collegedata.generalinfo.college_brouher_pdf)
+      const link = document.createElement("a");
+      link.href = `https://learnerhunt-assets.s3.us-east-1.amazonaws.com/${collegedata.generalinfo.college_broucher_pdf}`; // Specify the path to your file
+      link.download = "brochure.pdf"; // Specify the file name for the download
+      // Trigger a click event on the link to initiate the download
+      link.click();
+    } else {
+      setIsLoginFormOpen(true);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     // You can access the form data in formData state and do something with it here
@@ -128,7 +146,7 @@ export default function CollegeName({ collegedata }) {
         method: "POST",
         body: fd,
         headers: {
-          Authorization: `Bearer ${userid}`,
+          Authorization: `Bearer ${localStorage.getItem("userid")}`,
         },
       }).then(async (response) => {
         var res = await response.json();
@@ -156,27 +174,113 @@ export default function CollegeName({ collegedata }) {
   };
 
   const dummyBannerImg =
-    collegedata.banner_img_path && collegedata.banner_img_path != ""
-      ? collegedata.banner_img_path
+    collegedata.generalinfo.banner_img_path &&
+    collegedata.generalinfo.banner_img_path != ""
+      ? collegedata.generalinfo.banner_img_path
       : "/assets/images/DummyBG.jpg";
   const dummyLogoImg =
-    collegedata.logo_img_path && collegedata.logo_img_path != ""
-      ? collegedata.logo_img_path
+    collegedata.generalinfo.logo_img_path &&
+    collegedata.generalinfo.logo_img_path != ""
+      ? collegedata.generalinfo.logo_img_path
       : "/assets/images/DummyLOGO.jpg";
   return (
     <div className={Classes["colleges-slug"]}>
       <div
         className={Classes["banner-img"]}
-        style={{ backgroundImage: `url(${dummyBannerImg})` }}
-      ></div>
+        style={{
+          backgroundImage: `url(${dummyBannerImg})`,
+          position: "relative",
+        }}
+      >
+        <div className={Classes["clg-hero-section"]}>
+          <div className={Classes["heading-section"]}>
+            <div className={Classes["left-div"]}>
+              <img src={dummyLogoImg} alt="" />
+            </div>
+            <div className={Classes["right-div"]}>
+              <h1>{collegedata.generalinfo.college_name}</h1>
+              <p>
+                <img src="/assets/images/location.png" alt="" />
+                <span>Location : {collegedata.generalinfo.city}</span>
+                &nbsp;&nbsp;
+                <img src="/assets/images/bookmark.png" alt="" />
+                <span>Approved By : {collegedata.generalinfo.approved_by}</span>
+                {/* &nbsp;&nbsp;
+                {userStatus ? (
+                  <>
+                    <ReceiptLongIcon />
 
-      {/* <Tabs
+                    <span
+                      style={{
+                        color: "#0d6fed",
+                        cursor: "pointer",
+                        textDecoration: "underline",
+                        paddingLeft: "0.3rem",
+                        fontWeight: "600",
+                      }}
+                      onClick={handleopenform}
+                    >
+                      Apply Form
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <ReceiptLongIcon />
+                    <span
+                      style={{
+                        color: "#0d6fed",
+                        cursor: "pointer",
+                        textDecoration: "underline",
+                        paddingLeft: "0.3rem",
+                        fontWeight: "600",
+                      }}
+                      onClick={handlelogin}
+                    >
+                      Apply Now
+                    </span>
+                  </>
+                )}
+                &nbsp;&nbsp;
+                <FileDownloadOutlinedIcon />
+                <span
+                  style={{
+                    color: "#0d6fed",
+                    cursor: "pointer",
+                    textDecoration: "underline",
+                    paddingLeft: "0.3rem",
+                    fontWeight: "600",
+                  }}
+                  onClick={handleDownloadBrochure}
+                >
+                  Download Brochure
+                </span> */}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className={Classes["commonStickyFooter"]}>
+          {/* <div className={Classes["form-buttons"]}> */}
+                  {userStatus ? (
+                    <button onClick={handleopenform}>Apply Form</button>
+                  ) : (
+                    <button onClick={handlelogin}>Apply Now</button>
+                  )}
+                    <button onClick={handleDownloadBrochure}>Download Brochure</button>
+
+                {/* </div> */}
+        </div>
+
+      </div>
+
+      <Tabs
         defaultActiveKey="overview"
         id="uncontrolled-tab-example"
         className={Classes["tabs-bar"]}
       >
-        <Tab eventKey="general" title="General"> */}
-      <div className="container">
+        {/* <Tab eventKey="general" title="General"> */}
+
+        {/* <div className="container">
         <div className={Classes["content-section"]}>
           <div className={Classes["heading-section"]}>
             <div className={Classes["left-div"]}>
@@ -296,608 +400,812 @@ export default function CollegeName({ collegedata }) {
               </div>
             )}
         </div>
-      </div>
-      {/* </Tab> */}
-      {/* <Tab eventKey="overview" title="Overview">
-          <div className="container">
-            <div className={Classes["content-section"]}>
-              <div className={Classes["heading-section"]}>
+      </div> */}
+
+        {/* </Tab> */}
+        <Tab eventKey="overview" title="Overview">
+          {Object.keys(collegedata.overview).length > 0 && (
+            <div className="container">
+              <div className={Classes["content-section"]}>
+                {/* <div className={Classes["heading-section"]}>
                 <div className={Classes["left-div"]}>
                   <img src={dummyLogoImg} alt="" />
                 </div>
                 <div className={Classes["right-div"]}>
-                  <h1>SAGE University</h1>
+                  <h1>{collegedata.generalinfo.college_name}</h1>
                   <p>
                     <img src="/assets/images/location.png" alt="" />
-                    <span>{collegedata.short_address}</span>&nbsp;&nbsp;
+                    <span>{collegedata.generalinfo.city}</span>&nbsp;&nbsp;
                     <img src="/assets/images/bookmark.png" alt="" />
-                    <span>{collegedata.approved_by}</span>
+                    <span>{collegedata.generalinfo.approved_by}</span>
                   </p>
                 </div>
-              </div>
-              <div className={Classes["description-section"]}>
-                <p>
-                  Sanskriti University Admission: The PhD entrance test and
-                  interview date is September 17, 2023. The Sanskriti University
-                  result for PhD entrance test will be announced on September
-                  18. Candidates interested in Sanskriti University MBA
-                  admission can register for the CAT 2023 exam till September
-                  20. The other entrance exams accepted by Sanskriti University
-                  are CUET/ JEE Main/ NEET UG/ XAT and NMAT.{" "}
-                </p>
-              </div>
-              
-              <div className={Classes["description-section"]}>
-                <h3>Sanskriti University Highlights for 2023</h3>
-                <Table bordered hover>
-                  <thead>
-                    <tr>
-                      <th>Particulars </th>
-                      <th>Details </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Institute Name </td>
-                      <td>Sanskriti University</td>
-                    </tr>
-                    <tr>
-                      <td>Institute Type </td>
-                      <td>Private</td>
-                    </tr>
-                    <tr>
-                      <td>Establishment Year</td>
-                      <td>2016</td>
-                    </tr>
-                  </tbody>
-                </Table>
-              </div>
-              <div className={Classes["description-section"]}>
-                <h3>Sanskriti University Top Courses & Fees</h3>
-                  <div class={Classes["collegeDetail_classNotToggled"]}>
-                    <Table >
-                      <tbody>
-                        <tr>
-                          <td class={Classes["collegeDetail_courseName"]}>
-                            BSc
-                            <span class={Classes["collegeDetail_courseCount"]}>
-                              13 Courses
-                            </span>
-                          </td>
-                          <td class={Classes["collegeDetail_courseFees"]}>
-                            <span class={Classes["collegeDetail_customSpan"]}>
-                              Annual Fee
-                            </span>
-                            <span class={Classes["collegeDetail_price"]}>
-                              ₹ 45,000 - 1,50,000
-                            </span>
-                          </td>
-                        
-                        </tr>
-                        <tr>
-                          <td class={Classes["collegeDetail_courseName"]}>
-                            BSc
-                            <span class={Classes["collegeDetail_courseCount"]}>
-                              13 Courses
-                            </span>
-                          </td>
-                          <td class={Classes["collegeDetail_courseFees"]}>
-                            <span class={Classes["collegeDetail_customSpan"]}>
-                              Annual Fee
-                            </span>
-                            <span class={Classes["collegeDetail_price"]}>
-                              ₹ 45,000 - 1,50,000
-                            </span>
-                          </td>
-                        
-                        </tr>
-                        <tr>
-                          <td class={Classes["collegeDetail_courseName"]}>
-                            BSc
-                            <span class={Classes["collegeDetail_courseCount"]}>
-                              13 Courses
-                            </span>
-                          </td>
-                          <td class={Classes["collegeDetail_courseFees"]}>
-                            <span class={Classes["collegeDetail_customSpan"]}>
-                              Annual Fee
-                            </span>
-                            <span class={Classes["collegeDetail_price"]}>
-                              ₹ 45,000 - 1,50,000
-                            </span>
-                          </td>
-                        
-                        </tr>
-                        <tr>
-                          <td class={Classes["collegeDetail_courseName"]}>
-                            BSc
-                            <span class={Classes["collegeDetail_courseCount"]}>
-                              13 Courses
-                            </span>
-                          </td>
-                          <td class={Classes["collegeDetail_courseFees"]}>
-                            <span class={Classes["collegeDetail_customSpan"]}>
-                              Annual Fee
-                            </span>
-                            <span class={Classes["collegeDetail_price"]}>
-                              ₹ 45,000 - 1,50,000
-                            </span>
-                          </td>
-                        
-                        </tr>
-                      </tbody>
-                    </Table>
-                    
+              </div> */}
+                {collegedata.overview.description.length > 0 && (
+                  <div className={Classes["description-section"]}>
+                    <h3>{collegedata.generalinfo.college_name} Overview</h3>
+                    <p>{collegedata.overview.description}</p>
                   </div>
-                  
-              </div>
-              <div className={Classes["description-section"]}>
-                <h3>FAQs about Sanskriti University</h3>
-                <Accordion defaultActiveKey="0">
-                  <Accordion.Item eventKey="0">
-                    <Accordion.Header>
-                      How was the Sanskriti University ranking in 2021?
-                    </Accordion.Header>
-                    <Accordion.Body>
-                      Ranking for the year 2021 are as follows: - School Of
-                      Engineering & Information Technology Ranked 13th In Top
-                      Colleges Of North India by India Today MDRA Best Colleges
-                      Survey, 2021 - Ranked 8th In Multidisciplinary Emerging
-                      Universities (All India) By The Week - School Of
-                      Engineering & Information Technology Ranked 6th In U.P. By
-                      Outlook I Care Rankings 2021 - Ranked 9th In U.P Among Top
-                      Private MBA Institutions By Outlook India’s Best B-Schools
-                      2021
-                    </Accordion.Body>
-                  </Accordion.Item>
-                  <Accordion.Item eventKey="1">
-                    <Accordion.Header>
-                      How many component universities are there at Sanskriti
-                      University?
-                    </Accordion.Header>
-                    <Accordion.Body>
-                      The University is made up of 18 member schools that span a
-                      range of fields including management, business,
-                      paramedicine, science, Indian medicine, agriculture, the
-                      arts, engineering & IT, rehabilitation, etc.
-                    </Accordion.Body>
-                  </Accordion.Item>
-                </Accordion>
-              </div>
-            </div>
-          </div>
-        </Tab>
-        <Tab eventKey="courses" title="Courses">
-          <div className="container">
-            <div className="container">
-              <div className={Classes["content-section"]}>
-                <div className={Classes["heading-section"]}>
-                  <div className={Classes["left-div"]}>
-                    <img src={dummyLogoImg} alt="" />
-                  </div>
-                  <div className={Classes["right-div"]}>
-                    <h1>SAGE University Campus</h1>
-                    <p>
-                      <img src="/assets/images/location.png" alt="" />
-                      <span>{collegedata.short_address}</span>&nbsp;&nbsp;
-                      <img src="/assets/images/bookmark.png" alt="" />
-                      <span>{collegedata.approved_by}</span>
-                    </p>
-                  </div>
-                </div>
+                )}
                 <div className={Classes["description-section"]}>
-                  <h3>SAGE University Indore Courses and Fees 2023</h3>
-                  <p>
-                    SAGE University Indore, as a higher education institute,
-                    receives a large number of applications each year.
-                    Applicants frequently inquire about the SAGE University
-                    Indore fees structure for specific courses of their choice.
-                    Here is a list of SAGE University Indore courses and fees to
-                    give applicants an idea of the university's fee structure.
-                  </p>
-                  <h3>
-                    Sage University Courses, Fees and Eligibility Criteria 2023
-                  </h3>
-                  <Table bordered hover>
+                  <h3>{collegedata.generalinfo.college_name} Highlights</h3>
+                  <Table responsive bordered>
                     <thead>
                       <tr>
-                        <th>Course </th>
-                        <th>Fees </th>
-                        <th> Eligibility Criteria</th>
+                        <th>Particulars </th>
+                        <th>Details </th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <td>B.Tech </td>
-                        <td>Rs 40,000 - Rs 1,50,000</td>
-                        <td>60%</td>
+                        <td>Establishment Year</td>
+                        <td>
+                          {new Date(
+                            collegedata.overview.establishment_year
+                          ).getFullYear() || "-"}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Institute Type </td>
+                        <td>{collegedata.generalinfo.college_type || "-"}</td>
+                      </tr>
+                      <tr>
+                        <td>Recognised By</td>
+                        <td>{collegedata.overview.recognised_by || "-"}</td>
+                      </tr>
+                      <tr>
+                        <td>Approved By</td>
+                        <td>{collegedata.generalinfo.approved_by || "-"}</td>
+                      </tr>
+                      <tr>
+                        <td>Foreign Collaborations</td>
+                        <td>
+                          {collegedata.overview.foreign_collaboration || "-"}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Campus Size</td>
+                        <td>{collegedata.overview.campus_size || "-"}</td>
+                      </tr>
+                      <tr>
+                        <td>Where to Apply</td>
+                        <td>
+                          {collegedata.overview.where_to_apply ? (
+                            <a
+                              href={collegedata.overview.where_to_apply}
+                              target="_blank"
+                            >
+                              {collegedata.overview.where_to_apply}
+                            </a>
+                          ) : userStatus ? (
+                            <>
+                              <ReceiptLongIcon />
+
+                              <span
+                                style={{
+                                  color: "#0d6fed",
+                                  cursor: "pointer",
+                                  textDecoration: "underline",
+                                  paddingLeft: "0.3rem",
+                                  fontWeight: "600",
+                                }}
+                                onClick={handleopenform}
+                              >
+                                Apply Form
+                              </span>
+                            </>
+                          ) : (
+                            <>
+                              <ReceiptLongIcon />
+                              <span
+                                style={{
+                                  color: "#0d6fed",
+                                  cursor: "pointer",
+                                  textDecoration: "underline",
+                                  paddingLeft: "0.3rem",
+                                  fontWeight: "600",
+                                }}
+                                onClick={handlelogin}
+                              >
+                                Apply Now
+                              </span>
+                            </>
+                          )}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>No. of Courses Offered</td>
+                        <td>
+                          {collegedata.overview.course_offered_count || "-"}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Total Faculty</td>
+                        <td>{collegedata.overview.total_faculty || "-"}</td>
+                      </tr>
+                      <tr>
+                        <td>Total Intake</td>
+                        <td>{collegedata.overview.total_intake || "-"}</td>
+                      </tr>
+                      <tr>
+                        <td>Average Package</td>
+                        <td>{collegedata.overview.avg_package || "-"}</td>
+                      </tr>
+                      <tr>
+                        <td>Highest Package</td>
+                        <td>
+                          {collegedata.overview.highest_annual_package || "-"}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Top Recruiters</td>
+                        <td>{collegedata.overview.top_recruiter || "-"}</td>
+                      </tr>
+                      <tr>
+                        <td>Campus Facilities</td>
+                        <td>{collegedata.overview.campus_facilities || "-"}</td>
+                      </tr>
+                      <tr>
+                        <td>Exams Accepted</td>
+                        <td>{collegedata.overview.exams_accepted || "-"}</td>
+                      </tr>
+                      <tr>
+                        <td>College Collaborations</td>
+                        <td>
+                          {collegedata.overview.college_collaborations || "-"}
+                        </td>
                       </tr>
                     </tbody>
                   </Table>
-                </div>
-                <div>
-                  <div className={Classes["courses-div"]}>
-                    23 Courses are offered by SAGE University
-                  </div>
-                  <div className={Classes["courseCardBox"]}>
-                    <div className={Classes["cardHeading"]}>
-                      <a href="/colleges/sage-university-indore/btech-course">
-                        B.Tech
-                      </a>
-                    </div>
 
-                    <div className={Classes["courseCardDetails"]}>
-                      <div className={Classes["courseDetailLeft"]}>
-                        <div>
-                          <p>
-                            Total Intake:{" "}
-                            <span
-                              className={Classes["collegeDetail_detailStrong"]}
-                            >
-                              1028
-                            </span>
-                          </p>
-                          <p>
-                            Study Mody:{" "}
-                            <span
-                              className={Classes["collegeDetail_detailStrong"]}
-                            >
-                              Regular
-                            </span>
-                          </p>
-                        </div>
-                        <div>
-                          <p>
-                            Exam Accepted:{" "}
-                            <span
-                              className={Classes["collegeDetail_detailStrong"]}
-                            >
-                              {" "}
-                              N/A
-                            </span>
-                          </p>
-                          <p>
-                            Annual Fees:{" "}
-                            <span
-                              className={Classes["collegeDetail_detailStrong"]}
-                            >
-                              1,15,000 - 1,30,000
-                            </span>
-                          </p>
-                        </div>
-                        <div>
-                          <p>
-                            Duration:{" "}
-                            <span
-                              className={Classes["collegeDetail_detailStrong"]}
-                            >
-                              3 - 4 Years
-                            </span>
-                          </p>
-                          <p>
-                            Average Fees:{" "}
-                            <span
-                              className={Classes["collegeDetail_detailStrong"]}
-                            >
-                              1,25,000
-                            </span>
-                          </p>
-                        </div>
-                      </div>
-                      <div className={Classes["courseDetailRight"]}>
+                  {collegedata.overview.application_process && (
+                    <>
+                      <h3>
+                        {collegedata.generalinfo.college_name} Application
+                        process
+                      </h3>
+                      <p>{collegedata.overview.application_process}</p>
+                    </>
+                  )}
+                </div>
+                {collegedata.overview.offered_courses.length > 0 && (
+                  <div className={Classes["description-section"]}>
+                    <h3>
+                      {collegedata.generalinfo.college_name} Offered Courses
+                    </h3>
+                    <Table responsive bordered hover>
+                      <thead>
+                        <tr>
+                          <th>Course Name </th>
+                          <th>Course Duration</th>
+                          <th>Annual Fees</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {collegedata.overview.offered_courses.map((s,i) => {
+                          return (
+                            <tr key={i}>
+                              <td>{s.course_name}</td>
+                              <td>{s.course_duration}</td>
+                              <td>{s.annual_fees}</td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </Table>
+                  </div>
+                )}
+                {collegedata.overview.college_faculty.length > 0 && (
+                  <div className={Classes["description-section"]}>
+                    <h3>{collegedata.generalinfo.college_name} Faculty</h3>
+                    <Container>
+                      <Row>
+                        {collegedata.overview.college_faculty.map((s,i) => {
+                          return (
+                            <Col key={i} xs={12} md={6} lg={3}>
+                              <Card
+                                style={{
+                                  width: "100%",
+                                  margin: "1rem 0rem",
+                                  height: "100px",
+                                }}
+                              >
+                                <Card.Body>
+                                  <blockquote className="blockquote mb-0">
+                                    <p>{s.designation}</p>
+                                    <footer className="blockquote-footer">
+                                      <cite title="Source Title">
+                                        {s.faculty_name}
+                                      </cite>
+                                    </footer>
+                                  </blockquote>
+                                </Card.Body>
+                              </Card>
+                            </Col>
+                          );
+                        })}
+                      </Row>
+                    </Container>
+                  </div>
+                )}
+                {collegedata.overview.admission_dates.length > 0 && (
+                  <div className={Classes["description-section"]}>
+                    <h3>
+                      {collegedata.generalinfo.college_name} Addmission Dates
+                    </h3>
+                    <Table responsive bordered>
+                      <thead>
+                        <tr>
+                          <th>Date</th>
+                          <th>Event Name</th>
+                          <th>Year</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {collegedata.overview.admission_dates.map((s,i) => {
+                          return (
+                            <tr key={i}>
+                              <td>{s.date.substring(0, 10)}</td>
+                              <td>{s.event_name}</td>
+                              <td>{s.year}</td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </Table>
+                  </div>
+                )}
+                {collegedata.overview.top_course.length > 0 && (
+                  <div className={Classes["description-section"]}>
+                    <h3>
+                      {collegedata.generalinfo.college_name} Top Courses & Fees
+                    </h3>
+                    <div className={Classes["collegeDetail_classNotToggled"]}>
+                      <Table>
+                        <tbody>
+                          {collegedata.overview.top_course.map((s,i) => {
+                            return (
+                              <tr key={i}>
+                                <td
+                                  className={
+                                    Classes["collegeDetail_courseName"]
+                                  }
+                                >
+                                  {s.course_name}
+                                  <span
+                                    className={
+                                      Classes["collegeDetail_courseCount"]
+                                    }
+                                  >
+                                    {s.course_count}
+                                  </span>
+                                </td>
+                                <td
+                                  className={
+                                    Classes["collegeDetail_courseFees"]
+                                  }
+                                >
+                                  <span
+                                    className={
+                                      Classes["collegeDetail_customSpan"]
+                                    }
+                                  >
+                                    Annual Fee
+                                  </span>
+                                  <span
+                                    className={Classes["collegeDetail_price"]}
+                                  >
+                                    {s.annual_fees}
+                                  </span>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                          {/* <tr>
+                        <td className={Classes["collegeDetail_courseName"]}>
+                          BSc
+                          <span className={Classes["collegeDetail_courseCount"]}>
+                            13 Courses
+                          </span>
+                        </td>
+                        <td className={Classes["collegeDetail_courseFees"]}>
+                          <span className={Classes["collegeDetail_customSpan"]}>
+                            Annual Fee
+                          </span>
+                          <span className={Classes["collegeDetail_price"]}>
+                            ₹ 45,000 - 1,50,000
+                          </span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className={Classes["collegeDetail_courseName"]}>
+                          BSc
+                          <span className={Classes["collegeDetail_courseCount"]}>
+                            13 Courses
+                          </span>
+                        </td>
+                        <td className={Classes["collegeDetail_courseFees"]}>
+                          <span className={Classes["collegeDetail_customSpan"]}>
+                            Annual Fee
+                          </span>
+                          <span className={Classes["collegeDetail_price"]}>
+                            ₹ 45,000 - 1,50,000
+                          </span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className={Classes["collegeDetail_courseName"]}>
+                          BSc
+                          <span className={Classes["collegeDetail_courseCount"]}>
+                            13 Courses
+                          </span>
+                        </td>
+                        <td className={Classes["collegeDetail_courseFees"]}>
+                          <span className={Classes["collegeDetail_customSpan"]}>
+                            Annual Fee
+                          </span>
+                          <span className={Classes["collegeDetail_price"]}>
+                            ₹ 45,000 - 1,50,000
+                          </span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className={Classes["collegeDetail_courseName"]}>
+                          BSc
+                          <span className={Classes["collegeDetail_courseCount"]}>
+                            13 Courses
+                          </span>
+                        </td>
+                        <td className={Classes["collegeDetail_courseFees"]}>
+                          <span className={Classes["collegeDetail_customSpan"]}>
+                            Annual Fee
+                          </span>
+                          <span className={Classes["collegeDetail_price"]}>
+                            ₹ 45,000 - 1,50,000
+                          </span>
+                        </td>
+                      </tr> */}
+                        </tbody>
+                      </Table>
+                    </div>
+                  </div>
+                )}
+                {collegedata.overview.college_faqs.length > 0 && (
+                  <div className={Classes["description-section"]}>
+                    <h3>FAQs about {collegedata.generalinfo.college_name}</h3>
+                    {collegedata.overview.college_faqs.map((s, index) => {
+                      return (
+                        <Accordion
+                        key={index}
+                          defaultActiveKey={0}
+                          style={{ margin: "1rem 0rem" }}
+                        >
+                          <Accordion.Item eventKey={index}>
+                            <Accordion.Header>{s.question}</Accordion.Header>
+                            <Accordion.Body style={{ background: "#f6f6f6" }}>
+                              {s.answer}
+                            </Accordion.Body>
+                          </Accordion.Item>
+                        </Accordion>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </Tab>
+        <Tab eventKey="courses" title="Courses">
+          {Object.keys(collegedata.courses).length > 0 && (
+            <div className="container">
+              <div className={Classes["content-section"]}>
+                {collegedata.courses.courses.length > 0 && (
+                  <div className={Classes["description-section"]}>
+                    <h3>
+                      {collegedata.generalinfo.college_name} Courses, Fees and
+                      Eligibility Criteria
+                    </h3>
+                    <Table responsive bordered>
+                      <thead>
+                        <tr>
+                          <th>Course </th>
+                          <th>Fees </th>
+                          <th> Eligibility Criteria</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {collegedata.courses.courses.map((s,i) => {
+                          return (
+                            <tr key={i}>
+                              <td>{s.course_name || "-"}</td>
+                              <td>{s.avg_fees || "-"}</td>
+                              <td>{s.eligibility_criteria || "-"}</td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </Table>
+                  </div>
+                )}
+                <div>
+                  <div className={Classes["description-section"]}>
+                    <h3>
+                      Courses are offered by{" "}
+                      {collegedata.generalinfo.college_name}
+                    </h3>
+                    {collegedata.courses.courses.map((s,i) => {
+                      const specializations = s.course_specialization
+                        .split(",")
+                        .map((s) => s.trim())
+                        .filter(Boolean);
+                      // console.log(specializations);
+                      return (
+                        <div key={i} className={Classes["courseCardBox"]}>
+                          <div className={Classes["cardHeading"]}>
+                            <a href="/colleges/sage-university-indore/btech-course">
+                              {s.course_name}
+                            </a>
+                          </div>
+
+                          <div className={Classes["courseCardDetails"]}>
+                            <div className={Classes["courseDetailLeft"]}>
+                              <div>
+                                <p>
+                                  Total Intake:{" "}
+                                  <span
+                                    className={
+                                      Classes["collegeDetail_detailStrong"]
+                                    }
+                                  >
+                                    {s.course_total_intake}
+                                  </span>
+                                </p>
+                                <p>
+                                  Study Mody:{" "}
+                                  <span
+                                    className={
+                                      Classes["collegeDetail_detailStrong"]
+                                    }
+                                  >
+                                    {s.study_mode}
+                                  </span>
+                                </p>
+                              </div>
+                              <div>
+                                <p>
+                                  Exam Accepted:{" "}
+                                  <span
+                                    className={
+                                      Classes["collegeDetail_detailStrong"]
+                                    }
+                                  >
+                                    {" "}
+                                    {s.exam_accepted}
+                                  </span>
+                                </p>
+                                <p>
+                                  Annual Fees:{" "}
+                                  <span
+                                    className={
+                                      Classes["collegeDetail_detailStrong"]
+                                    }
+                                  >
+                                    {s.course_annual_fees}
+                                  </span>
+                                </p>
+                              </div>
+                              <div>
+                                <p>
+                                  Duration:{" "}
+                                  <span
+                                    className={
+                                      Classes["collegeDetail_detailStrong"]
+                                    }
+                                  >
+                                    {s.course_duration}
+                                  </span>
+                                </p>
+                                <p>
+                                  Average Fees:{" "}
+                                  <span
+                                    className={
+                                      Classes["collegeDetail_detailStrong"]
+                                    }
+                                  >
+                                    {s.avg_fees}
+                                  </span>
+                                </p>
+                              </div>
+                            </div>
+                            {/* <div className={Classes["courseDetailRight"]}>
                         <Button variant="primary">Apply Now</Button>
                         <Button variant="outline-primary">
                           Request A Callback
                         </Button>
-                      </div>
-                    </div>
+                      </div> */}
+                          </div>
+                          <div className={Classes["cardChips"]}>
+                            <ul>
+                              {specializations.map((specialization, index) => (
+                                <li key={index}>{specialization}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
         </Tab>
         <Tab eventKey="campus" title="Campus">
-          <div className="container">
-            <div className={Classes["content-section"]}>
-              <div className={Classes["heading-section"]}>
-                <div className={Classes["left-div"]}>
-                  <img src={dummyLogoImg} alt="" />
-                </div>
-                <div className={Classes["right-div"]}>
-                  <h1>SAGE University Campus</h1>
-                  <p>
-                    <img src="/assets/images/location.png" alt="" />
-                    <span>{collegedata.short_address}</span>&nbsp;&nbsp;
-                    <img src="/assets/images/bookmark.png" alt="" />
-                    <span>{collegedata.approved_by}</span>
-                  </p>
-                </div>
-              </div>
-              <div className={Classes["description-section"]}>
-                <h3>SAGE University Indore Campus</h3>
-                <p>
-                  SAGE University Indore is one of the premium education
-                  universities in India. The institute also provides a
-                  well-developed infrastructure to encourage the students with
-                  their innovation and creativity. The SAGE University Indore
-                  classrooms are elegantly designed for the students to promote
-                  effective learning. In the classroom, the faculty members of
-                  SAGE University Indore use various cluster activities like
-                  role plays, individual assignments, class PPT, analysis
-                  articles, and case studies. The library of SAGE University has
-                  a comprehensive collection of books, journals, periodicals,
-                  student projects, and other research materials to support the
-                  learning of students and staff members.
-                </p>
-                <h3>SAGE University Hostel & Fees Structure</h3>
-                <span>On-Campus Hostel Accommodation </span>
-                <p>
-                  The SU on-campus accommodation is fully operational. You will
-                  have access to SU’s campus facilities such as Lifestyle @,
-                  laundrette, convenience store and a 24-hour security coverage
-                  within the campus. Students staying in the on-campus
-                  accommodation will have options to single rooms, twin-sharing
-                  or shared apartment and have access to the common pantry at
-                  Cafeteria/Mess .
-                </p>
+          {Object.keys(collegedata.campus).length > 0 && (
+            <div className="container">
+              <div className={Classes["content-section"]}>
+                {collegedata.campus.campus_description && (
+                  <div className={Classes["description-section"]}>
+                    <h3>{collegedata.generalinfo.college_name} Description</h3>
+                    <p>{collegedata.campus.campus_description}</p>
+                  </div>
+                )}
+                {collegedata.campus.hostel_fees_structure && (
+                  <div className={Classes["description-section"]}>
+                    <h3>
+                      {collegedata.generalinfo.college_name} Hostel & Fees
+                      Structure
+                    </h3>
+
+                    <p>{collegedata.campus.hostel_fees_structure}</p>
+                  </div>
+                )}
               </div>
             </div>
-          </div>
+          )}
         </Tab>
         <Tab eventKey="admission" title="Admission">
-          <div className="container">
-            <div className={Classes["content-section"]}>
-              <div className={Classes["heading-section"]}>
-                <div className={Classes["left-div"]}>
-                  <img src={dummyLogoImg} alt="" />
-                </div>
-                <div className={Classes["right-div"]}>
-                  <h1>SAGE University Admission - 2023</h1>
-                  <p>
-                    <img src="/assets/images/location.png" alt="" />
-                    <span>{collegedata.short_address}</span>&nbsp;&nbsp;
-                    <img src="/assets/images/bookmark.png" alt="" />
-                    <span>{collegedata.approved_by}</span>
-                  </p>
-                </div>
-              </div>
-              <div className={Classes["description-section"]}>
-                <h3>SAGE University Indore Admission</h3>
-                <p>
-                  The SAGE University enterance exam will be held on July 15 and
-                  July 16, 2023. SAGE Indore admissions are offered in a diverse
-                  range of courses at UG, PG, diploma, and PhD levels. SAGE
-                  University Indore courses are structured to provide project
-                  and research-based learning. This unique approach fosters a
-                  dynamic educational environment. With the vision to transform
-                  students into component professionals, SAGE University Indore
-                  has set up 14 institutes with about 294 faculty members and
-                  also signed numerous global tie-ups to provide industrial
-                  exposure. Below are the guidelines and information on the SAGE
-                  University Indore admission process.
-                </p>
+          {Object.keys(collegedata.admission).length > 0 && (
+            <div className="container">
+              <div className={Classes["content-section"]}>
+                {collegedata.admission.admission_process && (
+                  <div className={Classes["description-section"]}>
+                    <h3>{collegedata.generalinfo.college_name} Admission</h3>
+                    <p>{collegedata.admission.admission_process}</p>
+                  </div>
+                )}
+                <div className={Classes["description-section"]}>
+                  {collegedata.admission.admission_eligibility_criteria.length >
+                    0 && (
+                    <>
+                      <h3>
+                        {collegedata.generalinfo.college_name} Courses and
+                        Eligibility Criteria
+                      </h3>
 
-                <h3>SAGE University Indore Courses and Eligibility Criteria</h3>
-
-                <Table bordered hover>
-                  <thead>
-                    <tr>
-                      <th>Course </th>
-                      <th>Eligibility</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Engineering - B.Tech/B.Tech(LET)</td>
-                      <td>
-                        Must have passed Class 12 with 45% aggregate with
-                        PCM/PCB as subjects in Class 12 for general category
-                        candidates. 40% aggregate with PCM/PCB as subjects in
-                        Class 12 for SC/ST/OBC category candidates. Admissions
-                        will be based on JEE/ SEE Score. %
-                      </td>
-                    </tr>
-                    <tr>
-                      <td> Engineering - B.Tech </td>
-                      <td>
-                        60% aggregate in Class 12 with PCM/PCB as subjects in
-                        class 12. Admissions will be based on JEE/ SEE Score.
-                      </td>
-                    </tr>
-                  </tbody>
-                </Table>
+                      <Table responsive bordered>
+                        <thead>
+                          <tr>
+                            <th>Course </th>
+                            <th>Eligibility</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {collegedata.admission.admission_eligibility_criteria.map(
+                            (s,i) => {
+                              return (
+                                <tr key={i}>
+                                  <td>{s.course_name || "-"}</td>
+                                  <td>{s.eligibility || "-"}</td>
+                                </tr>
+                              );
+                            }
+                          )}
+                        </tbody>
+                      </Table>
+                    </>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </Tab>
         <Tab eventKey="scholarship" title="Scholarship">
-          <div className="container">
-            <div className={Classes["content-section"]}>
-              <div className={Classes["heading-section"]}>
-                <div className={Classes["left-div"]}>
-                  <img src={dummyLogoImg} alt="" />
+          {Object.keys(collegedata.scholorship).length > 0 && (
+            <div className="container">
+              <div className={Classes["content-section"]}>
+                {collegedata.scholorship.scholorship_description && (
+                  <div className={Classes["description-section"]}>
+                    <h3>{collegedata.generalinfo.college_name} Description</h3>
+                    <p>{collegedata.scholorship.scholorship_description}</p>
+                  </div>
+                )}
+                <div className={Classes["description-section"]}>
+                  {collegedata.scholorship.scholorship_scheme.length > 0 && (
+                    <>
+                      <h3>
+                        {collegedata.generalinfo.college_name} Scholarship
+                        Scheme
+                      </h3>
+
+                      <Table responsive bordered>
+                        <thead>
+                          <tr>
+                            <th>Category</th>
+                            <th>Eligibility Criteria</th>
+                            <th>Scholarship</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {collegedata.scholorship.scholorship_scheme.map(
+                            (s,i) => {
+                              return (
+                                <tr key={i}>
+                                  <td>{s.category || "-"}</td>
+                                  <td>{s.eligibility_criteria || "-"}</td>
+                                  <td>{s.scholorship || "-"}</td>
+                                </tr>
+                              );
+                            }
+                          )}
+                        </tbody>
+                      </Table>
+                    </>
+                  )}
+                  {collegedata.scholorship.sports_scholorship.length > 0 && (
+                    <>
+                      <h3>
+                        {collegedata.generalinfo.college_name} Sports
+                        Scholarships
+                      </h3>
+
+                      <Table responsive bordered>
+                        <thead>
+                          <tr>
+                            <th>Level</th>
+                            <th>Scholarship</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {collegedata.scholorship.sports_scholorship.map(
+                            (s,i) => {
+                              return (
+                                <tr key={i}>
+                                  <td>{s.level || "-"}</td>
+                                  <td>{s.scholorship || "-"}</td>
+                                </tr>
+                              );
+                            }
+                          )}
+                        </tbody>
+                      </Table>
+                    </>
+                  )}
+                  {collegedata.scholorship.merit_cum_means_scholorship.length >
+                    0 && (
+                    <>
+                      <h3>
+                        {collegedata.generalinfo.college_name} Merit Cum Means
+                        Scholarships
+                      </h3>
+                      <Table responsive bordered>
+                        <thead>
+                          <tr>
+                            <th>Annual Income </th>
+                            <th>Scholarship</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {collegedata.scholorship.merit_cum_means_scholorship.map(
+                            (s,i) => {
+                              return (
+                                <tr key={i}>
+                                  <td>{s.annual_income || "-"}</td>
+                                  <td>{s.scholorship || "-"}</td>
+                                </tr>
+                              );
+                            }
+                          )}
+                        </tbody>
+                      </Table>
+                    </>
+                  )}
                 </div>
-                <div className={Classes["right-div"]}>
-                  <h1>SAGE University Scholarship - 2023</h1>
-                  <p>
-                    <img src="/assets/images/location.png" alt="" />
-                    <span>{collegedata.short_address}</span>&nbsp;&nbsp;
-                    <img src="/assets/images/bookmark.png" alt="" />
-                    <span>{collegedata.approved_by}</span>
-                  </p>
-                </div>
-              </div>
-              <div className={Classes["description-section"]}>
-                <h3>SAGE University Indore Scholarship</h3>
-                <p>
-                  Many scholarship schemes are offered at the SAGE University
-                  Indore for benefitting the students. SAGE University Indore
-                  scholarships cater particularly to students who belong to the
-                  reserved categories. Students can apply for the scholarships
-                  offered by SAGE University Indore if they qualify the
-                  eligibility criteria for the same. It is an attempt of the
-                  university to remove obstacles from the path of education so
-                  that more and more students get the opportunity of receiving a
-                  quality education. The SAGE University Indore scholarship
-                  details are given below.
-                </p>
-
-                <h3>SAGE Academic Scholarship Scheme</h3>
-
-                <Table bordered hover>
-                  <thead>
-                    <tr>
-                      <th>Category</th>
-                      <th>UG/Diploma Eligibility Criteria</th>
-                      <th>Scholarship</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>a</td>
-                      <td>95%</td>
-                      <td>50% Scholarship on Tuition Fees</td>
-                    </tr>
-                    <tr>
-                      <td> b</td>
-                      <td>90% - 95%</td>
-                      <td>30% Scholarship on Tuition Fees</td>
-                    </tr>
-                    <tr>
-                      <td>c</td>
-                      <td>80%- 90%</td>
-                      <td>25% Scholarship on Tuition Fees</td>
-                    </tr>
-                  </tbody>
-                </Table>
-
-                <h3>SAGE University Indore Sports Scholarships</h3>
-
-                <Table bordered hover>
-                  <thead>
-                    <tr>
-                      <th>Level</th>
-                      <th>Scholarship</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>International Level</td>
-                      <td>
-                        20% Scholarship on Tuition Fees for only the First Year
-                      </td>
-                    </tr>
-                    <tr>
-                      <td> National Level</td>
-                      <td>
-                        10% Scholarship on Tuition Fees for only the First Year
-                      </td>
-                    </tr>
-                  </tbody>
-                </Table>
-
-                <h3>SAGE Indore Merit Cum Means Scholarships</h3>
-
-                <Table bordered hover>
-                  <thead>
-                    <tr>
-                      <th>Annual Income </th>
-                      <th>Scholarship</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>4 lakh</td>
-                      <td>100% Scholarship on Tuition Fees</td>
-                    </tr>
-                    <tr>
-                      <td>4 lakh - 6 lakh</td>
-                      <td>75% Scholarship on Tuition Fees</td>
-                    </tr>
-                  </tbody>
-                </Table>
               </div>
             </div>
-          </div>
+          )}
         </Tab>
         <Tab eventKey="placement" title="Placement">
-          <div className="container">
-            <div className={Classes["content-section"]}>
-              <div className={Classes["heading-section"]}>
-                <div className={Classes["left-div"]}>
-                  <img src={dummyLogoImg} alt="" />
+          {Object.keys(collegedata.placement).length > 0 && (
+            <div className="container">
+              <div className={Classes["content-section"]}>
+                <div className={Classes["description-section"]}>
+                  <h3>{collegedata.generalinfo.college_name} Description</h3>
+                  <p>{collegedata.placement.placement_description}</p>
                 </div>
-                <div className={Classes["right-div"]}>
-                  <h1>SAGE University Placement - 2023</h1>
-                  <p>
-                    <img src="/assets/images/location.png" alt="" />
-                    <span>{collegedata.short_address}</span>&nbsp;&nbsp;
-                    <img src="/assets/images/bookmark.png" alt="" />
-                    <span>{collegedata.approved_by}</span>
-                  </p>
+                <div className={Classes["description-section"]}>
+                  <h3>
+                    {collegedata.generalinfo.college_name} Placement Process
+                  </h3>
+                  <p>{collegedata.placement.placement_process}</p>
+                  {collegedata.placement.placement_year.length > 0 && (
+                    <>
+                      <h3>{collegedata.generalinfo.college_name} Highlights</h3>
+                      <Table responsive bordered>
+                        <thead>
+                          <tr>
+                            <th>Year</th>
+                            <th>Particulars</th>
+                            <th>Statistics</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {collegedata.placement.placement_year.map((s,i) => {
+                            return (
+                              <tr key={i}>
+                                <td>{s.year}</td>
+                                <td>{s.particular}</td>
+                                <td>{s.statistics}</td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </Table>
+                    </>
+                  )}
+
+                  <h3>{collegedata.generalinfo.college_name} Report</h3>
+
+                  <Table responsive bordered>
+                    <thead>
+                      <tr>
+                        <th>Particulars</th>
+                        <th>Statistics</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Highest package</td>
+                        <td>{collegedata.placement.highest_package}</td>
+                      </tr>
+                      <tr>
+                        <td>Average package</td>
+                        <td>{collegedata.placement.avg_package}</td>
+                      </tr>
+                      <tr>
+                        <td>Total Number of job offers</td>
+                        <td>{collegedata.placement.total_job_offers}</td>
+                      </tr>
+                      <tr>
+                        <td>Total Number of companies visited</td>
+                        <td>{collegedata.placement.total_companies_visited}</td>
+                      </tr>
+                    </tbody>
+                  </Table>
                 </div>
-              </div>
-              <div className={Classes["description-section"]}>
-                <h3>Placements at KSRM Bhubaneswar</h3>
-                <p>
-                  KIIT School of Rural Management, Bhubaneswar offers excellent
-                  placement opportunities to the students. The college has a
-                  record of placing 100% students in top reputed companies. KSRM
-                  Bhubaneswar organises conclaves, guest lectures, seminars,
-                  industrial visits as a part of placement activities. The
-                  college has partnered with more than 350 partner organizations
-                  for providing internships and placement to the students. Every
-                  year, many companies are invited to the college campus for
-                  placements. Some of the major recruiters of KIIT School of
-                  Rural Management, Bhubaneswar are HDFC Bank, DCB Bank,
-                  Samunnati, JEEViKA, Care India and Agriwatch.
-                </p>
-              </div>
-              <div className={Classes["description-section"]}>
-                <h3>Placement 2019</h3>
-                <p>
-                  KIIT School of Rural Management, Bhubaneswar offers excellent
-                  placement opportunities to the students. The college has a
-                  record of placing 100% students in top reputed companies. KSRM
-                  Bhubaneswar organises conclaves, guest lectures, seminars,
-                  industrial visits as a part of placement activities. The
-                  college has partnered with more than 350 partner organizations
-                  for providing internships and placement to the students. Every
-                  year, many companies are invited to the college campus for
-                  placements. Some of the major recruiters of KIIT School of
-                  Rural Management, Bhubaneswar are HDFC Bank, DCB Bank,
-                  Samunnati, JEEViKA, Care India and Agriwatch.
-                </p>
               </div>
             </div>
-          </div>
+          )}
         </Tab>
         <Tab eventKey="cutoff" title="Cutoff">
           <div className="container">
             <div className={Classes["content-section"]}>
-              <div className={Classes["heading-section"]}>
-                <div className={Classes["left-div"]}>
-                  <img src={dummyLogoImg} alt="" />
-                </div>
-                <div className={Classes["right-div"]}>
-                  <h1>SAGE University Cutoff - 2022</h1>
-                  <p>
-                    <img src="/assets/images/location.png" alt="" />
-                    <span>{collegedata.short_address}</span>&nbsp;&nbsp;
-                    <img src="/assets/images/bookmark.png" alt="" />
-                    <span>{collegedata.approved_by}</span>
-                  </p>
-                </div>
-              </div>
-              <div className={Classes["description-section"]}>
-                <h3>SAGE University Indore Cut off 2023</h3>
-                <p>{collegedata.clg_description}</p>
-              </div>
+              {Object.keys(collegedata.cutoff).length > 0 &&
+                collegedata.cutoff.yearwise_description.map((s,i) => {
+                  return (
+                    <div key={i} className={Classes["description-section"]}>
+                      <h3>
+                        {" "}
+                        {collegedata.generalinfo.college_name} Cut off {s.year}
+                      </h3>
+                      <p>{s.description}</p>
+                    </div>
+                  );
+                })}
             </div>
           </div>
-        </Tab> */}
-      {/* </Tabs> */}
+        </Tab>
+      </Tabs>
 
       {isLoginFormOpen && (
         <LoginForm
@@ -987,8 +1295,8 @@ export default function CollegeName({ collegedata }) {
                         placeholder="Select state"
                       >
                         <option value="">Select state</option>
-                        {indianStates.map((state) => (
-                          <option key={state} value={state}>
+                        {indianStates.map((state,i) => (
+                          <option key={i} value={state}>
                             {state}
                           </option>
                         ))}
@@ -1004,17 +1312,11 @@ export default function CollegeName({ collegedata }) {
                         onChange={handleChange}
                       >
                         <option value="">Select course</option>
-                        {listcoursesOffered.includes(",") ? (
-                          listcoursesOffered.split(",").map((course, index) => (
-                            <option key={index} value={course.toLowerCase()}>
-                              {course}
-                            </option>
-                          ))
-                        ) : (
-                          <option value={listcoursesOffered.toLowerCase()}>
-                            {listcoursesOffered}
+                        {listcoursesOffered.map((course, index) => (
+                          <option key={index} value={course.course_name}>
+                            {course.course_name}
                           </option>
-                        )}
+                        ))}
                       </Form.Control>
                     </Form.Group>
 
@@ -1041,7 +1343,7 @@ export async function getServerSideProps(context) {
     // console.log(url)
     const res = await fetch(url);
     const data = await res.json();
-    console.log(data.data)
+    // console.log(data.data);
     if (data.data && data.data.length > 0) {
       return {
         props: { collegedata: data.data[0] },

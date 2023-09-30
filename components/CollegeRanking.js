@@ -12,8 +12,8 @@ import {
 import Link from 'next/link';
 
 const CollegeRanking = ({ zones, departments, rankingtypes }) => {
-
-    const [selectedDiscipline, setSelectedDiscipline] = useState(departments[0].label)
+    // console.log(zones,departments,rankingtypes,departments[0])
+    const [selectedDiscipline, setSelectedDiscipline] = useState(departments[0].value)
     const [selectedZone, setSelectedZone] = useState(zones[0].name)
     const [selectedChip, setSelectedChip] = useState(rankingtypes[0].value)
     const [collegeData, setCollegeData] = useState([])
@@ -30,7 +30,7 @@ const CollegeRanking = ({ zones, departments, rankingtypes }) => {
             setIsApiHitComplete(false)
             setCollegeData([])
             fetchData().then(resp => {
-                // console.log(resp)
+                // console.log(resp)   
                 const data = resp.sort((a, b) => Number(a.college_rank_no) - Number(b.college_rank_no))
                 if (data && data.length > 0) {
                     setCollegeData(data)

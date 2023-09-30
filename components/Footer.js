@@ -8,17 +8,17 @@ const Footer = () => {
           <div className="custom-col">
             <h3>Featured Colleges</h3>
             <ul>
-              <li><Link href="/colleges/Apeejay-School-of-Managment-(ASM)">Apeejay School of Management</Link></li>
-              <li><Link href="/colleges/New-Delhi-Institute-Of-Management-(NDIM)">New Delhi Institute of Management</Link></li>
-              <li><Link href="/colleges/Jaipuria-Institute-of-Management">Jaipuria Institute of Management</Link></li>
+              <li><Link href="/colleges/jb-institutions-of-technology">Apeejay School of Management</Link></li>
+              <li><Link href="/colleges/heritage-business-school">Heritage Business School</Link></li>
+              <li><Link href="/colleges/srm-university-chennai">SRM UNIVERSITY CHENNAI</Link></li>
             </ul>
           </div>
           <div className="custom-col">
             <h3>Top Universities</h3>
             <ul>
-              <li><Link href="/colleges/K-R-MANGALAM-UNIVERSITY">K R Mangalam</Link></li>
-              <li><Link href="/colleges/BENNETT-UNIVERSITY">Bennett University</Link></li>
-              <li><Link href="/colleges/CHITKARA-UNIVERSITY">Chitkara University</Link></li>
+              <li><Link href="/colleges/iilm-university-gurugram">IILM University</Link></li>
+              <li><Link href="/colleges/sri-sri-university-cuttack">Sri Sri University</Link></li>
+              <li><Link href="/colleges/birla-global-university">Birla Global University</Link></li>
             </ul>
           </div>
           <div className="custom-col">

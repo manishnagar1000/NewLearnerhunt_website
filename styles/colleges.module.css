@@ -3,34 +3,60 @@
 }
 .colleges-slug .banner-img{
     width: 100%;
-    height: 400px;
+    height: 300px;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
 }
-.colleges-slug .content-section{
-    padding-top: 2.5rem;
-}
-.colleges-slug .content-section .heading-section{
+
+.colleges-slug .heading-section{
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
-    margin-bottom: 1rem;
+    /* margin-bottom: 1rem; */
 }
-.colleges-slug .content-section .heading-section .left-div{
+.colleges-slug .clg-hero-section {
+    padding: 1.5rem 5rem;
+    border-bottom: 1px solid #dee2e6;
+     position:absolute;
+     bottom:0;
+     left:0;
+     right:0;
+     background:rgba(255,255,255,0.95)
+}
+@media screen and (max-width: 992px){
+    .colleges-slug .clg-hero-section{
+        padding: 5rem;
+    }
+}
+@media screen and (max-width: 786px){
+    .colleges-slug .clg-hero-section{
+        padding: 2rem !important;
+    }
+}
+
+@media screen and (max-width: 576px){
+    .colleges-slug .clg-hero-section{
+        padding: 1rem !important;
+    }
+}
+
+
+
+.colleges-slug .clg-hero-section .heading-section .left-div{
     width: 100px;
     border: 1px solid gainsboro;
 }
-.colleges-slug .content-section .heading-section .left-div img{
+.colleges-slug .clg-hero-section .heading-section .left-div img{
     width: 100%;
     height: auto;
 }
-.colleges-slug .content-section .heading-section .right-div{
+.colleges-slug .clg-hero-section .heading-section .right-div{
     width: calc(100% - 100px);
     padding-left: 1rem;
 }
 
-.colleges-slug .content-section .heading-section .right-div img{
+.colleges-slug .clg-hero-section .heading-section .right-div img{
     width: 20px;
     height: auto;
     margin:0 5px;
@@ -38,7 +64,7 @@
 .colleges-slug .content-section .description-section{
     text-align: justify;
     /* border: 1px solid rgb(239, 227, 227); */
-    /* padding:2rem; */
+    padding:1rem 0rem;
 }
 .colleges-slug .content-section .small-description h2{
     margin: 2rem 0rem 1rem 0rem;
@@ -83,6 +109,7 @@
     background: white;
     font-size: 17px;
     margin: 0 5rem;
+    z-index: 9;
 }
 
 .courses-div{
@@ -116,8 +143,34 @@
 }
 .courseCardBox .courseDetailLeft{
     display: inline-flex;
-    width: calc(100% - 28%);
+    /* width: calc(100% - 28%); */
+    width: 100%;
     justify-content: space-between;
+}
+
+.courseCardBox .cardChips{
+    margin-top: 10px;
+}
+
+.courseCardBox .cardChips > ul{
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.courseCardBox .cardChips>ul>li {
+    padding: 4px 7px;
+    border: 1px solid #d9d9e5;
+    background-color: #e9ecff;
+    font-size: 12px;
+    font-weight: 400;
+    border-radius: 4px;
+    color: #717171;
 }
 
 .courseDetailLeft p{
@@ -135,7 +188,7 @@
     margin: 1rem 0;
 }
 .collegeDetail_classNotToggled table{
-    height: 170px;
+    /* height: 170px; */
     overflow: hidden;
     margin-bottom: 15px;
     display: block;
@@ -185,7 +238,7 @@
     }
     .tabs-bar{
         position: sticky;
-        top: 6vh;
+        top: 5vh;
         margin: 0;
     }
     .courseCardBox .cardHeading{
@@ -216,12 +269,12 @@
         align-items: center;
     }
 
-    .colleges-slug .content-section .heading-section .right-div h1{
+    .colleges-slug .heading-section .right-div h1{
         font-size: calc(100% - 3%);
     }
     .tabs-bar{
         position: sticky;
-        top: 8vh;
+        top: 6vh;
         margin: 0;
     }
     .courseCardBox{
@@ -252,4 +305,36 @@
         margin: 0;
         padding: 20px 0;
     }
+   
+}
+
+.commonStickyFooter{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* opacity: 1; */
+    /* visibility: visible; */
+    position: fixed;
+    width: 100%;
+    background-color: white;
+    bottom: 0;
+    z-index: 9;
+    padding: 5px 15px;
+    overflow: hidden;
+    /* top: auto; */
+    box-shadow: 0 0 20px white;
+}
+.commonStickyFooter button{
+    background-color: #0151c1;
+    color: #fff;
+    /* width: 200px; */
+    height:100%;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all .5s;
+    line-height: 1;
+    margin: 0rem 0.5rem;
 }

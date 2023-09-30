@@ -29,7 +29,7 @@ const [isLoading, setIsLoading] = useState(false);
       // console.log(data);
       setPreferredCoursesData(data.courses);
     } catch (error) {
-      console.log("Error fetching preferred courses:", error);
+      console.error("Error fetching preferred courses:", error);
     }
   }
 

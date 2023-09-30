@@ -89,8 +89,10 @@ export default function CollegeComponent() {
                       />
                     </Col>
                     <Col md={7}>
-                      <h2>{s.name}</h2>
-                      <p>{s.short_address}</p>
+                      <h2>{s.college_name}</h2>
+                      <span>{s.location}</span>
+                      <p>Applied Courses : <span style={{backgroundColor:"#e9ecff",padding:"0.2rem 0.5rem"}}>{s.applied_courses}</span></p>
+
                     </Col>
                     <Col md={3}>
                       <Link href={`/colleges/${s.slug}`}>
@@ -103,7 +105,7 @@ export default function CollegeComponent() {
             );
           })
         ) : (
-          <div className="d-flex justify-content-center align-items-center fw-bold " style={{ height: "76vh" }}>No College Data found</div>
+          <div className="d-flex justify-content-center align-items-center fw-bold " style={{ height: "76vh" }}><a href="/colleges" style={{textDecoration:"none"}}>Click here to apply</a></div>
         )}
       </div>
     </div>

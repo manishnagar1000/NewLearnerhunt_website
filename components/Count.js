@@ -23,7 +23,7 @@ const div = () => {
                 </Col>
                 <Col className="text-center">
                     <div className="text-white">
-                        <span className={styles.heading}>25</span>
+                        <span className={styles.heading}>50+</span>
                         <p className={styles.paragraph}>Counsellors</p>
                     </div>
                 </Col>

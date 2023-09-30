@@ -62,7 +62,7 @@ export default function Index() {
                 onClick={() => handleLinkClick("college")}
                 className={activeLink === "college" ? Classes["active"] : ""}
               >
-                College
+                Applied Colleges
               </li>
             </ul>
           </div>

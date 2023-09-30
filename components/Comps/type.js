@@ -7,10 +7,10 @@ export const TypeofCollege = [
 ];
 export const TypeofCategory = [
   { name: "Outlook", id: "0" },
-  { name: "Times Now ", id: "1" },
+  { name: "Times Now", id: "1" },
   { name: "Learnerhunt", id: "2" },
   { name: "NIRF", id: "3" },
-  { name: "Times Higher Education ", id: "4" },
+  { name: "Times Higher Education", id: "4" },
 
 
 ];

@@ -12,12 +12,12 @@ const Layout = ({ children }) => {
         
         <>
         {
-              !pathname.startsWith('/adminportal')&&<Topbar />
+              !pathname.startsWith('/adminportal')&&!pathname.startsWith('/leads')&&<Topbar />
         }
           
                 {children}
                 {
-            !pathname.startsWith('/dashboard')&&!pathname.startsWith('/adminportal')&&<Footer />
+            !pathname.startsWith('/dashboard')&&!pathname.startsWith('/adminportal')&&!pathname.startsWith('/leads')&&<Footer />
         }
         </>
     )
