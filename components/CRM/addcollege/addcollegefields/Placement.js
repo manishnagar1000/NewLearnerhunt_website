@@ -68,6 +68,8 @@ export default class Gernal extends Component {
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes'
     }).then((result) => {
+      if (result.isConfirmed) {
+
     this.setState({isLoading:true})
     var formData = new FormData();
     formData.append("college_id", this.state.selectedClg);
@@ -122,6 +124,7 @@ if (response.ok) {
 .catch(error => {
 console.error('Error:', error);
 });
+      }
 })
   }
   render() {
@@ -207,7 +210,7 @@ console.error('Error:', error);
                   required
                   value={this.state.highestpack}
                   onChange={(e) =>
-                    this.setState({ highestpack: e.target.value })
+                    this.setState({ highestpack: e.target.value.replace(/\D/g, "") })
                   }
                 />
               </div>

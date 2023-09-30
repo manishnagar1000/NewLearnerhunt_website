@@ -64,6 +64,7 @@ export default class Cutoff extends Component {
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes'
     }).then((result) => {
+      if (result.isConfirmed) {
     this.setState({isLoading:true})
     var formData = new FormData();
     formData.append("college_id", this.state.selectedClg);
@@ -107,6 +108,7 @@ if (response.ok) {
 .catch(error => {
 console.error('Error:', error);
 });
+      }
 })
   }
 

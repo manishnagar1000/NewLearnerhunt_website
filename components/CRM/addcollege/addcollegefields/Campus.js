@@ -35,6 +35,8 @@ export default class Campus extends Component {
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes'
     }).then((result) => {
+      if (result.isConfirmed) {
+
     this.setState({ isLoading: true });
     var formData = new FormData();
     formData.append("college_id", this.state.selectedClg);
@@ -82,6 +84,7 @@ export default class Campus extends Component {
       .catch((error) => {
         console.error("Error:", error);
       });
+    }
     });
   };
 
