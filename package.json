@@ -20,6 +20,7 @@
     "nodemailer": "^6.9.3",
     "react": "18.2.0",
     "react-bootstrap": "^2.7.4",
+    "react-chatbot-kit": "^2.1.2",
     "react-dom": "18.2.0",
     "react-multi-carousel": "^2.8.4",
     "styled-components": "^6.0.7",

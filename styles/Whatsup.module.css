@@ -1,15 +1,13 @@
 .whatsapp-button {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    bottom: 80px;
+    right: 15px;
     transition: right 0.3s ease;
-    z-index: 1000;
+    z-index: 99999;
     cursor: pointer;
   }
   
-  .whatsapp-button.open {
-    right: 0;
-  }
+ 
   
 /* Whatsup.module.css */
 .whatsapp-button img {
@@ -21,7 +19,7 @@
   }
   
   /* Add a class for zooming */
-  .whatsapp-button  img:hover {
-    transform: scale(1.1); /* Zoom in to 150% */
-  }
+  /* .whatsapp-button  img:hover {
+    transform: scale(1.1); 
+  } */
   

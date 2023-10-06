@@ -7,6 +7,7 @@ class MultipleTagsInput extends Component {
     super(props);
     this.state = {
       selectedValues: [],
+      inputValue: ''
     };
   }
 
@@ -38,8 +39,23 @@ class MultipleTagsInput extends Component {
     if(prevProps.value != this.props.value){
         this.setState({selectedValues:this.props.value})
     }
+    // console.log(this.state)
 
   }
+  // Function to handle the onBlur event
+  handleInputBlur = () => {
+    const { inputValue, selectedValues } = this.state;
+
+    if (inputValue.trim() !== '') {
+      // Add the inputValue to selectedValues if it's not empty
+      this.setState({
+        selectedValues: [...selectedValues, inputValue],
+        inputValue: '', // Clear the inputValue
+      });
+      this.props.onChange([...this.state.selectedValues, inputValue]);
+    }
+  };
+
 
   render() {
     return (
@@ -50,9 +66,15 @@ class MultipleTagsInput extends Component {
         multiple
         style={{ background: "#fff" }}
         value={this.state.selectedValues}
+        onBlur={()=>this.handleInputBlur()}
         onChange={(event, newValue) =>
           this.handleTagAdd(newValue[newValue.length - 1])
         }
+        // when we enter out the box value will be saved
+        inputValue={this.state.inputValue} // Control the inputValue
+        onInputChange={(event, newInputValue) => {
+          this.setState({ inputValue: newInputValue });
+        }}
         renderTags={this.renderTags}
         renderInput={(params) => (
           <TextField

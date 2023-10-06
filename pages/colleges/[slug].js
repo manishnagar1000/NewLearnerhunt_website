@@ -12,7 +12,7 @@ import Card from "react-bootstrap/Card";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 export default function CollegeName({ collegedata }) {
-  // console.log(collegedata);
+  console.log(collegedata);
   const collegeid = collegedata.generalinfo._id;
   const [userStatus, setUserStatus] = useState(false);
   const [userid, setUserid] = useState("");
@@ -201,7 +201,7 @@ export default function CollegeName({ collegedata }) {
               <h1>{collegedata.generalinfo.college_name}</h1>
               <p>
                 <img src="/assets/images/location.png" alt="" />
-                <span>Location : {collegedata.generalinfo.city}</span>
+                <span>Campus Location : {collegedata.generalinfo.city}</span>
                 &nbsp;&nbsp;
                 <img src="/assets/images/bookmark.png" alt="" />
                 <span>Approved By : {collegedata.generalinfo.approved_by}</span>
@@ -424,7 +424,7 @@ export default function CollegeName({ collegedata }) {
                 {collegedata.overview.description.length > 0 && (
                   <div className={Classes["description-section"]}>
                     <h3>{collegedata.generalinfo.college_name} Overview</h3>
-                    <p>{collegedata.overview.description}</p>
+                    <p style={{whiteSpace:"pre-line"}}>{collegedata.overview.description}</p>
                   </div>
                 )}
                 <div className={Classes["description-section"]}>
@@ -631,7 +631,7 @@ export default function CollegeName({ collegedata }) {
                 {collegedata.overview.admission_dates.length > 0 && (
                   <div className={Classes["description-section"]}>
                     <h3>
-                      {collegedata.generalinfo.college_name} Addmission Dates
+                      {collegedata.generalinfo.college_name} Admission Dates
                     </h3>
                     <Table responsive bordered>
                       <thead>
@@ -645,9 +645,9 @@ export default function CollegeName({ collegedata }) {
                         {collegedata.overview.admission_dates.map((s,i) => {
                           return (
                             <tr key={i}>
-                              <td>{s.date.substring(0, 10)}</td>
-                              <td>{s.event_name}</td>
-                              <td>{s.year}</td>
+                              <td>{s.date?s.date.substring(0, 10):"-"}</td>
+                              <td>{s.event_name || "-" }</td>
+                              <td>{s.year||"-"}</td>
                             </tr>
                           );
                         })}
@@ -809,7 +809,7 @@ export default function CollegeName({ collegedata }) {
                       <thead>
                         <tr>
                           <th>Course </th>
-                          <th>Fees </th>
+                          <th>Annual Fees </th>
                           <th> Eligibility Criteria</th>
                         </tr>
                       </thead>
@@ -818,7 +818,7 @@ export default function CollegeName({ collegedata }) {
                           return (
                             <tr key={i}>
                               <td>{s.course_name || "-"}</td>
-                              <td>{s.avg_fees || "-"}</td>
+                              <td>{s.course_annual_fees || "-"}</td>
                               <td>{s.eligibility_criteria || "-"}</td>
                             </tr>
                           );
@@ -842,7 +842,7 @@ export default function CollegeName({ collegedata }) {
                       return (
                         <div key={i} className={Classes["courseCardBox"]}>
                           <div className={Classes["cardHeading"]}>
-                            <a href="/colleges/sage-university-indore/btech-course">
+                            <a href='#course'>
                               {s.course_name}
                             </a>
                           </div>
@@ -940,14 +940,14 @@ export default function CollegeName({ collegedata }) {
             </div>
           )}
         </Tab>
-        <Tab eventKey="campus" title="Campus">
+        <Tab eventKey="campus" title="Campus" id="campus">
           {Object.keys(collegedata.campus).length > 0 && (
             <div className="container">
               <div className={Classes["content-section"]}>
                 {collegedata.campus.campus_description && (
                   <div className={Classes["description-section"]}>
                     <h3>{collegedata.generalinfo.college_name} Description</h3>
-                    <p>{collegedata.campus.campus_description}</p>
+                    <p style={{whiteSpace:"pre-line"}}>{collegedata.campus.campus_description}</p>
                   </div>
                 )}
                 {collegedata.campus.hostel_fees_structure && (
@@ -971,7 +971,7 @@ export default function CollegeName({ collegedata }) {
                 {collegedata.admission.admission_process && (
                   <div className={Classes["description-section"]}>
                     <h3>{collegedata.generalinfo.college_name} Admission</h3>
-                    <p>{collegedata.admission.admission_process}</p>
+                    <p style={{whiteSpace:"pre-line"}}>{collegedata.admission.admission_process}</p>
                   </div>
                 )}
                 <div className={Classes["description-section"]}>
@@ -1017,7 +1017,7 @@ export default function CollegeName({ collegedata }) {
                 {collegedata.scholorship.scholorship_description && (
                   <div className={Classes["description-section"]}>
                     <h3>{collegedata.generalinfo.college_name} Description</h3>
-                    <p>{collegedata.scholorship.scholorship_description}</p>
+                    <p style={{whiteSpace:"pre-line"}}>{collegedata.scholorship.scholorship_description}</p>
                   </div>
                 )}
                 <div className={Classes["description-section"]}>
@@ -1121,13 +1121,13 @@ export default function CollegeName({ collegedata }) {
               <div className={Classes["content-section"]}>
                 <div className={Classes["description-section"]}>
                   <h3>{collegedata.generalinfo.college_name} Description</h3>
-                  <p>{collegedata.placement.placement_description}</p>
+                  <p style={{whiteSpace:"pre-line"}}>{collegedata.placement.placement_description}</p>
                 </div>
                 <div className={Classes["description-section"]}>
                   <h3>
                     {collegedata.generalinfo.college_name} Placement Process
                   </h3>
-                  <p>{collegedata.placement.placement_process}</p>
+                  <p style={{whiteSpace:"pre-line"}}>{collegedata.placement.placement_process}</p>
                   {collegedata.placement.placement_year.length > 0 && (
                     <>
                       <h3>{collegedata.generalinfo.college_name} Highlights</h3>
@@ -1198,7 +1198,7 @@ export default function CollegeName({ collegedata }) {
                         {" "}
                         {collegedata.generalinfo.college_name} Cut off {s.year}
                       </h3>
-                      <p>{s.description}</p>
+                      <p style={{whiteSpace:"pre-line"}}>{s.description}</p>
                     </div>
                   );
                 })}
@@ -1229,7 +1229,7 @@ export default function CollegeName({ collegedata }) {
               <Row className="justify-content-center align-items-center">
                 <Col md={12}>
                   <div className="text-center mb-3">
-                    <h3>SAGE University </h3>
+                    <h3>{collegedata.generalinfo.college_name}</h3>
                     <p>(Student Application Form)</p>
                   </div>
                   <Form onSubmit={handleSubmit}>

@@ -10,8 +10,6 @@ import WhatsAppButton from '@/components/Whatsup'
 
 import axios from 'axios'
 import Head from 'next/head'
-import { useEffect } from 'react'
-
 export default function Home({colleges,courses,exams,testeligibility}) {
   // console.log(colleges)
  
@@ -27,6 +25,7 @@ export default function Home({colleges,courses,exams,testeligibility}) {
       </Head>
       <HomepageHeroSection data={testeligibility}/>
       <WhatsAppButton />
+   
       <Count/>
       <WhyChoose/>
       <TopColleges colleges={colleges}/>

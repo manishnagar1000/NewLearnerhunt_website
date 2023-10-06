@@ -8,6 +8,7 @@ import ApiIntegration from "@/components/CRM/ApiIntegration";
 
 
 import Swal from "sweetalert2";
+import StudentLeads from "@/components/CRM/StudentLeads";
 const componentList = [
   {
     comp: <Dashboard />,
@@ -24,6 +25,10 @@ const componentList = [
   {
     comp:<ApiIntegration/>,
     slug:"api"
+  },
+  {
+    comp:<StudentLeads/>,
+    slug:"studentleads"
   }
 ];
 export default function AdminPortalSlug() {

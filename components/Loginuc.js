@@ -1,25 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-
-import {
-  Form,
-  Button,
-  Modal,
-  Row,
-  Col,
-} from "react-bootstrap";
+import { Form, Button, Modal, Row, Col } from "react-bootstrap";
 import { CircularProgress } from "@mui/material";
 import Carousel, { CarouselItem } from "./CarouselItem";
 
 export default function Loginuc({ isOpen, onClose, role }) {
+  const initialTimer = 120; // 120 seconds (2 minutes)
+  const [timer, setTimer] = useState(initialTimer);
+  const [resendDisabled, setResendDisabled] = useState(false);
+
   const [email, setEmail] = useState("");
   const [showotp, setShowotp] = useState(false);
-  const [loginpassword,setLoginPassword] = useState("");
-  const [loginwithpassword,setLoginwithPassword] = useState(false);
+  const [loginpassword, setLoginPassword] = useState("");
+  const [loginwithpassword, setLoginwithPassword] = useState(false);
 
   const [signupshowotp, setSignShowotp] = useState(false);
   const [userotp, setUserotp] = useState("");
-  const [signupuserotp,setSignupuserotp] = useState("");
+  const [signupuserotp, setSignupuserotp] = useState("");
   const [isloading, setIsloading] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
 
@@ -29,6 +26,34 @@ export default function Loginuc({ isOpen, onClose, role }) {
   const [stream, setStream] = useState(""); // Add state for stream
   const [level, setLevel] = useState(""); // Add state for level
   const [password, setPassword] = useState(""); // Add state for password
+
+  const [lastOtpSentTime, setLastOtpSentTime] = useState(null);
+  let countdown; // Define countdown outside of useEffect
+
+  // Function to start the timer
+  const startTimer = () => {
+    setResendDisabled(true);
+    countdown = setInterval(() => {
+      setTimer((prevTimer) => {
+        if (prevTimer === 1) {
+          clearInterval(countdown);
+          setShowotp(true);
+          setResendDisabled(false);
+          return initialTimer; // Reset the timer to its initial value
+        }
+        return prevTimer - 1;
+      });
+    }, 1000); // Update the timer every 1 second
+  };
+  useEffect(() => {
+    // let countdown;
+    // Clean up the timer when the component unmounts
+    return () => {
+      clearInterval(countdown);
+      setShowotp(true);
+    };
+  }, [initialTimer]); // Add initialTimer as a dependency
+
   const handleSignupLinkClick = () => {
     setShowSignup(true);
     setShowotp(false); // Close OTP form if open
@@ -39,7 +64,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
   };
 
   const Studentregister = () => {
-    if(loginwithpassword){
+    if (loginwithpassword) {
       try {
         const fd = new FormData();
         fd.append("email", email);
@@ -87,54 +112,53 @@ export default function Loginuc({ isOpen, onClose, role }) {
       } catch (error) {
         console.error("Failed to fetch OTP:", error);
       }
-    }else{
-    try {
-      setIsloading(true);
-      const fd = new FormData();
-      fd.append("email", email);
-      // fd.append("otp", otp);
-      // fd.append("role", role);
-      fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/user/get-otp", {
-        method: "POST",
-        body: fd,
-      }).then(async (response) => {
-        var res = await response.json();
-        // console.log(res.message)
-        if (response.ok) {
-          // console.log("hello", response.data);
-          Swal.fire({
-            title: "Success",
-            text: `${res.message}`,
-            icon: "success",
-            confirmButtonText: "Ok",
-          }).then(() => {
-            setIsloading(false);
-            setShowotp(true);
-          });
-          // router.push('/thankyou')
-        } else {
-          Swal.fire({
-            title: "error",
-            text:`${res.error}`,
-            icon: "error",
-            confirmButtonText: "Ok",
-          }).then(() => {
-            setIsloading(false);
-          });
-        }
-      });
-    } catch (error) {
-      console.error("Failed to fetch OTP:", error);
+    } else {
+      try {
+        setIsloading(true);
+        const fd = new FormData();
+        fd.append("email", email);
+        // fd.append("otp", otp);
+        // fd.append("role", role);
+        fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/user/get-otp", {
+          method: "POST",
+          body: fd,
+        }).then(async (response) => {
+          var res = await response.json();
+          // console.log(res.message)
+          if (response.ok) {
+            // console.log("hello", response.data);
+            Swal.fire({
+              title: "Success",
+              text: `${res.message}`,
+              icon: "success",
+              confirmButtonText: "Ok",
+            }).then(() => {
+              setIsloading(false);
+              setShowotp(true);
+              startTimer();
+            });
+            // router.push('/thankyou')
+          } else {
+            Swal.fire({
+              title: "error",
+              text: `${res.error}`,
+              icon: "error",
+              confirmButtonText: "Ok",
+            }).then(() => {
+              setIsloading(false);
+            });
+          }
+        });
+      } catch (error) {
+        console.error("Failed to fetch OTP:", error);
+      }
     }
-     
-  }
-  
   };
 
   const handleStudentSubmit = (event) => {
     event.preventDefault();
-    if(showSignup){
-      if(signupshowotp){
+    if (showSignup) {
+      if (signupshowotp) {
         try {
           const fd = new FormData();
           fd.append("email", signupemail);
@@ -148,7 +172,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
               var userstatus = res.data.status;
               var userid = res.data.token;
               var useremail = res.data.email;
-  
+
               Swal.fire({
                 title: "Success",
                 text: `${res.message}`,
@@ -178,7 +202,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
         } catch (error) {
           console.error("Failed to fetch OTP:", error);
         }
-      }else{
+      } else {
         try {
           const fd = new FormData();
           fd.append("email", signupemail);
@@ -203,7 +227,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
                 confirmButtonText: "Ok",
               }).then(() => {
                 // console.log("done")
-                setSignShowotp(true)
+                setSignShowotp(true);
                 // setIsloading(false);
                 // setShowotp(true);
               });
@@ -221,8 +245,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
           console.error("Failed to fetch OTP:", error);
         }
       }
-     
-    }else{
+    } else {
       if (showotp) {
         setIsloading(true);
         try {
@@ -242,7 +265,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
               var userstatus = res.data.status;
               var userid = res.data.token;
               var useremail = res.data.email;
-  
+
               Swal.fire({
                 title: "Success",
                 text: `${res.message}`,
@@ -272,19 +295,15 @@ export default function Loginuc({ isOpen, onClose, role }) {
         } catch (error) {
           console.error("Failed to fetch OTP:", error);
         }
-    
       } else {
         Studentregister();
       }
     }
-  
-
-   
   };
 
-  const handleSignupOtpChange = (event)=>{
-    setSignupuserotp(event.target.value)
-  }
+  const handleSignupOtpChange = (event) => {
+    setSignupuserotp(event.target.value);
+  };
 
   const handleOtpChange = (event) => {
     // console.log(event.target.value);
@@ -298,78 +317,112 @@ export default function Loginuc({ isOpen, onClose, role }) {
   };
   const handleMobileChange = (event) => {
     const input = event.target.value;
-  
+
     // Remove any non-numeric characters
     const numericInput = input.replace(/\D/g, "");
-  
+
     // Limit to 10 characters
     const limitedInput = numericInput.slice(0, 10);
-  
+
     setMobile(limitedInput);
   };
-  
+
   const handleStreamChange = (event) => {
     setStream(event.target.value);
   };
-  
+
   const handleLevelChange = (event) => {
     setLevel(event.target.value);
   };
-  
+
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
   };
-  const handleLoginPasswordChange = (event) =>{
-    setLoginPassword(event.target.value)
-  }
+  const handleLoginPasswordChange = (event) => {
+    setLoginPassword(event.target.value);
+  };
 
   const Streamdata = [
     {
-        "id": 1,
-        "name": "Commerce and Banking"
+      id: 1,
+      name: "Commerce and Banking",
     },
     {
-        "id": 2,
-        "name": "Design"
+      id: 2,
+      name: "Design",
     },
     {
-        "id": 3,
-        "name": "Engineering"
+      id: 3,
+      name: "Engineering",
     },
     {
-        "id": 4,
-        "name": "Management"
+      id: 4,
+      name: "Management",
     },
     {
-        "id": 5,
-        "name": "Hotel Management"
+      id: 5,
+      name: "Hotel Management",
     },
     {
-        "id": 6,
-        "name": "Information Technology"
+      id: 6,
+      name: "Information Technology",
     },
     {
-        "id": 7,
-        "name": "Media and Mass Communication"
+      id: 7,
+      name: "Media and Mass Communication",
     },
     {
-        "id": 8,
-        "name": "Medical"
+      id: 8,
+      name: "Medical",
     },
     {
-        "id": 9,
-        "name": "Retail"
+      id: 9,
+      name: "Retail",
     },
     {
-        "id": 12,
-        "name": "Arts and Humanities"
+      id: 12,
+      name: "Arts and Humanities",
     },
     {
-        "id": 16,
-        "name": "Others"
-    }
-]
+      id: 16,
+      name: "Others",
+    },
+  ];
 
+  const handleResendOtp = () => {
+    setIsloading(true);
+    const fd = new FormData();
+    fd.append("email", email);
+    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/user/get-otp", {
+      method: "POST",
+      body: fd,
+    }).then(async (response) => {
+      var res = await response.json();
+      // console.log(res.message)
+      if (response.ok) {
+        // console.log("hello", response.data);
+        Swal.fire({
+          title: "Success",
+          text: `${res.message}`,
+          icon: "success",
+          confirmButtonText: "Ok",
+        }).then(() => {
+          setIsloading(false);
+          startTimer();
+        });
+        // router.push('/thankyou')
+      } else {
+        Swal.fire({
+          title: "error",
+          text: `${res.error}`,
+          icon: "error",
+          confirmButtonText: "Ok",
+        }).then(() => {
+          setIsloading(false);
+        });
+      }
+    });
+  };
   return (
     <div>
       <Modal
@@ -390,7 +443,10 @@ export default function Loginuc({ isOpen, onClose, role }) {
               md={0}
               lg={5}
               className="d-none d-lg-block"
-              style={{background:"linear-gradient(180deg, rgba(1,81,193,1) 22%, rgba(93,201,228,1) 100%)"}}
+              style={{
+                background:
+                  "linear-gradient(180deg, rgba(1,81,193,1) 22%, rgba(93,201,228,1) 100%)",
+              }}
             >
               <Carousel>
                 <CarouselItem>
@@ -419,246 +475,318 @@ export default function Loginuc({ isOpen, onClose, role }) {
                 </CarouselItem>
               </Carousel>
             </Col>
-            <Col md={12} lg={7} style={{padding:"1rem"}}>
+            <Col md={12} lg={7} style={{ padding: "1rem" }}>
               <div className="text-center mb-3">
-                <img src="/assets/images/Svglogo.svg" width={200} height={60}/>
-                <h3> {showSignup?"Welcome, Create your account":"Welcome Back!"}</h3>
-                <p style={{color:"gray"}}> {!showSignup && "Sign in to continue"}</p>
-
+                <img src="/assets/images/Svglogo.svg" width={200} height={60} />
+                <h3>
+                  {" "}
+                  {showSignup
+                    ? "Welcome, Create your account"
+                    : "Welcome Back!"}
+                </h3>
+                <p style={{ color: "gray" }}>
+                  {" "}
+                  {!showSignup && "Sign in to continue"}
+                </p>
               </div>
 
-              <Form style={{maxHeight:"550px",overflowY:"auto"}} onSubmit={handleStudentSubmit}>
-                {!showSignup?
-                <>
-                <Form.Group controlId="email">
-                  <Form.Label style={{fontWeight:"bold"}}>Email</Form.Label>
-                  <Form.Control
-                    type="email"
-                    placeholder="Enter your email"
-                    value={email}
-                    onChange={handleEmailChange}
-                    required
-                    autoComplete="on"
-                    style={{ marginBottom: "15px" }}
-                  />
-                </Form.Group>
-                {loginwithpassword &&
-                <Form.Group controlId="password">
-                <Form.Label style={{fontWeight:"bold"}}>Password</Form.Label>
-                <Form.Control
-                  type="password"
-                  placeholder="Enter your password"
-                  value={loginpassword}
-                  onChange={handleLoginPasswordChange}
-                  required
-                  autoComplete="new-password"
-                  style={{ marginBottom: "15px" }}
-                />
-              </Form.Group>}
-                
-                   {showotp && (
-                    <Form.Group controlId="otp">
-                      <Form.Label style={{fontWeight:"bold"}}>Enter OTP</Form.Label>
+              <Form
+                style={{ maxHeight: "550px", overflowY: "auto" }}
+                onSubmit={handleStudentSubmit}
+              >
+                {!showSignup ? (
+                  <>
+                    <Form.Group controlId="email">
+                      <Form.Label style={{ fontWeight: "bold" }}>
+                        Email
+                      </Form.Label>
                       <Form.Control
-                        type="text"
-                        placeholder="Enter the OTP"
-                        value={userotp}
-                        maxLength={6}
-                        minLength={6}
-                        onChange={handleOtpChange}
+                        type="email"
+                        placeholder="Enter your email"
+                        value={email}
+                        onChange={handleEmailChange}
                         required
+                        autoComplete="on"
                         style={{ marginBottom: "15px" }}
                       />
                     </Form.Group>
-                  )}
+                    {loginwithpassword && (
+                      <Form.Group controlId="password">
+                        <Form.Label style={{ fontWeight: "bold" }}>
+                          Password
+                        </Form.Label>
+                        <Form.Control
+                          type="password"
+                          placeholder="Enter your password"
+                          value={loginpassword}
+                          onChange={handleLoginPasswordChange}
+                          required
+                          autoComplete="new-password"
+                          style={{ marginBottom: "15px" }}
+                        />
+                      </Form.Group>
+                    )}
+
+                    {showotp && (
+                      <Form.Group controlId="otp">
+                        <Form.Label style={{ fontWeight: "bold" }}>
+                          Enter OTP
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          placeholder="Enter the OTP"
+                          value={userotp}
+                          maxLength={6}
+                          minLength={6}
+                          onChange={handleOtpChange}
+                          required
+                          style={{ marginBottom: "15px" }}
+                        />
+                      </Form.Group>
+                    )}
                   </>
-                :
-                <>
-                <Form.Group controlId="name">
-  <Form.Label style={{fontWeight:"bold"}}>Name</Form.Label>
-  <Form.Control
-    type="text"
-    placeholder="Enter your name"
-    value={name}
-    onChange={handleNameChange}
-    required
-    autoComplete="on"
-    style={{ marginBottom: "15px" }}
-  />
-</Form.Group>
-
-<Form.Group controlId="email">
-                  <Form.Label style={{fontWeight:"bold"}}>Email</Form.Label>
-                  <Form.Control
-                    type="email"
-                    placeholder="Enter your email"
-                    value={signupemail}
-                    onChange={handleSignupEmailChange}
-                    required
-                    autoComplete="on"
-                    style={{ marginBottom: "15px" }}
-                  />
-                </Form.Group>
-                <Form.Group controlId="mobile">
-  <Form.Label style={{ fontWeight: "bold" }}>Mobile</Form.Label>
-  <Form.Control
-    type="number"
-    placeholder="Enter your mobile number"
-    value={mobile}
-    onChange={handleMobileChange}
-    required
-    autoComplete="on"
-    style={{ marginBottom: "15px" }}
-    min="0"
-  />
-</Form.Group>
-
-<Form.Group controlId="stream">
-  <Form.Label style={{fontWeight:"bold"}}>Preferred Stream</Form.Label>
-  <Form.Control
-    as="select"
-    value={stream}
-    style={{ marginBottom: "15px" }}
-    onChange={handleStreamChange}
-    required
-  >
-    <option disabled value="">Select Stream</option>
-    {Streamdata.map((s)=>{
-      return(
- <option value={s.name}>{s.name}</option>
-      )
-    })}
-   
-    {/* ... Other options ... */}
-  </Form.Control>
-</Form.Group>
-
-<Form.Group controlId="level">
-  <Form.Label style={{fontWeight:"bold"}}>Preferred Level</Form.Label>
-  <Form.Control
-    as="select"
-    value={level}
-    onChange={handleLevelChange}
-    style={{ marginBottom: "15px" }}
-    required
-  >
-    <option disabled value="">Select Level</option>
-    <option value="UG">UG</option>
-    <option value="PG">PG</option>
-    <option value="Diploma">Diploma</option>
-    <option value="Ph.D">Ph.D</option>
-    <option value="Certificate">Certificate</option>
-    {/* ... Other options ... */}
-  </Form.Control>
-</Form.Group>
-
-<Form.Group controlId="password">
-  <Form.Label style={{fontWeight:"bold"}}>Password</Form.Label>
-  <Form.Control
-    type="password"
-    placeholder="Enter your password"
-    value={password}
-    onChange={handlePasswordChange}
-    required
-    autoComplete="new-password"
-    style={{ marginBottom: "15px" }}
-  />
-</Form.Group>
-
-{signupshowotp && (
-                    <Form.Group controlId="otp">
-                      <Form.Label style={{fontWeight:"bold"}}>Enter OTP</Form.Label>
+                ) : (
+                  <>
+                    <Form.Group controlId="name">
+                      <Form.Label style={{ fontWeight: "bold" }}>
+                        Name
+                      </Form.Label>
                       <Form.Control
                         type="text"
-                        placeholder="Enter the OTP"
-                        value={signupuserotp}
-                        maxLength={6}
-                        minLength={6}
-                        onChange={handleSignupOtpChange}
+                        placeholder="Enter your name"
+                        value={name}
+                        onChange={handleNameChange}
                         required
+                        autoComplete="on"
                         style={{ marginBottom: "15px" }}
                       />
                     </Form.Group>
-                  )}
-</>
-}
-                
 
-             
-
-            
-{!showSignup ? (
-  <>
-                <Button
-                  className="w-100"
-                  style={{ background: "#0151c1" }}
-                  type="submit"
-                  id="loginwithotp"
-                  disabled={isloading}
-                >
-                  {isloading ? (
-                    <>
-                      Please Wait...
-                      <CircularProgress
-                        style={{ marginLeft: "1rem" }}
-                        color="inherit"
+                    <Form.Group controlId="email">
+                      <Form.Label style={{ fontWeight: "bold" }}>
+                        Email
+                      </Form.Label>
+                      <Form.Control
+                        type="email"
+                        placeholder="Enter your email"
+                        value={signupemail}
+                        onChange={handleSignupEmailChange}
+                        required
+                        autoComplete="on"
+                        style={{ marginBottom: "15px" }}
                       />
-                    </>
-                  ) : showotp ? (
-                    "Verify OTP"
-                  ) :loginwithpassword? (
-                    "Login"
-                    ):( "Get OTP"
-                  )}
-                </Button>
-                {!loginwithpassword?
+                    </Form.Group>
+                    <Form.Group controlId="mobile">
+                      <Form.Label style={{ fontWeight: "bold" }}>
+                        Mobile
+                      </Form.Label>
+                      <Form.Control
+                        type="number"
+                        placeholder="Enter your mobile number"
+                        value={mobile}
+                        onChange={handleMobileChange}
+                        required
+                        autoComplete="on"
+                        style={{ marginBottom: "15px" }}
+                        min="0"
+                      />
+                    </Form.Group>
+
+                    <Form.Group controlId="stream">
+                      <Form.Label style={{ fontWeight: "bold" }}>
+                        Preferred Stream
+                      </Form.Label>
+                      <Form.Control
+                        as="select"
+                        value={stream}
+                        style={{ marginBottom: "15px" }}
+                        onChange={handleStreamChange}
+                        required
+                      >
+                        <option disabled value="">
+                          Select Stream
+                        </option>
+                        {Streamdata.map((s) => {
+                          return <option value={s.name}>{s.name}</option>;
+                        })}
+
+                        {/* ... Other options ... */}
+                      </Form.Control>
+                    </Form.Group>
+
+                    <Form.Group controlId="level">
+                      <Form.Label style={{ fontWeight: "bold" }}>
+                        Preferred Level
+                      </Form.Label>
+                      <Form.Control
+                        as="select"
+                        value={level}
+                        onChange={handleLevelChange}
+                        style={{ marginBottom: "15px" }}
+                        required
+                      >
+                        <option disabled value="">
+                          Select Level
+                        </option>
+                        <option value="UG">UG</option>
+                        <option value="PG">PG</option>
+                        <option value="Diploma">Diploma</option>
+                        <option value="Ph.D">Ph.D</option>
+                        <option value="Certificate">Certificate</option>
+                        {/* ... Other options ... */}
+                      </Form.Control>
+                    </Form.Group>
+
+                    <Form.Group controlId="password">
+                      <Form.Label style={{ fontWeight: "bold" }}>
+                        Password
+                      </Form.Label>
+                      <Form.Control
+                        type="password"
+                        placeholder="Enter your password"
+                        value={password}
+                        onChange={handlePasswordChange}
+                        required
+                        autoComplete="new-password"
+                        style={{ marginBottom: "15px" }}
+                      />
+                    </Form.Group>
+
+                    {signupshowotp && (
+                      <Form.Group controlId="otp">
+                        <Form.Label style={{ fontWeight: "bold" }}>
+                          Enter OTP
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          placeholder="Enter the OTP"
+                          value={signupuserotp}
+                          maxLength={6}
+                          minLength={6}
+                          onChange={handleSignupOtpChange}
+                          required
+                          style={{ marginBottom: "15px" }}
+                        />
+                      </Form.Group>
+                    )}
+                  </>
+                )}
+
+                {!showSignup ? (
+                  <>
+                    { timer === 120 ? showotp ? (
+                      <span
+                        className="d-inline-flex my-2 text-primary "
+                        style={{ cursor: "pointer" }}
+                        onClick={handleResendOtp}
+                      >
+                        Resend Otp
+                      </span>
+                    ) : null : (
+                      <p>Resend OTP in {timer} seconds</p>
+                    )}
+
+                
+                    <Button
+                      className="w-100"
+                      style={{ background: "#0151c1" }}
+                      type="submit"
+                      id="loginwithotp"
+                      disabled={isloading}
+                    >
+                      {isloading ? (
+                        <>
+                          Please Wait...
+                          <CircularProgress
+                            style={{ marginLeft: "1rem" }}
+                            color="inherit"
+                          />
+                        </>
+                      ) : showotp ? (
+                        "Verify OTP"
+                      ) : loginwithpassword ? (
+                        "Login"
+                      ) : (
+                        "Get OTP"
+                      )}
+                    </Button>
+                    {!loginwithpassword ? (
                       <div
-                      onClick={()=>setLoginwithPassword(true)}
-                      className="w-100 my-2"
-                      style={{ background: "#0151c1",cursor:"pointer" ,display:"flex", borderRadius:"0.3rem",color:"white",height:"2.2rem",justifyContent:"center",alignItems:"center",margin:"auto" }}
-                    >
-                     Login Via Password
-                      
-                    </div>
-                :
+                        onClick={() => setLoginwithPassword(true)}
+                        className="w-100 my-2"
+                        style={{
+                          background: "#0151c1",
+                          cursor: "pointer",
+                          display: "flex",
+                          borderRadius: "0.3rem",
+                          color: "white",
+                          height: "2.2rem",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          margin: "auto",
+                        }}
+                      >
+                        Login Via Password
+                      </div>
+                    ) : (
+                      <div
+                        onClick={() => setLoginwithPassword(false)}
+                        className="w-100 my-2"
+                        style={{
+                          background: "#0151c1",
+                          cursor: "pointer",
+                          display: "flex",
+                          borderRadius: "0.3rem",
+                          color: "white",
+                          height: "2.2rem",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          margin: "auto",
+                        }}
+                      >
+                        Login Via OTP
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <Button
+                    className="w-100"
+                    style={{ background: "#0151c1" }}
+                    type="submit"
+                    disabled={isloading}
+                  >
+                    {signupshowotp ? "Enter OTP" : "Signup"}
+                  </Button>
+                )}
                 <div
-                      onClick={()=>setLoginwithPassword(false)}
-                      className="w-100 my-2"
-                      style={{ background: "#0151c1",cursor:"pointer" ,display:"flex", borderRadius:"0.3rem",color:"white",height:"2.2rem",justifyContent:"center",alignItems:"center",margin:"auto" }}
-                    >
-                     Login Via OTP
-                      
-                    </div>
-                }
-            
-                </>
-):(
-  <Button
-  className="w-100"
-  style={{ background: "#0151c1" }}
-  type="submit"
-  disabled={isloading}
->
-  {signupshowotp?"Enter OTP":"Signup"}
-  
-</Button>
-)}
-                <div style={{display:"flex",justifyContent:"center",alignItems:"center",padding:"1rem"}}>
-               {showSignup ? (
-        <p>
-          Already have an account?{" "}
-          <span style={{ color: "blue" }} onClick={() => setShowSignup(false)}>
-            Login
-          </span>
-        </p>
-      ) : (
-        <p>
-          New to LearnerHunt?{" "}
-          <span style={{ color: "blue" }} onClick={handleSignupLinkClick}>
-            Signup
-          </span>
-        </p>
-      )}
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    padding: "1rem",
+                  }}
+                >
+                  {showSignup ? (
+                    <p>
+                      Already have an account?{" "}
+                      <span
+                        style={{ color: "blue" }}
+                        onClick={() => setShowSignup(false)}
+                      >
+                        Login
+                      </span>
+                    </p>
+                  ) : (
+                    <p>
+                      New to LearnerHunt?{" "}
+                      <span
+                        style={{ color: "blue" }}
+                        onClick={handleSignupLinkClick}
+                      >
+                        Signup
+                      </span>
+                    </p>
+                  )}
                 </div>
               </Form>
             </Col>

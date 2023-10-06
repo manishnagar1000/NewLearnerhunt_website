@@ -244,29 +244,7 @@ export default class Courses extends Component {
                       )
                     }
                   />
-              {/* <Autocomplete
-  disablePortal
-  id="combo-box-demo"
-  options={courseLabels}
-  size="small"
-  onChange={(event, newValue) =>
-    this.onFieldChange(
-      i,
-      "course_name",
-      newValue,
-      this.state.courseFields,
-      "1"
-    )
-  }
-  style={{ background: "white" }}
-  renderInput={(params) => (
-    <TextField
-      {...params}
-      placeholder="Enter Course Name"
-      required
-    />
-  )}
-/> */}
+              
                 </div>
               </div>
               <div className="col-md-3">
@@ -301,25 +279,7 @@ export default class Courses extends Component {
                     Eligibility Criteria (Percentage){" "}
                     <span className={Classes["error"]}>*</span>
                   </label>
-                  {/* <input
-                    type="text"
-                    minLength={0}
-                    maxLength={2}
-                    className="form-control"
-                    placeholder="eg: 50"
-                    required
-                    value={field.eligibility_criteria}
-                    onChange={(e) =>
-                      this.onFieldChange(
-                        i,
-                        "eligibility_criteria",
-                        e.target.value,
-                        this.state.courseFields,
-                        "1"
-                      )
-                    }
-                
-                  /> */}
+                  
                          <Autocomplete
   disablePortal
   id="combo-box-demo"
@@ -373,23 +333,7 @@ export default class Courses extends Component {
                   <label className={Classes["labelname"]} htmlFor="name">
                     Study Mode <span className={Classes["error"]}>*</span>
                   </label>
-                  {/* <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Enter Course Study Mode"
-                    required
-                    value={field.study_mode}
-                    onChange={(e) =>
-                      this.onFieldChange(
-                        i,
-                        "study_mode",
-                        e.target.value,
-                        this.state.courseFields,
-                        "1"
-                      )
-                    }
                  
-                  /> */}
                                     <Autocomplete
   disablePortal
   id="combo-box-demo"

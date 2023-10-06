@@ -13,9 +13,9 @@ import Link from 'next/link';
 
 const CollegeRanking = ({ zones, departments, rankingtypes }) => {
     // console.log(zones,departments,rankingtypes,departments[0])
-    const [selectedDiscipline, setSelectedDiscipline] = useState(departments[0].value)
+    const [selectedDiscipline, setSelectedDiscipline] = useState(departments.length>0?departments[0].value:"")
     const [selectedZone, setSelectedZone] = useState(zones[0].name)
-    const [selectedChip, setSelectedChip] = useState(rankingtypes[0].value)
+    const [selectedChip, setSelectedChip] = useState(rankingtypes.length>0?rankingtypes[0].value:"")
     const [collegeData, setCollegeData] = useState([])
     const [isApihitComplete, setIsApiHitComplete] = useState(true)
     // console.log(zones, departments, rankingtypes)

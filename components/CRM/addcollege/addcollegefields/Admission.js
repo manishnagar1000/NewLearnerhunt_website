@@ -265,7 +265,7 @@ console.error('Error:', error);
   onChange={(event, newValue) =>
     this.onFieldChange(
       i,
-      "eligibility_criteria",
+      "eligibility",
       newValue,
       this.state.admissionFields,
       "1"

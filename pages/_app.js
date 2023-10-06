@@ -86,10 +86,23 @@ export default function App({ Component, pageProps }) {
   fbq('track', 'PageView');`,
           }}
         />
+     {/* <!-- Google tag (gtag.js) -->  */}
+     <script async src="https://www.googletagmanager.com/gtag/js?id=AW-11197965039"></script>
+      <script
+      defer
+      dangerouslySetInnerHTML={{
+      __html:` window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'AW-11197965039'); `}}/>
 
         {/* <noscript><img height="1" width="1" style="display:none"
   src="https://www.facebook.com/tr?id=312254257795473&ev=PageView&noscript=1"
 /></noscript> */}
+
+<script 
+defer
+dangerouslySetInnerHTML={{
+  __html:`var $zoho=$zoho || {};$zoho.salesiq = $zoho.salesiq || {widgetcode: "siq60e8d0883f49eecd2fad174cade25d0685f881237013ed525bddbb40dc5560ec", values:{},ready:function(){}};var d=document;s=d.createElement("script");s.type="text/javascript";s.id="zsiqscript";s.defer=true;s.src="https://salesiq.zohopublic.in/widget";t=d.getElementsByTagName("script")[0];t.parentNode.insertBefore(s,t);`
+}}
+type="text/javascript" id="zsiqchat"></script>
       </Head>
       <Layout>
         <Component {...pageProps} />

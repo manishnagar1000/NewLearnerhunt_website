@@ -7,7 +7,7 @@ const WhatsAppButton = () => {
 
   const openWhatsApp = () => {
     // Replace 'YOUR_WHATSAPP_URL' with the actual WhatsApp URL you want to open.
-    window.open('https://wa.me/8800756846', '_blank');
+    window.open('https://wa.me/+918800756846', '_blank');
     setIsWhatsAppOpen(true);
   };
   
