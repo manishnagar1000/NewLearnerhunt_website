@@ -49,7 +49,7 @@ export default function TopColleges({ colleges }) {
       //     }
       //   }
       // }
-      console.log(resp);
+      // console.log(resp);
       setIsColleges(resp);
       setIsLoading(false);
       // }
@@ -212,7 +212,7 @@ export default function TopColleges({ colleges }) {
             {
               // isColleges.length>0?
               isColleges.map((s) => {
-                console.log(s);
+                // console.log(s);
                 return s != null ? (
                   <div key={s._id} style={{ marginBottom: "2rem" }}>
                     {isLoading ? (

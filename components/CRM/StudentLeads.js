@@ -46,7 +46,7 @@ export default class StudentLeads extends Component {
       },
     }).then(async (res) => {
       let response = await res.json();
-      console.log(response.data);
+      // console.log(response.data);
       if (response.data.length > 0) {
         this.setState({ clgList: response.data, isDataFound: true });
       }
@@ -83,7 +83,7 @@ export default class StudentLeads extends Component {
               <tbody>
                 {this.state.clgList.map((clg, i) => {
                   return (
-                    <>
+                    
                       <tr key={i}>
                         <td>{clg.name}</td>
                         <td>{clg.mobile}</td>
@@ -98,7 +98,7 @@ export default class StudentLeads extends Component {
 
 
                       </tr>
-                    </>
+                    
                   );
                 })}
               </tbody>

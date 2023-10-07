@@ -67,14 +67,12 @@ export default class Allcollege extends Component {
               <tbody>
                 {this.state.clgList.map((clg, i) => {
                   return (
-                    <>
                       <tr key={i}>
                         <td style={{wordWrap:"break-word",whiteSpace:"unset"}}>{clg.college_name}</td>
                         <td style={{wordWrap:"break-word",whiteSpace:"unset"}}>{clg.approved_by}</td>
                         <td style={{wordWrap:"break-word",whiteSpace:"unset"}}>{clg.college_type}</td>
                         <td style={{wordWrap:"break-word",whiteSpace:"unset"}}>{clg.state}</td>
                       </tr>
-                    </>
                   );
                 })}
               </tbody>

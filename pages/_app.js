@@ -68,6 +68,18 @@ export default function App({ Component, pageProps }) {
           }}
         />
 
+<script     
+  defer
+          dangerouslySetInnerHTML={{
+            __html: `  window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+          
+            gtag('config', 'AW-11197965039');`}}>
+
+</script>
+
+
         {/*  Meta Pixel Code */}
         <script
           defer
@@ -97,12 +109,19 @@ export default function App({ Component, pageProps }) {
   src="https://www.facebook.com/tr?id=312254257795473&ev=PageView&noscript=1"
 /></noscript> */}
 
+  
+
+
+
+{/* zoho chatbot code my number */}
 <script 
 defer
 dangerouslySetInnerHTML={{
-  __html:`var $zoho=$zoho || {};$zoho.salesiq = $zoho.salesiq || {widgetcode: "siq60e8d0883f49eecd2fad174cade25d0685f881237013ed525bddbb40dc5560ec", values:{},ready:function(){}};var d=document;s=d.createElement("script");s.type="text/javascript";s.id="zsiqscript";s.defer=true;s.src="https://salesiq.zohopublic.in/widget";t=d.getElementsByTagName("script")[0];t.parentNode.insertBefore(s,t);`
+  __html:`var $zoho=$zoho || {};$zoho.salesiq = $zoho.salesiq || {widgetcode: "siqe16fa7414d6dcdfb80e1bb99062822b5844fde693774110e98a5fe3c02f9f5cf", values:{},ready:function(){}};var d=document;s=d.createElement("script");s.type="text/javascript";s.id="zsiqscript";s.defer=true;s.src="https://salesiq.zohopublic.in/widget";t=d.getElementsByTagName("script")[0];t.parentNode.insertBefore(s,t);`
 }}
 type="text/javascript" id="zsiqchat"></script>
+
+
       </Head>
       <Layout>
         <Component {...pageProps} />

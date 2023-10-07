@@ -19,6 +19,7 @@ export default function CollegeName({ collegedata }) {
   const [useremail, setUseremail] = useState("");
   const [isLoginFormOpen, setIsLoginFormOpen] = useState(false);
   const [isApplyformOpen, setIsApplyformOpen] = useState(false);
+  const [activetab,setActiveTab]= useState("overview")
   const [formData, setFormData] = useState({
     fullname: "",
     email: "",
@@ -274,9 +275,10 @@ export default function CollegeName({ collegedata }) {
       </div>
 
       <Tabs
-        defaultActiveKey="overview"
+        activeKey={activetab}
         id="uncontrolled-tab-example"
         className={Classes["tabs-bar"]}
+        onSelect={(k)=>setActiveTab(k)}
       >
         {/* <Tab eventKey="general" title="General"> */}
 
@@ -585,7 +587,11 @@ export default function CollegeName({ collegedata }) {
                         {collegedata.overview.offered_courses.map((s,i) => {
                           return (
                             <tr key={i}>
-                              <td>{s.course_name}</td>
+                              <td onClick={(e)=>{
+                                e.stopPropagation()
+                                setActiveTab("courses")
+                                console.log("hello")
+                              }}>{s.course_name}</td>
                               <td>{s.course_duration}</td>
                               <td>{s.annual_fees}</td>
                             </tr>
@@ -607,7 +613,7 @@ export default function CollegeName({ collegedata }) {
                                 style={{
                                   width: "100%",
                                   margin: "1rem 0rem",
-                                  height: "100px",
+                                  
                                 }}
                               >
                                 <Card.Body>
@@ -670,6 +676,10 @@ export default function CollegeName({ collegedata }) {
                                   className={
                                     Classes["collegeDetail_courseName"]
                                   }
+                                  onClick={(e)=>{
+                                    e.stopPropagation()
+                                    setActiveTab("courses")
+                                  }}
                                 >
                                   {s.course_name}
                                   <span
@@ -940,9 +950,9 @@ export default function CollegeName({ collegedata }) {
             </div>
           )}
         </Tab>
-        <Tab eventKey="campus" title="Campus" id="campus">
+        <Tab eventKey="campus" title="Campus" >
           {Object.keys(collegedata.campus).length > 0 && (
-            <div className="container">
+            <div className="container" id="campus">
               <div className={Classes["content-section"]}>
                 {collegedata.campus.campus_description && (
                   <div className={Classes["description-section"]}>

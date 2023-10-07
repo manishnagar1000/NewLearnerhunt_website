@@ -211,6 +211,7 @@
 .collegeDetail_courseName {
     float: left;
     width: 45%;
+    cursor: pointer;
 }
 .collegeDetail_courseCount {
     font-size: 12px;
