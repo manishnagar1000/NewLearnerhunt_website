@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Classes from "/styles/colleges.module.css";
 // import Link from 'next/link'
+import { useRouter } from "next/router";
 import LoginForm from "../../components/Loginuc";
 import { Container, Row, Col, Modal, Form, Button } from "react-bootstrap";
 import Swal from "sweetalert2";
@@ -11,15 +12,21 @@ import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
+
+const pagesHavePopup = [
+  "iilm-university-gurugram",
+  "iilm-university-greater-noida",
+];
+
 export default function CollegeName({ collegedata }) {
-  console.log(collegedata);
+  // console.log(collegedata);
   const collegeid = collegedata.generalinfo._id;
   const [userStatus, setUserStatus] = useState(false);
   const [userid, setUserid] = useState("");
   const [useremail, setUseremail] = useState("");
   const [isLoginFormOpen, setIsLoginFormOpen] = useState(false);
   const [isApplyformOpen, setIsApplyformOpen] = useState(false);
-  const [activetab,setActiveTab]= useState("overview")
+  const [activetab, setActiveTab] = useState("overview");
   const [formData, setFormData] = useState({
     fullname: "",
     email: "",
@@ -28,8 +35,21 @@ export default function CollegeName({ collegedata }) {
     state: "",
     course: "",
   });
-
+  const [popupformData, setPopupFormData] = useState({
+    popupfullname: "",
+    popupemail: "",
+    popupmobile: "",
+    popupcourse: "",
+  });
+  const [showModal, setShowModal] = useState(false);
+  const router = useRouter();
+  const { slug } = router.query;
+  console.log(slug);
+  useEffect(()=>{
+    setShowModal(pagesHavePopup.includes(slug));
+  },[slug])
   useEffect(() => {
+    
     const newstatus = localStorage.getItem("userid");
     // console.log(newstatus);
     if (newstatus) {
@@ -97,6 +117,49 @@ export default function CollegeName({ collegedata }) {
   const listcoursesOffered = collegedata.overview.offered_courses;
   // console.log(listcoursesOffered)
 
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    console.log("Form data submitted:", popupformData);
+    try {
+      const fd = new FormData();
+      fd.append("name", popupformData.popupfullname);
+      fd.append("email", popupformData.popupemail);
+      fd.append("mobile", popupformData.popupmobile);
+      fd.append("course", popupformData.popupcourse);
+      fd.append("collegeid", collegeid);
+
+      fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/student/adslead", {
+        method: "POST",
+        body: fd,
+      }).then(async (response) => {
+        var res = await response.json();
+        // console.log(res.error)
+        if (res.error) {
+          Swal.fire({
+            title: "error",
+            text: `${res.error}`,
+            icon: "error",
+            confirmButtonText: "Ok",
+          }).then(()=>{
+            setShowModal(res.show);
+          });
+        } else {
+          Swal.fire({
+            title: "Success",
+            text: `${res.message}`,
+            icon: "success",
+            confirmButtonText: "Ok",
+          });
+          setShowModal(false);
+          // localStorage.setItem("popup", 0);
+          setPopupFormData([]);
+        }
+      });
+    } catch (error) {
+      console.error("Failed to fetch OTP:", error);
+    }
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -110,6 +173,25 @@ export default function CollegeName({ collegedata }) {
     }
 
     setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleChangepopup = (e) => {
+    const { name, value } = e.target;
+    // console.log(name,value)
+
+    if (name === "popupmobile" && value.length > 10) {
+      return; // Do not update the state if more than 10 digits
+    }
+
+    // If you want to allow only numeric input for mobile number
+    if (name === "popupmobile" && !/^\d*$/.test(value)) {
+      return; // Do not update the state if non-numeric characters are entered
+    }
+
+    setPopupFormData((prevState) => ({
       ...prevState,
       [name]: value,
     }));
@@ -161,12 +243,13 @@ export default function CollegeName({ collegedata }) {
           });
         } else {
           setIsApplyformOpen(false);
-          Swal.fire({
-            title: "Success",
-            text: `${res.message}`,
-            icon: "success",
-            confirmButtonText: "Ok",
-          });
+          router.push('/thankyou')
+          // Swal.fire({
+          //   title: "Success",
+          //   text: `${res.message}`,
+          //   icon: "success",
+          //   confirmButtonText: "Ok",
+          // });
         }
       });
     } catch (error) {
@@ -262,23 +345,22 @@ export default function CollegeName({ collegedata }) {
 
         <div className={Classes["commonStickyFooter"]}>
           {/* <div className={Classes["form-buttons"]}> */}
-                  {userStatus ? (
-                    <button onClick={handleopenform}>Apply Form</button>
-                  ) : (
-                    <button onClick={handlelogin}>Apply Now</button>
-                  )}
-                    <button onClick={handleDownloadBrochure}>Download Brochure</button>
+          {userStatus ? (
+            <button onClick={handleopenform}>Apply Form</button>
+          ) : (
+            <button onClick={handlelogin}>Apply Now</button>
+          )}
+          <button onClick={handleDownloadBrochure}>Download Brochure</button>
 
-                {/* </div> */}
+          {/* </div> */}
         </div>
-
       </div>
 
       <Tabs
         activeKey={activetab}
         id="uncontrolled-tab-example"
         className={Classes["tabs-bar"]}
-        onSelect={(k)=>setActiveTab(k)}
+        onSelect={(k) => setActiveTab(k)}
       >
         {/* <Tab eventKey="general" title="General"> */}
 
@@ -426,7 +508,9 @@ export default function CollegeName({ collegedata }) {
                 {collegedata.overview.description.length > 0 && (
                   <div className={Classes["description-section"]}>
                     <h3>{collegedata.generalinfo.college_name} Overview</h3>
-                    <p style={{whiteSpace:"pre-line"}}>{collegedata.overview.description}</p>
+                    <p style={{ whiteSpace: "pre-line" }}>
+                      {collegedata.overview.description}
+                    </p>
                   </div>
                 )}
                 <div className={Classes["description-section"]}>
@@ -584,14 +668,18 @@ export default function CollegeName({ collegedata }) {
                         </tr>
                       </thead>
                       <tbody>
-                        {collegedata.overview.offered_courses.map((s,i) => {
+                        {collegedata.overview.offered_courses.map((s, i) => {
                           return (
                             <tr key={i}>
-                              <td onClick={(e)=>{
-                                e.stopPropagation()
-                                setActiveTab("courses")
-                                console.log("hello")
-                              }}>{s.course_name}</td>
+                              <td
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setActiveTab("courses");
+                                  console.log("hello");
+                                }}
+                              >
+                                {s.course_name}
+                              </td>
                               <td>{s.course_duration}</td>
                               <td>{s.annual_fees}</td>
                             </tr>
@@ -606,14 +694,13 @@ export default function CollegeName({ collegedata }) {
                     <h3>{collegedata.generalinfo.college_name} Faculty</h3>
                     <Container>
                       <Row>
-                        {collegedata.overview.college_faculty.map((s,i) => {
+                        {collegedata.overview.college_faculty.map((s, i) => {
                           return (
                             <Col key={i} xs={12} md={6} lg={3}>
                               <Card
                                 style={{
                                   width: "100%",
                                   margin: "1rem 0rem",
-                                  
                                 }}
                               >
                                 <Card.Body>
@@ -648,12 +735,12 @@ export default function CollegeName({ collegedata }) {
                         </tr>
                       </thead>
                       <tbody>
-                        {collegedata.overview.admission_dates.map((s,i) => {
+                        {collegedata.overview.admission_dates.map((s, i) => {
                           return (
                             <tr key={i}>
-                              <td>{s.date?s.date.substring(0, 10):"-"}</td>
-                              <td>{s.event_name || "-" }</td>
-                              <td>{s.year||"-"}</td>
+                              <td>{s.date ? s.date.substring(0, 10) : "-"}</td>
+                              <td>{s.event_name || "-"}</td>
+                              <td>{s.year || "-"}</td>
                             </tr>
                           );
                         })}
@@ -669,16 +756,16 @@ export default function CollegeName({ collegedata }) {
                     <div className={Classes["collegeDetail_classNotToggled"]}>
                       <Table>
                         <tbody>
-                          {collegedata.overview.top_course.map((s,i) => {
+                          {collegedata.overview.top_course.map((s, i) => {
                             return (
                               <tr key={i}>
                                 <td
                                   className={
                                     Classes["collegeDetail_courseName"]
                                   }
-                                  onClick={(e)=>{
-                                    e.stopPropagation()
-                                    setActiveTab("courses")
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setActiveTab("courses");
                                   }}
                                 >
                                   {s.course_name}
@@ -786,7 +873,7 @@ export default function CollegeName({ collegedata }) {
                     {collegedata.overview.college_faqs.map((s, index) => {
                       return (
                         <Accordion
-                        key={index}
+                          key={index}
                           defaultActiveKey={0}
                           style={{ margin: "1rem 0rem" }}
                         >
@@ -824,7 +911,7 @@ export default function CollegeName({ collegedata }) {
                         </tr>
                       </thead>
                       <tbody>
-                        {collegedata.courses.courses.map((s,i) => {
+                        {collegedata.courses.courses.map((s, i) => {
                           return (
                             <tr key={i}>
                               <td>{s.course_name || "-"}</td>
@@ -843,7 +930,7 @@ export default function CollegeName({ collegedata }) {
                       Courses are offered by{" "}
                       {collegedata.generalinfo.college_name}
                     </h3>
-                    {collegedata.courses.courses.map((s,i) => {
+                    {collegedata.courses.courses.map((s, i) => {
                       const specializations = s.course_specialization
                         .split(",")
                         .map((s) => s.trim())
@@ -852,9 +939,7 @@ export default function CollegeName({ collegedata }) {
                       return (
                         <div key={i} className={Classes["courseCardBox"]}>
                           <div className={Classes["cardHeading"]}>
-                            <a href='#course'>
-                              {s.course_name}
-                            </a>
+                            <a href="#course">{s.course_name}</a>
                           </div>
 
                           <div className={Classes["courseCardDetails"]}>
@@ -950,14 +1035,16 @@ export default function CollegeName({ collegedata }) {
             </div>
           )}
         </Tab>
-        <Tab eventKey="campus" title="Campus" >
+        <Tab eventKey="campus" title="Campus">
           {Object.keys(collegedata.campus).length > 0 && (
             <div className="container" id="campus">
               <div className={Classes["content-section"]}>
                 {collegedata.campus.campus_description && (
                   <div className={Classes["description-section"]}>
                     <h3>{collegedata.generalinfo.college_name} Description</h3>
-                    <p style={{whiteSpace:"pre-line"}}>{collegedata.campus.campus_description}</p>
+                    <p style={{ whiteSpace: "pre-line" }}>
+                      {collegedata.campus.campus_description}
+                    </p>
                   </div>
                 )}
                 {collegedata.campus.hostel_fees_structure && (
@@ -981,7 +1068,9 @@ export default function CollegeName({ collegedata }) {
                 {collegedata.admission.admission_process && (
                   <div className={Classes["description-section"]}>
                     <h3>{collegedata.generalinfo.college_name} Admission</h3>
-                    <p style={{whiteSpace:"pre-line"}}>{collegedata.admission.admission_process}</p>
+                    <p style={{ whiteSpace: "pre-line" }}>
+                      {collegedata.admission.admission_process}
+                    </p>
                   </div>
                 )}
                 <div className={Classes["description-section"]}>
@@ -1002,7 +1091,7 @@ export default function CollegeName({ collegedata }) {
                         </thead>
                         <tbody>
                           {collegedata.admission.admission_eligibility_criteria.map(
-                            (s,i) => {
+                            (s, i) => {
                               return (
                                 <tr key={i}>
                                   <td>{s.course_name || "-"}</td>
@@ -1027,7 +1116,9 @@ export default function CollegeName({ collegedata }) {
                 {collegedata.scholorship.scholorship_description && (
                   <div className={Classes["description-section"]}>
                     <h3>{collegedata.generalinfo.college_name} Description</h3>
-                    <p style={{whiteSpace:"pre-line"}}>{collegedata.scholorship.scholorship_description}</p>
+                    <p style={{ whiteSpace: "pre-line" }}>
+                      {collegedata.scholorship.scholorship_description}
+                    </p>
                   </div>
                 )}
                 <div className={Classes["description-section"]}>
@@ -1048,7 +1139,7 @@ export default function CollegeName({ collegedata }) {
                         </thead>
                         <tbody>
                           {collegedata.scholorship.scholorship_scheme.map(
-                            (s,i) => {
+                            (s, i) => {
                               return (
                                 <tr key={i}>
                                   <td>{s.category || "-"}</td>
@@ -1078,7 +1169,7 @@ export default function CollegeName({ collegedata }) {
                         </thead>
                         <tbody>
                           {collegedata.scholorship.sports_scholorship.map(
-                            (s,i) => {
+                            (s, i) => {
                               return (
                                 <tr key={i}>
                                   <td>{s.level || "-"}</td>
@@ -1107,7 +1198,7 @@ export default function CollegeName({ collegedata }) {
                         </thead>
                         <tbody>
                           {collegedata.scholorship.merit_cum_means_scholorship.map(
-                            (s,i) => {
+                            (s, i) => {
                               return (
                                 <tr key={i}>
                                   <td>{s.annual_income || "-"}</td>
@@ -1131,13 +1222,17 @@ export default function CollegeName({ collegedata }) {
               <div className={Classes["content-section"]}>
                 <div className={Classes["description-section"]}>
                   <h3>{collegedata.generalinfo.college_name} Description</h3>
-                  <p style={{whiteSpace:"pre-line"}}>{collegedata.placement.placement_description}</p>
+                  <p style={{ whiteSpace: "pre-line" }}>
+                    {collegedata.placement.placement_description}
+                  </p>
                 </div>
                 <div className={Classes["description-section"]}>
                   <h3>
                     {collegedata.generalinfo.college_name} Placement Process
                   </h3>
-                  <p style={{whiteSpace:"pre-line"}}>{collegedata.placement.placement_process}</p>
+                  <p style={{ whiteSpace: "pre-line" }}>
+                    {collegedata.placement.placement_process}
+                  </p>
                   {collegedata.placement.placement_year.length > 0 && (
                     <>
                       <h3>{collegedata.generalinfo.college_name} Highlights</h3>
@@ -1150,7 +1245,7 @@ export default function CollegeName({ collegedata }) {
                           </tr>
                         </thead>
                         <tbody>
-                          {collegedata.placement.placement_year.map((s,i) => {
+                          {collegedata.placement.placement_year.map((s, i) => {
                             return (
                               <tr key={i}>
                                 <td>{s.year}</td>
@@ -1201,14 +1296,14 @@ export default function CollegeName({ collegedata }) {
           <div className="container">
             <div className={Classes["content-section"]}>
               {Object.keys(collegedata.cutoff).length > 0 &&
-                collegedata.cutoff.yearwise_description.map((s,i) => {
+                collegedata.cutoff.yearwise_description.map((s, i) => {
                   return (
                     <div key={i} className={Classes["description-section"]}>
                       <h3>
                         {" "}
                         {collegedata.generalinfo.college_name} Cut off {s.year}
                       </h3>
-                      <p style={{whiteSpace:"pre-line"}}>{s.description}</p>
+                      <p style={{ whiteSpace: "pre-line" }}>{s.description}</p>
                     </div>
                   );
                 })}
@@ -1305,7 +1400,7 @@ export default function CollegeName({ collegedata }) {
                         placeholder="Select state"
                       >
                         <option value="">Select state</option>
-                        {indianStates.map((state,i) => (
+                        {indianStates.map((state, i) => (
                           <option key={i} value={state}>
                             {state}
                           </option>
@@ -1340,6 +1435,93 @@ export default function CollegeName({ collegedata }) {
           </Modal.Body>
         </Modal>
       )}
+
+      {/* pop up form */}
+      <Modal
+        centered
+        size="lg"
+        animation={false}
+        style={{ backgroundColor: "rgba(0,0,0,0.4)" }}
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        backdrop="static"
+        keyboard={false}
+      >
+        {/* <Modal.Header closeButton></Modal.Header> */}
+        <Modal.Body>
+          <Container>
+            <Row className="justify-content-center align-items-center">
+              <Col md={12}>
+                <div className="text-center mb-3">
+                  <h3>{collegedata.generalinfo.college_name}</h3>
+                  <p>(Student Application Form)</p>
+                </div>
+                <Form onSubmit={handleFormSubmit}>
+                  <Form.Group className="mb-3" controlId="fullname">
+                    <Form.Label>Full Name</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="popupfullname"
+                      value={popupformData.popupfullname}
+                      onChange={handleChangepopup}
+                      placeholder="Enter your full name"
+                      required
+                    />
+                  </Form.Group>
+
+                  <Form.Group className="mb-3" controlId="email">
+                    <Form.Label>Email address</Form.Label>
+                    <Form.Control
+                      type="email"
+                      name="popupemail"
+                      value={popupformData.useremail}
+                      onChange={handleChangepopup}
+                      placeholder="Enter email"
+                      required
+                    />
+                  </Form.Group>
+
+                  <Form.Group className="mb-3" controlId="mobile">
+                    <Form.Label>Mobile Number</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="popupmobile"
+                      value={popupformData.popupmobile}
+                      onChange={handleChangepopup}
+                      maxLength={10}
+                      minLength={10}
+                      placeholder="Enter your mobile number"
+                      required
+                    />
+                  </Form.Group>
+
+                  <Form.Group className="mb-3" controlId="course">
+                    <Form.Label>Course</Form.Label>
+                    <Form.Control
+                      as="select"
+                      name="popupcourse"
+                      value={popupformData.popupcourse}
+                      onChange={handleChangepopup}
+                      required
+                    >
+                      <option value="">Select course</option>
+                      {listcoursesOffered.map((course, index) => (
+                        <option key={index} value={course.course_name}>
+                          {course.course_name}
+                        </option>
+                      ))}
+                    </Form.Control>
+                  </Form.Group>
+
+                  <Button variant="primary" type="submit">
+                    Submit
+                  </Button>
+                </Form>
+              </Col>
+            </Row>
+          </Container>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }

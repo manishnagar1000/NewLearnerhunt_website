@@ -1,14 +1,18 @@
 import React, { useEffect } from "react";
 import PortalLayout from "/components/CRM/Portallayout";
 import { useRouter, notFound } from "next/router";
-import Dashboard from "@/components/CRM/Dashboard";
-import Addcollege from "@/components/CRM/addcollege/Addcollege";
-import Allcollege from "@/components/CRM/addcollege/Allcollege";
-import ApiIntegration from "@/components/CRM/ApiIntegration";
+import Dashboard from "/components/CRM/Dashboard";
+import Addcollege from "/components/CRM/addcollege/Addcollege";
+import Allcollege from "/components/CRM/addcollege/Allcollege";
+import ApiIntegration from "/components/CRM/ApiIntegration";
 
 
 import Swal from "sweetalert2";
-import StudentLeads from "@/components/CRM/StudentLeads";
+import Testeligibility from "/components/CRM/Testeligibility";
+import Studentappliedclg from "/components/CRM/Studentappliedclg";
+import Studentregistertbl from "/components/CRM/Studentregistertbl";
+import AddLeads from "@/components/CRM/AddLeads";
+
 const componentList = [
   {
     comp: <Dashboard />,
@@ -27,8 +31,20 @@ const componentList = [
     slug:"api"
   },
   {
-    comp:<StudentLeads/>,
-    slug:"studentleads"
+    comp:<Testeligibility/>,
+    slug:"testeligibility"
+  },
+  {
+    comp:<Studentappliedclg/>,
+    slug:"appliedcollege"
+  },
+  {
+    comp:<Studentregistertbl/>,
+    slug:"studentregister"
+  },
+  {
+    comp:<AddLeads/>,
+    slug:"addleads"
   }
 ];
 export default function AdminPortalSlug() {

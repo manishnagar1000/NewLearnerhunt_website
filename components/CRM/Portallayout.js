@@ -9,6 +9,7 @@ import GroupIcon from "@mui/icons-material/Group";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import ContactsIcon from "@mui/icons-material/Contacts";
+import QuizIcon from '@mui/icons-material/Quiz';
 import BadgeIcon from "@mui/icons-material/Badge";
 import CategoryIcon from "@mui/icons-material/Category";
 import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
@@ -29,6 +30,10 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 
 import Logout from "@mui/icons-material/Logout";
 import WorkHistoryIcon from "@mui/icons-material/WorkHistory";
+import SsidChartIcon from '@mui/icons-material/SsidChart';
+import TimelineIcon from '@mui/icons-material/Timeline';
+import InsightsIcon from '@mui/icons-material/Insights';
+import AddRoadIcon from '@mui/icons-material/AddRoad';
 const sidebarList = [
   {
     name: "Dashboard",
@@ -58,10 +63,32 @@ const sidebarList = [
     path: "/adminportal/api",
   },
   {
-    name: "StudentLeads",
+    name: "Leads",
     icon: <LeaderboardIcon/>,
-    path: "/adminportal/studentleads",
-  }
+    children: [
+      {
+        name: "Test Eligibility",
+        icon: <TimelineIcon/>,
+        path: "/adminportal/testeligibility",
+      },
+      {
+        name: "Applied Colleges",
+        icon: <SsidChartIcon/>,
+        path: "/adminportal/appliedcollege",
+      },
+      {
+        name: "Student's Registered",
+        icon: <InsightsIcon/>,
+        path: "/adminportal/studentregister",
+      },
+      {
+        name: "Add Leads",
+        icon: <AddRoadIcon/>,
+        path: "/adminportal/addleads",
+      }
+      
+    ],
+  },
 ];
 export default class PortalLayout extends Component {
   constructor(props) {

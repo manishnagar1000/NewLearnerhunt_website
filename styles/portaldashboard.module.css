@@ -59,6 +59,7 @@
     height: 90vh;
     overflow: auto;
     transition: 0.3s;
+    padding-bottom: 4rem;
   }
   .dashboard .bottom-section .sidebar.hide {
     width: 0;
