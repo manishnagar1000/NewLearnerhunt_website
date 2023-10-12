@@ -2,8 +2,10 @@ import React from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import Classes from "/styles/thankyou.module.css";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const ThankYouPage = () => {
+  const router = useRouter();
   return (
     <div className="row border-top border-3 border-primary gx-0">
       <div className="col-md-6 mx-auto">
@@ -31,11 +33,11 @@ const ThankYouPage = () => {
               listed below.
               <br /> Have a great day!
             </p>
-            <Link href="/">
-              <Button className={Classes.linkButton}>
-                <span>Back Home</span>
+            {/* <Link href="back"> */}
+              <Button onClick={()=>router.back()} className={Classes.linkButton}>
+                <span>Go Back</span>
               </Button>
-            </Link>
+            {/* </Link> */}
           </div>
         </div>
       </div>
