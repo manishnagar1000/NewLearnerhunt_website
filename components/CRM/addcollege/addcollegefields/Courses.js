@@ -17,6 +17,7 @@ import { coursenameList } from "@/components/Comps/type";
 import { courseeligibiltyCriteria } from "@/components/Comps/type";
 import { coursestudymode } from "@/components/Comps/type";
 import { courseduration } from "@/components/Comps/type";
+import AddClgTopbar from "@/components/Comps/AddClgTopbar";
 
 const numberKeys = ["course_annual_fees","course_total_intake","avg_fees"]
 const courseLabels = coursenameList.map(course => course.label);
@@ -31,6 +32,8 @@ export default class Courses extends Component {
     this.state = {
       isLoading: false,
       courseFields: [],
+      iscollegeListEmpty: false,
+
       selectedClg: "",
     };
   }
@@ -145,42 +148,22 @@ export default class Courses extends Component {
     }
   }
   render() {
-    const { collegeList } = this.props;
+    // const { collegeList } = this.props;
     return (
       <div className={Classes["add-user"]}>
         <div className={Classes["form-div"]}>
           <form action="#" onSubmit={(e) => this.handleCourse(e)}>
-            <div className="row">
-              <div className="col-md-4">
-                <div className="form-group">
-                  <label className={Classes["labelname"]} htmlFor="colleges">
-                    Colleges <span className={Classes["error"]}>*</span>
-                  </label>
-                  <select
-                    name="colleges"
-                    id="colleges"
-                    className="form-select"
-                    required
-                    value={this.state.selectedClg}
-                    onChange={(e) =>
-                      this.setState({ selectedClg: e.target.value })
-                    }
-                  >
-                    <option disabled value="">
-                      Select a college
-                    </option>
-                    {collegeList.map((c, i) => {
-                      return (
-                        <option disabled={c.disabled} key={i} value={c._id}>
-                          {c.college_name}
-                        </option>
-                      );
-                    })}
-                  </select>
-                </div>
-              </div>
-            </div>
+          <AddClgTopbar
+              onclgchange={(id) => this.setState({ selectedClg: id })}
+        selectedClg={this.state.selectedClg}
+        iscollegeListEmpty={(x) =>
+                this.setState({ iscollegeListEmpty: x })
+              }
+            />
             <hr />
+            {!this.state.iscollegeListEmpty ? (
+              this.state.selectedClg != "" ? (
+            <div>
             <div className="row">
             <div
               className="col-md-12 border mb-3"
@@ -498,6 +481,17 @@ export default class Courses extends Component {
                   <CTA title="Create"/>
                 </div>
               </div>
+              </div>
+              ) : (
+              <div className={Classes["select-clg"]}>
+                <p>Please Select a College</p>
+              </div>
+            )
+          ) : (
+            <div className={Classes["select-clg"]}>
+              <p>Create a College</p>
+            </div>
+          )}
           </form>
       
         </div>

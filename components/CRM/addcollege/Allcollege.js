@@ -31,7 +31,7 @@ export default class Allcollege extends Component {
 
   getAssetList() {
     this.setState({ isApiHitComplete: false, isDataFound: false });
-    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/GetCollegeList?tab=0`, {
+    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/get-all-colleges`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("pt")}`,
       },

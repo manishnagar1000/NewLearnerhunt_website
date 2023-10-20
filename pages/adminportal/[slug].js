@@ -44,7 +44,7 @@ const componentList = [
   },
   {
     comp:<AddLeads/>,
-    slug:"addleads"
+    slug:"adleads"
   }
 ];
 export default function AdminPortalSlug() {
@@ -86,6 +86,7 @@ export default function AdminPortalSlug() {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes",
     }).then((result) => {
+      if (result.isConfirmed) {
       fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/user/logout", {
         method: "POST",
         headers: {
@@ -99,7 +100,7 @@ export default function AdminPortalSlug() {
         window.location.href = "/adminportal";
       }
           })
-    
+        }
     });
   };
   return (

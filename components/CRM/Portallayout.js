@@ -82,9 +82,9 @@ const sidebarList = [
         path: "/adminportal/studentregister",
       },
       {
-        name: "Add Leads",
+        name: "Ad Leads",
         icon: <AddRoadIcon/>,
-        path: "/adminportal/addleads",
+        path: "/adminportal/adleads",
       }
       
     ],

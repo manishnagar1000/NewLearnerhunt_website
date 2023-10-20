@@ -129,10 +129,11 @@
     font-size: 18px;
 }
 
-.courseCardBox .cardHeading a {
+.courseCardBox .cardHeading span {
+    /* .courseCardBox .cardHeading a { */
     color: #3f53d9;
-    text-decoration: none;
-    cursor: pointer;
+    /* text-decoration: none; */
+    /* cursor: pointer; */
 }
 
 .courseCardBox .courseCardDetails{

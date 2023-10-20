@@ -10,7 +10,7 @@ import WhatsAppButton from '@/components/Whatsup'
 
 import axios from 'axios'
 import Head from 'next/head'
-export default function Home({colleges,courses,exams,testeligibility}) {
+export default function Home({colleges,courses,exams,testeligibility,ukcolleges}) {
   // console.log(colleges)
  
   return (
@@ -32,7 +32,7 @@ export default function Home({colleges,courses,exams,testeligibility}) {
       <TopCourses  courses ={courses}/>
       <CollegeRanking zones={testeligibility.zones} departments={testeligibility.departments} rankingtypes={testeligibility.rankingtypes} />
       <TopExams exams={exams}/>
-      <StudyAbroad/>
+      <StudyAbroad StudyAbroad={ukcolleges}/>
     </>
   )
 }
@@ -88,11 +88,16 @@ export async function getServerSideProps() {
     const testeligibility_res = await axios.get(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/miscellaneous/testeligibility`);
     const testeligibility = testeligibility_res.data;
 
+    const uk_res = await axios.get(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/uk-colleges?limit=4&page=0&course=mba`);
+    const uk = uk_res.data;
+
+
     return {
       props: {
         colleges: colleges.data,
         courses: courses.data,
         exams: exams.data,
+        ukcolleges :uk.data,
         testeligibility,
       },
     };

@@ -20,7 +20,7 @@ export default class Dashboard extends Component {
 
   getAssetList() {
     this.setState({ isApiHitComplete: false });
-    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/GetCollegeList?tab=0`, {
+    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/dashboard-getdata`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("pt")}`,
       },
@@ -28,8 +28,8 @@ export default class Dashboard extends Component {
       let response = await res.json();
       // console.log(response.data.length);
 
-     const length= response.data.length
-      this.setState({collegeCount:length, isApiHitComplete: true });
+     
+      this.setState({collegeCount:response.data.total_college_count, isApiHitComplete: true });
     });
   }
 

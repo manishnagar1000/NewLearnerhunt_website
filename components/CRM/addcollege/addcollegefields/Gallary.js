@@ -12,6 +12,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import { Container } from "@mui/material";
+import AddClgTopbar from "@/components/Comps/AddClgTopbar";
 
 export default class Gallary extends Component {
   constructor(props) {
@@ -24,7 +25,8 @@ export default class Gallary extends Component {
       imageBanner: null,
       imgLogo:"",
       imgSquare:"",
-      imgBanner:""
+      imgBanner:"",
+      iscollegeListEmpty: false,
       
     };
   }
@@ -121,38 +123,17 @@ export default class Gallary extends Component {
       <div className={Classes["add-user"]}>
         <div className={Classes["form-div"]}>
           <form action="#" onSubmit={(e) => this.handleGallaryoff(e)}>
-            <div className="row">
-              <div className="col-md-4">
-                <div className="form-group">
-                  <label className={Classes["labelname"]} htmlFor="colleges">
-                    Colleges <span className={Classes["error"]}>*</span>
-                  </label>
-                  <select
-                    name="colleges"
-                    id="colleges"
-                    className="form-select"
-                    required
-                    value={this.state.selectedClg}
-                    onChange={(e) =>
-                      this.setState({ selectedClg: e.target.value })
-                    }
-                  >
-                    <option disabled value="">
-                      Select a college
-                    </option>
-                    {collegeList.map((c, i) => {
-                      return (
-                        <option disabled={c.disabled} key={i} value={c._id}>
-                          {c.college_name}
-                        </option>
-                      );
-                    })}
-                  </select>
-                </div>
-              </div>
-            </div>
+          <AddClgTopbar
+              onclgchange={(id) => this.setState({ selectedClg: id })}
+        selectedClg={this.state.selectedClg}
+        iscollegeListEmpty={(x) =>
+                this.setState({ iscollegeListEmpty: x })
+              }
+            />
             <hr />
-      
+            {!this.state.iscollegeListEmpty ? (
+              this.state.selectedClg != "" ? (
+      <div>
             <div className="container">
               <div className="row">
                 <div className="col-md-4">
@@ -256,6 +237,17 @@ export default class Gallary extends Component {
                 <CTA title="Create" />
               </div>
             </div>
+            </div>
+            ) : (
+              <div className={Classes["select-clg"]}>
+                <p>Please Select a College</p>
+              </div>
+            )
+          ) : (
+            <div className={Classes["select-clg"]}>
+              <p>Create a College</p>
+            </div>
+          )}
           </form>
         </div>
         {

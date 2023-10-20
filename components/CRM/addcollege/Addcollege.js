@@ -21,51 +21,38 @@ const Addcollege = () => {
   const [isDataFound, setIsDataFound] = useState(false)
   const [clgList, setClgList] = useState([])
 
-  const tabs = {
-    "0":"generalinfo",
-    "1":"overview",
-    "2":"course",
-    "3":"campus",
-    "4":"admission",
-    "5":"scholorship",
-    "6":"placement",
-    "7":"cutoff",
-    "8":"clgrank",
-    "9":"gallery"
-
-  }
   const handleSelectTab = (k) => {
     setSelectedTab(k)
     sessionStorage.setItem('st', k)
-    setIsApiHitComplete(false)
-    setIsDataFound(false)
-    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/GetCollegeList?tab=${tabs[k]}`, {
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem("pt")}`
-      }
-    }).then(async res => {
-      let response = await res.json()
-      // console.log(response)
-      if (response.data.length > 0) {
-        const data =  response.data.map((s)=>{
-          let obj =  {
-            _id:s._id,
-            college_name:s.college_name,
-            disabled:false
-          }
+    // setIsApiHitComplete(false)
+    // setIsDataFound(false)
+    // fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/GetCollegeList?tab=${tabs[k]}`, {
+    //   headers: {
+    //     'Authorization': `Bearer ${localStorage.getItem("pt")}`
+    //   }
+    // }).then(async res => {
+    //   let response = await res.json()
+    //   // console.log(response)
+    //   if (response.data.length > 0) {
+    //     const data =  response.data.map((s)=>{
+    //       let obj =  {
+    //         _id:s._id,
+    //         college_name:s.college_name,
+    //         disabled:false
+    //       }
           
-          if(response.disabled_colleges.includes(s._id)){
-            obj.disabled=true
-          };
+    //       if(response.disabled_colleges.includes(s._id)){
+    //         obj.disabled=true
+    //       };
 
-          return obj
-        })
+    //       return obj
+    //     })
 
-        setIsDataFound(true)
-        setClgList(data)
-      }
-      setIsApiHitComplete(true)
-    })
+    //     setIsDataFound(true)
+    //     setClgList(data)
+    //   }
+    //   setIsApiHitComplete(true)
+    // })
   }
 
   const defaultOpentab = ()=>{
@@ -96,10 +83,10 @@ const Addcollege = () => {
           {selectedTab == '0' && <Gernal />}
         </Tab>
         <Tab eventKey="1" title="Overview">
-          {isApiHitComplete ?
-            isDataFound ?
-              selectedTab == '1' && <Overview onSuccess={onSuccess} collegeList={clgList} />
-              :
+          {/* {isApiHitComplete ?
+            isDataFound ? */}
+              {selectedTab == '1' && <Overview onSuccess={onSuccess} collegeList={clgList} />}
+              {/* :
               <div style={{ display: "flex", width: "100%", height: '80vh', justifyContent: "center", alignItems: 'center' }}>
                 <div style={{ fontWeight: "500" }}>
                   <span>Please <span style={{ color: "#0d6efd", cursor: 'pointer' }} onClick={() => setSelectedTab(0)}>+Create</span> a College General Info first</span>
@@ -111,13 +98,13 @@ const Addcollege = () => {
                 <span className="visually-hidden">Loading...</span>
               </Spinner>
             </div>
-          }
+          } */}
         </Tab>
         <Tab eventKey="2" title="Courses">
-          {isApiHitComplete ?
-            isDataFound ?
-              selectedTab == '2' && <Courses onSuccess={onSuccess} collegeList={clgList} />
-              :
+          {/* {isApiHitComplete ?
+            isDataFound ? */}
+             { selectedTab == '2' && <Courses onSuccess={onSuccess} collegeList={clgList} />}
+              {/* :
               <div style={{ display: "flex", width: "100%", height: '80vh', justifyContent: "center", alignItems: 'center' }}>
                 <div style={{ fontWeight: "500" }}>
                   <span>Please <span style={{ color: "#0d6efd", cursor: 'pointer' }} onClick={() => setSelectedTab(0)}>+Create</span> a College General Info first</span>
@@ -129,13 +116,13 @@ const Addcollege = () => {
                 <span className="visually-hidden">Loading...</span>
               </Spinner>
             </div>
-          }
+          } */}
         </Tab>
         <Tab eventKey="3" title="Campus">
-          {isApiHitComplete ?
-            isDataFound ?
-              selectedTab == '3' && <Campus onSuccess={onSuccess}  collegeList={clgList} />
-              :
+          {/* {isApiHitComplete ?
+            isDataFound ? */}
+              {selectedTab == '3' && <Campus onSuccess={onSuccess}  collegeList={clgList} />}
+              {/* :
               <div style={{ display: "flex", width: "100%", height: '80vh', justifyContent: "center", alignItems: 'center' }}>
                 <div style={{ fontWeight: "500" }}>
                   <span>Please <span style={{ color: "#0d6efd", cursor: 'pointer' }} onClick={() => setSelectedTab(0)}>+Create</span> a College General Info first</span>
@@ -147,13 +134,13 @@ const Addcollege = () => {
                 <span className="visually-hidden">Loading...</span>
               </Spinner>
             </div>
-          }
+          } */}
         </Tab>
         <Tab eventKey="4" title="Admission">
-          {isApiHitComplete ?
-            isDataFound ?
-              selectedTab == '4' && <Admission onSuccess={onSuccess} collegeList={clgList} />
-              :
+          {/* {isApiHitComplete ?
+            isDataFound ? */}
+            {  selectedTab == '4' && <Admission onSuccess={onSuccess} collegeList={clgList} />}
+              {/* :
               <div style={{ display: "flex", width: "100%", height: '80vh', justifyContent: "center", alignItems: 'center' }}>
                 <div style={{ fontWeight: "500" }}>
                   <span>Please <span style={{ color: "#0d6efd", cursor: 'pointer' }} onClick={() => setSelectedTab(0)}>+Create</span> a College General Info first</span>
@@ -165,13 +152,13 @@ const Addcollege = () => {
                 <span className="visually-hidden">Loading...</span>
               </Spinner>
             </div>
-          }
+          } */}
         </Tab>
         <Tab eventKey="5" title="ScholarShip">
-          {isApiHitComplete ?
-            isDataFound ?
-              selectedTab == '5' && <Scholorship onSuccess={onSuccess} collegeList={clgList} />
-              :
+          {/* {isApiHitComplete ?
+            isDataFound ? */}
+{selectedTab == '5' && <Scholorship onSuccess={onSuccess} collegeList={clgList} />} 
+             {/* :
               <div style={{ display: "flex", width: "100%", height: '80vh', justifyContent: "center", alignItems: 'center' }}>
                 <div style={{ fontWeight: "500" }}>
                   <span>Please <span style={{ color: "#0d6efd", cursor: 'pointer' }} onClick={() => setSelectedTab(0)}>+Create</span> a College General Info first</span>
@@ -183,13 +170,13 @@ const Addcollege = () => {
                 <span className="visually-hidden">Loading...</span>
               </Spinner>
             </div>
-          }
+          } */}
         </Tab>
         <Tab eventKey="6" title="Placement">
-          {isApiHitComplete ?
-            isDataFound ?
-              selectedTab == '6' && <Placement onSuccess={onSuccess} collegeList={clgList} />
-              :
+          {/* {isApiHitComplete ?
+            isDataFound ? */}
+              {selectedTab == '6' && <Placement onSuccess={onSuccess} collegeList={clgList} />}
+              {/* :
               <div style={{ display: "flex", width: "100%", height: '80vh', justifyContent: "center", alignItems: 'center' }}>
                 <div style={{ fontWeight: "500" }}>
                   <span>Please <span style={{ color: "#0d6efd", cursor: 'pointer' }} onClick={() => setSelectedTab(0)}>+Create</span> a College General Info first</span>
@@ -201,13 +188,13 @@ const Addcollege = () => {
                 <span className="visually-hidden">Loading...</span>
               </Spinner>
             </div>
-          }
+          } */}
         </Tab>
         <Tab eventKey="7" title="Cut Off">
-          {isApiHitComplete ?
-            isDataFound ?
-              selectedTab == '7' && <Cutoff onSuccess={onSuccess} collegeList={clgList} />
-              :
+          {/* {isApiHitComplete ?
+            isDataFound ? */}
+              {selectedTab == '7' && <Cutoff onSuccess={onSuccess} collegeList={clgList} />}
+              {/* :
               <div style={{ display: "flex", width: "100%", height: '80vh', justifyContent: "center", alignItems: 'center' }}>
                 <div style={{ fontWeight: "500" }}>
                   <span>Please <span style={{ color: "#0d6efd", cursor: 'pointer' }} onClick={() => setSelectedTab(0)}>+Create</span> a College General Info first</span>
@@ -219,13 +206,13 @@ const Addcollege = () => {
                 <span className="visually-hidden">Loading...</span>
               </Spinner>
             </div>
-          }
+          } */}
         </Tab>
         <Tab eventKey="8" title="College Ranking">
-          {isApiHitComplete ?
-            isDataFound ?
-              selectedTab == '8' && <CollegeRanking onSuccess={onSuccess} collegeList={clgList} />
-              :
+          {/* {isApiHitComplete ?
+            isDataFound ? */}
+              {selectedTab == '8' && <CollegeRanking onSuccess={onSuccess} collegeList={clgList} />}
+              {/* :
               <div style={{ display: "flex", width: "100%", height: '80vh', justifyContent: "center", alignItems: 'center' }}>
                 <div style={{ fontWeight: "500" }}>
                   <span>Please <span style={{ color: "#0d6efd", cursor: 'pointer' }} onClick={() => setSelectedTab(0)}>+Create</span> a College General Info first</span>
@@ -237,13 +224,13 @@ const Addcollege = () => {
                 <span className="visually-hidden">Loading...</span>
               </Spinner>
             </div>
-          }
+          } */}
         </Tab>
         <Tab eventKey="9" title="Gallery">
-          {isApiHitComplete ?
-            isDataFound ?
-              selectedTab == '9' && <Gallary onSuccess={onSuccess} collegeList={clgList} />
-              :
+          {/* {isApiHitComplete ?
+            isDataFound ? */}
+              {selectedTab == '9' && <Gallary onSuccess={onSuccess} collegeList={clgList} />}
+              {/* :
               <div style={{ display: "flex", width: "100%", height: '80vh', justifyContent: "center", alignItems: 'center' }}>
                 <div style={{ fontWeight: "500" }}>
                   <span>Please <span style={{ color: "#0d6efd", cursor: 'pointer' }} onClick={() => setSelectedTab(0)}>+Create</span> a College General Info first</span>
@@ -255,7 +242,7 @@ const Addcollege = () => {
                 <span className="visually-hidden">Loading...</span>
               </Spinner>
             </div>
-          }
+          } */}
         </Tab>
         
       </Tabs>

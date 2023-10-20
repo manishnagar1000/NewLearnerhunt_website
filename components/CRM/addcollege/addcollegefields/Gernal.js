@@ -17,6 +17,7 @@ export default class Gernal extends Component {
       isApiHitComplete: true,
       isDataFound: false,
       collegename: "",
+      selectedCountry:"",
       selectedState: "",
       selectedCity: "",
       selectedcollegetype: "",
@@ -67,6 +68,7 @@ export default class Gernal extends Component {
     try {
       const fd = new FormData();
       fd.append("college_name", this.state.collegename);
+      fd.append("country",this.state.selectedCountry)
       fd.append("state", this.state.selectedState);
       fd.append("city", this.state.selectedCity);
       fd.append("college_type", this.state.selectedcollegetype);
@@ -98,7 +100,7 @@ export default class Gernal extends Component {
             icon: 'success',
             confirmButtonText: 'Ok'
           }).then(() => {
-            this.setState({ collegename: '', selectedState: '', selectedCity: '', selectedcollegetype: '',selectedValues:[], selectedFile: null },()=>this.fileInputRef.current.value=null)
+            this.setState({ collegename: '',selectedCountry:'', selectedState: '', selectedCity: '', selectedcollegetype: '',selectedValues:[], selectedFile: null },()=>this.fileInputRef.current.value=null)
           })
         } else {
           if (res.error && res.status == 0) {
@@ -135,10 +137,41 @@ export default class Gernal extends Component {
 })
   };
   render() {
+    console.log(IndianStates)
     return (
       <div className={Classes["add-user"]}>
         <div className={Classes["form-div"]}>
           <form action="#" onSubmit={(e) => this.handleSubmit(e)}>
+
+          <div className="row">
+              <div className="col-md-4">
+                <div className="form-group">
+                  <label className={Classes["labelname"]} htmlFor="countries">Countries<span className={Classes["error"]}>*</span></label>
+                  <select
+                    name="countries"
+                    id="countries"
+                    className="form-select"
+                    required
+                    value={this.state.selectedCountry}
+                    onChange={(e) =>
+                      // console.log(e.target.value)
+                      this.setState({ selectedCountry: e.target.value,selectedState:"",selectedCity:"" })
+                    }
+                  >
+                    <option disabled value="">Select a country</option>
+                    {Object.keys(IndianStates).map((c, i) => {
+                      return (
+                        <option key={i} value={c}>
+                          {c}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
+              </div>
+            </div>
+            <hr />
+            
             <div className="row">
               <div className="col-md-4">
                 <div className={Classes["form-group"]}>
@@ -155,7 +188,7 @@ export default class Gernal extends Component {
               </div>
               <div className="col-md-4">
                 <div className="form-group">
-                  <label className={Classes["labelname"]} htmlFor="state">State <span className={Classes["error"]}>*</span></label>
+                  <label className={Classes["labelname"]} htmlFor="state">{this.state.selectedCountry != "India"?"Region":"State"} <span className={Classes["error"]}>*</span></label>
                   <select
                     name="state"
                     id="state"
@@ -166,8 +199,8 @@ export default class Gernal extends Component {
                       this.setState({ selectedState: e.target.value })
                     }
                   >
-                    <option disabled value="">Select a state</option>
-                    {Object.keys(IndianStates).map((d, i) => {
+                    <option disabled value="">Select a {this.state.selectedCountry != "India"?"region":"state"}</option>
+                    {this.state.selectedCountry != "" && Object.keys(IndianStates[this.state.selectedCountry]).map((d, i) => {
                       return (
                         <option key={i} value={d}>
                           {d}
@@ -191,7 +224,7 @@ export default class Gernal extends Component {
                     }
                   >
                     <option disabled value="">Select a city</option>
-                    {this.state.selectedState != "" && IndianStates[this.state.selectedState].map((c, i) => {
+                    {this.state.selectedState != "" && IndianStates[this.state.selectedCountry][this.state.selectedState].map((c, i) => {
                       return (
                         <option key={i} value={c}>
                           {c}

@@ -11,6 +11,7 @@ import Badge from "@mui/material/Badge";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Tooltip from "@mui/material/Tooltip";
+import AddClgTopbar from "@/components/Comps/AddClgTopbar";
 
 export default class Cutoff extends Component {
   constructor(props) {
@@ -19,6 +20,7 @@ export default class Cutoff extends Component {
       isLoading: false,
       cutoffFields: [],
       selectedClg: '',
+      iscollegeListEmpty: false,
 
     };
   }
@@ -119,34 +121,18 @@ console.error('Error:', error);
       <div className={Classes["add-user"]}>
         <div className={Classes["form-div"]}>
         <form action="#" onSubmit={(e) => this.handleCutoff(e)}>
-        <div className="row">
-              <div className="col-md-4">
-                <div className="form-group">
-                  <label className={Classes["labelname"]} htmlFor="colleges">Colleges <span className={Classes["error"]}>*</span></label>
-                  <select
-                    name="colleges"
-                    id="colleges"
-                    className="form-select"
-                    required
-                    value={this.state.selectedClg}
-                    onChange={(e) =>
-                      this.setState({ selectedClg: e.target.value })
-                    }
-                  >
-                    <option disabled value="">Select a college</option>
-                    {collegeList.map((c, i) => {
-                      return (
-                        <option disabled={c.disabled} key={i} value={c._id}>
-                          {c.college_name}
-                        </option>
-                      );
-                    })}
-                  </select>
-                </div>
-              </div>
-            </div>
+        <AddClgTopbar
+        selectedClg={this.state.selectedClg}
+              onclgchange={(id) => this.setState({ selectedClg: id })}
+              iscollegeListEmpty={(x) =>
+                this.setState({ iscollegeListEmpty: x })
+              }
+            />
             <hr />
-          <div className="row">
+            {!this.state.iscollegeListEmpty ? (
+              this.state.selectedClg != "" ? (
+                <div>
+                            <div className="row">
             <div
               className="col-md-12 border mb-3"
               style={{ backgroundColor: "#ededed" }}
@@ -235,6 +221,18 @@ console.error('Error:', error);
                 <CTA title="Create"/>
               </div>
             </div>
+            </div>
+
+             ) : (
+              <div className={Classes["select-clg"]}>
+                <p>Please Select a College</p>
+              </div>
+            )
+          ) : (
+            <div className={Classes["select-clg"]}>
+              <p>Create a College</p>
+            </div>
+          )}
             </form>
         </div>
       </div>

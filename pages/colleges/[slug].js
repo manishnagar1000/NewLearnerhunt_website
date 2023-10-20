@@ -14,8 +14,8 @@ import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 
 const pagesHavePopup = [
-  "iilm-university-gurugram",
-  "iilm-university-greater-noida",
+  // "iilm-university-gurugram",
+  // "iilm-university-greater-noida",
 ];
 
 export default function CollegeName({ collegedata }) {
@@ -46,7 +46,7 @@ export default function CollegeName({ collegedata }) {
   const { slug } = router.query;
   console.log(slug);
   useEffect(()=>{
-    setShowModal(pagesHavePopup.includes(slug));
+    setShowModal(!localStorage.getItem("userid")&& pagesHavePopup.includes(slug));
   },[slug])
   useEffect(() => {
     
@@ -114,7 +114,7 @@ export default function CollegeName({ collegedata }) {
     "West Bengal",
   ];
 
-  const listcoursesOffered = collegedata.overview.offered_courses;
+  const listcoursesOffered = collegedata.overview.offered_courses || [];
   // console.log(listcoursesOffered)
 
   const handleFormSubmit = (e) => {
@@ -939,7 +939,9 @@ export default function CollegeName({ collegedata }) {
                       return (
                         <div key={i} className={Classes["courseCardBox"]}>
                           <div className={Classes["cardHeading"]}>
-                            <a href="#course">{s.course_name}</a>
+                            {/* <a href="#course">{s.course_name}</a> */}
+                            <span>{s.course_name}</span>
+
                           </div>
 
                           <div className={Classes["courseCardDetails"]}>

@@ -14,6 +14,7 @@ import { coursenameList } from "@/components/Comps/type";
 import { coursefulleligibiltyCriteria } from "@/components/Comps/type";
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
+import AddClgTopbar from "@/components/Comps/AddClgTopbar";
 
 const courseFullname = coursenameList.map(course => course.fullName);
 const eligibilityLabels = coursefulleligibiltyCriteria.map(course => course.label);
@@ -24,6 +25,7 @@ export default class Admission extends Component {
       isLoading: false,
       admissiondesc: "",
       selectedClg: '',
+      iscollegeListEmpty: false,
       admissionFields: [],
     };
   }
@@ -120,38 +122,22 @@ console.error('Error:', error);
     });
   }
   render() {
-    const { collegeList } = this.props
+    // const { collegeList } = this.props
     return (
       <div className={Classes["add-user"]}>
         <div className={Classes["form-div"]}>
         <form action="#" onSubmit={(e) => this.handleAdmission(e)}>
-        <div className="row">
-              <div className="col-md-4">
-                <div className="form-group">
-                  <label className={Classes["labelname"]} htmlFor="colleges">Colleges <span className={Classes["error"]}>*</span></label>
-                  <select
-                    name="colleges"
-                    id="colleges"
-                    className="form-select"
-                    required
-                    value={this.state.selectedClg}
-                    onChange={(e) =>
-                      this.setState({ selectedClg: e.target.value })
-                    }
-                  >
-                    <option disabled value="">Select a college</option>
-                    {collegeList.map((c, i) => {
-                      return (
-                        <option disabled={c.disabled} key={i} value={c._id}>
-                          {c.college_name}
-                        </option>
-                      );
-                    })}
-                  </select>
-                </div>
-              </div>
-            </div>
+        <AddClgTopbar
+        selectedClg={this.state.selectedClg}
+
+              onclgchange={(id) => this.setState({ selectedClg: id })}
+              iscollegeListEmpty={(x) =>
+                this.setState({ iscollegeListEmpty: x })
+              }
+            />
             <hr />
+            {!this.state.iscollegeListEmpty ? (
+              this.state.selectedClg != "" ? (
           <div className="row">
             <div className="col-md-12">
               <div className={Classes["form-group"]}>
@@ -171,8 +157,6 @@ console.error('Error:', error);
               </div>
             </div>
         
-
-          
             <div
               className="col-md-12 border mb-3"
               style={{ backgroundColor: "#ededed" }}
@@ -189,7 +173,6 @@ console.error('Error:', error);
               {this.state.admissionFields.map((field, i) => {
                 return (
                   <div className="row">
-                   
                     <div className="col-md-5">
                       <div className={Classes["form-group"]}>
                         <label className={Classes["labelname"]} htmlFor="name">
@@ -316,6 +299,16 @@ console.error('Error:', error);
               </div>
             </div>
           </div>
+           ) : (
+            <div className={Classes["select-clg"]}>
+              <p>Please Select a College</p>
+            </div>
+          )
+        ) : (
+          <div className={Classes["select-clg"]}>
+            <p>Create a College</p>
+          </div>
+        )}
           </form>
         </div>
         {
