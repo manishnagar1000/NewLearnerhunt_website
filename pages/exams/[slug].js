@@ -17,7 +17,7 @@ const formatStringToList = (str) => {
   );
 };
 export default function ExamName({ examdata }) {
-  console.log(examdata)
+  // console.log(examdata)
 //   const dummyBannerImg = collegedata.banner_img_path && collegedata.banner_img_path != "" ? collegedata.banner_img_path : '/assets/images/DummyBG.jpg'
   const dummyLogoImg = examdata.exam_logo && examdata.exam_logo != "" ? examdata.exam_logo : '/assets/images/DummyLOGO.jpg'
   return (

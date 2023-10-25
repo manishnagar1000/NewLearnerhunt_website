@@ -44,7 +44,7 @@ export default function CollegeName({ collegedata }) {
   const [showModal, setShowModal] = useState(false);
   const router = useRouter();
   const { slug } = router.query;
-  console.log(slug);
+  // console.log(slug);
   useEffect(()=>{
     setShowModal(!localStorage.getItem("userid")&& pagesHavePopup.includes(slug));
   },[slug])
@@ -675,7 +675,7 @@ export default function CollegeName({ collegedata }) {
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   setActiveTab("courses");
-                                  console.log("hello");
+                                  // console.log("hello");
                                 }}
                               >
                                 {s.course_name}

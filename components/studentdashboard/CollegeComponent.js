@@ -70,7 +70,7 @@ export default function CollegeComponent() {
         ) : studentdata.length > 0 ? (
           studentdata?.map((s, i) => {
             return (
-              <Card key={i} style={{ marginBottom: "20px", padding: "1rem" }}>
+              <Card key={i} style={{ marginBottom: "20px", padding: "1rem", border:`${s.status?'':'1px solid red'}` }}>
                 <Container>
                   <Row className="d-flex justify-content-center align-items-center">
                     <Col md={2}>
@@ -94,10 +94,13 @@ export default function CollegeComponent() {
                       <p>Applied Courses : <span style={{backgroundColor:"#e9ecff",padding:"0.2rem 0.5rem"}}>{s.applied_courses}</span></p>
 
                     </Col>
+                    
                     <Col md={3}>
+                    {s.status &&
                       <Link href={`/colleges/${s.slug}`}>
                         <Button variant="primary">View College</Button>
                       </Link>
+                    }
                     </Col>
                   </Row>
                 </Container>

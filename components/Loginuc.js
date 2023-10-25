@@ -478,6 +478,8 @@ export default function Loginuc({ isOpen, onClose, role }) {
             <Col md={12} lg={7} style={{ padding: "1rem" }}>
               <div className="text-center mb-3">
                 <img src="/assets/images/Svglogo.svg" width={200} height={60} />
+                {/* <img src="/assets/images/Learnerhunt-Logo.png" width={200} height={60} /> */}
+
                 <h3>
                   {" "}
                   {showSignup

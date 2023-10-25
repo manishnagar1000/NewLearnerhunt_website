@@ -40,8 +40,9 @@ export default class AddClgTopbar extends Component {
       ).then(async (res) => {
         let response = await res.json();
         // console.log(response);
+        var data = []
         if (response.data.length > 0) {
-          const data = response.data.map((s) => {
+            data = response.data.map((s) => {
             let obj = {
               _id: s._id,
               college_name: s.college_name,
@@ -54,8 +55,9 @@ export default class AddClgTopbar extends Component {
   
             return obj;
           });
-          this.setState({ collegeList: data });
+          
         }
+        this.setState({ collegeList: data });
 
         // console.log(response.data.length == 0)
         this.props.iscollegeListEmpty(response.data.length == 0);

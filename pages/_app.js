@@ -34,7 +34,9 @@ export default function App({ Component, pageProps }) {
         <meta property="og:type" content="website" />
         <meta
           property="og:image"
-          content="https://www.learnerhunt.com/assets/images/Svglogo.svg"
+          // content="https://www.learnerhunt.com/assets/images/Svglogo.svg"
+          content="https://www.learnerhunt.com/assets/images/Learnerhunt-Logo.png"
+
         />
 
         {/* Twitter Tag */}
@@ -50,7 +52,9 @@ export default function App({ Component, pageProps }) {
         />
         <meta
           name="twitter:image"
-          content="https://www.learnerhunt.com/assets/images/Svglogo.svg"
+          // content="https://www.learnerhunt.com/assets/images/Svglogo.svg"
+          content="https://www.learnerhunt.com/assets/images/Learnerhunt-Logo.png"
+
         />
 
         <script

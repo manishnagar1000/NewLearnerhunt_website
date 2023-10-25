@@ -173,35 +173,55 @@ export const courseeligibiltyCriteria = [
 export const coursefulleligibiltyCriteria = [
   {
     label:
-      "Candidates must have passed the 10th or 12th standard examination with at least 50% aggregate for general category candidates and 45% aggregate for reserved category candidates.",
+      "10th or 12 with minimum 50% marks.",
   },
   {
     label:
-      "Candidates must have passed the 12th standard examination with at least 50% aggregate for general category candidates and 45% aggregate for reserved category candidates.",
+      "10+2 with (any stream) minimum 50% marks.",
   },
   {
     label:
-      "Candidates must have passed the 10+2 standard with (PCM and PCB) examinations with at least 50% aggregate for general category candidates and 45% aggregate for reserved category candidates.",
+      "10+2 with (any stream) minimum 60% marks.",
   },
   {
     label:
-      "Bachelor’s degree with a minimum of 50% marks (45% for reserved categories) in any discipline from a recognized institution",
+      "10+2 (PCM/PCB) with minimum 50% marks.",
   },
   {
     label:
-      "Bachelor’s degree with a minimum of 55% marks (50% for reserved categories) in any discipline from a recognized institution",
+      "10+2 (PCM/PCB) with minimum 60% marks.",
   },
   {
     label:
-      "Bachelor’s degree with a minimum of 55% marks (50% for reserved categories) in any discipline from a recognized institution with minimum 2 Years work experience",
+      "10 + Diploma in relevant discipline with minimum 50% marks for (Lateral Entry).",
   },
   {
     label:
-      "Master’s degree in a management-related discipline with at least 55% marks in aggregate from a recognized university",
+      "Bachelor’s degree with a minimum of 50% marks (45% for reserved categories) in any discipline from a recognized institution.",
   },
   {
     label:
-      "LL. B./B. L. or any other graduate degree in Law recognized by Bar Council of India with a minimum of 50% marks in aggregate (45% in case of candidates belonging to reserved category).",
+      "Bachelor’s degree with a minimum of 60% marks (45% for reserved categories) in any discipline from a recognized institution.",
+  },
+  {
+    label:
+      "Bachelor’s degree with a minimum of 50% marks (45% for reserved categories) in relevant discipline from a recognized institution with minimum 2 / 5 Years work experience.",
+  },
+  {
+    label:
+      "Bachelor’s degree with a minimum of 60% marks in relevant discipline from a recognized institution.",
+  },
+  {
+    label:
+      "Master’s degree in a related discipline with minimum 55% marks in aggregate from a recognized university.",
+  },
+  {
+    label:
+      "The required minimum qualification for admission to a Ph.D Program shall normally be a two years Master’s OR M.Phil Degree from any accredited Indian or Foreign University in the relevant field with minimum 55% marks.",
+  },
+  {
+    label:
+      "LL. B./B. L. or any other graduate degree in Law recognized by Bar Council of India with a minimum of 50% marks(45% for reserved categories).",
   },
 ];
 export const coursestudymode = [
@@ -224,6 +244,8 @@ export const courseduration = [
   { label: "5 Years" },
   { label: "5.5 Years" },
   { label: "5 Years + 6 Months Internship" },
+  { label: "6 Years" },
+
 
 
 

@@ -8,15 +8,16 @@ const SearchModal = ({ onHide }) => {
   const [results, setResults] = useState([])
   useEffect(() => {
     let timeoutId;
-
     const fetchSearchResults = async () => {
       const response = await fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/miscellaneous/global-search?term=" + searchTerm);
+      // console.log(response.data)
       const data = await response.json()
+
       setResults(data.data);
       setIsApiHitComplete(true);
     };
 
-    if (searchTerm.length > 2) {
+    if (searchTerm.trim().length > 2) {
       setIsApiHitComplete(false);
       timeoutId = setTimeout(fetchSearchResults, 500);
     } else {
@@ -36,7 +37,7 @@ const SearchModal = ({ onHide }) => {
       <Modal.Body style={{ padding: '0' }}>
         <div className={Classes['results']}>
           {
-            searchTerm.length > 2 ?
+            searchTerm.trim().length > 2 ?
               isApiHitComplete ?
                 results.length > 0 ?
                   results.map((el) => {

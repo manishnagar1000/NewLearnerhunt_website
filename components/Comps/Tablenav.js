@@ -8,7 +8,7 @@ export default class Tablenav extends Component {
     return (
       <div className="custom-table-nav">
         <div className="left-div"></div>
-        <div className="right-div">
+        <div className="right-div" style={{width:"300px"}}>
           {this.props.Actions.Actions}
         </div>
       </div>

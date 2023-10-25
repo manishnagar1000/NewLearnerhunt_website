@@ -351,6 +351,7 @@ export default function Topbar() {
                     <img
                       loading="lazy"
                       src="/assets/images/Svglogo.svg"
+                      // src="/assets/images/Learnerhunt-Logo.png"
                       alt="sagenext logo"
                       width={176}
                       height={50}
@@ -461,6 +462,8 @@ export default function Topbar() {
                       <img
                         loading="lazy"
                         src="/assets/images/Svglogo.svg"
+                        // src="/assets/images/Learnerhunt-Logo.png"
+
                         alt="sagenext logo"
                         width={176}
                         height={50}
