@@ -489,7 +489,7 @@ export default class Courses extends Component {
             )
           ) : (
             <div className={Classes["select-clg"]}>
-              <p>Create a College</p>
+              <p>Create a College from General Info</p>
             </div>
           )}
           </form>

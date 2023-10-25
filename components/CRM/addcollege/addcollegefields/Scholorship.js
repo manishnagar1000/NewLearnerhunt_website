@@ -370,7 +370,7 @@ console.error('Error:', error);
             )
           ) : (
             <div className={Classes["select-clg"]}>
-              <p>Create a College</p>
+              <p>Create a College from General Info</p>
             </div>
           )}
           </form>

@@ -75,7 +75,7 @@ export default class AddClgTopbar extends Component {
     this.props.onclgchange("")
   }
   componentDidUpdate(prevProps){
-    if(this.props.selectedClg !=  prevProps.selectedClg){
+    if(this.props.selectedClg !=  prevProps.selectedClg && this.state.selectedCountry == ""){
         this.GetCollegeData(this.state.selectedCountry)
     }
   }
