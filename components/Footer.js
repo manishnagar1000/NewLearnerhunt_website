@@ -55,11 +55,11 @@ const Footer = () => {
           </div>
           <div className="col-lg-3 col-md-5">
             <div className="social-media">
-              <Link target='_blank' href="https://www.facebook.com/learnerhunt/"><img src="/assets/images/footer/facebook.png" alt="" /></Link>
-              <Link target='_blank' href="https://twitter.com/learnerhunt"><img src="/assets/images/footer/twitter.png" alt="" /></Link>
-              <Link target='_blank' href="https://www.instagram.com/learnerhunt_india/"><img src="/assets/images/footer/instagram.png" alt="" /></Link>
-              <Link target='_blank' href="https://in.linkedin.com/company/learnerhunt-com"><img src="/assets/images/footer/linkedin.png" alt="" /></Link>
-              <Link target='_blank' href="https://www.youtube.com/@Learnerhunt"><img src="/assets/images/footer/youtube.png" alt="" /></Link>
+              <Link target='_blank' href="https://www.facebook.com/learnerhunt/"><img src="/assets/images/footer/facebook.png" alt="facebook" width={50} height={50}/></Link>
+              <Link target='_blank' href="https://twitter.com/learnerhunt"><img src="/assets/images/footer/twitter.png" alt="twitter" width={50} height={50}/></Link>
+              <Link target='_blank' href="https://www.instagram.com/learnerhunt_india/"><img src="/assets/images/footer/instagram.png" alt="instagram" width={50} height={50}/></Link>
+              <Link target='_blank' href="https://in.linkedin.com/company/learnerhunt-com"><img src="/assets/images/footer/linkedin.png" alt="linkedIn" width={50} height={50}/></Link>
+              <Link target='_blank' href="https://www.youtube.com/@Learnerhunt"><img src="/assets/images/footer/youtube.png" alt="youtube" width={50} height={50}/></Link>
             </div>
           </div>
         </div>

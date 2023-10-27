@@ -14,7 +14,14 @@ export const TypeofCategory = [
 
 
 ];
+export const ImarticusApi = [
+  { Coursename: "KL MBA", value: "KL MBA" },
+  { Coursename: "DSB - PGDM Fintech", value: "DSB - PGDM in Fintech" },
+  { Coursename: "Rathinam", value: "Rathinam - BCOM-IB" },
+  { Coursename: "Rathinam - BCOM-IB", value: "Rathinam - BCOM-IB" },
 
+
+];
 // export const coursenameList = [
 //   { label: 'DE'},
 //   { label: 'D.Pharma'},

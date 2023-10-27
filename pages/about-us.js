@@ -1,10 +1,11 @@
 import React from "react";
+import Image from "next/image";
 
 const AboutUsPage = () => {
   return (
     <div className="container">
       <div className="row my-4">
-        <div className="col-md-8 col-sm-12">
+        <div className="col-lg-8 col-sm-12">
           <h1>About Us</h1>
           <p>
             Learner Hunt is a digital platform for educational career
@@ -26,7 +27,7 @@ const AboutUsPage = () => {
             It has an endless list of offers to electrify the aspiring students
             and help them make a reliable decision for the future to follow.
           </p>
-          <h4>Our Exceptional services:</h4>
+          <h2>Our Exceptional services:</h2>
           <ul>
             <li>Accurate guidance for the right courses</li>
             <li>Assisting in admissions & placements</li>
@@ -38,14 +39,21 @@ const AboutUsPage = () => {
             <li>Form scholarship</li>
           </ul>
         </div>
-        <div className="col-md-4">
+        <div className="col-lg-4 ">
           <img
-            src="/assets/images/about-us.png"
+            src="/assets/images/about-us.webp"
             className="img-fluid"
             alt="Logo"
             width={400}
             height={400}
           />
+          {/* <Image
+      width={350}
+      height={350}
+      src="/assets/images/about-us.png"
+      alt="Picture of the art"
+      style={{objectFit:"fit"}}
+    /> */}
         </div>
       </div>
       <div className="mt-20 " style={{ backgroundColor: "#87CEEB4D" }}>
@@ -76,7 +84,7 @@ const AboutUsPage = () => {
                 />
               </div>
               <div className="card-body">
-                <h5 className="card-title">150+ Courses</h5>
+                <h3 className="card-title">150+ Courses</h3>
                 <p className="card-text">
                   Discover the year’s top best course and select the best
                 </p>
@@ -94,7 +102,7 @@ const AboutUsPage = () => {
               />
               </div>
               <div className="card-body">
-                <h5 className="card-title">1000+ Colleges</h5>
+                <h3 className="card-title">1000+ Colleges</h3>
                 <p className="card-text">
                 Discover the best college with vivid choices
                 </p>
@@ -112,7 +120,7 @@ const AboutUsPage = () => {
               />
               </div>
               <div className="card-body">
-                <h5 className="card-title">25 Counsellors</h5>
+                <h3 className="card-title">25 Counsellors</h3>
                 <p className="card-text">
                 Get counselling from the best counsellors 
                 </p>

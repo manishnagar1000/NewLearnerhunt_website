@@ -112,7 +112,7 @@ export default class AddClgTopbar extends Component {
           </div>
           {
             this.state.isapihitting?
-            <div className="col-md-1 gx-0 d-flex align-items-end" ><img src="/assets/images/loader.gif" width={50} height={50}></img></div>
+            <div className="col-md-1 gx-0 d-flex align-items-end" ><img src="/assets/images/loader.gif" width={50} height={50} alt="loader"></img></div>
             :
             <div className="col-md-4">
             <div className="form-group">

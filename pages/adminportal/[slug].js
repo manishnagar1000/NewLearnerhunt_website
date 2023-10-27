@@ -5,6 +5,8 @@ import Dashboard from "/components/CRM/Dashboard";
 import Addcollege from "/components/CRM/addcollege/Addcollege";
 import Allcollege from "/components/CRM/addcollege/Allcollege";
 import ApiIntegration from "/components/CRM/ApiIntegration";
+import Imarticus from "/components/CRM/Imarticus";
+
 
 
 import Swal from "sweetalert2";
@@ -29,6 +31,10 @@ const componentList = [
   {
     comp:<ApiIntegration/>,
     slug:"api"
+  },
+  {
+    comp:<Imarticus/>,
+    slug:"imarticus"
   },
   {
     comp:<Testeligibility/>,

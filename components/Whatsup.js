@@ -17,7 +17,7 @@ const WhatsAppButton = () => {
       className={`${styles['whatsapp-button']} ${isWhatsAppOpen ? styles.open : ''}`}
       onClick={openWhatsApp}
     >
-        <img id="whatsapp-image" src='/assets/images/whatsapp.png' width={50} height={50}></img>
+        <img id="whatsapp-image" src='/assets/images/whatsapp.png' width={50} height={50} alt='whatsup'></img>
       {/* <button>Open WhatsApp</button> */}
     </div>
   );

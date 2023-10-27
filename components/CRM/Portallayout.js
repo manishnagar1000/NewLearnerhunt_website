@@ -57,11 +57,27 @@ const sidebarList = [
     ],
   },
   
-  {
-    name: "ApiIntegration",
-    icon: <ApiIcon/>,
-    path: "/adminportal/api",
-  },
+  // {
+  //   name: "ApiIntegration",
+  //   icon: <ApiIcon/>,
+  //   path: "/adminportal/api",
+  // },
+{
+  name: "ApiIntegration",
+  icon: <ApiIcon/>,
+  children: [
+    {
+      name: "Imarticus",
+      icon: <TimelineIcon/>,
+      path: "/adminportal/imarticus",
+    },
+    {
+      name: "Others",
+      icon: <SsidChartIcon/>,
+      path: "/adminportal/api",
+    }
+  ]
+},
   {
     name: "Leads",
     icon: <LeaderboardIcon/>,

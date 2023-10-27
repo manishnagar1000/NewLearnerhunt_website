@@ -279,15 +279,15 @@ export default function CollegeName({ collegedata }) {
         <div className={Classes["clg-hero-section"]}>
           <div className={Classes["heading-section"]}>
             <div className={Classes["left-div"]}>
-              <img src={dummyLogoImg} alt="" />
+              <img src={dummyLogoImg} alt="dummylogo" />
             </div>
             <div className={Classes["right-div"]}>
               <h1>{collegedata.generalinfo.college_name}</h1>
               <p>
-                <img src="/assets/images/location.png" alt="" />
+                <img src="/assets/images/location.png" alt="location" />
                 <span>Campus Location : {collegedata.generalinfo.city}</span>
                 &nbsp;&nbsp;
-                <img src="/assets/images/bookmark.png" alt="" />
+                <img src="/assets/images/bookmark.png" alt="bookmark" />
                 <span>Approved By : {collegedata.generalinfo.approved_by}</span>
                 {/* &nbsp;&nbsp;
                 {userStatus ? (

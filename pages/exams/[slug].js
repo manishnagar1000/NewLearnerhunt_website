@@ -26,7 +26,7 @@ export default function ExamName({ examdata }) {
         <div className={Classes['content-section']}>
           <div className={Classes['heading-section']}>
             <div className={Classes['left-div']}>
-              <img src={dummyLogoImg} alt="" />
+              <img src={dummyLogoImg} alt="dummy" />
             </div>
             <div className={Classes['right-div']}>
               <h1>{examdata.exam_name}</h1>

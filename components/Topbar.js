@@ -109,7 +109,7 @@ export default function Topbar() {
               {isMob ? (
                 <img
                   src="/assets/images/01/down-arrow.svg"
-                  alt=""
+                  alt="downarrow"
                   className={`${
                     selectedSmList == el.name ? Classes["dwp-img"] : ""
                   }`}
@@ -482,7 +482,7 @@ export default function Topbar() {
                       loading="lazy"
                       onClick={() => setShowToggleMenu(!showToggleMenu)}
                       src="/assets/images/topbar/toggle-icon.svg"
-                      alt=""
+                      alt="toggle"
                       width={25}
                       height={25}
                     />
@@ -567,7 +567,7 @@ export default function Topbar() {
                       <img
                         loading="lazy"
                         src="/assets/images/topbar/Cancel-Icon.svg"
-                        alt=""
+                        alt="cancel"
                       />
                     </span>
                   </div>
