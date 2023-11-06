@@ -108,7 +108,11 @@ export default function App({ Component, pageProps }) {
       <script
       defer
       dangerouslySetInnerHTML={{
-      __html:` window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'AW-11197965039'); `}}/>
+      __html:` window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    
+      gtag('config', 'AW-11197965039'); `}}/>
 
         {/* <noscript><img height="1" width="1" style="display:none"
   src="https://www.facebook.com/tr?id=312254257795473&ev=PageView&noscript=1"

@@ -243,7 +243,11 @@ export default function CollegeName({ collegedata }) {
           });
         } else {
           setIsApplyformOpen(false);
-          router.push('/thankyou')
+          if(slug == "-isbr-international-school-of-business-and-research-"){
+          router.push('/thankyou-isbr')
+          }else{
+            router.push('/thankyou')
+          }
           // Swal.fire({
           //   title: "Success",
           //   text: `${res.message}`,

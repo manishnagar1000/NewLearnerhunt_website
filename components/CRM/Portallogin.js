@@ -14,7 +14,6 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useRouter } from 'next/router';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import Swal from 'sweetalert2'
@@ -24,10 +23,6 @@ const theme = createTheme();
 export default function SignIn(props) {
     const [formData, setFormData] = useState({ name: '', password: '' });
     const [errorMsg, setErrorMsg] = useState('');
-    const router = useRouter();
-    
-
-
     const [showPassword, setShowPassword] = React.useState(false);
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -74,9 +69,7 @@ export default function SignIn(props) {
               confirmButtonText: 'Ok'
             }).then(()=>{
             props.onLogin(res.data.token)
-            
             })
-            // router.push('/thankyou')
           } else {
             Swal.fire({
               title: 'error',

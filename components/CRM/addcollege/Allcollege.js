@@ -10,12 +10,14 @@ import Dropdown from "react-bootstrap/Dropdown";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import PrecisionManufacturingIcon from "@mui/icons-material/PrecisionManufacturing";
 import AutoDeleteIcon from "@mui/icons-material/AutoDelete";
+import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { Spinner } from "react-bootstrap";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 // import Classes from '/styles/Allcolleges.module.css'
 import MultipleSelectInput from "@/components/Comps/MultipleSelectInput";
+import Link from "next/link";
 
 var oldData = []
 export default class Allcollege extends Component {
@@ -140,6 +142,7 @@ console.error('Error:', error);
     }
   });
  }
+
   render() {
     return (
       <>
@@ -166,6 +169,8 @@ console.error('Error:', error);
                   <th style={{ background: "var(--primary)" }}>College Type</th>
                   <th style={{ background: "var(--primary)" }}>State</th>
                   <th style={{ background: "var(--primary)" }}>Remove</th>
+                  <th style={{ background: "var(--primary)" }}>Edit</th>
+
                 </tr>
               </thead>
               <tbody>
@@ -177,6 +182,7 @@ console.error('Error:', error);
                         <td style={{wordWrap:"break-word",whiteSpace:"unset"}}>{clg.college_type}</td>
                         <td style={{wordWrap:"break-word",whiteSpace:"unset"}}>{clg.state}</td>
                         <td style={{wordWrap:"break-word",whiteSpace:"unset"}} onClick={(e)=>this.handleShow(e,clg._id)}><DeleteForeverIcon/></td>
+                        <td style={{wordWrap:"break-word",whiteSpace:"unset"}}><Link href={`addcollege?e=${clg._id}`}><EditIcon/></Link></td>
 
                       </tr>
                   );

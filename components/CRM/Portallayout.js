@@ -21,7 +21,6 @@ import RecyclingIcon from "@mui/icons-material/Recycling";
 import SidebarItem from "./SidebarItem";
 import ApiIcon from '@mui/icons-material/Api';
 import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew';
-// import { Route, Routes, useNavigate } from "react-router-dom";
 import Tooltip from "@mui/material/Tooltip";
 import LeaderboardIcon from '@mui/icons-material/Leaderboard';
 import Menu from "@mui/material/Menu";

@@ -25,12 +25,55 @@ export default class Gernal extends Component {
       phone: "",
       password: "",
       c_password: "",
+      ratings:"",
       isLoading: false,
       selectedFile: null,
-      selectedValues:[]
+      selectedValues:[],
+      selectedKeyword:[],
+      isError:false,
+      errorMsg:""
+
     };
     this.fileInputRef = React.createRef()
   }
+
+ componentDidMount(){
+  if(this.props.edit_id){
+ fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/get-college-info?tab=0&id=${this.props.edit_id}`, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem("pt")}`
+      }
+    }).then(async res => {
+      let response = await res.json()
+      console.log(response)
+if(response.error){
+ this.setState({isError:true,errorMsg:response.error})
+}
+else{
+  const {college_name,city,college_type,country,ratings,state,approved_by,keywords} = response.data;
+  let found =  false
+  if(IndianStates[country][state] != undefined){
+    found=true
+  }
+      
+      this.setState({ collegename: college_name,selectedCountry:IndianStates[country]?country:"", selectedState:found?state:"", selectedCity:city, selectedcollegetype:college_type,selectedValues:approved_by?approved_by.split(","):[],selectedKeyword:keywords?keywords.split(","):[],ratings:ratings})
+ 
+}
+    })
+
+}
+   
+
+ }
+
+ componentDidUpdate(prevProps){
+  if(prevProps.edit_id != this.props.edit_id){
+    this.setState({ collegename: "",selectedCountry:"", selectedState:"", selectedCity:"", selectedcollegetype:"",selectedValues:[],selectedKeyword:[],ratings:""  })
+
+     }
+ }
+  
+
   handleTagDelete = (index) => {
     const newSelectedValues = [...this.state.selectedValues];
     newSelectedValues.splice(index, 1);
@@ -64,16 +107,66 @@ export default class Gernal extends Component {
       confirmButtonText: 'Yes'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.setState({isLoading:true})
     try {
+      if(this.props.edit_id){
+        this.setState({isLoading:true})
+        const fd = new FormData();
+        fd.append("college_name", this.state.collegename.trim());
+        fd.append("country",this.state.selectedCountry)
+        fd.append("state", this.state.selectedState);
+        fd.append("city", this.state.selectedCity);
+        fd.append("college_type", this.state.selectedcollegetype);
+        fd.append("approved_by",this.state.selectedValues);
+        fd.append("college_broucher_pdf", this.state.selectedFile);
+        fd.append("ratings", this.state.ratings);
+        fd.append("keywords", this.state.selectedKeyword);
+        fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/edit-college-info?tab=0&id=${this.props.edit_id}`, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem("pt")}`
+          },
+          method: "PUT",
+          body: fd,
+        }).then(async (response) => {
+          var res = await response.json()
+          // console.log(res)
+          // console.log(res.message)
+          // console.log(res.error)
+          this.setState({isLoading:false})
+          if (response.ok) {
+            // console.log("hello", response.data);
+            Swal.fire({
+              title: 'Success',
+              text: `${res.message}`,
+              icon: 'success',
+              confirmButtonText: 'Ok'
+            })
+          }else {
+              Swal.fire({
+                title: 'error',
+                text: `${res.error}`,
+                icon: 'error',
+                confirmButtonText: 'Ok'
+              }).then(()=>{
+            this.setState({isLoading:false})
+  
+              })
+  
+          }
+        });
+      }else{
+        this.setState({isLoading:true})
       const fd = new FormData();
-      fd.append("college_name", this.state.collegename);
+      fd.append("college_name", this.state.collegename.trim());
       fd.append("country",this.state.selectedCountry)
       fd.append("state", this.state.selectedState);
       fd.append("city", this.state.selectedCity);
       fd.append("college_type", this.state.selectedcollegetype);
       fd.append("approved_by",this.state.selectedValues);
       fd.append("college_broucher_pdf", this.state.selectedFile);
+      fd.append("ratings", this.state.ratings);
+      fd.append("keywords", this.state.selectedKeyword);
+
+
 
 
 
@@ -100,7 +193,7 @@ export default class Gernal extends Component {
             icon: 'success',
             confirmButtonText: 'Ok'
           }).then(() => {
-            this.setState({ collegename: '',selectedCountry:'', selectedState: '', selectedCity: '', selectedcollegetype: '',selectedValues:[], selectedFile: null },()=>this.fileInputRef.current.value=null)
+            this.setState({ collegename: '',selectedCountry:'', selectedState: '', selectedCity: '', selectedcollegetype: '',selectedValues:[],selectedKeyword:[],ratings:"", selectedFile: null },()=>this.fileInputRef.current.value=null)
           })
         } else {
           if (res.error && res.status == 0) {
@@ -128,18 +221,26 @@ export default class Gernal extends Component {
 
         }
       });
+      }
 
     } catch (error) {
       // Handle network or fetch error
       console.error(error);
     }
+
+
   }
 })
   };
   render() {
+    
     console.log(IndianStates)
     return (
-      <div className={Classes["add-user"]}>
+      <>
+      
+      {
+        !this.state.isError?
+        <div className={Classes["add-user"]}>
         <div className={Classes["form-div"]}>
           <form action="#" onSubmit={(e) => this.handleSubmit(e)}>
 
@@ -260,6 +361,28 @@ export default class Gernal extends Component {
               </div>
               <div className="col-md-4">
                 <div className={Classes["form-group"]}>
+                  <label className={Classes["labelname"]} htmlFor="ratings">Ratings </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="ex-2.3"
+                    minLength={3}
+                    maxLength={3}
+                    value={this.state.ratings}
+                    onChange={(e) => this.setState({ ratings: e.target.value })}
+                  />
+                </div>
+              </div>
+              {!this.props.edit_id &&
+              <div className="col-md-4">
+                <div className={Classes["form-group"]}>
+                  <label className={Classes["labelname"]} htmlFor="name"> Brochure Upload</label>
+                  <input type="file" className="form-control" ref={this.fileInputRef} accept="application/pdf" onChange={this.handleFileChange} />
+
+                </div>
+              </div>}
+              <div className="col-md-4">
+                <div className={Classes["form-group"]}>
                   <label className={Classes["labelname"]} htmlFor="name">Approved By  <span className={Classes["error"]}>*</span></label>
                   {/* input tag  */}
           <MultipleTagsInput
@@ -272,13 +395,19 @@ export default class Gernal extends Component {
               </div>
               <div className="col-md-4">
                 <div className={Classes["form-group"]}>
-                  <label className={Classes["labelname"]} htmlFor="name"> Brochure Upload</label>
-                  <input type="file" className="form-control" ref={this.fileInputRef} accept="application/pdf" onChange={this.handleFileChange} />
-
+                  <label className={Classes["labelname"]} htmlFor="name">Keywords</label>
+                  {/* input tag  */}
+          <MultipleTagsInput
+                    placeholder="Enter Search Keywords"
+                    value={this.state.selectedKeyword}
+                    onChange={(values) => this.setState({ selectedKeyword: values })}
+                  />
                 </div>
               </div>
+           
+              
               <div className="col-md-12">
-                <CTA title="Create" />
+                <CTA title={this.props.edit_id  ? 'Update':'Create'} />
               </div>
             </div>
           </form>
@@ -290,6 +419,9 @@ export default class Gernal extends Component {
           />
         }
       </div>
+      :
+      this.state.errorMsg 
+      }</>
     );
   }
 }

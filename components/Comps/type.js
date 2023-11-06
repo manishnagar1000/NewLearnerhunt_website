@@ -180,7 +180,7 @@ export const courseeligibiltyCriteria = [
 export const coursefulleligibiltyCriteria = [
   {
     label:
-      "10th or 12 with minimum 50% marks.",
+      "10th or 12th with minimum 50% marks.",
   },
   {
     label:

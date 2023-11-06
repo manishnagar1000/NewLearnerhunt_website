@@ -55,7 +55,9 @@ const componentList = [
 ];
 export default function AdminPortalSlug() {
   const router = useRouter();
-  const { slug } = router.query;
+  console.log(router)
+  const { slug} = router.query;
+  // console.log(slug);
   const data = componentList.find((s) => s.slug == slug);
   // console.log(componentList.find((s)=>s.slug==slug))
   // console.log(data);
@@ -111,7 +113,7 @@ export default function AdminPortalSlug() {
   };
   return (
     <PortalLayout onLogout={handleLogout}>
-      {!data ? "not found" : componentList.find((s) => s.slug == slug)?.comp}
+      {!data ? "not found" : data.comp}
     </PortalLayout>
   );
 }
