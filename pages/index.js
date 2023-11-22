@@ -6,7 +6,8 @@ import TopCourses from '@/components/TopCourses'
 import TopExams from '@/components/TopExams'
 import Count from '@/components/Count'
 import WhyChoose from '@/components/WhyChoose'
-import WhatsAppButton from '@/components/Whatsup'
+// import WhatsAppButton from '@/components/Whatsup'
+
 
 import axios from 'axios'
 import Head from 'next/head'
@@ -24,8 +25,7 @@ export default function Home({colleges,courses,exams,testeligibility,ukcolleges}
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <HomepageHeroSection data={testeligibility}/>
-      <WhatsAppButton />
-   
+      {/* <WhatsAppButton/> */}
       <Count/>
       <WhyChoose/>
       <TopColleges colleges={colleges}/>

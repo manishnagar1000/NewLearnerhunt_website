@@ -159,6 +159,10 @@
     cursor: pointer;
 }
 
+.error-border {
+    border: 1px solid red;
+  }
+  
 @media screen and (max-width:768px) {
     .hero-section .buttons-section {
         justify-content: flex-start;

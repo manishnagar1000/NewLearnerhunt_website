@@ -1,11 +1,12 @@
 import React from 'react'
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Container } from 'react-bootstrap';
 
 import styles from '../styles/count.module.css'
 
 const div = () => {
     return (
         <div className={[styles.mainBox].join(" ")}>
+            <Container>
             <Row>
                 <Col className={[styles.column, "text-center"].join(" ")}>
                     <div className="text-white">
@@ -28,6 +29,7 @@ const div = () => {
                     </div>
                 </Col>
             </Row>
+            </Container>
         </div>
     )
 }

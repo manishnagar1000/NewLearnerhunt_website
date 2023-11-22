@@ -31,8 +31,6 @@ const SelectionBtns = [
   },
 ];
 
-
-
 const HomepageHeroSection = ({ data }) => {
   // console.log(data)
 
@@ -47,20 +45,34 @@ const HomepageHeroSection = ({ data }) => {
   const [examAppears, setExamAppears] = useState("");
   const [selectedExam, setSelectedExam] = useState("");
   const [selectedRanking, setSelectedRanking] = useState("");
+  const [error,setError] = useState(false)
   // const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const router = useRouter();
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
+    if (contact.length !== 10 || /\s/.test(contact)) {
+      // Display an error message or take the appropriate action
+      setError(true)
+    } else {
+      // Your form submission logic
+      setError(false)
+    }
     // console.log("working");
     if (activeBtn == "2") {
       router.push(
         `/colleges?course=${selectedCourse}&zone=${selectedLocation}&rating=${selectedRanking}&fee=${200000}`
       );
     } else if (activeBtn == "0") {
-      router.push(
-        `/colleges?course=${selectedCourse}&zone=${selectedLocation}&fee=${fee}&name=${fullName}&mobile=${contact}&specialization=${selectedSpecialization}&qualification=${selectedQualification}&exam=${selectedExam}`
-      );
+      if (contact.length !== 10 || /\s/.test(contact)) {
+        // Display an error message or take the appropriate action
+        console.log("Error: Contact number must be exactly 10 digits without spaces.");
+      } else {
+        router.push(
+          `/colleges?course=${selectedCourse}&zone=${selectedLocation}&fee=${fee}&name=${fullName}&mobile=${contact}&specialization=${selectedSpecialization}&qualification=${selectedQualification}&exam=${selectedExam}`
+        );
+      }
+    
     }
   };
   const handleSliderChange = (event, newValue) => {
@@ -73,9 +85,9 @@ const HomepageHeroSection = ({ data }) => {
     return value;
   };
 
-  const checkValue = (value)=>{
-    return value != undefined && value != null && value != ""
-  }
+  const checkValue = (value) => {
+    return value != undefined && value != null && value != "";
+  };
   return (
     <div className={Classes["hero-section"]}>
       <div className={Classes["overlay"]}></div>
@@ -83,7 +95,7 @@ const HomepageHeroSection = ({ data }) => {
         <div className="row">
           <div className="col-lg-7 d-none d-lg-block ">
             <div className={Classes["herosection-desc"]}>
-              <h1> Learner Hunt - Your Path to Exceptional Education</h1>
+              <h1> Learnerhunt - Your Path to Exceptional Education</h1>
               {/* <ul>
               <li>
               Forem ipsum dolor sit amet, consectetur adipiscing 
@@ -103,11 +115,17 @@ const HomepageHeroSection = ({ data }) => {
 
             </ul> */}
               <p>
-                Learner Hunt is your partner in education, offering a curated
-                selection of top colleges. We're dedicated to helping you find
-                the perfect academic fit, guiding you towards a brighter future.
-                Transform your educational journey with Learner Hunt's expert
-                guidance.
+                Learnerhunt is a digital platform for educational career
+                counselling, offering comprehensive information about top
+                colleges and universities in India and abroad that provide
+                undergraduate programs, postgraduate programs, MBBS, and other
+                professional courses. We have over 300 business schools and
+                universities registered with us. We have become a trusted source
+                of detailed information to assist you in making the right
+                college and career decisions. Our platform covers more than
+                1,000 colleges and universities, offers 150+ courses, and
+                provides the latest updates on #courses, #admissions, and
+                entrance exams.
               </p>
             </div>
           </div>
@@ -161,7 +179,7 @@ const HomepageHeroSection = ({ data }) => {
                       </div>
                       <div className="col-md-6">
                         <TextField
-                          className="rounded-lg"
+                          className={`rounded-lg `}
                           fullWidth
                           required
                           margin="normal"
@@ -172,6 +190,8 @@ const HomepageHeroSection = ({ data }) => {
                           onChange={(e) =>
                             setContact(e.target.value.replace(/\D/g, ""))
                           }
+                          error={error ?true :false}
+                          helperText={error ?"Incorrect Entry" :""}
                           size="small"
                           variant="outlined"
                         />
@@ -224,13 +244,13 @@ const HomepageHeroSection = ({ data }) => {
                               <em>Select</em>
                             </MenuItem>
                             {checkValue(data.courses) &&
-                            data.courses.map((c, i) => {
-                              return (
-                                <MenuItem key={i} value={c.course}>
-                                  {c.course}
-                                </MenuItem>
-                              );
-                            })}
+                              data.courses.map((c, i) => {
+                                return (
+                                  <MenuItem key={i} value={c.course}>
+                                    {c.course}
+                                  </MenuItem>
+                                );
+                              })}
                           </Select>
                         </FormControl>
                       </div>
@@ -254,15 +274,16 @@ const HomepageHeroSection = ({ data }) => {
                                 <MenuItem value="" disabled>
                                   <em>Select</em>
                                 </MenuItem>
-                                {checkValue(data.courses) && data.courses
-                                  .find((c) => c.course == selectedCourse)
-                                  .specialization.map((s, i) => {
-                                    return (
-                                      <MenuItem key={i} value={s}>
-                                        {s}
-                                      </MenuItem>
-                                    );
-                                  })}
+                                {checkValue(data.courses) &&
+                                  data.courses
+                                    .find((c) => c.course == selectedCourse)
+                                    .specialization.map((s, i) => {
+                                      return (
+                                        <MenuItem key={i} value={s}>
+                                          {s}
+                                        </MenuItem>
+                                      );
+                                    })}
                               </Select>
                             </FormControl>
                           </div>
@@ -285,15 +306,16 @@ const HomepageHeroSection = ({ data }) => {
                                 <MenuItem value="" disabled>
                                   <em>Select</em>
                                 </MenuItem>
-                                {checkValue(data.courses) && data.courses.find(
-                                    (c) => c.course == selectedCourse
-                                  ).qualification.map((q, i) => {
-                                  return (
-                                    <MenuItem key={i} value={q}>
-                                      {q}
-                                    </MenuItem>
-                                  );
-                                })}
+                                {checkValue(data.courses) &&
+                                  data.courses
+                                    .find((c) => c.course == selectedCourse)
+                                    .qualification.map((q, i) => {
+                                      return (
+                                        <MenuItem key={i} value={q}>
+                                          {q}
+                                        </MenuItem>
+                                      );
+                                    })}
                               </Select>
                             </FormControl>
                           </div>
@@ -350,15 +372,16 @@ const HomepageHeroSection = ({ data }) => {
                               <MenuItem value="" disabled>
                                 <em>Select</em>
                               </MenuItem>
-                              {checkValue(data.courses) && data.courses
-                                .find((c) => c.course == selectedCourse)
-                                .entrance_exam.map((e, i) => {
-                                  return (
-                                    <MenuItem key={i} value={e}>
-                                      {e}
-                                    </MenuItem>
-                                  );
-                                })}
+                              {checkValue(data.courses) &&
+                                data.courses
+                                  .find((c) => c.course == selectedCourse)
+                                  .entrance_exam.map((e, i) => {
+                                    return (
+                                      <MenuItem key={i} value={e}>
+                                        {e}
+                                      </MenuItem>
+                                    );
+                                  })}
                             </Select>
                           </FormControl>
                         </div>
@@ -371,9 +394,22 @@ const HomepageHeroSection = ({ data }) => {
                           margin="normal"
                         >
                           <Typography id="input-slider" gutterBottom>
-                            College Fees
+                            College Fees: {formatFeeLabel(fee)}
                           </Typography>
                           <Slider
+  value={fee}
+  min={200000}
+  step={100000}
+  max={5000000}
+  // scale={calculateValue}
+  // getAriaValueText={valueLabelFormat}
+  // valueLabelFormat={valueLabelFormat}
+  // marks={[{ value: fee, label: formatFeeLabel(fee) }]}
+  onChange={handleSliderChange}
+  // valueLabelDisplay="auto"
+  aria-labelledby="non-linear-slider"
+/>
+                          {/* <Slider
                             value={fee}
                             onChange={handleSliderChange}
                             min={200000}
@@ -381,7 +417,7 @@ const HomepageHeroSection = ({ data }) => {
                             step={100000}
                             marks={[{ value: fee, label: formatFeeLabel(fee) }]}
                             aria-labelledby="fee-slider"
-                          />
+                          /> */}
                         </FormControl>
                       </div>
                       <div className="col-12">
@@ -417,13 +453,14 @@ const HomepageHeroSection = ({ data }) => {
                               <MenuItem value="" disabled>
                                 <em>Select</em>
                               </MenuItem>
-                              {checkValue(data.courses) && data.courses.map((c, i) => {
-                                return (
-                                  <MenuItem key={i} value={c.course}>
-                                    {c.course}
-                                  </MenuItem>
-                                );
-                              })}
+                              {checkValue(data.courses) &&
+                                data.courses.map((c, i) => {
+                                  return (
+                                    <MenuItem key={i} value={c.course}>
+                                      {c.course}
+                                    </MenuItem>
+                                  );
+                                })}
                             </Select>
                           </FormControl>
                         </div>
@@ -446,7 +483,7 @@ const HomepageHeroSection = ({ data }) => {
                               <MenuItem value="" disabled>
                                 <em>Select</em>
                               </MenuItem>
-                              {checkValue(data.zones) && 
+                              {checkValue(data.zones) &&
                                 data.zones.map((zone, i) => {
                                   return (
                                     <MenuItem key={i} value={zone.name}>
@@ -476,13 +513,14 @@ const HomepageHeroSection = ({ data }) => {
                               <MenuItem value="" disabled>
                                 <em>Select</em>
                               </MenuItem>
-                              {checkValue(data.ratings) && data.ratings.map((r, i) => {
-                                return (
-                                  <MenuItem key={i} value={r.value}>
-                                    {r.label}
-                                  </MenuItem>
-                                );
-                              })}
+                              {checkValue(data.ratings) &&
+                                data.ratings.map((r, i) => {
+                                  return (
+                                    <MenuItem key={i} value={r.value}>
+                                      {r.label}
+                                    </MenuItem>
+                                  );
+                                })}
                             </Select>
                           </FormControl>
                         </div>

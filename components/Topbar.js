@@ -150,6 +150,7 @@ export default function Topbar() {
   };
 
   const handlelogin = (role) => {
+    console.log(role)
     // console.log("studentClick");
     setUserRole(role);
     setAnchorEl(null);
@@ -408,8 +409,8 @@ export default function Topbar() {
                         <MenuItem onClick={() => handlelogin(3)}>
                           Student
                         </MenuItem>
-                        {/* <MenuItem onClick={()=>handlelogin(2)}>Counsellor</MenuItem>
-                      <MenuItem onClick={()=>handlelogin(1)}>College</MenuItem> */}
+                        <MenuItem onClick={()=>handlelogin(2)}>Counsellor</MenuItem>
+                      <MenuItem onClick={()=>handlelogin(1)}>College</MenuItem>
                       </Menu>
                     </>
                   ) : (
@@ -533,8 +534,8 @@ export default function Topbar() {
                               <MenuItem onClick={() => handlelogin(3)}>
                                 Student
                               </MenuItem>
-                              {/* <MenuItem onClick={handleClose}>Counsellor</MenuItem>
-                          <MenuItem onClick={handleClose}>College</MenuItem> */}
+                              <MenuItem onClick={() => handlelogin(2)}>Counsellor</MenuItem>
+                          <MenuItem onClick={() => handlelogin(1)}>College</MenuItem>
                             </Menu>
                           </>
                         ) : 

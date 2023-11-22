@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 import { Form, Button, Modal, Row, Col } from "react-bootstrap";
 import { CircularProgress } from "@mui/material";
 import Carousel, { CarouselItem } from "./CarouselItem";
+import { IndianStates } from "/components/Comps/StatesIndia";
 
 export default function Loginuc({ isOpen, onClose, role }) {
   const initialTimer = 120; // 120 seconds (2 minutes)
@@ -20,6 +21,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
   const [isloading, setIsloading] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
 
+  // student signup
   const [signupemail, setSignupEmail] = useState("");
   const [name, setName] = useState(""); // Add state for name
   const [mobile, setMobile] = useState(""); // Add state for mobile
@@ -27,7 +29,21 @@ export default function Loginuc({ isOpen, onClose, role }) {
   const [level, setLevel] = useState(""); // Add state for level
   const [password, setPassword] = useState(""); // Add state for password
 
+  // college signup
+  const [clgname, setClgName] = useState(""); // Add state for name
+  const [adminname, setAdminName] = useState(""); // Add state for name
+  const [clgSignupemail, setClgSignupEmail] = useState("");
+  const [clgmobile, setClgMobile] = useState(""); // Add state for mobile
+  const [clgLandline, setClgLandline] = useState(""); // Add state for mobile
+  const [designation, setDesignation] = useState(""); // Add state for mobile
+  const [clgstate, setClgstate] = useState(""); // Add state for mobile
+  const [clgcity, setClgcity] = useState(""); // Add state for mobile
+
   const [lastOtpSentTime, setLastOtpSentTime] = useState(null);
+
+  // counsollor signup
+  const [counsellorname, setCounsellorname] = useState(""); 
+
   let countdown; // Define countdown outside of useEffect
 
   // Function to start the timer
@@ -205,13 +221,28 @@ export default function Loginuc({ isOpen, onClose, role }) {
       } else {
         try {
           const fd = new FormData();
-          fd.append("email", signupemail);
-          fd.append("name", name); // Add name to form data
-          fd.append("mobile", mobile); // Add mobile to form data
-          fd.append("stream", stream); // Add stream to form data
-          fd.append("level", level); // Add level to form data
-          fd.append("password", password); // Add password to form data
-          fd.append("role", role);
+          if(role == 3){
+            fd.append("email", signupemail);
+            fd.append("name", name); // Add name to form data
+            fd.append("mobile", mobile); // Add mobile to form data
+            fd.append("stream", stream); // Add stream to form data
+            fd.append("level", level); // Add level to form data
+            fd.append("password", password); // Add password to form data
+            fd.append("role", role);
+          }else if(role == 1){
+            fd.append("name", clgname); // Add name to form data
+            fd.append("name", adminname); // Add name to form data
+            fd.append("email", clgSignupemail);
+            fd.append("mobile", clgmobile); // Add mobile to form data
+            fd.append("stream", clgLandline); // Add stream to form data
+            fd.append("level", designation); // Add level to form data
+            fd.append("password", state);
+            fd.append("password", city); // Add password to form data
+            fd.append("role", role);
+          }else{
+            console.log("signup counsellor")
+          }
+          
           fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/user/signup", {
             method: "POST",
             body: fd,
@@ -325,6 +356,29 @@ export default function Loginuc({ isOpen, onClose, role }) {
     const limitedInput = numericInput.slice(0, 10);
 
     setMobile(limitedInput);
+  };
+
+  const handleClgMobileChange = (event) => {
+    const input = event.target.value;
+
+    // Remove any non-numeric characters
+    const numericInput = input.replace(/\D/g, "");
+
+    // Limit to 10 characters
+    const limitedInput = numericInput.slice(0, 10);
+
+    setClgMobile(limitedInput);
+  };
+  const handleClgLandlineChange = (event) => {
+    const input = event.target.value;
+
+    // Remove any non-numeric characters
+    const numericInput = input.replace(/\D/g, "");
+
+    // Limit to 10 characters
+    const limitedInput = numericInput.slice(0, 10);
+
+    setClgLandline(limitedInput);
   };
 
   const handleStreamChange = (event) => {
@@ -477,7 +531,12 @@ export default function Loginuc({ isOpen, onClose, role }) {
             </Col>
             <Col md={12} lg={7} style={{ padding: "1rem" }}>
               <div className="text-center mb-3">
-                <img src="/assets/images/Svglogo.svg" width={200} height={60} alt="logo" />
+                <img
+                  src="/assets/images/Svglogo.svg"
+                  width={200}
+                  height={60}
+                  alt="logo"
+                />
                 {/* <img src="/assets/images/Learnerhunt-Logo.png" width={200} height={60} /> */}
 
                 <h3>
@@ -549,146 +608,323 @@ export default function Loginuc({ isOpen, onClose, role }) {
                   </>
                 ) : (
                   <>
-                    <Form.Group controlId="name">
-                      <Form.Label style={{ fontWeight: "bold" }}>
-                        Name
-                      </Form.Label>
-                      <Form.Control
-                        type="text"
-                        placeholder="Enter your name"
-                        value={name}
-                        onChange={handleNameChange}
-                        required
-                        autoComplete="on"
-                        style={{ marginBottom: "15px" }}
-                      />
-                    </Form.Group>
+                    {role == "3" ? (
+                      <>
+                        <Form.Group controlId="name">
+                          <Form.Label style={{ fontWeight: "bold" }}>
+                            Name
+                          </Form.Label>
+                          <Form.Control
+                            type="text"
+                            placeholder="Enter your name"
+                            value={name}
+                            onChange={handleNameChange}
+                            required
+                            autoComplete="on"
+                            style={{ marginBottom: "15px" }}
+                          />
+                        </Form.Group>
 
-                    <Form.Group controlId="email">
-                      <Form.Label style={{ fontWeight: "bold" }}>
-                        Email
-                      </Form.Label>
-                      <Form.Control
-                        type="email"
-                        placeholder="Enter your email"
-                        value={signupemail}
-                        onChange={handleSignupEmailChange}
-                        required
-                        autoComplete="on"
-                        style={{ marginBottom: "15px" }}
-                      />
-                    </Form.Group>
-                    <Form.Group controlId="mobile">
-                      <Form.Label style={{ fontWeight: "bold" }}>
-                        Mobile
-                      </Form.Label>
-                      <Form.Control
-                        type="number"
-                        placeholder="Enter your mobile number"
-                        value={mobile}
-                        onChange={handleMobileChange}
-                        required
-                        autoComplete="on"
-                        style={{ marginBottom: "15px" }}
-                        min="0"
-                      />
-                    </Form.Group>
+                        <Form.Group controlId="email">
+                          <Form.Label style={{ fontWeight: "bold" }}>
+                            Email
+                          </Form.Label>
+                          <Form.Control
+                            type="email"
+                            placeholder="Enter your email"
+                            value={signupemail}
+                            onChange={handleSignupEmailChange}
+                            required
+                            autoComplete="on"
+                            style={{ marginBottom: "15px" }}
+                          />
+                        </Form.Group>
+                        <Form.Group controlId="mobile">
+                          <Form.Label style={{ fontWeight: "bold" }}>
+                            Mobile
+                          </Form.Label>
+                          <Form.Control
+                            type="number"
+                            placeholder="Enter your mobile number"
+                            value={mobile}
+                            onChange={handleMobileChange}
+                            required
+                            autoComplete="on"
+                            style={{ marginBottom: "15px" }}
+                            min="0"
+                          />
+                        </Form.Group>
 
-                    <Form.Group controlId="stream">
-                      <Form.Label style={{ fontWeight: "bold" }}>
-                        Preferred Stream
-                      </Form.Label>
-                      <Form.Control
-                        as="select"
-                        value={stream}
-                        style={{ marginBottom: "15px" }}
-                        onChange={handleStreamChange}
-                        required
-                      >
-                        <option disabled value="">
-                          Select Stream
-                        </option>
-                        {Streamdata.map((s) => {
-                          return <option value={s.name}>{s.name}</option>;
-                        })}
+                        <Form.Group controlId="stream">
+                          <Form.Label style={{ fontWeight: "bold" }}>
+                            Preferred Stream
+                          </Form.Label>
+                          <Form.Control
+                            as="select"
+                            value={stream}
+                            style={{ marginBottom: "15px" }}
+                            onChange={handleStreamChange}
+                            required
+                          >
+                            <option disabled value="">
+                              Select Stream
+                            </option>
+                            {Streamdata.map((s) => {
+                              return <option value={s.name}>{s.name}</option>;
+                            })}
 
-                        {/* ... Other options ... */}
-                      </Form.Control>
-                    </Form.Group>
+                            {/* ... Other options ... */}
+                          </Form.Control>
+                        </Form.Group>
 
-                    <Form.Group controlId="level">
-                      <Form.Label style={{ fontWeight: "bold" }}>
-                        Preferred Level
-                      </Form.Label>
-                      <Form.Control
-                        as="select"
-                        value={level}
-                        onChange={handleLevelChange}
-                        style={{ marginBottom: "15px" }}
-                        required
-                      >
-                        <option disabled value="">
-                          Select Level
-                        </option>
-                        <option value="UG">UG</option>
-                        <option value="PG">PG</option>
-                        <option value="Diploma">Diploma</option>
-                        <option value="Ph.D">Ph.D</option>
-                        <option value="Certificate">Certificate</option>
-                        {/* ... Other options ... */}
-                      </Form.Control>
-                    </Form.Group>
+                        <Form.Group controlId="level">
+                          <Form.Label style={{ fontWeight: "bold" }}>
+                            Preferred Level
+                          </Form.Label>
+                          <Form.Control
+                            as="select"
+                            value={level}
+                            onChange={handleLevelChange}
+                            style={{ marginBottom: "15px" }}
+                            required
+                          >
+                            <option disabled value="">
+                              Select Level
+                            </option>
+                            <option value="UG">UG</option>
+                            <option value="PG">PG</option>
+                            <option value="Diploma">Diploma</option>
+                            <option value="Ph.D">Ph.D</option>
+                            <option value="Certificate">Certificate</option>
+                            {/* ... Other options ... */}
+                          </Form.Control>
+                        </Form.Group>
 
-                    <Form.Group controlId="password">
-                      <Form.Label style={{ fontWeight: "bold" }}>
-                        Password
-                      </Form.Label>
-                      <Form.Control
-                        type="password"
-                        placeholder="Enter your password"
-                        value={password}
-                        onChange={handlePasswordChange}
-                        required
-                        autoComplete="new-password"
-                        style={{ marginBottom: "15px" }}
-                      />
-                    </Form.Group>
+                        <Form.Group controlId="password">
+                          <Form.Label style={{ fontWeight: "bold" }}>
+                            Password
+                          </Form.Label>
+                          <Form.Control
+                            type="password"
+                            placeholder="Enter your password"
+                            value={password}
+                            onChange={handlePasswordChange}
+                            required
+                            autoComplete="new-password"
+                            style={{ marginBottom: "15px" }}
+                          />
+                        </Form.Group>
 
-                    {signupshowotp && (
-                      <Form.Group controlId="otp">
+                        {signupshowotp && (
+                          <Form.Group controlId="otp">
+                            <Form.Label style={{ fontWeight: "bold" }}>
+                              Enter OTP
+                            </Form.Label>
+                            <Form.Control
+                              type="text"
+                              placeholder="Enter the OTP"
+                              value={signupuserotp}
+                              maxLength={6}
+                              minLength={6}
+                              onChange={handleSignupOtpChange}
+                              required
+                              style={{ marginBottom: "15px" }}
+                            />
+                          </Form.Group>
+                        )}
+                      </>
+                    ) : role == "2" ? (
+                      <Form.Group controlId="counsellorname">
                         <Form.Label style={{ fontWeight: "bold" }}>
-                          Enter OTP
+                          Counsellor Name
                         </Form.Label>
                         <Form.Control
                           type="text"
-                          placeholder="Enter the OTP"
-                          value={signupuserotp}
-                          maxLength={6}
-                          minLength={6}
-                          onChange={handleSignupOtpChange}
+                          placeholder="Enter your name"
+                          value={counsellorname}
+                          onChange={(e)=>setCounsellorname(e.target.value)}
                           required
+                          autoComplete="on"
                           style={{ marginBottom: "15px" }}
                         />
                       </Form.Group>
+                    ) : (
+                      <>
+                        <Form.Group controlId="clgname">
+                          <Form.Label style={{ fontWeight: "bold" }}>
+                            College Name
+                          </Form.Label>
+                          <Form.Control
+                            type="text"
+                            placeholder="Enter your College Name"
+                            value={clgname}
+                            onChange={(e) => setClgName(e.target.value)}
+                            required
+                            autoComplete="on"
+                            style={{ marginBottom: "15px" }}
+                          />
+                        </Form.Group>
+                        <Form.Group controlId="adminname">
+                          <Form.Label style={{ fontWeight: "bold" }}>
+                            Admin Name
+                          </Form.Label>
+                          <Form.Control
+                            type="text"
+                            placeholder="Enter your Admin Name"
+                            value={adminname}
+                            onChange={(e) => setAdminName(e.target.value)}
+                            required
+                            autoComplete="on"
+                            style={{ marginBottom: "15px" }}
+                          />
+                        </Form.Group>
+                        <Form.Group controlId="clgemail">
+                          <Form.Label style={{ fontWeight: "bold" }}>
+                            Email
+                          </Form.Label>
+                          <Form.Control
+                            type="email"
+                            placeholder="Enter your email"
+                            value={clgSignupemail}
+                            onChange={(e) => setClgSignupEmail(e.target.value)}
+                            required
+                            autoComplete="on"
+                            style={{ marginBottom: "15px" }}
+                          />
+                        </Form.Group>
+                        <Form.Group controlId="mobile">
+                          <Form.Label style={{ fontWeight: "bold" }}>
+                            Mobile
+                          </Form.Label>
+                          <Form.Control
+                            type="number"
+                            placeholder="Enter your mobile number"
+                            value={clgmobile}
+                            onChange={handleClgMobileChange}
+                            required
+                            autoComplete="on"
+                            style={{ marginBottom: "15px" }}
+                            min="0"
+                          />
+                        </Form.Group>
+                        <Form.Group controlId="Landline Number">
+                          <Form.Label style={{ fontWeight: "bold" }}>
+                            Landline Number
+                          </Form.Label>
+                          <Form.Control
+                            type="number"
+                            placeholder="Enter your Landline number"
+                            value={clgLandline}
+                            onChange={handleClgLandlineChange}
+                            required
+                            autoComplete="on"
+                            style={{ marginBottom: "15px" }}
+                            min="0"
+                          />
+                        </Form.Group>
+                        <Form.Group controlId="designation">
+                          <Form.Label style={{ fontWeight: "bold" }}>
+                            Designation
+                          </Form.Label>
+                          <Form.Control
+                            type="text"
+                            placeholder="Enter your designation"
+                            value={designation}
+                            onChange={(e) => setDesignation(e.target.value)}
+                            required
+                            autoComplete="on"
+                            style={{ marginBottom: "15px" }}
+                          />
+                        </Form.Group>
+                        <Form.Group controlId="state">
+                          <Form.Label style={{ fontWeight: "bold" }}>
+                            State
+                          </Form.Label>
+                          <Form.Control
+                            as="select"
+                            value={clgstate}
+                            style={{ marginBottom: "15px" }}
+                            onChange={(e) => setClgstate(e.target.value)}
+                            required
+                          >
+                            <option disabled value="">
+                              Select State
+                            </option>
+                            {Object.keys(IndianStates["India"]).map((c, i) => {
+                              return (
+                                <option key={i} value={c}>
+                                  {c}
+                                </option>
+                              );
+                            })}
+
+                            {/* ... Other options ... */}
+                          </Form.Control>
+                        </Form.Group>
+                        <Form.Group controlId="city">
+                          <Form.Label style={{ fontWeight: "bold" }}>
+                            City
+                          </Form.Label>
+                          <Form.Control
+                            as="select"
+                            value={clgcity}
+                            style={{ marginBottom: "15px" }}
+                            onChange={(e) => setClgcity(e.target.value)}
+                            required
+                          >
+                            <option disabled value="">
+                              Select city
+                            </option>
+                            {clgstate != "" &&
+                              IndianStates["India"][clgstate].map((c, i) => {
+                                return (
+                                  <option key={i} value={c}>
+                                    {c}
+                                  </option>
+                                );
+                              })}
+
+                            {/* ... Other options ... */}
+                          </Form.Control>
+                        </Form.Group>
+                        {signupshowotp && (
+                          <Form.Group controlId="otp">
+                            <Form.Label style={{ fontWeight: "bold" }}>
+                              Enter OTP
+                            </Form.Label>
+                            <Form.Control
+                              type="text"
+                              placeholder="Enter the OTP"
+                              value={signupuserotp}
+                              maxLength={6}
+                              minLength={6}
+                              onChange={handleSignupOtpChange}
+                              required
+                              style={{ marginBottom: "15px" }}
+                            />
+                          </Form.Group>
+                        )}
+                      </>
                     )}
                   </>
                 )}
 
                 {!showSignup ? (
                   <>
-                    { timer === 120 ? showotp ? (
-                      <span
-                        className="d-inline-flex my-2 text-primary "
-                        style={{ cursor: "pointer" }}
-                        onClick={handleResendOtp}
-                      >
-                        Resend Otp
-                      </span>
-                    ) : null : (
+                    {timer === 120 ? (
+                      showotp ? (
+                        <span
+                          className="d-inline-flex my-2 text-primary "
+                          style={{ cursor: "pointer" }}
+                          onClick={handleResendOtp}
+                        >
+                          Resend Otp
+                        </span>
+                      ) : null
+                    ) : (
                       <p>Resend OTP in {timer} seconds</p>
                     )}
 
-                
                     <Button
                       className="w-100"
                       style={{ background: "#0151c1" }}
