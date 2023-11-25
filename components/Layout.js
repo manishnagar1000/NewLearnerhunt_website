@@ -14,7 +14,7 @@ const Layout = ({ children }) => {
         
         <>
         {
-              !pathname.startsWith('/adminportal')&&!pathname.startsWith('/leads')&&!pathname.startsWith('/ads/thankupageisbr')&&!pathname.startsWith('/ads/isbr')&&<Topbar />
+              !pathname.startsWith('/adminportal')&&!pathname.startsWith('/leads')&&!pathname.startsWith('/ads/thankupageisbr')&&!pathname.startsWith('/ads/isbr')&&!pathname.startsWith('/edufest/2023')&&<Topbar />
         }
       <WhatsAppButton />
           

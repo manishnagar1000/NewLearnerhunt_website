@@ -253,7 +253,70 @@ export const courseduration = [
   { label: "5 Years + 6 Months Internship" },
   { label: "6 Years" },
 
+];
+import AddIcCallIcon from '@mui/icons-material/AddIcCall';
 
-
+export const edufestCard = [
+  { icon: "/assets/images/edufest/1. GD PI.png", name: "On-Spot Mock GD-PI",para:"Prepare for success in top B-School admissions by honing your interviewing skills in real-time with simulated Group Discussions and Personal Interviews!" },
+  { icon: "/assets/images/edufest/2. B School.png", name: "Meet the Best B-Schools in India",para:" Engage in conversations with representatives from top business schools in the nation, obtain insights, and investigate the optimal choices for your career and academic development." },
+  { icon: "/assets/images/edufest/3. Scholarship.png", name: "Scholarship Advice",para:"Find out about the financial help and scholarships that are available to make a quality education more affordable than before." },
+  { icon: "/assets/images/edufest/4. Professional Carreer.png", name: "Professional Career Guidance",para:"Gain knowledge from professionals in the field to help you design a successful career path in the always changing labor market.  " },
+  { icon: "/assets/images/edufest/5. discount.png", name: "Special 50% Off on Admission Form",para:"For a little period only, take advantage of a special discount on admission forms. This is a fantastic chance to enroll in your ideal university!" },
+  { icon: "/assets/images/edufest/6. Registration.png", name: "Free Registration & Admission",para:"The goal of EduFest 2023 is to ensure that everyone has access to education. Come for free and discover a world of opportunities!" },
+  { icon: "/assets/images/edufest/7. Refreshments.png", name: "Free Refreshments",para:"Energize yourself with complimentary refreshments throughout the event, ensuring you stay focused and make the most out of your EduFest experience." },
+  { icon: "/assets/images/edufest/8. Counselling.png", name: "Free Counselling Session",para:"Personalized guidance is just a session away. Meet with experienced counselors to discuss your aspirations and receive valuable advice tailored to your goals." },
 
 ];
+
+export const Bschool = [
+  {img:"/assets/images/edufest/Bschool/Alliance.png"},
+  {img:"/assets/images/edufest/Bschool/Bennett_University.png"},
+  {img:"/assets/images/edufest/Bschool/BIMTECH.png"},
+  {img:"/assets/images/edufest/Bschool/DPU.png"},
+  {img:"/assets/images/edufest/Bschool/FIIB.png"},
+  // {img:"/assets/images/edufest/Bschool/GBSRC.jpeg"},
+  {img:"/assets/images/edufest/Bschool/IILM.png"},
+  {img:"/assets/images/edufest/Bschool/ITM.jpg"},
+  {img:"/assets/images/edufest/Bschool/JIMS.png"},
+  {img:"/assets/images/edufest/Bschool/PIBM.jpg"},
+  {img:"/assets/images/edufest/Bschool/SOIL.png"},
+  {img:"/assets/images/edufest/Bschool/UBS.jpg"},
+  {img:"/assets/images/edufest/Bschool/DBS.jpg"},
+  {img:"/assets/images/edufest/Bschool/BML.jpg"},
+  {img:"/assets/images/edufest/Bschool/Indira.jpg"},
+  {img:"/assets/images/edufest/Bschool/Atlas.jpg"},
+  {img:"/assets/images/edufest/Bschool/NDIM.jpg"},
+  {img:"/assets/images/edufest/Bschool/SBS.jpg"},
+  {img:"/assets/images/edufest/Bschool/Woxsen.jpg"},
+
+]
+export const edufestPhoto = [
+  {img:"/assets/images/edufest/Photos/DSC_0013.JPG"},
+  {img:"/assets/images/edufest/Photos/DSC_0022.JPG"},
+  {img:"/assets/images/edufest/Photos/DSC_0025.JPG"},
+  {img:"/assets/images/edufest/Photos/DSC_0026.JPG"},
+  {img:"/assets/images/edufest/Photos/DSC_0027.JPG"},
+  {img:"/assets/images/edufest/Photos/DSC_0028.JPG"},
+  {img:"/assets/images/edufest/Photos/DSC_0034.JPG"},
+  {img:"/assets/images/edufest/Photos/DSC_0035.JPG"},
+  {img:"/assets/images/edufest/Photos/DSC_0043.JPG"},
+  {img:"/assets/images/edufest/Photos/DSC_0044.JPG"},
+  {img:"/assets/images/edufest/Photos/DSC_0048.JPG"},
+  {img:"/assets/images/edufest/Photos/DSC_0079.JPG"},
+  {img:"/assets/images/edufest/Photos/DSC_0104.JPG"},
+  {img:"/assets/images/edufest/Photos/DSC_0141.JPG"},
+  {img:"/assets/images/edufest/Photos/DSC_0159.JPG"},
+  {img:"/assets/images/edufest/Photos/DSC_0162.JPG"},
+  {img:"/assets/images/edufest/Photos/DSC_0165.JPG"},
+]
+
+export const edufestIcon = [
+  {img:"/assets/images/edufest/1. GD PI.png"},
+  {img:"/assets/images/edufest/2. B School.png"},
+  {img:"/assets/images/edufest/3. Scholarship.png"},
+  {img:"/assets/images/edufest/4. Professional Carreer.png"},
+  {img:"/assets/images/edufest/5. discount.png"},
+  {img:"/assets/images/edufest/6. Registration.jpeg"},
+  {img:"/assets/images/edufest/7. Refreshments.png"},
+  {img:"/assets/images/edufest/8. Counselling.png"},
+]
