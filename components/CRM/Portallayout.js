@@ -26,7 +26,6 @@ import LeaderboardIcon from '@mui/icons-material/Leaderboard';
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
-
 import Logout from "@mui/icons-material/Logout";
 import WorkHistoryIcon from "@mui/icons-material/WorkHistory";
 import SsidChartIcon from '@mui/icons-material/SsidChart';
@@ -109,9 +108,14 @@ const sidebarList = [
     ],
   },
   {
-    name: "Trash Colleges",
+    name: "Trash",
     icon: <DeleteForeverIcon/>,
+    children:[{
+      name: "Colleges",
+      icon: <ApartmentIcon/>,
     path: "/adminportal/trashcolleges",
+    }
+    ],
   },
 ];
 export default class PortalLayout extends Component {

@@ -45,7 +45,7 @@ export default class Gernal extends Component {
       }
     }).then(async res => {
       let response = await res.json()
-      console.log(response)
+      // console.log(response)
 if(response.error){
  this.setState({isError:true,errorMsg:response.error})
 }
@@ -234,7 +234,7 @@ else{
   };
   render() {
     
-    console.log(IndianStates)
+    // console.log(IndianStates)
     return (
       <>
       

@@ -57,7 +57,7 @@ const componentList = [
 ];
 export default function AdminPortalSlug() {
   const router = useRouter();
-  console.log(router)
+  // console.log(router)
   const { slug} = router.query;
   // console.log(slug);
   const data = componentList.find((s) => s.slug == slug);

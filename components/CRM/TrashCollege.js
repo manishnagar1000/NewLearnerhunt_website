@@ -6,8 +6,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { Spinner } from "react-bootstrap";
 import Link from "next/link";
-import RestoreFromTrashIcon from '@mui/icons-material/RestoreFromTrash';
-
+// import RestoreFromTrashIcon from '@mui/icons-material/RestoreFromTrash';
+import RestoreIcon from '@mui/icons-material/Restore';
 var oldData = []
 export default class TrashColleges extends Component {
   constructor(props) {
@@ -80,8 +80,8 @@ export default class TrashColleges extends Component {
   console.log(id)
   // this.setState({show:true})
   Swal.fire({
-    title: 'Restore the college?',
-    text: "This college will be moved Restore.",
+    // title: 'Restore the college?',
+    text: "Are you sure you want to restore this college?",
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#3085d6',
@@ -170,7 +170,7 @@ console.error('Error:', error);
                         <td style={{wordWrap:"break-word",whiteSpace:"unset"}}>{clg.approved_by}</td>
                         <td style={{wordWrap:"break-word",whiteSpace:"unset"}}>{clg.college_type}</td>
                         <td style={{wordWrap:"break-word",whiteSpace:"unset"}}>{clg.state}</td>
-                        <td style={{wordWrap:"break-word",whiteSpace:"unset"}} onClick={(e)=>this.handleShow(e,clg._id)}><RestoreFromTrashIcon/></td>
+                        <td style={{wordWrap:"break-word",whiteSpace:"unset"}} onClick={(e)=>this.handleShow(e,clg._id)}><RestoreIcon/></td>
                         {/* <td style={{wordWrap:"break-word",whiteSpace:"unset"}}><Link href={`addcollege?e=${clg._id}`}><RestoreFromTrashIcon/></Link></td> */}
 
                       </tr>
