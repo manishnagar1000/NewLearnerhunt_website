@@ -68,18 +68,18 @@
 
   .content{
     width: 100%;
-    background-color:#373027;
+    background-color:#f7a70d;
     border-radius: 10px 10px 0px 0px;
     padding: 1rem;
     margin:0rem 0rem 0rem 0rem;
   }
   .content h1{
-    color:#fff;
+    /* color:#fff; */
     font-size: 28px;
   }
-  .content p{
+  /* .content p{
     color:#f8f8f8;
-  }
+  } */
   
    .banner .webbanner {
     width: 100%;
@@ -99,9 +99,13 @@
   }
   .edufestPhoto{
     margin-bottom:2rem;
+    
   }
   .edufestPhoto h2{
     margin-bottom:0rem;
+    justify-content: center;
+    display: flex;
+    align-items: center;
   }
  /* styles.module.css */
 .photos {
@@ -110,14 +114,35 @@
 }
 
 .photos img {
-  width: 400px; /* Set your desired width */
-  height: 200px; /* Set your desired height */
+  width: 350px; /* Set your desired width */
+  height: 240px; /* Set your desired height */
   object-fit: cover; /* Maintain aspect ratio without stretching */
   border-radius: 25px;
 }
 
- 
+ .Timerclass span{
+  font-size: 40px;
+  font-weight: 500;
+ }
+.Hurry{
+  margin: 16px 0px 0px 0px;
+  color: #b00020;
+  font-size: 26px;
+  font-weight: 500;
+}
+.secure{
+    margin: 16px 0px 0px 25px;
+    color: #b00020;
+    font-size: 21px;
+    font-weight: 500;
+}
 
+.benefits{
+  display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
   .benefits h3{
     margin: 1rem 0;
     font-size: 18px;
@@ -127,6 +152,9 @@
   }
   .TopBschool h2{
     margin: 20px 0px;
+    justify-content: center;
+    display: flex;
+    align-items: center;
     /* font-size: 40px; */
   }
   .benefitscontainer{
@@ -182,7 +210,7 @@
     margin:"1rem 0rem"
   }
   .react-multi-carousel-list  {
-    height: 40vh !important;
+    height: 50vh !important;
   }
   /* .custom-dot-list-style{
     position: relative;
@@ -229,5 +257,18 @@
           }
           .edufestPhoto h2{
            font-size: 24px;
+          }
+          .Timerclass span{
+            font-size: 24px;
+          }
+          .Hurry{
+            font-size: 17px;
+          }
+          .secure{
+            margin: 16px 0px 0px 0px;
+            font-size: 14px;
+          }
+          .Addressdate p{
+            font-size: 16px;
           }
         }

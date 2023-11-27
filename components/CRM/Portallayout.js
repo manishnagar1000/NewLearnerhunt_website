@@ -33,6 +33,8 @@ import SsidChartIcon from '@mui/icons-material/SsidChart';
 import TimelineIcon from '@mui/icons-material/Timeline';
 import InsightsIcon from '@mui/icons-material/Insights';
 import AddRoadIcon from '@mui/icons-material/AddRoad';
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+
 const sidebarList = [
   {
     name: "Dashboard",
@@ -53,8 +55,10 @@ const sidebarList = [
         icon: <ContactsIcon />,
         path: "/adminportal/allcollege",
       },
+      
     ],
   },
+ 
   
   // {
   //   name: "ApiIntegration",
@@ -103,6 +107,11 @@ const sidebarList = [
       }
       
     ],
+  },
+  {
+    name: "Trash Colleges",
+    icon: <DeleteForeverIcon/>,
+    path: "/adminportal/trashcolleges",
   },
 ];
 export default class PortalLayout extends Component {

@@ -7,7 +7,7 @@ function App() {
     let year = new Date().getFullYear();
 
     const difference = +new Date(`${year}-12-11`) - +new Date();
-    console.log("year", year, difference);
+    // console.log("year", year, difference);
     let timeLeft = {};
 
     if (difference > 0) {

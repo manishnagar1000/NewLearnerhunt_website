@@ -15,7 +15,7 @@ import Button from "react-bootstrap/Button";
 import Link from "next/link";
 
 export default function fest() {
-  console.log(edufestCard);
+  // console.log(edufestCard);
   const targetDate = new Date("2023-12-09T00:00:00").getTime();
   const [time, setTime] = useState({
     days: 0,
@@ -105,7 +105,7 @@ export default function fest() {
               style={{ color: "black", textDecoration: "none" }}
               href="tel:+919811790857"
             >
-              +919811790857
+              9811790857
             </Link>
           </p>
         </div>
@@ -202,34 +202,28 @@ export default function fest() {
               ></div>
             </div>
             <div className="row" style={{ padding: "0.5rem 3rem 1rem 4rem" }}>
-              <div className="col-md-9">
-                <div>
-                  <p>
+              <div className="col-md-8">
+                <div className={styles.Timerclass}>
+                  <span>
                     🕒{time.days}d:{time.hours}h:{time.minutes}m:{time.seconds}s
-                  </p>
+                  </span>
                 </div>
-                <div
-                  style={{
-                    margin: "16px 0px 0px 0px",
-                    color: "#b00020",
-                    fontSize: "18px",
-                    fontWeight: "500",
-                  }}
-                >
+                <div className={styles.Hurry}>
                   Hurry!{" "}
                   <span style={{ fontStyle: "italic" }}>
                     Limited Spots Available
                   </span>
                 </div>
               </div>
-              <div className="col-md-3">
-                <Link href="https://forms.gle/qutdeTDdbjHLKaNV6" target="blank">
+              <div className="col-md-4" >
+                <Link href="https://forms.gle/qutdeTDdbjHLKaNV6" target="blank" style={{marginLeft:"25px"}}>
                   <Button
                     style={{
-                      color: "#1D1D1b",
+                      marginTop:"15px",
+                      color: "#fff",
                       fontSize: "20px",
                       fontWeight: "500",
-                      background: "#f7a70d",
+                      background: "red",
                       height: "46px",
                       width: "170px",
                       border: ".9px solid transparent",
@@ -238,13 +232,8 @@ export default function fest() {
                     REGISTER NOW
                   </Button>{" "}
                 </Link>
-                <div
-                  style={{
-                    margin: "16px 0px 0px 0px",
-                    color: "#b00020",
-                    fontSize: "18px",
-                    fontWeight: "500",
-                  }}
+                <div className={styles.secure}
+                
                 >
                   Secure your spot by registering{" "}
                   <span style={{ fontStyle: "italic" }}>FREE</span>
@@ -339,7 +328,7 @@ export default function fest() {
           <div className="container">
             <div className={styles.TopBschool}>
               <div className="row">
-                <h2>Top Business Schools</h2>
+                <h2>India's Top Business Schools & Universities</h2>
                 {Bschool.map((e, index) => (
                   <div className="col-6 col-md-4 col-lg-2 d-flex justify-content-center align-items-center">
                     <div className={styles.BschoolCard}>

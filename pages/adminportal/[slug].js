@@ -5,10 +5,8 @@ import Dashboard from "/components/CRM/Dashboard";
 import Addcollege from "/components/CRM/addcollege/Addcollege";
 import Allcollege from "/components/CRM/addcollege/Allcollege";
 import ApiIntegration from "/components/CRM/ApiIntegration";
+import TrashColleges from "/components/CRM/TrashCollege";
 import Imarticus from "/components/CRM/Imarticus";
-
-
-
 import Swal from "sweetalert2";
 import Testeligibility from "/components/CRM/Testeligibility";
 import Studentappliedclg from "/components/CRM/Studentappliedclg";
@@ -51,6 +49,10 @@ const componentList = [
   {
     comp:<AddLeads/>,
     slug:"adleads"
+  },
+  {
+    comp:<TrashColleges/>,
+    slug:"trashcolleges"
   }
 ];
 export default function AdminPortalSlug() {
