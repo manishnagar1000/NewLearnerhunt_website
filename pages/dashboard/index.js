@@ -14,8 +14,6 @@ export default function Index(props) {
   const [activeLink, setActiveLink] = useState("myprofile"); // state to manage active link
   const [sidemenuopen, setSidemenuopen] = useState(false);
   const [isuserlogin,setIsuserlogin] = useState(false);
-  const [smyprofile,setSmyprofile] = useState([]);
-  const [isLoading,setIsLoading]= useState(false);
   // Function to handle link clicks
   const handleLinkClick = (link) => {
     // console.log(link);
@@ -27,34 +25,13 @@ export default function Index(props) {
       window.history.back()
     }else{
       setIsuserlogin(true)
-
-      // hitting api
-     
     }
   
   }, [])
 
-  const studentDataApi = () =>{
-    setIsLoading(true)
-    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/student/my-profile", {
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem("userid")}`
-      }
-     
-    }).then(async (response) => {
-        var res = await response.json();
 
-      console.log(res.data)
-      setSmyprofile(res.data)
-      setIsLoading(false)
-    }).catch (error=>{
-        alert(error);
-    }) 
-  }
   
-  const onSuccess = () => {
-    studentDataApi();
-  };
+
 
   return (
     <>
@@ -97,18 +74,13 @@ export default function Index(props) {
         </Col>
    
         <Col md={9} xs={7} className={`${Classes["sidebar-content"]} ${sidemenuopen?Classes["show"]:""}`}>
-        {!isLoading ?
           <div className={Classes['outercontainer']}>
           {/* Conditional rendering of content based on activeLink state */}
-          {activeLink === "myprofile" && <MyProfile studentProfile={smyprofile} onSuccess={onSuccess}/>}
+          {activeLink === "myprofile" && <MyProfile />}
           {activeLink === "educational" && <Educational />}
           {activeLink === "college" && <CollegeComponent />}
           </div>
-          :
-          <div className='d-flex justify-content-center align-items-center' style={{ height: "80vh" }}> 
-         <Spinner variant='outlined' />
-         </div>
-         }
+      
         </Col>
         
 
