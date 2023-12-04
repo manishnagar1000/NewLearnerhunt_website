@@ -123,7 +123,7 @@ export default function isbr() {
                 <div className="banner-content">
                     <div className="banner-box">
                         <h4>Programme Offered</h4>
-                        <h1>PGDM <span>&</span>
+                        <h1>PGDM<span> & </span>
                             MBA 2024</h1>
                         <h5>Immersive . Innovative . Impactful </h5>
                     </div>
@@ -342,22 +342,33 @@ export default function isbr() {
                     
                                 </div>
                                 <div className="icon">
-                                    <img src="/assets/images/isbr/recruiter_img-20.png" className="img-fluid" alt=""/>
-                                 
+                                    <img src="/assets/images/isbr/recruiter_img-9.png" className="img-fluid" alt=""/>
+                                </div>
+                                <div className="icon">
+                                    <img src="/assets/images/isbr/recruiter_img-1.png" className="img-fluid" alt=""/>
+                                </div>
+                                <div className="icon">
+                                    <img src="/assets/images/isbr/recruiter_img-2.png" className="img-fluid" alt=""/>
                                 </div>
                             </div>
                             <div className="first_row">
                                 <div className="icon">
-                                    <img src="/assets/images/isbr/recruiter_img-21.png" className="img-fluid" alt=""/>
+                                    <img src="/assets/images/isbr/recruiter_img-11.png" className="img-fluid" alt=""/>
                                 </div>
                                 <div className="icon">
                                     <img src="/assets/images/isbr/recruiter_img-22.png" className="img-fluid" alt=""/>
                                 </div>
                                 <div className="icon">
-                                    <img src="/assets/images/isbr/recruiter_img-23.png" className="img-fluid" alt=""/>
+                                    <img src="/assets/images/isbr/recruiter_img-12.png" className="img-fluid" alt=""/>
                                 </div>
                                 <div className="icon">
                                     <img src="/assets/images/isbr/recruiter_img-24.png" className="img-fluid" alt=""/>
+                                </div>
+                                <div className="icon">
+                                    <img src="/assets/images/isbr/recruiter_img-3.png" className="img-fluid" alt=""/>
+                                </div>
+                                <div className="icon">
+                                    <img src="/assets/images/isbr/recruiter_img-4.png" className="img-fluid" alt=""/>
                                 </div>
                             </div>
                         </div>
@@ -383,7 +394,7 @@ export default function isbr() {
     </section>
 
     <footer>
-        <p className="text-center">2023 Copyright © isbr.in. All rights reserved.</p>
+        <p className="text-center">2023 Copyright © learnerhunt.com. All rights reserved.</p>
     </footer>
     </div>
   

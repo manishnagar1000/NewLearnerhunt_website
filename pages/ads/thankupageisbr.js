@@ -23,7 +23,7 @@ function ThankupageIsbr() {
               
              <div className={styles["duration"]}> An <strong style={{color: "#ffce41"}}>Email/SMS</strong> has been sent to your registered <strong style={{color: "#ffce41"}}>Email ID/Mobile No.</strong> with detailed <br/>instructions to complete your application further.</div>
 <br/>
-<div className={styles["duration"]}>You may also visit <a href="https://www.learnerhunt.com/colleges/-isbr-international-school-of-business-and-research-" target="_self">https://apply.isbr.in</a> to login and complete your application.</div>
+<div className={styles["duration"]}>You may also visit <a href="https://www.learnerhunt.com/colleges/-isbr-international-school-of-business-and-research-" target="_self"><strong style={{color: "#ffce41"}}>Apply Now</strong></a> to login and complete your application.</div>
  
 
               

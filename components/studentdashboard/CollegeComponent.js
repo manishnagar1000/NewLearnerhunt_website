@@ -44,11 +44,8 @@ export default function CollegeComponent() {
   }, []);
 
   return (
-    <div
-      className={Classes["stud-dashboard"]}
-      style={{ backgroundColor: "#f8f8f8" }}
-    >
-      <Box sx={{ width: "100%" }}>
+   <>
+      {/* <Box sx={{ width: "100%" }}>
         <Tabs
           value={value}
           onChange={handleChange}
@@ -56,11 +53,11 @@ export default function CollegeComponent() {
           indicatorColor="secondary"
           aria-label="secondary tabs example"
         >
-          {/* <Tab value="1" label="Recommendations" />
-                <Tab value="2" label="Shortlists" /> */}
+          <Tab value="1" label="Recommendations" />
+                <Tab value="2" label="Shortlists" />
           <Tab value="3" label="Application" />
         </Tabs>
-      </Box>
+      </Box> */}
 
       <div style={{ marginTop: "20px" }}>
         {isLoading ? (
@@ -111,6 +108,6 @@ export default function CollegeComponent() {
           <div className="d-flex justify-content-center align-items-center fw-bold " style={{ height: "76vh" }}><a href="/colleges" style={{textDecoration:"none"}}>Click here to apply</a></div>
         )}
       </div>
-    </div>
+      </>
   );
 }

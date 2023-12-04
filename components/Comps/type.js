@@ -320,3 +320,19 @@ export const edufestIcon = [
   {img:"/assets/images/edufest/7. Refreshments.png"},
   {img:"/assets/images/edufest/8. Counselling.png"},
 ]
+
+export const genderType = [
+  { value: "Male", gendername: "Male" },
+  { value: "Female", gendername: "Female" },
+  { value: "Other", gendername: "Other" },
+]
+
+export const maritalType = [
+  { value: "Married", MarrigeType: "Married" },
+  { value: "Unmarried", MarrigeType: "Unmarried" },
+]
+
+export const Physicalchallenge = [
+  { value: "true", PhysicalType: "Yes" },
+  { value: "false", PhysicalType: "No" },
+]

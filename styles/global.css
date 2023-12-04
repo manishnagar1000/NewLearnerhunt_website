@@ -172,4 +172,20 @@ html {
 color: red;
 }
 /* custom-table end */
-
+::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.3); 
+    border-radius: 5px;
+  }
+  
+ 
