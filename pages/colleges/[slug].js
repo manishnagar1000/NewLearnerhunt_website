@@ -19,7 +19,7 @@ const pagesHavePopup = [
 ];
 
 export default function CollegeName({ collegedata }) {
-  // console.log(collegedata);
+  console.log(collegedata);
   const collegeid = collegedata.generalinfo._id;
   const [userStatus, setUserStatus] = useState(false);
   const [userid, setUserid] = useState("");

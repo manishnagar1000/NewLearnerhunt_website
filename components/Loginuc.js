@@ -1,25 +1,36 @@
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import { Form, Button, Modal, Row, Col } from "react-bootstrap";
+import { Form, Button, Modal, Row, Col, Spinner } from "react-bootstrap";
 import { CircularProgress } from "@mui/material";
 import Carousel, { CarouselItem } from "./CarouselItem";
 import { IndianStates } from "/components/Comps/StatesIndia";
+import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
+import Stack from "@mui/material/Stack";
+import { ExpinYear } from "@/components/Comps/type";
+
+import Classes from "/styles/searchmodal.module.css";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function Loginuc({ isOpen, onClose, role }) {
   const initialTimer = 120; // 120 seconds (2 minutes)
   const [timer, setTimer] = useState(initialTimer);
   const [resendDisabled, setResendDisabled] = useState(false);
-
   const [email, setEmail] = useState("");
   const [showotp, setShowotp] = useState(false);
   const [loginpassword, setLoginPassword] = useState("");
   const [loginwithpassword, setLoginwithPassword] = useState(false);
-
   const [signupshowotp, setSignShowotp] = useState(false);
   const [userotp, setUserotp] = useState("");
   const [signupuserotp, setSignupuserotp] = useState("");
   const [isloading, setIsloading] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
+  // modal of search for college
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isApiHitComplete, setIsApiHitComplete] = useState(true);
+  const [results, setResults] = useState([]);
 
   // student signup
   const [signupemail, setSignupEmail] = useState("");
@@ -32,17 +43,25 @@ export default function Loginuc({ isOpen, onClose, role }) {
   // college signup
   const [clgname, setClgName] = useState(""); // Add state for name
   const [adminname, setAdminName] = useState(""); // Add state for name
-  const [clgSignupemail, setClgSignupEmail] = useState("");
+  // const [clgSignupemail, setClgSignupEmail] = useState("");
   const [clgmobile, setClgMobile] = useState(""); // Add state for mobile
-  const [clgLandline, setClgLandline] = useState(""); // Add state for mobile
+  // const [clgLandline, setClgLandline] = useState(""); // Add state for mobile
   const [designation, setDesignation] = useState(""); // Add state for mobile
-  const [clgstate, setClgstate] = useState(""); // Add state for mobile
-  const [clgcity, setClgcity] = useState(""); // Add state for mobile
+  const [referrer, setReferrer] = useState(""); // Add state for mobile
+  const [linkedIn, setLinkedIn] = useState(""); // Add state for mobile
+
 
   const [lastOtpSentTime, setLastOtpSentTime] = useState(null);
 
   // counsollor signup
-  const [counsellorname, setCounsellorname] = useState(""); 
+  const [counsellorname, setCounsellorname] = useState("");
+  const [counsellormobile, setCounsellormobile] = useState("");
+  const [counsellorstate, setCounsellorstate] = useState(""); 
+  const [counsellorcity, setCounsellorcity] = useState(""); 
+  const [counsellorexp, setCounsellorexp] = useState(""); 
+
+
+
 
   let countdown; // Define countdown outside of useEffect
 
@@ -61,6 +80,42 @@ export default function Loginuc({ isOpen, onClose, role }) {
       });
     }, 1000); // Update the timer every 1 second
   };
+
+  const router = useRouter();
+
+  useEffect(() => {
+    let timeoutId;
+    const fetchSearchResults = async () => {
+      const response = await fetch(
+        process.env.NEXT_PUBLIC_API_ENDPOINT +
+          "/miscellaneous/global-search?term=" +
+          searchTerm
+      );
+      const data = await response.json();
+      var rs = data.data.filter((s) => s.type == "college");
+      console.log(data);
+      if(role == 1){
+        if (rs.length == 0) {
+          rs = [{ title: "+ Add New", slug: "", type: "-1" }];
+        }
+      }
+      
+      setResults(rs);
+      setIsApiHitComplete(true);
+    };
+
+    if (searchTerm.trim().length > 2) {
+      setIsApiHitComplete(false);
+      timeoutId = setTimeout(fetchSearchResults, 500);
+    } else {
+      setResults([]);
+    }
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [searchTerm]);
+
   useEffect(() => {
     // let countdown;
     // Clean up the timer when the component unmounts
@@ -188,7 +243,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
               var userstatus = res.data.status;
               var userid = res.data.token;
               var useremail = res.data.email;
-
+              var role = res.data.role;
               Swal.fire({
                 title: "Success",
                 text: `${res.message}`,
@@ -198,9 +253,19 @@ export default function Loginuc({ isOpen, onClose, role }) {
                 setIsloading(false);
                 onClose();
                 localStorage.setItem("status", userstatus);
-                localStorage.setItem("userid", userid);
+
                 localStorage.setItem("useremail", useremail);
-                window.location.reload();
+
+                if (role == 3) {
+                  localStorage.setItem("userid", userid);
+                  window.location.reload();
+                } else if (role == 1) {
+                  router.push("/collegeportal/my-kyc");
+                  localStorage.setItem("ct", userid);
+                }else{
+                  router.push("/counsellorportal/my-profile");
+                  localStorage.setItem("cst", userid);
+                }
               });
             } else {
               var res = await response.json();
@@ -221,7 +286,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
       } else {
         try {
           const fd = new FormData();
-          if(role == 3){
+          if (role == 3) {
             fd.append("email", signupemail);
             fd.append("name", name); // Add name to form data
             fd.append("mobile", mobile); // Add mobile to form data
@@ -229,48 +294,115 @@ export default function Loginuc({ isOpen, onClose, role }) {
             fd.append("level", level); // Add level to form data
             fd.append("password", password); // Add password to form data
             fd.append("role", role);
-          }else if(role == 1){
-            fd.append("name", clgname); // Add name to form data
-            fd.append("name", adminname); // Add name to form data
-            fd.append("email", clgSignupemail);
-            fd.append("mobile", clgmobile); // Add mobile to form data
-            fd.append("stream", clgLandline); // Add stream to form data
-            fd.append("level", designation); // Add level to form data
-            fd.append("password", state);
-            fd.append("password", city); // Add password to form data
-            fd.append("role", role);
-          }else{
-            console.log("signup counsellor")
+            fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/user/signup", {
+              method: "POST",
+              body: fd,
+            }).then(async (response) => {
+              var res = await response.json();
+              // console.log(res.message)
+              if (response.ok) {
+                // console.log("hello", response.data);
+                Swal.fire({
+                  title: "Success",
+                  text: `${res.message}`,
+                  icon: "success",
+                  confirmButtonText: "Ok",
+                }).then(() => {
+                  // console.log("done")
+                  setSignShowotp(true);
+                  // setIsloading(false);
+                  // setShowotp(true);
+                });
+              } else {
+                Swal.fire({
+                  title: "error",
+                  text: `${res.error}`,
+                  icon: "error",
+                  confirmButtonText: "Ok",
+                });
+              }
+            });
+          } else if (role == 1) {
+            fd.append("college_name", clgname); // Add name to form data
+            fd.append("name", adminname);
+            fd.append("email", signupemail); // Add mobile to form data
+            // fd.append("stream", clgLandline); // Add stream to form data
+            fd.append("mobile", clgmobile); // Add level to form data
+            fd.append("designation", designation);
+            fd.append("linked_in_link", linkedIn); // Add password to form data
+            fd.append("referrer ", referrer);
+            fetch(
+              process.env.NEXT_PUBLIC_API_ENDPOINT + "/clg-admin/register",
+              {
+                method: "POST",
+                body: fd,
+              }
+            ).then(async (response) => {
+              var res = await response.json();
+              // console.log(res.message)
+              if (response.ok) {
+                // console.log("hello", response.data);
+                Swal.fire({
+                  title: "Success",
+                  text: `${res.message}`,
+                  icon: "success",
+                  confirmButtonText: "Ok",
+                }).then(() => {
+                  // console.log("done")
+                  setSignShowotp(true);
+                  // setIsloading(false);
+                  // setShowotp(true);
+                });
+              } else {
+                Swal.fire({
+                  title: "error",
+                  text: `${res.error}`,
+                  icon: "error",
+                  confirmButtonText: "Ok",
+                });
+              }
+            });
+          } else {
+            fd.append("college_name", clgname); // Add name to form data
+            fd.append("name", counsellorname);
+            fd.append("email", signupemail); // Add mobile to form data
+            // fd.append("stream", clgLandline); // Add stream to form data
+            fd.append("mobile", counsellormobile); // Add level to form data
+            fd.append("state", counsellorstate);
+            fd.append("city", counsellorcity); // Add password to form data
+            fd.append("experience", counsellorexp);
+            fetch(
+              process.env.NEXT_PUBLIC_API_ENDPOINT + "/counsellor/register",
+              {
+                method: "POST",
+                body: fd,
+              }
+            ).then(async (response) => {
+              var res = await response.json();
+              // console.log(res.message)
+              if (response.ok) {
+                // console.log("hello", response.data);
+                Swal.fire({
+                  title: "Success",
+                  text: `${res.message}`,
+                  icon: "success",
+                  confirmButtonText: "Ok",
+                }).then(() => {
+                  // console.log("done")
+                  setSignShowotp(true);
+                  // setIsloading(false);
+                  // setShowotp(true);
+                });
+              } else {
+                Swal.fire({
+                  title: "error",
+                  text: `${res.error}`,
+                  icon: "error",
+                  confirmButtonText: "Ok",
+                });
+              }
+            });
           }
-          
-          fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/user/signup", {
-            method: "POST",
-            body: fd,
-          }).then(async (response) => {
-            var res = await response.json();
-            // console.log(res.message)
-            if (response.ok) {
-              // console.log("hello", response.data);
-              Swal.fire({
-                title: "Success",
-                text: `${res.message}`,
-                icon: "success",
-                confirmButtonText: "Ok",
-              }).then(() => {
-                // console.log("done")
-                setSignShowotp(true);
-                // setIsloading(false);
-                // setShowotp(true);
-              });
-            } else {
-              Swal.fire({
-                title: "error",
-                text: `${res.error}`,
-                icon: "error",
-                confirmButtonText: "Ok",
-              });
-            }
-          });
         } catch (error) {
           // Handle network or fetch error
           console.error("Failed to fetch OTP:", error);
@@ -296,6 +428,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
               var userstatus = res.data.status;
               var userid = res.data.token;
               var useremail = res.data.email;
+              var role = res.data.role;
 
               Swal.fire({
                 title: "Success",
@@ -306,9 +439,20 @@ export default function Loginuc({ isOpen, onClose, role }) {
                 setIsloading(false);
                 onClose();
                 localStorage.setItem("status", userstatus);
-                localStorage.setItem("userid", userid);
+
                 localStorage.setItem("useremail", useremail);
-                window.location.reload();
+
+                if (role == 3) {
+                  localStorage.setItem("userid", userid);
+
+                  window.location.reload();
+                } else if (role == 1) {
+                  localStorage.setItem("ct", userid);
+                  router.push("/collegeportal/my-kyc");
+                }else{
+                  router.push("/counsellorportal/my-profile");
+                  localStorage.setItem("cst", userid);
+                }
               });
             } else {
               var res = await response.json();
@@ -369,17 +513,17 @@ export default function Loginuc({ isOpen, onClose, role }) {
 
     setClgMobile(limitedInput);
   };
-  const handleClgLandlineChange = (event) => {
-    const input = event.target.value;
+  // const handleClgLandlineChange = (event) => {
+  //   const input = event.target.value;
 
-    // Remove any non-numeric characters
-    const numericInput = input.replace(/\D/g, "");
+  //   // Remove any non-numeric characters
+  //   const numericInput = input.replace(/\D/g, "");
 
-    // Limit to 10 characters
-    const limitedInput = numericInput.slice(0, 10);
+  //   // Limit to 10 characters
+  //   const limitedInput = numericInput.slice(0, 10);
 
-    setClgLandline(limitedInput);
-  };
+  //   setClgLandline(limitedInput);
+  // };
 
   const handleStreamChange = (event) => {
     setStream(event.target.value);
@@ -477,6 +621,13 @@ export default function Loginuc({ isOpen, onClose, role }) {
       }
     });
   };
+
+  const onClgselect = (clg) => {
+    if (clg.type == "-1") {
+      setClgName(searchTerm);
+    } else setClgName(clg.title);
+    setIsSearchModalOpen(false);
+  };
   return (
     <div>
       <Modal
@@ -567,7 +718,6 @@ export default function Loginuc({ isOpen, onClose, role }) {
                         value={email}
                         onChange={handleEmailChange}
                         required
-                        autoComplete="on"
                         style={{ marginBottom: "15px" }}
                       />
                     </Form.Group>
@@ -620,7 +770,6 @@ export default function Loginuc({ isOpen, onClose, role }) {
                             value={name}
                             onChange={handleNameChange}
                             required
-                            autoComplete="on"
                             style={{ marginBottom: "15px" }}
                           />
                         </Form.Group>
@@ -635,7 +784,6 @@ export default function Loginuc({ isOpen, onClose, role }) {
                             value={signupemail}
                             onChange={handleSignupEmailChange}
                             required
-                            autoComplete="on"
                             style={{ marginBottom: "15px" }}
                           />
                         </Form.Group>
@@ -649,7 +797,6 @@ export default function Loginuc({ isOpen, onClose, role }) {
                             value={mobile}
                             onChange={handleMobileChange}
                             required
-                            autoComplete="on"
                             style={{ marginBottom: "15px" }}
                             min="0"
                           />
@@ -734,23 +881,8 @@ export default function Loginuc({ isOpen, onClose, role }) {
                         )}
                       </>
                     ) : role == "2" ? (
-                      <Form.Group controlId="counsellorname">
-                        <Form.Label style={{ fontWeight: "bold" }}>
-                          Counsellor Name
-                        </Form.Label>
-                        <Form.Control
-                          type="text"
-                          placeholder="Enter your name"
-                          value={counsellorname}
-                          onChange={(e)=>setCounsellorname(e.target.value)}
-                          required
-                          autoComplete="on"
-                          style={{ marginBottom: "15px" }}
-                        />
-                      </Form.Group>
-                    ) : (
                       <>
-                        <Form.Group controlId="clgname">
+                       <Form.Group controlId="clgname">
                           <Form.Label style={{ fontWeight: "bold" }}>
                             College Name
                           </Form.Label>
@@ -759,8 +891,171 @@ export default function Loginuc({ isOpen, onClose, role }) {
                             placeholder="Enter your College Name"
                             value={clgname}
                             onChange={(e) => setClgName(e.target.value)}
+                            onClick={() => setIsSearchModalOpen(true)}
                             required
-                            autoComplete="on"
+                            style={{ marginBottom: "15px" }}
+                          />
+                        </Form.Group>
+                      <Form.Group controlId="counsellorname">
+                        <Form.Label style={{ fontWeight: "bold" }}>
+                          Counsellor Name
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          placeholder="Enter your name"
+                          value={counsellorname}
+                          onChange={(e) => setCounsellorname(e.target.value)}
+                          required
+                          style={{ marginBottom: "15px" }}
+                        />
+                      </Form.Group>
+                      <Form.Group controlId="counselloremail">
+                      <Form.Label style={{ fontWeight: "bold" }}>
+                      Email
+                      </Form.Label>
+                      <Form.Control
+                        type="email"
+                        placeholder="Enter your email"
+                        value={signupemail}
+                        onChange={(e) => setSignupEmail(e.target.value)}
+                        required
+                        style={{ marginBottom: "15px" }}
+                      />
+                    </Form.Group>
+                    <Form.Group controlId="mobile">
+                          <Form.Label style={{ fontWeight: "bold" }}>
+                            Mobile
+                          </Form.Label>
+                          <Form.Control
+                            type="number"
+                            placeholder="Enter your mobile number"
+                            value={counsellormobile}
+                            onChange={(e) => setCounsellormobile(e.target.value)}
+                            required
+                            style={{ marginBottom: "15px" }}
+                            min="0"
+                          />
+                        </Form.Group>
+                         <Form.Group controlId="state">
+                          <Form.Label style={{ fontWeight: "bold" }}>
+                            State
+                          </Form.Label>
+                          <Form.Control
+                            as="select"
+                            value={counsellorstate}
+                            style={{ marginBottom: "15px" }}
+                            onChange={(e) => setCounsellorstate(e.target.value)}
+                            required
+                          >
+                            <option disabled value="">
+                              Select State
+                            </option>
+                            {Object.keys(IndianStates["India"]).map((c, i) => {
+                              return (
+                                <option key={i} value={c}>
+                                  {c}
+                                </option>
+                              );
+                            })}
+
+                          </Form.Control>
+                        </Form.Group>
+                        <Form.Group controlId="city">
+                          <Form.Label style={{ fontWeight: "bold" }}>
+                            City
+                          </Form.Label>
+                          <Form.Control
+                            as="select"
+                            value={counsellorcity}
+                            style={{ marginBottom: "15px" }}
+                            onChange={(e) => setCounsellorcity(e.target.value)}
+                            required
+                          >
+                            <option disabled value="">
+                              Select city
+                            </option>
+                            {counsellorstate != "" &&
+                              IndianStates["India"][counsellorstate].map((c, i) => {
+                                return (
+                                  <option key={i} value={c}>
+                                    {c}
+                                  </option>
+                                );
+                              })}
+
+                          </Form.Control>
+                        </Form.Group>
+                        <Form.Group controlId="exp">
+                          <Form.Label style={{ fontWeight: "bold" }}>
+                          Experince in Year
+                          </Form.Label>
+                          <Form.Control
+                            as="select"
+                            value={counsellorexp}
+                            style={{ marginBottom: "15px" }}
+                            onChange={(e) => setCounsellorexp(e.target.value)}
+                            required
+                          >
+                            <option disabled value="">
+                              Experince in Year
+                            </option>
+                            {ExpinYear.map((c, i) => {
+                                return (
+                                  <option key={i} value={c}>
+                                    {c}
+                                  </option>
+                                );
+                              })}
+
+                          </Form.Control>
+                        </Form.Group>
+                        {signupshowotp && (
+                          <Form.Group controlId="otp">
+                            <Form.Label style={{ fontWeight: "bold" }}>
+                              Enter OTP
+                            </Form.Label>
+                            <Form.Control
+                              type="text"
+                              placeholder="Enter the OTP"
+                              value={signupuserotp}
+                              maxLength={6}
+                              minLength={6}
+                              onChange={handleSignupOtpChange}
+                              required
+                              style={{ marginBottom: "15px" }}
+                            />
+                          </Form.Group>
+                        )}
+                    </>
+                    ) : (
+                      <>
+                        <Form.Group controlId="clgname">
+                          <Form.Label style={{ fontWeight: "bold" }}>
+                            College Name
+                          </Form.Label>
+                          {/* <Autocomplete
+        id="free-solo-demo"
+        freeSolo
+        options={top100Films.map((option) => option.title)}
+        renderInput={(params) =>  (
+          <TextField
+            {...params}
+            placeholder="Enter a College Name"
+            size='small' margin="dense" 
+            value={clgname}
+            onChange={(e) => setClgName(e.target.value)}
+            required
+            style={{ marginBottom: "15px" }}
+          />
+        )}
+      /> */}
+                          <Form.Control
+                            type="text"
+                            placeholder="Enter your College Name"
+                            value={clgname}
+                            onChange={(e) => setClgName(e.target.value)}
+                            onClick={() => setIsSearchModalOpen(true)}
+                            required
                             style={{ marginBottom: "15px" }}
                           />
                         </Form.Group>
@@ -774,7 +1069,6 @@ export default function Loginuc({ isOpen, onClose, role }) {
                             value={adminname}
                             onChange={(e) => setAdminName(e.target.value)}
                             required
-                            autoComplete="on"
                             style={{ marginBottom: "15px" }}
                           />
                         </Form.Group>
@@ -785,10 +1079,9 @@ export default function Loginuc({ isOpen, onClose, role }) {
                           <Form.Control
                             type="email"
                             placeholder="Enter your email"
-                            value={clgSignupemail}
-                            onChange={(e) => setClgSignupEmail(e.target.value)}
+                            value={signupemail}
+                            onChange={(e) => setSignupEmail(e.target.value)}
                             required
-                            autoComplete="on"
                             style={{ marginBottom: "15px" }}
                           />
                         </Form.Group>
@@ -802,12 +1095,11 @@ export default function Loginuc({ isOpen, onClose, role }) {
                             value={clgmobile}
                             onChange={handleClgMobileChange}
                             required
-                            autoComplete="on"
                             style={{ marginBottom: "15px" }}
                             min="0"
                           />
                         </Form.Group>
-                        <Form.Group controlId="Landline Number">
+                        {/* <Form.Group controlId="Landline Number">
                           <Form.Label style={{ fontWeight: "bold" }}>
                             Landline Number
                           </Form.Label>
@@ -817,26 +1109,55 @@ export default function Loginuc({ isOpen, onClose, role }) {
                             value={clgLandline}
                             onChange={handleClgLandlineChange}
                             required
-                            autoComplete="on"
                             style={{ marginBottom: "15px" }}
                             min="0"
                           />
-                        </Form.Group>
+                        </Form.Group> */}
                         <Form.Group controlId="designation">
                           <Form.Label style={{ fontWeight: "bold" }}>
                             Designation
                           </Form.Label>
                           <Form.Control
-                            type="text"
-                            placeholder="Enter your designation"
+                            as="select" // Use select element for dropdown
                             value={designation}
                             onChange={(e) => setDesignation(e.target.value)}
                             required
-                            autoComplete="on"
+                            style={{ marginBottom: "15px" }}
+                          >
+                            <option value="">Select Designation</option>
+                            <option value="Chairman">Chairman</option>
+                            <option value="Director">Director</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Sales">Sales</option>
+                            <option value="Faculty">Faculty</option>
+                            <option value="Other">Other</option>
+                          </Form.Control>
+                        </Form.Group>
+                        <Form.Group controlId="referrer">
+                          <Form.Label style={{ fontWeight: "bold" }}>
+                            Referrer
+                          </Form.Label>
+                          <Form.Control
+                            type="text"
+                            placeholder="Enter Referrer"
+                            value={referrer}
+                            onChange={(e) => setReferrer(e.target.value)}
                             style={{ marginBottom: "15px" }}
                           />
                         </Form.Group>
-                        <Form.Group controlId="state">
+                        <Form.Group controlId="LinkedIn">
+                          <Form.Label style={{ fontWeight: "bold" }}>
+                            LinkedIn Link
+                          </Form.Label>
+                          <Form.Control
+                            type="text"
+                            placeholder="Enter your LinkedIn Link"
+                            value={linkedIn}
+                            onChange={(e) => setLinkedIn(e.target.value)}
+                            style={{ marginBottom: "15px" }}
+                          />
+                        </Form.Group>
+                        {/* <Form.Group controlId="state">
                           <Form.Label style={{ fontWeight: "bold" }}>
                             State
                           </Form.Label>
@@ -858,7 +1179,6 @@ export default function Loginuc({ isOpen, onClose, role }) {
                               );
                             })}
 
-                            {/* ... Other options ... */}
                           </Form.Control>
                         </Form.Group>
                         <Form.Group controlId="city">
@@ -884,9 +1204,8 @@ export default function Loginuc({ isOpen, onClose, role }) {
                                 );
                               })}
 
-                            {/* ... Other options ... */}
                           </Form.Control>
-                        </Form.Group>
+                        </Form.Group> */}
                         {signupshowotp && (
                           <Form.Group controlId="otp">
                             <Form.Label style={{ fontWeight: "bold" }}>
@@ -1029,6 +1348,64 @@ export default function Loginuc({ isOpen, onClose, role }) {
               </Form>
             </Col>
           </Row>
+        </Modal.Body>
+      </Modal>
+
+      <Modal
+        className={Classes["custom-search-modal"]}
+        size="md"
+        style={{ background: "rgba(0,0,0,0.6)" }}
+        centered
+        show={isSearchModalOpen}
+        onHide={() => setIsSearchModalOpen(false)}
+      >
+        <Modal.Header closeButton>
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search colleges"
+            className="form-control"
+          />
+        </Modal.Header>
+        <Modal.Body style={{ padding: "0" }}>
+          <div className={Classes["results"]}>
+            {searchTerm.trim().length > 2 ? (
+              isApiHitComplete ? (
+                results.length > 0 ? (
+                  results.map((el) => {
+                    return (
+                      <div
+                        className={Classes["college"]}
+                        onClick={() => onClgselect(el)}
+                      >
+                        <span>{el.title}</span>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <div
+                    className="d-flex justify-content-center align-items-center"
+                    style={{ width: "100%", height: "inherit" }}
+                  >
+                    <span>No record</span>
+                  </div>
+                )
+              ) : (
+                <div
+                  className="d-flex justify-content-center align-items-center"
+                  style={{ width: "100%", height: "inherit", padding: "1rem" }}
+                >
+                  <Spinner variant="outlined" />
+                </div>
+              )
+            ) : (
+              <div className={Classes["trending-searches"]}>
+                <br />
+                <br />
+              </div>
+            )}
+          </div>
         </Modal.Body>
       </Modal>
     </div>

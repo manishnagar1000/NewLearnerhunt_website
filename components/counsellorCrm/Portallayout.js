@@ -4,7 +4,9 @@ import IconButton from "@mui/material/IconButton";
 import Classes from  "/styles/portaldashboard.module.css";
 
 import Avatar from "@mui/material/Avatar";
-import HomeIcon from "@mui/icons-material/Home";
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import BusinessIcon from '@mui/icons-material/Business';
+import TroubleshootIcon from '@mui/icons-material/Troubleshoot';
 import GroupIcon from "@mui/icons-material/Group";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
@@ -33,95 +35,15 @@ import TimelineIcon from '@mui/icons-material/Timeline';
 import InsightsIcon from '@mui/icons-material/Insights';
 import AddRoadIcon from '@mui/icons-material/AddRoad';
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
+
 const sidebarList = [
   {
-    name: "Dashboard",
-    icon: <HomeIcon />,
-    path: "/adminportal/dashboard",
+    name: "My Profile",
+    icon: <AccountBoxIcon />,
+    path: "/counsellorportal/my-profile",
   },
-  {
-    name: "Colleges",
-    icon: <GroupIcon />,
-    children: [
-      {
-        name: "Add College",
-        icon: <PersonAddIcon />,
-        path: "/adminportal/addcollege",
-      },
-      {
-        name: "All Colleges",
-        icon: <ContactsIcon />,
-        path: "/adminportal/allcollege",
-      },
-      
-    ],
-  },
- 
+
   
-  // {
-  //   name: "ApiIntegration",
-  //   icon: <ApiIcon/>,
-  //   path: "/adminportal/api",
-  // },
-{
-  name: "ApiIntegration",
-  icon: <ApiIcon/>,
-  children: [
-    {
-      name: "Imarticus",
-      icon: <TimelineIcon/>,
-      path: "/adminportal/imarticus",
-    },
-    {
-      name: "Others",
-      icon: <SsidChartIcon/>,
-      path: "/adminportal/api",
-    }
-  ]
-},
-  {
-    name: "Leads",
-    icon: <LeaderboardIcon/>,
-    children: [
-      {
-        name: "Test Eligibility",
-        icon: <TimelineIcon/>,
-        path: "/adminportal/testeligibility",
-      },
-      {
-        name: "Applied Colleges",
-        icon: <SsidChartIcon/>,
-        path: "/adminportal/appliedcollege",
-      },
-      {
-        name: "Student's Registered",
-        icon: <InsightsIcon/>,
-        path: "/adminportal/studentregister",
-      },
-      {
-        name: "Ad Leads",
-        icon: <AddRoadIcon/>,
-        path: "/adminportal/adleads",
-      },
-      {
-        name: "College Admins",
-        icon: <SupervisorAccountIcon/>,
-        path: "/adminportal/collegeadmins",
-      }
-      
-    ],
-  },
-  {
-    name: "Trash",
-    icon: <DeleteForeverIcon/>,
-    children:[{
-      name: "Colleges",
-      icon: <ApartmentIcon/>,
-    path: "/adminportal/trashcolleges",
-    }
-    ],
-  },
 ];
 export default class PortalLayout extends Component {
   constructor(props) {

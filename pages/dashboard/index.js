@@ -7,6 +7,8 @@ import Tabs from "@mui/material/Tabs";
 import MyProfile from "../../components/studentdashboard/MyProfile";
 import Educational from "../../components/studentdashboard/Educational";
 import CollegeComponent from "../../components/studentdashboard/CollegeComponent";
+// import MyFeed from "../../components/studentdashboard/Myfeed";
+
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 
@@ -69,6 +71,12 @@ export default function Index(props) {
               >
                 Applied Colleges
               </li>
+              {/* <li
+                onClick={() => handleLinkClick("myfeed",setSidemenuopen(!sidemenuopen))}
+                className={activeLink === "myfeed" ? Classes["active"] : ""}
+              >
+               My Feed
+              </li> */}
             </ul>
           </div>
         </Col>
@@ -79,6 +87,8 @@ export default function Index(props) {
           {activeLink === "myprofile" && <MyProfile />}
           {activeLink === "educational" && <Educational />}
           {activeLink === "college" && <CollegeComponent />}
+          {/* {activeLink === "myfeed" && <MyFeed/>} */}
+
           </div>
       
         </Col>

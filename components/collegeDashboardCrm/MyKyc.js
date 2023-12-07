@@ -7,6 +7,8 @@ import styles from "/styles/studentProfile.module.css";
 import { genderType } from "@/components/Comps/type";
 import { maritalType } from "@/components/Comps/type";
 import { Physicalchallenge } from "@/components/Comps/type";
+import { DesignationType } from "@/components/Comps/type";
+
 import FormatDate from "/components/Comps/FormatDate";
 import Swal from "sweetalert2";
 import CTA from "/components/Comps/CTA";
@@ -15,52 +17,58 @@ import { IndianStates } from "/components/Comps/StatesIndia";
 
 import { TextField, MenuItem } from "@mui/material";
 var oldData = []
-const MyProfile = () => {
-  const [studentProfile, setStudentProfile] = useState([]);
-  const [showprofileinput, setShowProfileinput] = useState(false);
-  const [showcontactinput, setShowContactinput] = useState(false);
+const MyKyc = () => {
+  const [showmykycinput, setshowmykycinput] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(false);
 
+  // kyc Details
 
-  // Basic Details
-  const [fullname, setFullname] = useState("");
+  const [collegename, setcollegename] = useState("");
   const [date, setDate] = useState("");
   const [gender, setGender] = useState("");
   const [maritalstatus, setMaritalstatus] = useState("");
   const [physically, setPhysically] = useState("");
-
-  // contact Details
+  const [adminname, setAdminName] = useState(""); 
+  const [clgmobile, setClgMobile] = useState(""); 
+  const [designation, setDesignation] = useState(""); 
+  const [referrer, setReferrer] = useState(""); 
+  const [linkedIn, setLinkedIn] = useState(""); 
   const [mobile, setMobile] = useState("");
   const [email, setEmail] = useState("");
   const [country, setCountry] = useState("");
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
+  const [verified,setVerified] = useState(false);
+  const [error, setError] = useState(false);
 
-  
   const studentDataApi = () => {
     setIsLoading(true);
-    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/student/my-profile", {
+    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/college/my-kyc", {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("userid")}`,
+        Authorization: `Bearer ${localStorage.getItem("ct")}`,
       },
     })
       .then(async (response) => {
         var res = await response.json();
         console.log(res.data);
-        setStudentProfile(res.data);
         oldData = res.data
-        setFullname(res.data.basic_details.fullname)
-        setDate(res.data.basic_details.dob)
-        setGender(res.data.basic_details.gender)
-        setMaritalstatus(res.data.basic_details.merital_status)
-        setPhysically(res.data.basic_details.disablity)
+        setcollegename(res.data.college_name)
+        setAdminName(res.data.name)
+        setDate(res.data.dob)
+        setGender(res.data.gender)
+        setMaritalstatus(res.data.merital_status)
+        setPhysically(res.data.disablity)
+        setMobile(res.data.mobile)
+        setCountry(res.data.country)
+        setState(res.data.state)
+        setCity(res.data.city)
+        setEmail(res.data.email)
+        setDesignation(res.data.designation)
+        setReferrer(res.data.referrer)
+        setLinkedIn(res.data.linkedin_link)
+        setVerified(res.data.verified)
 
-        setMobile(res.data.contact_details.mobile)
-        setCountry(res.data.contact_details.country)
-        setState(res.data.contact_details.state)
-        setCity(res.data.contact_details.city)
-        setEmail(res.data.contact_details.email)
+
         setIsLoading(false);
       })
       .catch((error) => {
@@ -72,8 +80,8 @@ const MyProfile = () => {
   }, []);
   const handleSubmit = () => {
     console.log("hello");
-    if(showcontactinput || showprofileinput){
-      if (mobile.length !== 10 || /\s/.test(mobile)) {
+    if(showmykycinput){
+      if (clgmobile.length !== 10 || /\s/.test(clgmobile)) {
         // Display an error message or take the appropriate action
         setError(true)
       } else {
@@ -83,7 +91,7 @@ const MyProfile = () => {
       const fd = new FormData();
       fd.append(
         "name",
-        fullname 
+        adminname 
       );
       fd.append(
         "dob",
@@ -92,6 +100,18 @@ const MyProfile = () => {
       fd.append(
         "gender",
         gender 
+      );
+      fd.append(
+        "linkedin_link",
+        linkedIn 
+      );
+      fd.append(
+        "designation",
+        designation 
+      );
+      fd.append(
+        "referrer",
+        referrer 
       );
       fd.append(
         "merital_status",
@@ -117,9 +137,9 @@ const MyProfile = () => {
         "country",
         country
       );
-      fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/student/my-profile`, {
+      fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/college/my-kyc`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("userid")}`,
+          Authorization: `Bearer ${localStorage.getItem("ct")}`,
         },
         method: "PUT",
         body: fd,
@@ -136,13 +156,9 @@ const MyProfile = () => {
             icon: "success",
             confirmButtonText: "Ok",
           }).then(() => {
-            setShowProfileinput(false);
-            setShowContactinput(false);
+            setshowmykycinput(false);
             studentDataApi();
-            // After the user clicks 'Ok' on the success message
-            // if (typeof props.onSuccess === 'function') {
-            //   props.onSuccess();
-            // }
+      
           });
         } else {
           Swal.fire({
@@ -162,40 +178,43 @@ const MyProfile = () => {
    
   };
 
-   const handleBasicClose =()=>{
+   const handleKycclose =()=>{
     // console.log(oldData)
-    setFullname(oldData.basic_details.fullname)
-        setDate(oldData.basic_details.dob)
-        setGender(oldData.basic_details.gender)
-        setMaritalstatus(oldData.basic_details.merital_status)
-        setPhysically(oldData.basic_details.disablity)
-    setShowProfileinput(false)
+   setcollegename(oldData.college_name)
+        setAdminName(oldData.name)
+        setDate(oldData.dob)
+        setGender(oldData.gender)
+        setMaritalstatus(oldData.merital_status)
+        setPhysically(oldData.disablity)
+        setMobile(oldData.mobile)
+        setCountry(oldData.country)
+        setState(oldData.state)
+        setCity(oldData.city)
+        setEmail(oldData.email)
+        setDesignation(oldData.designation)
+        setReferrer(oldData.referrer)
+        setLinkedIn(oldData.linkedin_link)
+    setshowmykycinput(false)
    }
 
-   const handleContactClose =()=>{
-    // console.log(oldData)
-    setMobile(oldData.contact_details.mobile)
-    setCountry(oldData.contact_details.country)
-    setState(oldData.contact_details.state)
-    setCity(oldData.contact_details.city)
-    setEmail(oldData.contact_details.email)
-    setShowContactinput(false)
-   }
   return (
     <>
-      {!isLoading ? (
-        <>
-          <div className={styles["basic-details"]}>
+     {!isLoading ? (
+        <> 
+          <div className={styles["basic-details"]} style={{margin:"0.5rem"}}>
             <div className={styles["basic"]}>
-              <h3>Basic Details</h3>
-              {showprofileinput ? (
+              <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
+              <h3 style={{margin:"0px 5px"}}>My KYC</h3>
+              <img src={verified?"/assets/images/verified.png":"/assets/images/notverified.png"} width={35} height={35}/>
+              </div>
+              {showmykycinput ? (
                 <div style={{ display: "flex" }}>
-                  <p onClick={handleBasicClose}>
+                  <p onClick={handleKycclose}>
                     <CloseIcon color="error" fontSize="large" />
                   </p>
                 </div>
               ) : (
-                <p onClick={() => setShowProfileinput(true)}>
+                <p onClick={() => setshowmykycinput(true)}>
                   <EditIcon color="info" fontSize="large" />
                 </p>
               )}
@@ -203,22 +222,40 @@ const MyProfile = () => {
             <div className="row">
               <div className="col-md-6 col-lg-4">
                 <div className={styles["box"]}>
-                  <div className={styles.heading}>Full Name </div>
-                  {showprofileinput ? (
+                  <div className={styles.heading}>College Name</div>
+                  {showmykycinput ? (
                     <TextField
-                      placeholder={
-                        studentProfile.basic_details.fullname
-                      }
+                      fullWidth
+                      placeholder={collegename}
+                      size="small"
+                      margin="dense"
+                      type="text"
+                      disabled
+                      value={collegename}
+                      onChange={(e) => setcollegename(e.target.value.charAt(0).toUpperCase()+e.target.value.slice(1))}
+                    />
+                  ) : (
+                    <h6>
+                      {collegename || "N/A"}
+                    </h6>
+                  )}
+                </div>
+              </div>
+              <div className="col-md-6 col-lg-4">
+                <div className={styles["box"]}>
+                  <div className={styles.heading}>Admin Name</div>
+                  {showmykycinput ? (
+                    <TextField
                       fullWidth
                       size="small"
                       margin="dense"
                       type="text"
-                      value={fullname}
-                      onChange={(e) => setFullname(e.target.value.charAt(0).toUpperCase()+e.target.value.slice(1))}
+                      value={adminname}
+                      onChange={(e) => setAdminName(e.target.value.charAt(0).toUpperCase()+e.target.value.slice(1))}
                     />
                   ) : (
                     <h6>
-                      {fullname || "N/A"}
+                      {adminname || "N/A"}
                     </h6>
                   )}
                 </div>
@@ -226,7 +263,7 @@ const MyProfile = () => {
               <div className="col-md-6 col-lg-4">
                 <div className={styles["box"]}>
                   <div className={styles.heading}>DOB </div>
-                  {showprofileinput ? (
+                  {showmykycinput ? (
                     <TextField
                       fullWidth
                       size="small"
@@ -243,16 +280,11 @@ const MyProfile = () => {
                 </div>
               </div>
 
-              {/* <div className='col-md-6 col-lg-4'>
-       <div className={styles["box"]}>
-       <div>Social Category </div>
-         <h6>N/A</h6>
-       </div>
-       </div> */}
+             
               <div className="col-md-6 col-lg-4">
                 <div className={styles["box"]}>
                   <div className={styles.heading}>Gender </div>
-                  {showprofileinput ? (
+                  {showmykycinput ? (
                     <TextField
                       select
                       fullWidth
@@ -277,8 +309,72 @@ const MyProfile = () => {
               </div>
               <div className="col-md-6 col-lg-4">
                 <div className={styles["box"]}>
+                  <div className={styles.heading}>Designation</div>
+                  {showmykycinput ? (
+                    <TextField
+                      select
+                      fullWidth
+                      size="small"
+                      margin="dense"
+                      value={designation}
+                      onChange={(e) => setDesignation(e.target.value)}
+                    >
+                      <MenuItem disabled value="">
+                        Select a designation
+                      </MenuItem>
+                      {DesignationType.map((e) => (
+                        <MenuItem value={e}>{e}</MenuItem>
+                      ))}
+                    </TextField>
+                  ) : (
+                    <h6>
+                      {designation || "N/A"}
+                    </h6>
+                  )}
+                </div>
+              </div>
+              <div className="col-md-6 col-lg-4">
+                <div className={styles["box"]}>
+                  <div className={styles.heading}>Referrer</div>
+                  {showmykycinput ? (
+                    <TextField
+                      fullWidth
+                      size="small"
+                      margin="dense"
+                      type="text"
+                      value={referrer}
+                      onChange={(e) => setReferrer(e.target.value)}
+                    />
+                  ) : (
+                    <h6>
+                      {referrer || "N/A"}
+                    </h6>
+                  )}
+                </div>
+              </div>
+              <div className="col-md-6 col-lg-4">
+                <div className={styles["box"]}>
+                  <div className={styles.heading}>LinkedIn Link</div>
+                  {showmykycinput ? (
+                    <TextField
+                      fullWidth
+                      size="small"
+                      margin="dense"
+                      type="text"
+                      value={linkedIn}
+                      onChange={(e) => setLinkedIn(e.target.value)}
+                    />
+                  ) : (
+                    <h6>
+                     {<a href={linkedIn} target="_blank">{linkedIn}</a> || "N/A"}
+                    </h6>
+                  )}
+                </div>
+              </div>
+              <div className="col-md-6 col-lg-4">
+                <div className={styles["box"]}>
                   <div className={styles.heading}>Marital Status </div>
-                  {showprofileinput ? (
+                  {showmykycinput ? (
                     <TextField
                       select
                       fullWidth
@@ -304,7 +400,7 @@ const MyProfile = () => {
               <div className="col-md-6 col-lg-4">
                 <div className={styles["box"]}>
                   <div className={styles.heading}>Physically challenged?</div>
-                  {showprofileinput ? (
+                  {showmykycinput ? (
                     <TextField
                       select
                       fullWidth
@@ -329,46 +425,22 @@ const MyProfile = () => {
                   )}
                 </div>
               </div>
-            </div>
-          </div>
-
-          <div className={styles["basic-details"]}>
-            <div className={styles["basic"]}>
-              <h3>Contact Details</h3>
-              {showcontactinput ? (
-                <div style={{ display: "flex" }}>
-                  {/* <p onClick={handleSubmit}><CheckIcon color='success' fontSize="large"/></p> */}
-
-                  <p onClick={handleContactClose}>
-                    <CloseIcon color="error" fontSize="large" />
-                  </p>
-                </div>
-              ) : (
-                <p onClick={() => setShowContactinput(true)}>
-                  <EditIcon color="info" fontSize="large" />
-                </p>
-              )}
-            </div>
-            <div className="row">
               <div className="col-md-6 col-lg-4">
                 <div className={styles["box"]}>
                   <div className={styles.heading}>Mobile Number</div>
-                  {showcontactinput ? (
+                  {showmykycinput ? (
                     <TextField
-                      placeholder={
-                        studentProfile.contact_details.mobile
-                      }
+                    
                       fullWidth
                       size="small"
                       margin="dense"
-                      value={mobile}
+                      value={clgmobile}
                       inputProps={{ minLength: 10, maxLength: 10 }}
+                      onChange={(e) =>
+                        setClgMobile(e.target.value.replace(/\D/g, ""))
+                      }
                       helperText={error ?"Incorrect Entry" :""}
                       error={error ?true :false}
-
-                      onChange={(e) =>
-                        setMobile(e.target.value.replace(/\D/g, ""))
-                      }
                     />
                   ) : (
                     <h6>
@@ -380,12 +452,11 @@ const MyProfile = () => {
               <div className="col-md-6 col-lg-4">
                 <div className={styles["box"]}>
                   <div className={styles.heading}>Email address</div>
-                  {showcontactinput ? (
+                  {showmykycinput ? (
                     <TextField
                       disabled
-                      placeholder={
-                        studentProfile.contact_details.email
-                      }
+                      placeholder={email}
+                    
                       fullWidth
                       size="small"
                       margin="dense"
@@ -402,7 +473,7 @@ const MyProfile = () => {
               <div className="col-md-6 col-lg-4">
                 <div className={styles["box"]}>
                   <div className={styles.heading}>Country</div>
-                  {showcontactinput ? (
+                  {showmykycinput ? (
                     <TextField
                       select
                       fullWidth
@@ -433,7 +504,7 @@ const MyProfile = () => {
               <div className="col-md-6 col-lg-4">
                 <div className={styles["box"]}>
                   <div className={styles.heading}>State</div>
-                  {showcontactinput ? (
+                  {showmykycinput ? (
                     <TextField
                       select
                       fullWidth
@@ -463,7 +534,7 @@ const MyProfile = () => {
               <div className="col-md-6 col-lg-4">
                 <div className={styles["box"]}>
                   <div className={styles.heading}>City</div>
-                  {showcontactinput ? (
+                  {showmykycinput ? (
                     <TextField
                       select
                       fullWidth
@@ -493,7 +564,9 @@ const MyProfile = () => {
             </div>
           </div>
 
-{(showprofileinput == true || showcontactinput == true) &&
+          
+
+{showmykycinput == true  &&
   <CTA
             title="Save"
             color="white"
@@ -511,35 +584,9 @@ const MyProfile = () => {
           <Spinner variant="outlined" />
         </div>
       )}
-      {/* 
-      <Modal
-        size="xl"
-        show={showprofilemodal}
-        onHide={() => setShowProfilemodal(false)}
-        aria-labelledby="example-modal-sizes-title-sm"
-      >
-        <Modal.Header closeButton>
-          <Modal.Title id="example-modal-sizes-title-sm">
-            <h3> Education Details</h3>
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-            <Form>
-            <div className={styles["model-scroll"]}>
-                <div className={styles["basic"]}>
-                  <h6>Class X </h6>
-                </div>
-              </div>
-              <div className="d-flex justify-content-center mt-2">
-                <Button variant="secondary" type="submit">
-                  Submit{" "}
-                </Button>
-              </div>
-            </Form>
-        </Modal.Body>
-      </Modal> */}
+   
     </>
   );
 };
 
-export default MyProfile;
+export default MyKyc;

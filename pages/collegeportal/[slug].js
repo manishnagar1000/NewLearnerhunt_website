@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import PortalLayout from "/components/CRM/Portallayout";
+import PortalLayout from "/components/collegeDashboardCrm/Portallayout";
 import { useRouter, notFound } from "next/router";
 import Dashboard from "/components/CRM/Dashboard";
 import Addcollege from "/components/CRM/addcollege/Addcollege";
@@ -12,53 +12,27 @@ import Testeligibility from "/components/CRM/Testeligibility";
 import Studentappliedclg from "/components/CRM/Studentappliedclg";
 import Studentregistertbl from "/components/CRM/Studentregistertbl";
 import AddLeads from "@/components/CRM/AddLeads";
-import CollegeAdmins from "@/components/CRM/CollegeAdmins";
+import MyKyc from "/components/collegeDashboardCrm/MyKyc";
+import MyCollege from "/components/collegeDashboardCrm/MyCollege";
+import IntrestedLeads from "/components/collegeDashboardCrm/IntrestedLeads";
+
+
+
 
 const componentList = [
   {
-    comp: <Dashboard />,
-    slug: "dashboard",
+    comp: <MyKyc />,
+    slug: "my-kyc",
   },
   {
-    comp: <Addcollege />,
-    slug: "addcollege",
+    comp: <MyCollege />,
+    slug: "my-college",
   },
   {
-    comp: <Allcollege />,
-    slug: "allcollege",
-  },
-  {
-    comp:<ApiIntegration/>,
-    slug:"api"
-  },
-  {
-    comp:<Imarticus/>,
-    slug:"imarticus"
-  },
-  {
-    comp:<Testeligibility/>,
-    slug:"testeligibility"
-  },
-  {
-    comp:<Studentappliedclg/>,
-    slug:"appliedcollege"
-  },
-  {
-    comp:<Studentregistertbl/>,
-    slug:"studentregister"
-  },
-  {
-    comp:<AddLeads/>,
-    slug:"adleads"
-  },
-  {
-    comp:<CollegeAdmins/>,
-    slug:"collegeadmins"
-  },
-  {
-    comp:<TrashColleges/>,
-    slug:"trashcolleges"
+    comp: <IntrestedLeads />,
+    slug: "intrested-leads",
   }
+
 ];
 export default function AdminPortalSlug() {
   const router = useRouter();
@@ -80,13 +54,13 @@ export default function AdminPortalSlug() {
 
     fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/user/check-status", {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("pt")}`,
+        Authorization: `Bearer ${localStorage.getItem("ct")}`,
       },
     }).then(async (response) => {
       var res = await response.json();
       // console.log(res);
       if (!res.status) {
-        window.location.href = "/adminportal";
+        window.location.href = "/collegeportal/my-kyc";
       }
     });
   }, []);
@@ -105,14 +79,14 @@ export default function AdminPortalSlug() {
       fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/user/logout", {
         method: "POST",
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem("pt")}`
+          'Authorization': `Bearer ${localStorage.getItem("ct")}`
         }
       }).then(async(response) => {
           var res =await response.json()
       //  console.log(res)
     if (!res.data.status) {
-      localStorage.removeItem("pt");
-        window.location.href = "/adminportal";
+      localStorage.removeItem("ct");
+        window.location.href = "/";
       }
           })
         }
