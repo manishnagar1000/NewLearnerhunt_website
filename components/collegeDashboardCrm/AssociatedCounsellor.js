@@ -4,10 +4,12 @@ import Swal from "sweetalert2";
 import Loading from "../Comps/Loading";
 import { Spinner } from "react-bootstrap";
 import Tablenav from "../Comps/Tablenav";
+import styles from "/styles/studentProfile.module.css";
+import Switch from '@mui/material/Switch';
 
 var oldData = []
 
-export default class IntrestedLeads extends Component {
+export default class AssociatedCounsellor extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -20,7 +22,8 @@ export default class IntrestedLeads extends Component {
       statusAnchorEl: null,
       lastrecid:"-1",
       searchInput: "", // Search input
-      error:""
+      error:"",
+      approvalStatus: '',
 
       // selectedAsset: null,
     };
@@ -47,7 +50,7 @@ export default class IntrestedLeads extends Component {
   getAssetList() {
     try {
     this.setState({ isApiHitComplete: false, isDataFound: false });
-    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/college/interested-leads`, {
+    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/college/assoc-counsellor`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("ct")}`,
       },
@@ -56,7 +59,7 @@ export default class IntrestedLeads extends Component {
 
         // console.log(res)
       let response = await res.json();
-      // console.log(response.data);
+    //   console.log(response.data);
       if (response.data.length > 0) {
         this.setState({ clgList: response.data, isDataFound: true });
       }
@@ -104,14 +107,54 @@ export default class IntrestedLeads extends Component {
   }
   }
   };
+
+  handleApprovalChange = (e,clg) => {
+    // this.setState({ approvalStatus: e.target.value });
+    // console.log(e.target.checked,e.target.value)
+    const s =  e.target.checked?"1":"0"
+    this.setState({isLoading:true})
+    
+    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/college/verify-clg-counsellor?id=${clg._id}&s=${s}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("ct")}`,
+        },
+        method: "PUT",
+      }).then(async (response) => {
+        var res = await response.json();
+        // console.log(res);
+        this.setState({isLoading:false})
+        // setIsLoading(false);
+        if (response.ok) {
+     
+          Swal.fire({
+            title: "Success",
+            text: `${res.message}`,
+            icon: "success",
+            confirmButtonText: "Ok",
+          }).then(() => {
+            this.getAssetList();
+       
+          });
+        } else {
+          Swal.fire({
+            title: "error",
+            text: `${res.error}`,
+            icon: "error",
+            confirmButtonText: "Ok",
+          }).then(() => {
+            this.setState({isLoading:false})
+
+          });
+        }
+      });
+
+
+   
+  };
   render() {
     return (
       <>
-            <div style={{margin:"0.5rem",border: "1px solid gainsboro",
-          borderRadius: "5px",
-          padding: "1.5rem",
-          marginBottom: "1rem" ,
-          backgroundColor: "#fff"}}>
+          <div className={styles["basic-details"]} style={{margin:"0.5rem"}}>
 
 {this.state.error =="" ?
 <>
@@ -133,14 +176,12 @@ export default class IntrestedLeads extends Component {
             <table className={`table table-hover custom-table`}>
               <thead style={{ top: `-0.5px` }}>
                 <tr>
-                  <th style={{ background: "var(--primary)" }}>Full Name</th>
+                  <th style={{ background: "var(--primary)" }}>Name</th>
                   <th style={{ background: "var(--primary)" }}>Mobile Number</th>
-                  <th style={{ background: "var(--primary)" }}>Course Intrested</th>
-                  <th style={{ background: "var(--primary)" }}>State</th>
                   <th style={{ background: "var(--primary)" }}>Email</th>
+                  <th style={{ background: "var(--primary)" }}>Experence in year</th>
                   <th style={{ background: "var(--primary)" }}>Date</th>
-
-
+                  <th style={{ background: "var(--primary)" }}>Verified</th>
 
                 </tr>
               </thead>
@@ -149,13 +190,16 @@ export default class IntrestedLeads extends Component {
                   return (
                     
                       <tr key={i}>
-                        <td>{clg.full_name}</td>
-                        <td>{clg.contact_no}</td>
-                        <td>{clg.course_interested}</td>
-                        <td>{clg.state}</td>
+                        <td>{clg.name}</td>
+                        <td>{clg.mobile}</td>
                         <td>{clg.email}</td>
+                        <td>{clg.experience_in_year}</td>
                         <td>{this.formatTimestamp(clg.createdAt)}</td>
-                  
+                        <td>
+              <div>
+              <Switch  value={clg.verified} defaultChecked={clg.verified} onChange={(e)=>this.handleApprovalChange(e,clg)} />
+              </div>
+            </td>
 
 
 
@@ -168,7 +212,7 @@ export default class IntrestedLeads extends Component {
           ) : (
             <div style={{ display: "flex", width: "100%", height: 'inherit', justifyContent: "center", alignItems: 'center' }}>
             <div style={{ fontWeight: "500" }}>
-              <span style={{ color: "#0d6efd", cursor: 'pointer' }}> No Records </span>
+              <span style={{ color: "#0d6efd", cursor: 'pointer' }}> No Records Yet </span>
             </div>
           </div>
           )

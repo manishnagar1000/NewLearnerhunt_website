@@ -75,7 +75,7 @@ const HomeComponent = () => {
     })
       .then(async (response) => {
         var res = await response.json();
-        console.log(res.data);
+        // console.log(res.data);
         oldData = res.data
         // class x
         setBoardx(res.data.class_X.board)
@@ -108,7 +108,7 @@ const HomeComponent = () => {
   }, []);
 
   const handleSubmit = () => {
-    console.log("hello");
+    // console.log("hello");
     setIsLoading(true);
     const class_X =  {
       "board":  boardx,
@@ -146,7 +146,7 @@ const HomeComponent = () => {
       body: fd,
     }).then(async (response) => {
       var res = await response.json();
-      console.log(res);
+      // console.log(res);
       setIsLoading(false);
       if (response.ok) {
         // console.log("hello", response.data);

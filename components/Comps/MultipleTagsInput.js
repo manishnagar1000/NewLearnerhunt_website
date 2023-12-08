@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import Chip from "@mui/material/Chip";
+
 class MultipleTagsInput extends Component {
   constructor(props) {
     super(props);
@@ -39,8 +40,6 @@ class MultipleTagsInput extends Component {
     if(prevProps.value != this.props.value){
         this.setState({selectedValues:this.props.value})
     }
-    // console.log(this.state)
-
   }
   // Function to handle the onBlur event
   handleInputBlur = () => {
@@ -62,6 +61,7 @@ class MultipleTagsInput extends Component {
       <Autocomplete
         clearIcon={false}
         options={[]}
+        disabled={this.props.disabled}
         freeSolo
         multiple
         style={{ background: "#fff" }}

@@ -17,9 +17,9 @@ import { useRouter } from "next/router";
 
 const Addcollege = (props) => {
   const router = useRouter();
-  console.log(router);
+  // console.log(router);
   const { e } = router.query;
-  console.log(e);
+  // console.log(e);
   var disabledTabs = [];
   if (e && e != undefined) {
     disabledTabs = ['1','2','3','4','5','6','7','8','9'];

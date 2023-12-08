@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import PortalLayout from "/components/collegeDashboardCrm/Portallayout";
 import { useRouter, notFound } from "next/router";
 import Dashboard from "/components/CRM/Dashboard";
-import Addcollege from "/components/CRM/addcollege/Addcollege";
+import Addcollege from "/components/collegeDashboardCrm/addcollege/Addcollege";
 import Allcollege from "/components/CRM/addcollege/Allcollege";
 import ApiIntegration from "/components/CRM/ApiIntegration";
 import TrashColleges from "/components/CRM/TrashCollege";
@@ -15,6 +15,8 @@ import AddLeads from "@/components/CRM/AddLeads";
 import MyKyc from "/components/collegeDashboardCrm/MyKyc";
 import MyCollege from "/components/collegeDashboardCrm/MyCollege";
 import IntrestedLeads from "/components/collegeDashboardCrm/IntrestedLeads";
+import AssociatedCounsellor from "@/components/collegeDashboardCrm/AssociatedCounsellor";
+import Support from "@/components/collegeDashboardCrm/Support";
 
 
 
@@ -25,13 +27,29 @@ const componentList = [
     slug: "my-kyc",
   },
   {
-    comp: <MyCollege />,
+    comp: <Addcollege />,
     slug: "my-college",
   },
   {
     comp: <IntrestedLeads />,
     slug: "intrested-leads",
-  }
+  },
+  {
+    comp: <AssociatedCounsellor />,
+    slug: "associated-counsellor",
+  },
+  {
+    comp: <Support/>,
+    slug: "support",
+  },
+  // {
+  //   comp: <Addcollege />,
+  //   slug: "addcollege",
+  // },
+  // {
+  //   comp: <Allcollege />,
+  //   slug: "allcollege",
+  // },
 
 ];
 export default function AdminPortalSlug() {

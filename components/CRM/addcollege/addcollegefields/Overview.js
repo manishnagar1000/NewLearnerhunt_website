@@ -61,7 +61,7 @@ export default class Overview extends Component {
   onFieldChange(index, field, value, curFields, box) {
     const updatedFields = [...curFields];
     updatedFields[index][field] = value;
-
+    // console.log(field,value,box)
     if (box === "1") {
       this.setState({
         offeredCourses: updatedFields,

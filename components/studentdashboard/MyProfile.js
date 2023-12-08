@@ -47,7 +47,7 @@ const MyProfile = () => {
     })
       .then(async (response) => {
         var res = await response.json();
-        console.log(res.data);
+        // console.log(res.data);
         setStudentProfile(res.data);
         oldData = res.data
         setFullname(res.data.basic_details.fullname)
@@ -71,7 +71,7 @@ const MyProfile = () => {
     studentDataApi();
   }, []);
   const handleSubmit = () => {
-    console.log("hello");
+    // console.log("hello");
     if(showcontactinput || showprofileinput){
       if (mobile.length !== 10 || /\s/.test(mobile)) {
         // Display an error message or take the appropriate action
@@ -125,7 +125,7 @@ const MyProfile = () => {
         body: fd,
       }).then(async (response) => {
         var res = await response.json();
-        console.log(res);
+        // console.log(res);
         setIsLoading(false);
         if (response.ok) {
           // console.log("hello", response.data);

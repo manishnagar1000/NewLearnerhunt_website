@@ -27,6 +27,7 @@ export default class YearList extends Component {
                     required={this.props.required}
                     id="yearSelect"
                     value={this.props.selectedYear}
+                    disabled={this.props.disabled}
                     className="form-select"
                     onChange={(e) => this.props.onChange(e.target.value)}
                 >

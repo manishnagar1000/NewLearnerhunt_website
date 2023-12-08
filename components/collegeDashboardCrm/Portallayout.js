@@ -35,7 +35,8 @@ import TimelineIcon from '@mui/icons-material/Timeline';
 import InsightsIcon from '@mui/icons-material/Insights';
 import AddRoadIcon from '@mui/icons-material/AddRoad';
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-
+import InterpreterModeIcon from '@mui/icons-material/InterpreterMode';
+import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 const sidebarList = [
   {
     name: "My KYC",
@@ -52,6 +53,33 @@ const sidebarList = [
     icon: <TroubleshootIcon />,
     path: "/collegeportal/intrested-leads",
   },
+  {
+    name: "Associated Counsellor",
+    icon: <InterpreterModeIcon />,
+    path: "/collegeportal/associated-counsellor",
+  },
+  {
+    name: "Support",
+    icon: <SupportAgentIcon />,
+    path: "/collegeportal/support",
+  },
+  // {
+  //   name: "Colleges",
+  //   icon: <GroupIcon />,
+  //   children: [
+  //     {
+  //       name: "Add College",
+  //       icon: <PersonAddIcon />,
+  //       path: "/collegeportal/addcollege",
+  //     },
+  //     {
+  //       name: "All Colleges",
+  //       icon: <ContactsIcon />,
+  //       path: "/collegeportal/allcollege",
+  //     },
+      
+  //   ],
+  // },
   
 ];
 export default class PortalLayout extends Component {

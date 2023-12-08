@@ -88,7 +88,7 @@ export default class Allcollege extends Component {
   //   this.setState({show:false})
   //  }
  handleShow(e,id){
-  console.log(id)
+  // console.log(id)
   // this.setState({show:true})
   Swal.fire({
     title: 'Move to trash?',
@@ -101,7 +101,7 @@ export default class Allcollege extends Component {
   })
   .then((result) => {
     if (result.isConfirmed) {
-      console.log("its delete")
+      // console.log("its delete")
   var formData = new FormData();
   formData.append("college_id",id)
   fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/admin/remove-clg", {

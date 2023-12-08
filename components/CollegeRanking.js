@@ -13,7 +13,7 @@ import Link from 'next/link';
 
 const CollegeRanking = ({ zones, departments, rankingtypes }) => {
     // console.log(zones,departments,rankingtypes,departments[0])
-    const [selectedDiscipline, setSelectedDiscipline] = useState("MBA")
+    const [selectedDiscipline, setSelectedDiscipline] = useState("BBA")
     // const [selectedDiscipline, setSelectedDiscipline] = useState(departments.length>0?departments[0].value:"mba")
     const [selectedZone, setSelectedZone] = useState(zones[0].name)
     const [selectedChip, setSelectedChip] = useState(rankingtypes.length>0?rankingtypes[0].value:"")

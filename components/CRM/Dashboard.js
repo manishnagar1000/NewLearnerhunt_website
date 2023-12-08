@@ -28,7 +28,7 @@ export default class Dashboard extends Component {
       },
     }).then(async (res) => {
       let response = await res.json();
-      console.log(response.data)
+      // console.log(response.data)
       // console.log(response.data.length);
 
      

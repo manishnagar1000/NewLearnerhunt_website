@@ -697,8 +697,10 @@ export default function Loginuc({ isOpen, onClose, role }) {
                     : "Welcome Back!"}
                 </h3>
                 <p style={{ color: "gray" }}>
-                  {" "}
-                  {!showSignup && "Sign in to continue"}
+                  {(!showSignup && role == 3)&& "Sign in as student"}
+                  {(!showSignup && role == 2)&& "Sign in as counsellor"}
+                  {(!showSignup && role == 1)&& "Sign in as college"}
+
                 </p>
               </div>
 

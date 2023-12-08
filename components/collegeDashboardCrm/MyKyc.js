@@ -50,7 +50,7 @@ const MyKyc = () => {
     })
       .then(async (response) => {
         var res = await response.json();
-        console.log(res.data);
+        // console.log(res.data);
         oldData = res.data
         setcollegename(res.data.college_name)
         setAdminName(res.data.name)
@@ -79,7 +79,7 @@ const MyKyc = () => {
     studentDataApi();
   }, []);
   const handleSubmit = () => {
-    console.log("hello");
+    // console.log("hello");
     if(showmykycinput){
       if (clgmobile.length !== 10 || /\s/.test(clgmobile)) {
         // Display an error message or take the appropriate action
@@ -145,7 +145,7 @@ const MyKyc = () => {
         body: fd,
       }).then(async (response) => {
         var res = await response.json();
-        console.log(res);
+        // console.log(res);
         setIsLoading(false);
         if (response.ok) {
           // console.log("hello", response.data);

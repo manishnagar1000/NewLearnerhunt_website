@@ -25,7 +25,7 @@ export default class CollegeAdmins extends Component {
 
   handleApprovalChange = (e,clg) => {
     // this.setState({ approvalStatus: e.target.value });
-    console.log(e.target.checked,e.target.value)
+    // console.log(e.target.checked,e.target.value)
     const s =  e.target.checked?"1":"0"
     this.setState({isLoading:true})
     
@@ -36,7 +36,7 @@ export default class CollegeAdmins extends Component {
         method: "PUT",
       }).then(async (response) => {
         var res = await response.json();
-        console.log(res);
+        // console.log(res);
         this.setState({isLoading:false})
         // setIsLoading(false);
         if (response.ok) {
@@ -91,9 +91,9 @@ export default class CollegeAdmins extends Component {
         Authorization: `Bearer ${localStorage.getItem("pt")}`,
       },
     }).then(async (res) => {
-        console.log(res)
+        // console.log(res)
       let response = await res.json();
-      console.log(response.data);
+      // console.log(response.data);
       if (response.data.length > 0) {
         this.setState({ clgList: response.data, isDataFound: true });
       }

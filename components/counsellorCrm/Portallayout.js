@@ -57,12 +57,12 @@ export default class PortalLayout extends Component {
     };
   }
 
-  componentDidMount() {
-    if (sessionStorage.getItem("selectedPage")) {
-      this.setState({ selectedPage: sessionStorage.getItem("selectedPage") });
-    }
-    // console.log(this.props)
-  }
+  // componentDidMount() {
+  //   if (sessionStorage.getItem("selectedPage")) {
+  //     this.setState({ selectedPage: sessionStorage.getItem("selectedPage") });
+  //   }
+  //   // console.log(this.props)
+  // }
 
   
 

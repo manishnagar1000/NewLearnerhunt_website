@@ -19,7 +19,7 @@ const pagesHavePopup = [
 ];
 
 export default function CollegeName({ collegedata }) {
-  console.log(collegedata);
+  // console.log(collegedata);
   const collegeid = collegedata.generalinfo._id;
   const [userStatus, setUserStatus] = useState(false);
   const [userid, setUserid] = useState("");
@@ -119,7 +119,7 @@ export default function CollegeName({ collegedata }) {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    console.log("Form data submitted:", popupformData);
+    // console.log("Form data submitted:", popupformData);
     try {
       const fd = new FormData();
       fd.append("name", popupformData.popupfullname);

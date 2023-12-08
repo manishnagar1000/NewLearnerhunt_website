@@ -59,7 +59,7 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
 export default function StudyAbroad({ StudyAbroad }) {
-  // console.log(StudyAbroad);
+  console.log(StudyAbroad);
   const [selectedCollegeType, setSelectedCollegeType] = useState("");
   const [isColleges, setIsColleges] = useState(StudyAbroad);
   const [active, setActive] = useState("MBA");
@@ -79,7 +79,7 @@ export default function StudyAbroad({ StudyAbroad }) {
   }, []);
 
   useEffect(() => {
-    // console.log("dfjdsfkj",selectedCollegeType)
+    console.log("dfjdsfkj",selectedCollegeType)
     const fetchCourses = async () => {
       // if (selectedCollegeType) {
       setIsLoading(true);
@@ -89,6 +89,7 @@ export default function StudyAbroad({ StudyAbroad }) {
       );
       const collegesData = await collegesRes.json();
       const resp = [...collegesData.data];
+      console.log(resp)
      
       setIsColleges(resp);
       setIsLoading(false);
@@ -281,7 +282,8 @@ export default function StudyAbroad({ StudyAbroad }) {
           </Carousel>
         ) : (
           <div className="row">
-            {isColleges.map((s) => {
+            {isColleges.length>0?
+            isColleges.map((s) => {
               const cardImg =
                 s.square_img_path && s.square_img_path !== ""
                   ? s.square_img_path
@@ -339,7 +341,15 @@ export default function StudyAbroad({ StudyAbroad }) {
                   )}
                 </div>
               );
-            })}
+            })
+:
+<div style={{border: "1px solid gainsboro",
+borderRadius: "5px",
+padding: "1.5rem",
+fontSize:"24px",
+fontWeight:"bold",
+backgroundColor: "#fff"}}>Coming Soon</div>
+          }
           </div>
         )}
       </section>
