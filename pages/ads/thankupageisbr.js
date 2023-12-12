@@ -10,7 +10,7 @@ function ThankupageIsbr() {
     <>
       <Head>
 <script async src="https://www.googletagmanager.com/gtag/js?id=AW-11197965039"></script>
-<script>
+<script
 defer
           dangerouslySetInnerHTML={{
    __html:` window.dataLayer = window.dataLayer || [];
@@ -19,7 +19,7 @@ defer
 
   gtag('config', 'AW-11197965039');`
 }}
-</script>
+/>
       </Head>
     <div className={styles["thankyou-page"]}>
     <div className={styles.banner}>
