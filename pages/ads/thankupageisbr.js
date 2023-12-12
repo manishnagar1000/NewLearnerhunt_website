@@ -1,11 +1,26 @@
 
+import Head from 'next/head';
 import React from 'react'
 import styles from 'styles/thankuisbr.module.css'
 
 
 function ThankupageIsbr() {
   return (
+  
     <>
+      <Head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-11197965039"></script>
+<script>
+defer
+          dangerouslySetInnerHTML={{
+   __html:` window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-11197965039');`
+}}
+</script>
+      </Head>
     <div className={styles["thankyou-page"]}>
     <div className={styles.banner}>
       <div className="container">
