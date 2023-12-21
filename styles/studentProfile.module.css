@@ -36,3 +36,16 @@ background-color: #fff;
 .box h6{
     font-weight: 500;
 }
+
+.mobile-hide{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
+
+}
+@media (max-width: 769px) {
+    .mobile-hide {
+      display: none;
+    }
+  }

@@ -13,6 +13,8 @@ import Studentappliedclg from "/components/CRM/Studentappliedclg";
 import Studentregistertbl from "/components/CRM/Studentregistertbl";
 import AddLeads from "@/components/CRM/AddLeads";
 import CollegeAdmins from "@/components/CRM/CollegeAdmins";
+import ImportExport from "/components/CRM/ImportExport";
+
 
 const componentList = [
   {
@@ -58,6 +60,10 @@ const componentList = [
   {
     comp:<TrashColleges/>,
     slug:"trashcolleges"
+  },
+  {
+    comp:<ImportExport/>,
+    slug:"importexport"
   }
 ];
 export default function AdminPortalSlug() {

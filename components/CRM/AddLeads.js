@@ -68,7 +68,7 @@ export default class AddLeads extends Component {
       },
     }).then(async (res) => {
       let response = await res.json();
-      // console.log(response.data);
+      console.log(response.data);
       if (response.data?.length > 0) {
         this.setState({ clgList: response.data, isDataFound: true });
       }
@@ -171,6 +171,8 @@ renderInput={(params) => <TextField {...params} label="College List" />}
                   <th style={{ background: "var(--primary)" }}>State</th>
                   <th style={{ background: "var(--primary)" }}>City</th>
                   <th style={{ background: "var(--primary)" }}>Date</th>
+                  <th style={{ background: "var(--primary)" }}>IP Address</th>
+
 
 
 
@@ -188,6 +190,8 @@ renderInput={(params) => <TextField {...params} label="College List" />}
                         <td>{clg.state}</td>
                         <td>{clg.city}</td>
                         <td>{this.formatTimestamp(clg.createdAt)}</td>
+                        <td>{clg.ipv4?clg.ipv4:"-"}</td>
+
                   
 
 

@@ -5,6 +5,10 @@ import CTA from "/components/Comps/CTA";
 import Swal from "sweetalert2";
 import { IndianStates } from "/components/Comps/StatesIndia";
 import { ImarticusApi } from "/components/Comps/type";
+import { Button } from "react-bootstrap";
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import PublishIcon from '@mui/icons-material/Publish';
+import * as XLSX from 'xlsx';
 
 export default class Imarticus extends Component {
   constructor(props) {
@@ -20,6 +24,7 @@ export default class Imarticus extends Component {
       selectedCourseName: "",
       medium: "",
       campaign: "",
+      jsonData: [],
     };
   }
 
@@ -86,6 +91,70 @@ export default class Imarticus extends Component {
       console.error(error);
     }
   };
+  handleFileUpload = (event) => {
+    const files = event.target.files;
+    console.log('Files uploaded:', files);
+    const file = files[0];
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, { type: 'array' });
+      const sheetName = workbook.SheetNames[0];
+      const sheet = workbook.Sheets[sheetName];
+      const json = XLSX.utils.sheet_to_json(sheet);
+      this.setState({ jsonData: json }, () => {
+        // This code will run after state has been updated
+        const fd = new FormData();
+        fd.append("jsondata", JSON.stringify(this.state.jsonData));
+        fetch(
+          process.env.NEXT_PUBLIC_API_ENDPOINT + "/admin/imarticus-save-lead",
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("pt")}`,
+            },
+            method: "POST",
+            body: fd,
+          }
+        ).then(async (response) => {
+          var res = await response.json();
+          console.log(res);
+            if (res.ok) {
+              Swal.fire({
+                title: "Lead Submitted",
+                // text: `${res.data.message}`,
+                icon: "success",
+                confirmButtonText: "Ok",
+              }).then(() => {
+                this.setState({
+                  jsonData:[]
+                });
+              });
+            } else {
+              Swal.fire({
+                title: "error",
+                text: `${res.error}`,
+                icon: "error",
+                confirmButtonText: "Ok",
+              }).then(() => {
+                this.setState({ isLoading: false,jsonData:[] });
+
+              });
+            }
+         
+        
+        })
+        console.log(this.state.jsonData);
+      });
+
+      // this.setState({ jsonData: json }.then((s)=>console.log(s)));
+
+    };
+
+    reader.readAsArrayBuffer(file);
+  };
+
+
 
   render() {
     // console.log(IndianStates.India);
@@ -94,6 +163,16 @@ export default class Imarticus extends Component {
     return (
       <>
         <div className={Classes["add-user"]}>
+          <div style={{display:"flex",justifyContent:"end",alignItems:"center",padding:"1rem"}}>
+          <div>
+          <input type="file" onChange={this.handleFileUpload} style={{ display: 'none' }} ref={(input) => this.fileInput = input} />
+          <Button onClick={() => this.fileInput.click()} className="m-1" variant="success" >
+            <PublishIcon /> Import
+          </Button>
+        </div>
+            <Button className="m-1" href='https://learnerhunt-assets.s3.amazonaws.com/Imarticus_Excel_Temp.xlsx' target='_blank'><FileDownloadIcon/>Export</Button>
+
+          </div>
           <div className={Classes["form-div"]}>
             <form action="#" onSubmit={(e) => this.handleSubmit(e)}>
               <div className="row">

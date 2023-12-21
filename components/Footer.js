@@ -2,6 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 const Footer = () => {
   return (
+    <>
     <div className='custom_footer'>
       <div className="container">
         <div className="custom-row">
@@ -63,8 +64,10 @@ const Footer = () => {
             </div>
           </div>
         </div>
+       
       </div>
     </div>
+    </>
   )
 }
 

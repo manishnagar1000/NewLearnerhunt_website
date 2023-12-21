@@ -8,6 +8,13 @@ import MyProfile from "../../components/studentdashboard/MyProfile";
 import Educational from "../../components/studentdashboard/Educational";
 import CollegeComponent from "../../components/studentdashboard/CollegeComponent";
 // import MyFeed from "../../components/studentdashboard/Myfeed";
+import Rate from "../../components/studentdashboard/Rate";
+import PastExperience from "../../components/studentdashboard/PastExperience";
+import CounsellerHistory from "../../components/studentdashboard/CounsellerHistory";
+
+
+
+
 
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
@@ -77,6 +84,24 @@ export default function Index(props) {
               >
                My Feed
               </li> */}
+               <li
+                onClick={() => handleLinkClick("pastexp",setSidemenuopen(!sidemenuopen))}
+                className={activeLink === "pastexp" ? Classes["active"] : ""}
+              >
+              Past Experience
+              </li>
+              <li
+                onClick={() => handleLinkClick("counsellerhistory",setSidemenuopen(!sidemenuopen))}
+                className={activeLink === "counsellerhistory" ? Classes["active"] : ""}
+              >
+             Counselling History
+              </li>
+                 <li
+                onClick={() => handleLinkClick("rate",setSidemenuopen(!sidemenuopen))}
+                className={activeLink === "rate" ? Classes["active"] : ""}
+              >
+              Rate this platform
+              </li>
             </ul>
           </div>
         </Col>
@@ -88,6 +113,11 @@ export default function Index(props) {
           {activeLink === "educational" && <Educational />}
           {activeLink === "college" && <CollegeComponent />}
           {/* {activeLink === "myfeed" && <MyFeed/>} */}
+          {activeLink === "pastexp" && <PastExperience/>}
+          {activeLink === "counsellerhistory" && <CounsellerHistory/>}
+
+          {activeLink === "rate" && <Rate/>}
+
 
           </div>
       

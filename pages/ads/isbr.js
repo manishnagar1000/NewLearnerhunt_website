@@ -13,8 +13,10 @@ export default function isbr() {
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
   const [course, setCourse] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSumbit = (e) => {
+  const handleSumbit = async (e) => {
+    console.log("hello");
     e.preventDefault();
     if (name == "") {
       alert("Enter Correct Name");
@@ -42,39 +44,52 @@ export default function isbr() {
       element.focus();
     } else if (course == "") {
       alert("Enter Course");
-      let element = document.getElementById("course"); // Assuming the element ID is 'myElement'
-      element.focus();
+      // let element = document.getElementById("course"); // Assuming the element ID is 'myElement'
+      // element.focus();
     } else {
-      const fd = new FormData();
-      fd.append("name", name);
-      fd.append("email", email);
-      fd.append("mobile", mobile);
-      fd.append("state", state);
-      fd.append("city", city);
-      fd.append("course", course);
-      fd.append("collegeid", "64df57b7dcff726b15aebaac");
-      fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/student/landingpagelead", {
-        method: "POST",
-        body: fd,
-      })
-        .then(async (response) => {
-          //   console.log(response)
-          if (response.ok) {
-            var res = await response.json();
-            router.push("/ads/thankupageisbr");
-          } else {
-            var res = await response.json();
-            Swal.fire({
-              title: "error",
-              text: `${res.error}`,
-              icon: "error",
-              confirmButtonText: "Ok",
-            });
+      const hitApi = (ip) => {
+        const fd = new FormData();
+        fd.append("name", name);
+        fd.append("email", email);
+        fd.append("mobile", mobile);
+        fd.append("state", state);
+        fd.append("city", city);
+        fd.append("course", course);
+        fd.append("collegeid", "64df57b7dcff726b15aebaac");
+        fd.append("ipv4", ip);
+        fetch(
+          process.env.NEXT_PUBLIC_API_ENDPOINT + "/student/landingpagelead",
+          {
+            method: "POST",
+            body: fd,
           }
-        })
-        .catch((error) => {
-          alert(error);
-        });
+        )
+          .then(async (response) => {
+            //   console.log(response)
+            if (response.ok) {
+              var res = await response.json();
+              router.push("/ads/thankupageisbr");
+            } else {
+              var res = await response.json();
+              alert(res.error);
+            }
+          })
+          .catch((error) => {
+            alert(error);
+          });
+      };
+
+      setIsLoading(true);
+      try{
+        const ipData = await fetch("https://geolocation-db.com/json/");
+        const ipJsonData = await ipData.json();
+        hitApi(ipJsonData.IPv4 ? ipJsonData.IPv4 : "")
+      }catch(e){
+        hitApi("")
+      }
+      
+      
+      
     }
   };
 
@@ -219,8 +234,8 @@ export default function isbr() {
             <div className="form-group">
               <select
                 className="input"
-                name="specialization"
-                id="specialization"
+                name="course"
+                id="course"
                 value={course}
                 onChange={(e) => setCourse(e.target.value)}
               >
@@ -240,7 +255,8 @@ export default function isbr() {
                 className="sbt"
                 id="apply_now"
                 onClick={handleSumbit}
-                value="Submit"
+                value={isLoading ? "Wait..." : "Submit"}
+                disabled={isLoading}
               />
               <span id="sbt"></span>
             </div>

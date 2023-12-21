@@ -122,6 +122,11 @@ const sidebarList = [
     }
     ],
   },
+  {
+    name: "Import Export",
+    icon: <HomeIcon />,
+    path: "/adminportal/importexport",
+  },
 ];
 export default class PortalLayout extends Component {
   constructor(props) {
