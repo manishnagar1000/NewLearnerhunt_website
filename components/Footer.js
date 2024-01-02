@@ -1,6 +1,8 @@
 import React from "react";
 import Link from "next/link";
 // import Head from "next/head";
+import QrCodeSection from '@/components/QrCodeSection'
+
 const Footer = () => {
   return (
     <>
@@ -12,6 +14,8 @@ const Footer = () => {
         ></script>
    
       </Head> */}
+      <QrCodeSection />
+
       <div className="custom_footer">
         <div className="container">
           <div className="custom-row">

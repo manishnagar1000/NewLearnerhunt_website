@@ -105,7 +105,12 @@ const sidebarList = [
         path: "/adminportal/adleads",
       },
       {
-        name: "College Admins",
+        name: "PopUp Leads",
+        icon: <SsidChartIcon/>,
+        path: "/adminportal/popupregister",
+      },
+      {
+        name: "Colleges Admin",
         icon: <SupervisorAccountIcon/>,
         path: "/adminportal/collegeadmins",
       }
@@ -122,11 +127,11 @@ const sidebarList = [
     }
     ],
   },
-  {
-    name: "Import Export",
-    icon: <HomeIcon />,
-    path: "/adminportal/importexport",
-  },
+  // {
+  //   name: "Import Export",
+  //   icon: <HomeIcon />,
+  //   path: "/adminportal/importexport",
+  // },
 ];
 export default class PortalLayout extends Component {
   constructor(props) {

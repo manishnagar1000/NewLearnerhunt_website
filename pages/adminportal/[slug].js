@@ -14,6 +14,8 @@ import Studentregistertbl from "/components/CRM/Studentregistertbl";
 import AddLeads from "@/components/CRM/AddLeads";
 import CollegeAdmins from "@/components/CRM/CollegeAdmins";
 import ImportExport from "/components/CRM/ImportExport";
+import PopUpRegister from "/components/CRM/PopUpRegister";
+
 
 
 const componentList = [
@@ -60,6 +62,10 @@ const componentList = [
   {
     comp:<TrashColleges/>,
     slug:"trashcolleges"
+  },
+  {
+    comp:<PopUpRegister/>,
+    slug:"popupregister"
   },
   {
     comp:<ImportExport/>,

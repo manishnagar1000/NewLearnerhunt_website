@@ -16,8 +16,8 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useRouter } from "next/router";
-import Swal from 'sweetalert2'
-import SearchIcon from '@mui/icons-material/Search';
+import Swal from "sweetalert2";
+import SearchIcon from "@mui/icons-material/Search";
 import SearchModal from "./SearchModal";
 
 export default function Topbar() {
@@ -54,33 +54,29 @@ export default function Topbar() {
     };
   }, []);
 
-  
-
   useEffect(() => {
     const newstatus = localStorage.getItem("userid");
     // console.log(newstatus);
     if (newstatus) {
       fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/user/check-status", {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem("userid")}`
+          Authorization: `Bearer ${localStorage.getItem("userid")}`,
+        },
+      }).then(async (response) => {
+        var res = await response.json();
+        // console.log(res)
+        if (res.status) {
+          setUserStatus(newstatus);
+        } else {
+          localStorage.removeItem("userid");
+          localStorage.removeItem("status");
+          localStorage.removeItem("useremail");
         }
-    }).then(async(response) => {
-      var res =await response.json()
-      // console.log(res)
-      if(res.status){
-        setUserStatus(newstatus);
-      }else{
-        localStorage.removeItem("userid")
-        localStorage.removeItem("status")
-        localStorage.removeItem("useremail")
-      }
-    });
-      
-    }else{
-      localStorage.removeItem("userid")
-      localStorage.removeItem("status")
-      localStorage.removeItem("useremail")
-
+      });
+    } else {
+      localStorage.removeItem("userid");
+      localStorage.removeItem("status");
+      localStorage.removeItem("useremail");
     }
   }, [userStatus]);
 
@@ -141,7 +137,7 @@ export default function Topbar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
-    event.stopPropagation()
+    event.stopPropagation();
     setAnchorEl(event.currentTarget);
     // setShowToggleMenu(!showToggleMenu);
   };
@@ -150,12 +146,12 @@ export default function Topbar() {
   };
 
   const handlelogin = (role) => {
-    console.log(role)
+    console.log(role);
     // console.log("studentClick");
     setUserRole(role);
     setAnchorEl(null);
     setAnchorEl(null);
-    setShowToggleMenu(false)
+    setShowToggleMenu(false);
     setIsLoginFormOpen(true);
   };
 
@@ -202,88 +198,47 @@ export default function Topbar() {
       router.push("/dashboard");
     }
     if (text.toLowerCase() == "logout") {
-
       try {
-   
         fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/user/logout", {
           method: "POST",
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem("userid")}`
+            Authorization: `Bearer ${localStorage.getItem("userid")}`,
+          },
+        }).then(async (response) => {
+          var res = await response.json();
+          // console.log(res.data)
+          // console.log(res.data.status)
+          if (res.data.status == false) {
+            Swal.fire({
+              title: "Success",
+              text: `${res.message}`,
+              icon: "success",
+              confirmButtonText: "Ok",
+            }).then(() => {
+              localStorage.clear();
+              window.location.href = "/";
+            });
+            //            localStorage.setItem("status", "");
+            // localStorage.setItem("userid", "");
+            // localStorage.setItem("useremail", "");
           }
-        }).then(async(response) => {
-            var res =await response.json()
-            // console.log(res.data)
-            // console.log(res.data.status)
-            if(res.data.status == false){
-              Swal.fire({
-                title: 'Success',
-                text: `${res.message}`,
-                icon: 'success',
-                confirmButtonText: 'Ok'
-              }).then(()=>{
-                localStorage.clear()
-                window.location.href="/";
-              })
-      //            localStorage.setItem("status", "");
-      // localStorage.setItem("userid", "");
-      // localStorage.setItem("useremail", "");
- 
-            }
-      
-
         });
       } catch (error) {
         console.error("Failed to fetch OTP:", error);
       }
-
-   
     }
   };
 
-  const handleProfile= (e,anchor)=>{
-    toggleDrawer(anchor, true)(e)
-    setShowToggleMenu(false)
-  }
+  const handleProfile = (e, anchor) => {
+    toggleDrawer(anchor, true)(e);
+    setShowToggleMenu(false);
+  };
   return (
     <>
       {screenWidth > 992 ? (
         <>
           {/* Top header start */}
-          <div className={`${Classes["top-header"]}`}>
-            <div className="container">
-              <div className="row">
-                <div className="col">
-                  <p className={`${Classes["top-header-para"]}`}>
-                    <img
-                      loading="lazy"
-                      src="/assets/images/topbar/support.svg"
-                      className="me-1"
-                      alt="support"
-                      width={12}
-                      height={14}
-                    />
-                    Sales/Support +91-8800756846
-                  </p>
-                </div>
 
-                {/* <div className="col-9">
-                  <marquee>
-                    <Link
-                      className="text-decoration-none"
-                      href="https://www.google.com/search?q=iit+hyderabad+jee+advanced+cut+off&oq=IIT+hyderabad+jee+advanced+cut+off&gs_lcrp=EgZjaHJvbWUqCQgAECMYJxiKBTIJCAAQIxgnGIoFMggIARAAGBYYHtIBCDExMzhqMGo5qAIAsAIA&sourceid=chrome&ie=UTF-8"
-                    >
-                      <p className={`${Classes["top-header-para"]}`}>
-                        <span className={`${Classes["top-header-news"]}`}>
-                          News :-
-                        </span>
-                        IIT hyderabad jee advanced cut off
-                      </p>
-                    </Link>
-                  </marquee>
-                </div> */}
-              </div>
-            </div>
-          </div>
           {/* Top header end */}
 
           {/* sage logo start */}
@@ -334,6 +289,112 @@ export default function Topbar() {
               isWindowScroll ? Classes["sage-sticky-menu"] : ""
             }`}
           >
+            <div className={`${Classes["top-header"]}`}>
+              <div className="container">
+                <div className="row">
+                  <div className="col-3">
+                    <p className={`${Classes["top-header-para"]}`}>
+                      <img
+                        loading="lazy"
+                        src="/assets/images/topbar/support.svg"
+                        className="me-1"
+                        alt="support"
+                        width={12}
+                        height={14}
+                      />
+                      Sales/Support +91-8800756846
+                    </p>
+                  </div>
+                  <div className="col-6">
+                    <p className={`${Classes["top-header-para"]}`}>
+                      Download the app to find best colleges for you.{" "}
+                      <a
+                        target="_blank"
+                        aria-label="Download Now"
+                        href="https://play.google.com/store/apps/details?id=com.learnerhunt.app"
+                      >
+                        Download Now
+                      </a>
+                    </p>
+                  </div>
+                  <div className="col-3">
+                    <div className={Classes["topnav-icons"]}>
+                      <Link
+                        target="_blank"
+                        href="https://www.facebook.com/learnerhunt/"
+                      >
+                        <img
+                          src="/assets/images/footer/facebook.png"
+                          alt="facebook"
+                          width={30}
+                          height={30}
+                        />
+                      </Link>
+                      <Link
+                        target="_blank"
+                        href="https://twitter.com/learnerhunt"
+                      >
+                        <img
+                          src="/assets/images/footer/twitter.png"
+                          alt="twitter"
+                          width={30}
+                          height={30}
+                        />
+                      </Link>
+                      <Link
+                        target="_blank"
+                        href="https://www.instagram.com/learnerhunt_india/"
+                      >
+                        <img
+                          src="/assets/images/footer/instagram.png"
+                          alt="instagram"
+                          width={30}
+                          height={30}
+                        />
+                      </Link>
+                      <Link
+                        target="_blank"
+                        href="https://in.linkedin.com/company/learnerhunt-com"
+                      >
+                        <img
+                          src="/assets/images/footer/linkedin.png"
+                          alt="linkedIn"
+                          width={30}
+                          height={30}
+                        />
+                      </Link>
+                      <Link
+                        target="_blank"
+                        href="https://www.youtube.com/@Learnerhunt"
+                      >
+                        <img
+                          src="/assets/images/footer/youtube.png"
+                          alt="youtube"
+                          width={30}
+                          height={30}
+                        />
+                      </Link>
+                    </div>
+                  </div>
+
+                  {/* <div className="col-9">
+                <marquee>
+                  <Link
+                    className="text-decoration-none"
+                    href="https://www.google.com/search?q=iit+hyderabad+jee+advanced+cut+off&oq=IIT+hyderabad+jee+advanced+cut+off&gs_lcrp=EgZjaHJvbWUqCQgAECMYJxiKBTIJCAAQIxgnGIoFMggIARAAGBYYHtIBCDExMzhqMGo5qAIAsAIA&sourceid=chrome&ie=UTF-8"
+                  >
+                    <p className={`${Classes["top-header-para"]}`}>
+                      <span className={`${Classes["top-header-news"]}`}>
+                        News :-
+                      </span>
+                      IIT hyderabad jee advanced cut off
+                    </p>
+                  </Link>
+                </marquee>
+              </div> */}
+                </div>
+              </div>
+            </div>
             <div className={` ${Classes["con-large"]} container `}>
               <div className={`${Classes["sage-menu-container"]}`}>
                 <div className={`${Classes["sage-sticky-logo"]}`}>
@@ -382,7 +443,12 @@ export default function Topbar() {
                 <div className={`${Classes["contact-cta"]}`}>
                   {/* <Link href="#">Sign In</Link>&nbsp; */}
                   {/* <Link href="#"> */}
-                  <span style={{cursor:"pointer"}}   onClick={() => setIsSearchModalOpen(true)}><SearchIcon/ ></span>
+                  <span
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setIsSearchModalOpen(true)}
+                  >
+                    <SearchIcon />
+                  </span>
                   &nbsp;
                   {!userStatus ? (
                     <>
@@ -409,8 +475,12 @@ export default function Topbar() {
                         <MenuItem onClick={() => handlelogin(3)}>
                           Student
                         </MenuItem>
-                        <MenuItem onClick={()=>handlelogin(2)}>Counsellor</MenuItem>
-                      <MenuItem onClick={()=>handlelogin(1)}>College</MenuItem>
+                        <MenuItem onClick={() => handlelogin(2)}>
+                          Counsellor
+                        </MenuItem>
+                        <MenuItem onClick={() => handlelogin(1)}>
+                          College
+                        </MenuItem>
                       </Menu>
                     </>
                   ) : (
@@ -473,9 +543,14 @@ export default function Topbar() {
                   </div>
                 </div>
                 <div className="col-2">
-                <div className={`${Classes["sage-toggle-icon"]} text-end`}>
-                <span style={{cursor:"pointer"}}   onClick={() => setIsSearchModalOpen(true)}><SearchIcon/ ></span>
-                </div>
+                  <div className={`${Classes["sage-toggle-icon"]} text-end`}>
+                    <span
+                      style={{ cursor: "pointer" }}
+                      onClick={() => setIsSearchModalOpen(true)}
+                    >
+                      <SearchIcon />
+                    </span>
+                  </div>
                 </div>
                 <div className="col-4">
                   <div className={`${Classes["sage-toggle-icon"]} text-end`}>
@@ -526,7 +601,7 @@ export default function Topbar() {
                               anchorEl={anchorEl}
                               open={open}
                               onClose={handleClose}
-                              style={{zIndex:"99999"}}
+                              style={{ zIndex: "99999" }}
                               MenuListProps={{
                                 "aria-labelledby": "basic-button",
                               }}
@@ -534,33 +609,35 @@ export default function Topbar() {
                               <MenuItem onClick={() => handlelogin(3)}>
                                 Student
                               </MenuItem>
-                              <MenuItem onClick={() => handlelogin(2)}>Counsellor</MenuItem>
-                          <MenuItem onClick={() => handlelogin(1)}>College</MenuItem>
+                              <MenuItem onClick={() => handlelogin(2)}>
+                                Counsellor
+                              </MenuItem>
+                              <MenuItem onClick={() => handlelogin(1)}>
+                                College
+                              </MenuItem>
                             </Menu>
                           </>
-                        ) : 
-                        <>
-                        {
-                          ["right"].map((anchor) => (
-                            <React.Fragment key={anchor}>
-                              <span
-                                onClick={(e)=>handleProfile(e,anchor)}
-                                // .then(()=>{setShowToggleMenu(false)})
-                              >
-                                Profile
-                              </span>
-                              <Drawer
-                                anchor={anchor}
-                                open={state[anchor]}
-                                onClose={toggleDrawer(anchor, false)}
-                              >
-                                {list(anchor)}
-                              </Drawer>
-                            </React.Fragment>
-                          ))
-                        }
-                        </>
-                        }
+                        ) : (
+                          <>
+                            {["right"].map((anchor) => (
+                              <React.Fragment key={anchor}>
+                                <span
+                                  onClick={(e) => handleProfile(e, anchor)}
+                                  // .then(()=>{setShowToggleMenu(false)})
+                                >
+                                  Profile
+                                </span>
+                                <Drawer
+                                  anchor={anchor}
+                                  open={state[anchor]}
+                                  onClose={toggleDrawer(anchor, false)}
+                                >
+                                  {list(anchor)}
+                                </Drawer>
+                              </React.Fragment>
+                            ))}
+                          </>
+                        )}
                       </li>
                     </ul>
 
@@ -608,7 +685,7 @@ export default function Topbar() {
                     </ul>
                   </div>
                 </div>
-                <div className={`${Classes["bottom-toggle-menu"]}`}>
+                {/* <div className={`${Classes["bottom-toggle-menu"]}`}> */}
                   {/* <div className={`${Classes["bottom-toggle-menu-list"]}`}>
                     <ul>
                       <li>
@@ -641,7 +718,7 @@ export default function Topbar() {
                       </li>
                     </ul>
                   </div> */}
-                  <hr className="my-sm-4" />
+                  {/* <hr className="my-sm-4" /> */}
                   <div className={`${Classes["bottom-toggle-menu-cta"]}`}>
                     <div className="mt-2">
                       <span> Sales/Support </span>
@@ -649,9 +726,12 @@ export default function Topbar() {
                       <a href="tel:+1-855-922-7243">
                         <span> +91-8800756846</span>
                       </a>
+                      <a href="https://play.google.com/store/apps/details?id=com.learnerhunt.app">
+                        <span>Download App</span>
+                      </a>
                     </div>
                   </div>
-                </div>
+                {/* </div> */}
               </div>
             </div>
           </div>
@@ -666,7 +746,7 @@ export default function Topbar() {
         />
       )}
 
-{isSearchModalOpen && (
+      {isSearchModalOpen && (
         <SearchModal onHide={() => setIsSearchModalOpen(false)} />
       )}
     </>

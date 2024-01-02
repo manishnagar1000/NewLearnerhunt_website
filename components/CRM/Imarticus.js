@@ -163,7 +163,7 @@ export default class Imarticus extends Component {
     return (
       <>
         <div className={Classes["add-user"]}>
-          <div style={{display:"flex",justifyContent:"end",alignItems:"center",padding:"1rem"}}>
+          {/* <div style={{display:"flex",justifyContent:"end",alignItems:"center",padding:"1rem"}}>
           <div>
           <input type="file" onChange={this.handleFileUpload} style={{ display: 'none' }} ref={(input) => this.fileInput = input} />
           <Button onClick={() => this.fileInput.click()} className="m-1" variant="success" >
@@ -172,7 +172,7 @@ export default class Imarticus extends Component {
         </div>
             <Button className="m-1" href='https://learnerhunt-assets.s3.amazonaws.com/Imarticus_Excel_Temp.xlsx' target='_blank'><FileDownloadIcon/>Export</Button>
 
-          </div>
+          </div> */}
           <div className={Classes["form-div"]}>
             <form action="#" onSubmit={(e) => this.handleSubmit(e)}>
               <div className="row">

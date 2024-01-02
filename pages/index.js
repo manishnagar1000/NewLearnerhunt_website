@@ -6,11 +6,13 @@ import TopCourses from '@/components/TopCourses'
 import TopExams from '@/components/TopExams'
 import Count from '@/components/Count'
 import WhyChoose from '@/components/WhyChoose'
+
 // import WhatsAppButton from '@/components/Whatsup'
 
 
 import axios from 'axios'
 import Head from 'next/head'
+import PopForm from '@/components/Comps/PopForm'
 export default function Home({colleges,courses,exams,testeligibility,ukcolleges}) {
   // console.log(colleges)
  
@@ -26,6 +28,7 @@ export default function Home({colleges,courses,exams,testeligibility,ukcolleges}
       </Head>
       <HomepageHeroSection data={testeligibility}/>
       {/* <WhatsAppButton/> */}
+      {/* <PopForm/> */}
       <Count/>
       <WhyChoose/>
       <TopColleges colleges={colleges}/>

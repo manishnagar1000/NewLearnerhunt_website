@@ -3,6 +3,7 @@ import Topbar from "./Topbar";
 import Footer from "./Footer";
 import { useRouter } from "next/router";
 import WhatsAppButton from "@/components/Whatsup";
+import PopForm from "./Comps/PopForm";
 
 // const pagesnothaveheader = ["/dashboard"]
 // const pagesnothavefooter = ["/dashboard"]
@@ -20,6 +21,9 @@ const Layout = ({ children }) => {
         !pathname.startsWith("/counsellorportal") &&
         !pathname.startsWith("/collegeportal") && 
      <Topbar />}
+     {!pathname.startsWith("/adminportal") &&
+     <PopForm/>}
+
       <WhatsAppButton />
 
       {children}

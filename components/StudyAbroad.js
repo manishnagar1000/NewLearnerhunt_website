@@ -79,7 +79,7 @@ export default function StudyAbroad({ StudyAbroad }) {
   }, []);
 
   useEffect(() => {
-    console.log("dfjdsfkj",selectedCollegeType)
+    console.log(selectedCollegeType)
     const fetchCourses = async () => {
       // if (selectedCollegeType) {
       setIsLoading(true);
@@ -348,7 +348,10 @@ borderRadius: "5px",
 padding: "1.5rem",
 fontSize:"24px",
 fontWeight:"bold",
-backgroundColor: "#fff"}}>Coming Soon</div>
+backgroundColor: "#fff",
+display:"flex",
+justifyContent:"center"
+}}>Coming Soon</div>
           }
           </div>
         )}

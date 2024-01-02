@@ -619,6 +619,33 @@ export default function isbr() {
           <p className="text-center">
             2023 Copyright © learnerhunt.com. All rights reserved.
           </p>
+          <div
+                id="elemID031021"
+                style={{lineHeight:"16px",textAlign:"center",position:"relative",zIndex:"100000"}}
+              >
+              
+                {/* <noscript> */}
+                <div>
+                  <a
+                    title="Website visitors visitor Ip address stats"
+                    href="https://www.tracemyip.org/pv1-2-72734-2"
+                  >
+                    <img
+                      src="//s2.tracemyip.org/vLg/1105/4684NR-IPIB/101878/2/12/ans/"
+                      alt="website visitors visitor Ip address stats"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      style={{border:"0px"}}
+                    />
+                  </a>
+                  </div>
+                  {/* <script
+          async
+          type="text/javascript"
+          src="//s2.tracemyip.org/vLg/lgUrl.php?pidnVar2=101878&amp;prtVar2=2&amp;stlVar2=1105&amp;rgtype=4684NR-IPIB&amp;scvVar2=12&amp;gustVarS=2&amp;gustVarU=72734&amp;gustVarM=2"
+        ></script> */}
+                {/* </noscript> */}
+                  
+              </div>
         </footer>
       </div>
     </>

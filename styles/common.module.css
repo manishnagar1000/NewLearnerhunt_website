@@ -3,6 +3,16 @@
     width: 100%;
 }
 
+.top-header .topnav-icons{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-top: 0.2rem;
+}
+.top-header .topnav-icons img{
+    margin-right: 0.5rem;
+}
+
 .top-header-para {
     margin-bottom: 0rem;
     color: #fff;
@@ -11,6 +21,14 @@
 
 .top-header-para img {
     vertical-align: baseline;
+}
+.top-header-para a{
+    text-decoration: none;
+    background-color: #fff;
+    padding: 3px;
+    border-radius: 5px;
+    color: black;
+    font-weight: 500;
 }
 
 .Sage-logo {
@@ -49,13 +67,14 @@
     background: #f3f3f3 0 0 no-repeat padding-box;
     -moz-box-shadow: 0 5px 19px #00000024;
     box-shadow: 0 5px 19px #00000024;
-    border-top: 2px solid #fff;
+    /* border-top: 2px solid #fff; */
     border-bottom: 2px solid #fff;
     width: 100%;
     margin: 0%;
     z-index: 999;
     position: relative;
-    padding:2px 0 ;
+    padding-bottom: 2px;
+    /* padding:2px 0 ; */
 }
 
 .sage-menu-item ul {
@@ -386,11 +405,11 @@ color: #0151c1;
         box-shadow: -9px 0 14px 0 rgb(0 0 0 / 6%);
     }
 
-    .right-toggle-menu .top-toggle-menu {
+    /* .right-toggle-menu .top-toggle-menu {
         position: absolute;
         top: 0%;
         width: 100%;
-    }
+    } */
 
     .right-toggle-menu .bottom-toggle-menu {
         position: absolute;
@@ -452,6 +471,8 @@ color: #0151c1;
         border-radius: 0px 25px 25px 0px;
         font-weight: 800;
         color: #fff;
+        display: block;
+        margin: 0.5rem 7rem 0rem 0rem;
     }
 
     .sage-flex {
