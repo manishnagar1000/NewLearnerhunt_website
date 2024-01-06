@@ -8,6 +8,8 @@ import { Spinner } from "react-bootstrap";
 import Link from "next/link";
 // import RestoreFromTrashIcon from '@mui/icons-material/RestoreFromTrash';
 import RestoreIcon from '@mui/icons-material/Restore';
+
+
 var oldData = []
 export default class TrashColleges extends Component {
   constructor(props) {
@@ -77,7 +79,7 @@ export default class TrashColleges extends Component {
   //   this.setState({show:false})
   //  }
  handleShow(e,id){
-  console.log(id)
+  // console.log(id)
   // this.setState({show:true})
   Swal.fire({
     // title: 'Restore the college?',
@@ -90,7 +92,7 @@ export default class TrashColleges extends Component {
   })
   .then((result) => {
     if (result.isConfirmed) {
-      console.log("its restore")
+      // console.log("its restdore")
   var formData = new FormData();
   formData.append("college_id",id)
   fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/admin/restore-clg", {

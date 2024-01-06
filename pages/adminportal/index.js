@@ -51,8 +51,11 @@ function Index() {
   return (
      
         <PortalLogin
-          onLogin={(pt) => {
+          onLogin={(pt,role,name) => {
+            console.log(pt,role,name)
             localStorage.setItem("pt", pt);
+            localStorage.setItem("crmrole", role);
+            localStorage.setItem('admincrmemail',name);
             router.push("/adminportal/dashboard");
           }}
         />

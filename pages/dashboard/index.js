@@ -9,8 +9,8 @@ import Educational from "../../components/studentdashboard/Educational";
 import CollegeComponent from "../../components/studentdashboard/CollegeComponent";
 // import MyFeed from "../../components/studentdashboard/Myfeed";
 import Rate from "../../components/studentdashboard/Rate";
-import PastExperience from "../../components/studentdashboard/PastExperience";
-import CounsellerHistory from "../../components/studentdashboard/CounsellerHistory";
+// import PastExperience from "../../components/studentdashboard/PastExperience";
+// import CounsellerHistory from "../../components/studentdashboard/CounsellerHistory";
 
 
 
@@ -84,18 +84,18 @@ export default function Index(props) {
               >
                My Feed
               </li> */}
-               <li
+               {/* <li
                 onClick={() => handleLinkClick("pastexp",setSidemenuopen(!sidemenuopen))}
                 className={activeLink === "pastexp" ? Classes["active"] : ""}
               >
               Past Experience
-              </li>
-              <li
+              </li> */}
+              {/* <li
                 onClick={() => handleLinkClick("counsellerhistory",setSidemenuopen(!sidemenuopen))}
                 className={activeLink === "counsellerhistory" ? Classes["active"] : ""}
               >
              Counselling History
-              </li>
+              </li> */}
                  <li
                 onClick={() => handleLinkClick("rate",setSidemenuopen(!sidemenuopen))}
                 className={activeLink === "rate" ? Classes["active"] : ""}
@@ -113,8 +113,8 @@ export default function Index(props) {
           {activeLink === "educational" && <Educational />}
           {activeLink === "college" && <CollegeComponent />}
           {/* {activeLink === "myfeed" && <MyFeed/>} */}
-          {activeLink === "pastexp" && <PastExperience/>}
-          {activeLink === "counsellerhistory" && <CounsellerHistory/>}
+          {/* {activeLink === "pastexp" && <PastExperience/>} */}
+          {/* {activeLink === "counsellerhistory" && <CounsellerHistory/>} */}
 
           {activeLink === "rate" && <Rate/>}
 

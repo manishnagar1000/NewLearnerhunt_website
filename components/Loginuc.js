@@ -93,7 +93,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
       );
       const data = await response.json();
       var rs = data.data.filter((s) => s.type == "college");
-      console.log(data);
+      // console.log(data);
       if(role == 1){
         if (rs.length == 0) {
           rs = [{ title: "+ Add New", slug: "", type: "-1" }];
@@ -330,7 +330,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
             fd.append("mobile", clgmobile); // Add level to form data
             fd.append("designation", designation);
             fd.append("linked_in_link", linkedIn); // Add password to form data
-            fd.append("referrer ", referrer);
+            fd.append("referrer", referrer);
             fetch(
               process.env.NEXT_PUBLIC_API_ENDPOINT + "/clg-admin/register",
               {
@@ -1033,7 +1033,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
                       <>
                         <Form.Group controlId="clgname">
                           <Form.Label style={{ fontWeight: "bold" }}>
-                            College Name
+                            College Name <span style={{color:'red'}}>*</span>
                           </Form.Label>
                           {/* <Autocomplete
         id="free-solo-demo"
@@ -1063,7 +1063,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
                         </Form.Group>
                         <Form.Group controlId="adminname">
                           <Form.Label style={{ fontWeight: "bold" }}>
-                            Admin Name
+                            Admin Name <span style={{color:'red'}}>*</span>
                           </Form.Label>
                           <Form.Control
                             type="text"
@@ -1076,7 +1076,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
                         </Form.Group>
                         <Form.Group controlId="clgemail">
                           <Form.Label style={{ fontWeight: "bold" }}>
-                            Email
+                            Email <span style={{color:'red'}}>*</span>
                           </Form.Label>
                           <Form.Control
                             type="email"
@@ -1089,8 +1089,8 @@ export default function Loginuc({ isOpen, onClose, role }) {
                         </Form.Group>
                         <Form.Group controlId="mobile">
                           <Form.Label style={{ fontWeight: "bold" }}>
-                            Mobile
-                          </Form.Label>
+                            Mobile <span style={{color:'red'}}>*</span>
+                          </Form.Label> 
                           <Form.Control
                             type="number"
                             placeholder="Enter your mobile number"
@@ -1117,7 +1117,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
                         </Form.Group> */}
                         <Form.Group controlId="designation">
                           <Form.Label style={{ fontWeight: "bold" }}>
-                            Designation
+                            Designation <span style={{color:'red'}}>*</span>
                           </Form.Label>
                           <Form.Control
                             as="select" // Use select element for dropdown

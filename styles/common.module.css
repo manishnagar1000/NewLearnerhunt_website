@@ -3,11 +3,19 @@
     width: 100%;
 }
 
+.mobile-top-header {
+    background-color: #0151c1;
+    width: 100%;
+}
+.mobile-top-header .top-header-para{
+    font-size: 12px;
+}
+
 .top-header .topnav-icons{
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    padding-top: 0.2rem;
+    padding-top: 0.2rem 0;
 }
 .top-header .topnav-icons img{
     margin-right: 0.5rem;
@@ -513,6 +521,7 @@ color: #0151c1;
     .sage-sticky-menu .sage-toggle-icon img {
         z-index: 9999;
     }
+  
 }
 
 @media screen and (max-width: 768px) {
@@ -844,6 +853,7 @@ color: #0151c1;
         padding-left: unset;
         margin-top: 1rem;
     }
+   
 }
 
 @media screen and (max-width: 768px) {
@@ -894,6 +904,7 @@ color: #0151c1;
         width: 100%;
         padding: 2rem 1rem;
     }
+    
 }
 
 

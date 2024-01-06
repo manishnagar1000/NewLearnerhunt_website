@@ -22,6 +22,8 @@ const Layout = ({ children }) => {
         !pathname.startsWith("/collegeportal") && 
      <Topbar />}
      {!pathname.startsWith("/adminportal") &&
+     !pathname.startsWith("/collegeportal") &&
+     !pathname.startsWith("/counsellorportal") &&
      <PopForm/>}
 
       <WhatsAppButton />

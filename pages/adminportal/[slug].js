@@ -15,62 +15,85 @@ import AddLeads from "@/components/CRM/AddLeads";
 import CollegeAdmins from "@/components/CRM/CollegeAdmins";
 import ImportExport from "/components/CRM/ImportExport";
 import PopUpRegister from "/components/CRM/PopUpRegister";
-
-
+import ClgadminRegister from "@/components/CRM/ClgadminRegister";
+import ActiveDeactiveclg from "@/components/CRM/ActiveDeactiveclg";
 
 const componentList = [
   {
     comp: <Dashboard />,
     slug: "dashboard",
+    role:[0,4]
   },
   {
     comp: <Addcollege />,
     slug: "addcollege",
+    role:[4]
   },
   {
     comp: <Allcollege />,
     slug: "allcollege",
+    role:[0,4]
   },
   {
     comp:<ApiIntegration/>,
-    slug:"api"
+    slug:"api",
+    role:[4]
   },
   {
     comp:<Imarticus/>,
-    slug:"imarticus"
+    slug:"imarticus",
+    role:[4]
   },
   {
     comp:<Testeligibility/>,
-    slug:"testeligibility"
+    slug:"testeligibility",
+    role:[0,4]
   },
   {
     comp:<Studentappliedclg/>,
-    slug:"appliedcollege"
+    slug:"appliedcollege",
+    role:[0,4]
   },
   {
     comp:<Studentregistertbl/>,
-    slug:"studentregister"
+    slug:"studentregister",
+    role:[0,4]
   },
   {
     comp:<AddLeads/>,
-    slug:"adleads"
+    slug:"adleads",
+    role:[0,4]
   },
   {
     comp:<CollegeAdmins/>,
-    slug:"collegeadmins"
+    slug:"collegeadmins",
+    role:[0]
   },
   {
     comp:<TrashColleges/>,
-    slug:"trashcolleges"
+    slug:"trashcolleges",
+    role:[0,4]
   },
   {
     comp:<PopUpRegister/>,
-    slug:"popupregister"
+    slug:"popupregister",
+    role:[0,4]
   },
   {
-    comp:<ImportExport/>,
-    slug:"importexport"
-  }
+    comp:<ClgadminRegister/>,
+    slug:"create-clg-admin",
+    role:[0,4]
+  },
+  {
+    comp:<ActiveDeactiveclg/>,
+    slug:"activedeactive-clg",
+    role:[0,4]
+  },
+  // {
+  //   comp:<ImportExport/>,
+  //   slug:"importexport"
+  //   role:[0,4]
+  // }
 ];
 export default function AdminPortalSlug() {
   const router = useRouter();
@@ -132,7 +155,10 @@ export default function AdminPortalSlug() {
   };
   return (
     <PortalLayout onLogout={handleLogout}>
-      {!data ? "not found" : data.comp}
+      {data && data.role.includes(Number(localStorage.getItem('crmrole'))) ?  data.comp:
+       <div
+       className="d-flex justify-content-center align-items-center w-100 h-100"
+     ><span style={{fontWeight:"500"}}>Not Found 😞</span></div> }
     </PortalLayout>
   );
 }

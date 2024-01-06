@@ -146,7 +146,7 @@ export default function Topbar() {
   };
 
   const handlelogin = (role) => {
-    console.log(role);
+    // console.log(role);
     // console.log("studentClick");
     setUserRole(role);
     setAnchorEl(null);
@@ -520,11 +520,30 @@ export default function Topbar() {
         </>
       ) : (
         <>
+         
           <div
             className={`${Classes["sage-menu"]} ${
               isWindowScroll ? Classes["sage-sticky-menu"] : ""
             }`}
           >
+              <div className={`${Classes["mobile-top-header"]}`}>
+              <div className="container">
+                <div className="row">
+                  <div className="col-12">
+                    <p className={`${Classes["top-header-para"]}`}>
+                      Download the app to find best colleges for you.{" "}
+                      <a
+                        target="_blank"
+                        aria-label="Download Now"
+                        href="https://play.google.com/store/apps/details?id=com.learnerhunt.app"
+                      >
+                        Download Now
+                      </a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
             <div className="container">
               <div className="row">
                 <div className="col-6">

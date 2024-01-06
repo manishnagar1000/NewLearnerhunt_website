@@ -7,6 +7,7 @@ import AddClgTopbar from "@/components/Comps/AddClgTopbar";
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import { Input } from "@mui/material";
+import Tablenav from "../Comps/Tablenav";
 
 const convertDate = time =>{
   // Get the year, month, and day
@@ -68,7 +69,7 @@ export default class AddLeads extends Component {
       },
     }).then(async (res) => {
       let response = await res.json();
-      console.log(response.data);
+      // console.log(response.data);
       if (response.data?.length > 0) {
         this.setState({ clgList: response.data, isDataFound: true });
       }
@@ -83,7 +84,7 @@ export default class AddLeads extends Component {
       },
     }).then(async (res) => {
       let response = await res.json();
-      console.log(response.data);
+      // console.log(response.data);
       if (response.data.colleges?.length > 0) {
         this.setState({ collegeList: response.data.colleges});
       }
@@ -91,7 +92,7 @@ export default class AddLeads extends Component {
   }
 
   render() {
-    console.log(this.state)
+    // console.log(this.state)
     return (
       <>
          
@@ -121,7 +122,7 @@ export default class AddLeads extends Component {
       options={this.state.collegeList}
       sx={{ width: 300 ,margin:"0.5rem"  }}
       onChange={(event, newValue) => {
-        console.log(newValue)
+        // console.log(newValue)
         if(newValue){
           this.setState({cid:newValue._id},()=>{
           this.getAssetList()

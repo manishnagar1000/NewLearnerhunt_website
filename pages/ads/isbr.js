@@ -16,7 +16,7 @@ export default function isbr() {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSumbit = async (e) => {
-    console.log("hello");
+    // console.log("hello");
     e.preventDefault();
     if (name == "") {
       alert("Enter Correct Name");

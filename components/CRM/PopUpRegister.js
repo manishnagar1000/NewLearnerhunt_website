@@ -3,6 +3,8 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import Loading from "../Comps/Loading";
 import { Spinner } from "react-bootstrap";
+import Tablenav from "../Comps/Tablenav";
+var oldData = []
 
 export default class PopUpRegister extends Component {
   constructor(props) {
@@ -15,6 +17,7 @@ export default class PopUpRegister extends Component {
       selectedCategory: [],
       username: localStorage.getItem("username"),
       statusAnchorEl: null,
+      searchInput: "", // Search input
       lastrecid:"-1"
       // selectedAsset: null,
     };
@@ -50,6 +53,7 @@ export default class PopUpRegister extends Component {
       if (response.data.length > 0) {
         this.setState({ clgList: response.data, isDataFound: true });
       }
+      oldData=response.data
       this.setState({ isApiHitComplete: true });
     });
   }
@@ -58,10 +62,51 @@ export default class PopUpRegister extends Component {
     this.getAssetList();
   }
 
+  handleSearchChange = (e) => {
+    this.setState({searchInput:e.target.value})
+    const searchTerm = e.target.value.trim().replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    const searchKeyword = new RegExp(`\\b${searchTerm}\\w*\\b`, 'i');
+
+    if (e.target.value == '') {
+      this.setState({ clgList: oldData })
+      if (oldData.length > 0) {
+          this.setState({ isDataFound: true })
+      } else {
+          this.setState({ isDataFound: false })
+      }
+  } else {
+    const filteredData = oldData.filter(data =>
+      searchKeyword.test(data.name.toLowerCase())||
+      searchKeyword.test(data.mobile.toLowerCase())||
+      searchKeyword.test(data.course.toLowerCase())
+
+      
+
+  );
+
+  if (filteredData.length > 0) {
+      this.setState({ clgList: filteredData, isDataFound: true });
+  } else {
+      this.setState({ isDataFound: false });
+  }
+  }
+  };
   render() {
     return (
       <>
-      
+       <Tablenav
+          Actions={{
+            Actions: (
+              <input
+            type="text"
+            className="form-control"
+            value={this.state.searchInput}
+            placeholder="Search..."
+            onChange={this.handleSearchChange}
+          />
+            ),
+          }}
+        />
         {this.state.isApiHitComplete ? (
           this.state.isDataFound ? (
             <table className={`table table-hover custom-table`}>
