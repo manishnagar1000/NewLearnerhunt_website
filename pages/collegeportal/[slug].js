@@ -15,6 +15,7 @@ import AddLeads from "@/components/CRM/AddLeads";
 import MyKyc from "/components/collegeDashboardCrm/MyKyc";
 import MyCollege from "/components/collegeDashboardCrm/MyCollege";
 import IntrestedLeads from "/components/collegeDashboardCrm/IntrestedLeads";
+import CampaignLeads from "/components/collegeDashboardCrm/CampaignLeads";
 import AssociatedCounsellor from "@/components/collegeDashboardCrm/AssociatedCounsellor";
 import Support from "@/components/collegeDashboardCrm/Support";
 
@@ -42,10 +43,10 @@ const componentList = [
     comp: <Support/>,
     slug: "support",
   },
-  // {
-  //   comp: <Addcollege />,
-  //   slug: "addcollege",
-  // },
+  {
+    comp: <CampaignLeads />,
+    slug: "campaign-leads",
+  },
   // {
   //   comp: <Allcollege />,
   //   slug: "allcollege",

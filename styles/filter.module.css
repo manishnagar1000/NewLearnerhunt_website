@@ -16,3 +16,38 @@
    height: 200px;
 }
 
+.filter-list-container {
+    padding: 0;
+    margin-bottom: 10px;
+    border: 0;
+    border-radius: 0;
+    box-shadow: 0 0 10px rgba(0,0,0,.1);
+    background: var(--whiteColor);
+    height: 307px;
+}
+
+.filter-list-container .filter-option {
+    padding: 9px 13px;
+    margin-bottom: 0;
+    font-weight: 700;
+    cursor: pointer;
+    color: #383838;
+    position: relative;
+    text-transform: uppercase;
+}
+
+.filter-list-container .filter-option .icon {
+    position: absolute;
+    right: 10px;
+    top: 13px;
+    width: 11px;
+    height: 11px;
+    -ms-transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+    background-position: -137px -51px;
+    transition: .2s all;
+}
+.filter-list-container .filter-option .icon{
+    background: url(https://static.collegedekho.com/static-up/images/college-listing-icons.6b4b3a924ef4.png) no-repeat 0 0;
+}

@@ -147,7 +147,7 @@ html {
 .custom-table thead{
     background-color: var(--primary);
     position: sticky;
-    /* top: 8vh; */
+    top: 8vh;
     left: 0;
     z-index: 100;
 }

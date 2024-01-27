@@ -49,37 +49,33 @@ const sidebarList = [
     path: "/collegeportal/my-college",
   },
   {
-    name: "IntrestedLeads",
-    icon: <TroubleshootIcon />,
-    path: "/collegeportal/intrested-leads",
-  },
-  {
     name: "Associated Counsellor",
     icon: <InterpreterModeIcon />,
     path: "/collegeportal/associated-counsellor",
+  },
+  {
+    name: "Leads",
+    icon: <GroupIcon />,
+    children: [
+      {
+        name: "Intrested Leads",
+        icon: <TroubleshootIcon />,
+        path: "/collegeportal/intrested-leads",
+      },
+      {
+        name: "Campaign Leads",
+        icon: <ContactsIcon />,
+        path: "/collegeportal/campaign-leads",
+      },
+      
+    ],
   },
   {
     name: "Support",
     icon: <SupportAgentIcon />,
     path: "/collegeportal/support",
   },
-  // {
-  //   name: "Colleges",
-  //   icon: <GroupIcon />,
-  //   children: [
-  //     {
-  //       name: "Add College",
-  //       icon: <PersonAddIcon />,
-  //       path: "/collegeportal/addcollege",
-  //     },
-  //     {
-  //       name: "All Colleges",
-  //       icon: <ContactsIcon />,
-  //       path: "/collegeportal/allcollege",
-  //     },
-      
-  //   ],
-  // },
+  
   
 ];
 export default class PortalLayout extends Component {

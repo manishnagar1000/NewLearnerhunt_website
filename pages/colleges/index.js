@@ -172,7 +172,7 @@ export default function index(testeligibility, filterCollege) {
   };
   const formatFeeLabel = (value) => {
     if (value >= 100000) {
-      return `${value / 100000} Lakhs`;
+      return `${value / 100000} L`;
     }
     return value;
   };
@@ -209,8 +209,9 @@ export default function index(testeligibility, filterCollege) {
             <FormControl
               size="small"
               className="rounded-lg"
-              fullWidth
+              // fullWidth
               margin="normal"
+              style={{width:'95%'}}
             >
               <Typography style={{color:"#0151c1",fontWeight:"bold"}} id="input-slider" gutterBottom>
                 Fees
@@ -247,7 +248,7 @@ export default function index(testeligibility, filterCollege) {
                 </Button>
               </div> */}
             </div>
-            <div style={{ overflow: "auto", height: "400px" }}>
+            <div style={{ overflow: "auto", height: "76vh" }}>
               {isLoading ? (
                 <div className="d-flex justify-content-center align-items-center h-100">
                   <CircularProgress color="inherit" size={30} />

@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 import Loading from "../Comps/Loading";
 import { Spinner } from "react-bootstrap";
 import Tablenav from "../Comps/Tablenav";
-import styles from "/styles/studentProfile.module.css";
+import styles from "/styles/clgdb.module.css";
 import Switch from '@mui/material/Switch';
 
 var oldData = []
@@ -154,7 +154,7 @@ export default class AssociatedCounsellor extends Component {
   render() {
     return (
       <>
-          <div className={styles["basic-details"]} style={{margin:"0.5rem"}}>
+          {/* <div className={styles["basic-details"]}> */}
 
 {this.state.error =="" ?
 <>
@@ -174,7 +174,7 @@ export default class AssociatedCounsellor extends Component {
         {this.state.isApiHitComplete ? (
           this.state.isDataFound ? (
             <table className={`table table-hover custom-table`}>
-              <thead style={{ top: `-0.5px` }}>
+              <thead>
                 <tr>
                   <th style={{ background: "var(--primary)" }}>Name</th>
                   <th style={{ background: "var(--primary)" }}>Mobile Number</th>
@@ -228,7 +228,7 @@ export default class AssociatedCounsellor extends Component {
           onHide={() => this.setState({ isLoading: false })}
         />
     </>:this.state.error}
-      </div>
+      {/* </div> */}
       </>
     );
   }

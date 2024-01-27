@@ -17,6 +17,7 @@ import ImportExport from "/components/CRM/ImportExport";
 import PopUpRegister from "/components/CRM/PopUpRegister";
 import ClgadminRegister from "@/components/CRM/ClgadminRegister";
 import ActiveDeactiveclg from "@/components/CRM/ActiveDeactiveclg";
+import ManageUser from "@/components/CRM/ManageUser";
 
 const componentList = [
   {
@@ -88,6 +89,11 @@ const componentList = [
     comp:<ActiveDeactiveclg/>,
     slug:"activedeactive-clg",
     role:[0,4]
+  },
+  {
+    comp:<ManageUser/>,
+    slug:"manage-users",
+    role:[0]
   },
   // {
   //   comp:<ImportExport/>,

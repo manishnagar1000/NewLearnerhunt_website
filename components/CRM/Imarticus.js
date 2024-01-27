@@ -118,7 +118,7 @@ export default class Imarticus extends Component {
           }
         ).then(async (response) => {
           var res = await response.json();
-          console.log(res);
+          // console.log(res);
             if (res.ok) {
               Swal.fire({
                 title: "Lead Submitted",
@@ -144,7 +144,7 @@ export default class Imarticus extends Component {
          
         
         })
-        console.log(this.state.jsonData);
+        // console.log(this.state.jsonData);
       });
 
       // this.setState({ jsonData: json }.then((s)=>console.log(s)));

@@ -10,9 +10,9 @@
   }
   .dashboard-card-wrapper {
     /* padding: 1rem; */
-    display: flex;
+    /* display: flex;
     justify-content: flex-start;
-    flex-wrap: wrap;
+    flex-wrap: wrap; */
     margin-left: 1.5rem;
   }
   .dashboard-card {

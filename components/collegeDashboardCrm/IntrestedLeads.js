@@ -3,6 +3,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import Loading from "../Comps/Loading";
 import { Spinner } from "react-bootstrap";
+import styles from "/styles/clgdb.module.css";
 import Tablenav from "../Comps/Tablenav";
 
 var oldData = []
@@ -107,11 +108,7 @@ export default class IntrestedLeads extends Component {
   render() {
     return (
       <>
-            <div style={{margin:"0.5rem",border: "1px solid gainsboro",
-          borderRadius: "5px",
-          padding: "1.5rem",
-          marginBottom: "1rem" ,
-          backgroundColor: "#fff"}}>
+            {/* <div className={styles["basic-details"]}> */}
 
 {this.state.error =="" ?
 <>
@@ -131,7 +128,7 @@ export default class IntrestedLeads extends Component {
         {this.state.isApiHitComplete ? (
           this.state.isDataFound ? (
             <table className={`table table-hover custom-table`}>
-              <thead style={{ top: `-0.5px` }}>
+              <thead>
                 <tr>
                   <th style={{ background: "var(--primary)" }}>Full Name</th>
                   <th style={{ background: "var(--primary)" }}>Mobile Number</th>
@@ -184,7 +181,7 @@ export default class IntrestedLeads extends Component {
           onHide={() => this.setState({ isLoading: false })}
         />
     </>:this.state.error}
-      </div>
+      {/* </div> */}
       </>
     );
   }

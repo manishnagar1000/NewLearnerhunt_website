@@ -49,7 +49,7 @@ export default class PopUpRegister extends Component {
       },
     }).then(async (res) => {
       let response = await res.json();
-      console.log(response.data);
+      // console.log(response.data);
       if (response.data.length > 0) {
         this.setState({ clgList: response.data, isDataFound: true });
       }
@@ -110,7 +110,7 @@ export default class PopUpRegister extends Component {
         {this.state.isApiHitComplete ? (
           this.state.isDataFound ? (
             <table className={`table table-hover custom-table`}>
-              <thead style={{ top: `-0.5px` }}>
+              <thead>
                 <tr>
                   <th style={{ background: "var(--primary)" }}>Student Name</th>
                   <th style={{ background: "var(--primary)" }}>Mobile Number</th>
@@ -124,7 +124,7 @@ export default class PopUpRegister extends Component {
                 </tr>
               </thead>
               <tbody>
-                {this.state.clgList.map((clg, i) => {
+                {this.state.clgList.reverse().map((clg, i) => {
                   return (
                     
                       <tr key={i}>

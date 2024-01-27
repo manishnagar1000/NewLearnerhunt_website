@@ -112,7 +112,7 @@ export default class StudentLeads extends Component {
         {this.state.isApiHitComplete ? (
           this.state.isDataFound ? (
             <table className={`table table-hover custom-table`}>
-              <thead style={{ top: `-0.5px` }}>
+              <thead>
                 <tr>
                   <th style={{ background: "var(--primary)" }}>Student Name</th>
                   <th style={{ background: "var(--primary)" }}>Mobile Number</th>

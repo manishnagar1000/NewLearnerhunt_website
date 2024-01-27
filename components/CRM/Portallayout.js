@@ -12,6 +12,17 @@ import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Logout from "@mui/icons-material/Logout";
 import {Spinner} from 'react-bootstrap'
+import { Modal } from "react-bootstrap";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Swal from "sweetalert2";
+import FormControl from "@mui/material/FormControl";
+import InputAdornment from "@mui/material/InputAdornment";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import InputLabel from "@mui/material/InputLabel";
+import Box from "@mui/material/Box";
 
 // import WorkHistoryIcon from "@mui/icons-material/WorkHistory";
 // import SsidChartIcon from '@mui/icons-material/SsidChart';
@@ -129,10 +140,17 @@ export default class PortalLayout extends Component {
       selectedPage: '',
       anchorEl: null,
       sidebarList:[],
-      isLoading:true
+      isLoading:true,
+      email:'',
+      password:'',
+      cpassword:'',
+      showPassword:false,
+      cshowPassword:false,
+      isModalOpen:false
     };
 
     this.assignAppName = this.assignAppName.bind(this)
+    this.handleOpenModal = this.handleOpenModal.bind(this)
   }
 
   componentDidMount() {
@@ -161,7 +179,109 @@ export default class PortalLayout extends Component {
     }
     return 'Learnerhunt'
   }
-  
+
+  handleOpenModal(){
+    console.log('hello')
+    this.setState({isModalOpen:true,email:localStorage.getItem("admincrmemail")})
+  }
+ handleSubmit = (e) => {
+    e.preventDefault();
+      console.log(email);
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (this.state.email == "") {
+        Swal.fire({
+          title: "error",
+          text: `Please enter email`,
+          icon: "error",
+          confirmButtonText: "Ok",
+        }).then(() => {
+          this.setState({isLoading:false});
+        });
+      } else if (!emailRegex.test(this.state.email)) {
+        Swal.fire({
+          title: "error",
+          text: `Please enter a valid email address`,
+          icon: "error",
+          confirmButtonText: "Ok",
+        }).then(() => {
+          this.setState({isLoading:false});
+        });
+      } else if (this.state.password == "") {
+        Swal.fire({
+          title: "error",
+          text: `Please enter your password`,
+          icon: "error",
+          confirmButtonText: "Ok",
+        }).then(() => {
+          this.setState({isLoading:false});
+        });
+      } else if (this.state.cpassword == "") {
+        Swal.fire({
+          title: "error",
+          text: `Please enter your confirm password`,
+          icon: "error",
+          confirmButtonText: "Ok",
+        }).then(() => {
+          this.setState({isLoading:false});
+        });
+      } else if (this.state.password != this.state.cpassword) {
+        Swal.fire({
+          title: "error",
+          text: `Password not match.`,
+          icon: "error",
+          confirmButtonText: "Ok",
+        }).then(() => {
+          this.setState({isLoading:false});
+        });
+      } else {
+        try {
+          this.setState({isLoading:true})
+
+          const fd = new FormData();
+          fd.append("email",this.state.email);
+          fd.append("password", this.state.password);
+          fd.append("cpass", this.state.cpassword);
+          fetch(
+            process.env.NEXT_PUBLIC_API_ENDPOINT + "/admin/update-profile",
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("pt")}`,
+              },
+              method: "POST",
+              body: fd,
+            }
+          ).then(async (response) => {
+            var res = await response.json();
+            console.log(res);
+            // console.log(res.message)
+            if (response.ok) {
+              // console.log("hello", response.data);
+              Swal.fire({
+                title: "Success",
+                text: `${res.message}`,
+                icon: "success",
+                confirmButtonText: "Ok",
+              }).then(() => {
+                // props.onLogin(res.data.token,res.data.role,formData.name);
+    this.setState({isModalOpen:false,isLoading:false,password:'',cpassword:''},()=>{localStorage.setItem('admincrmemail',this.state.email)})
+              });
+            } else {
+              Swal.fire({
+                title: "error",
+                text: `${res.error}`,
+                icon: "error",
+                confirmButtonText: "Ok",
+              });
+              this.setState({isLoading:false})
+            }
+          });
+        } catch (error) {
+          // Handle network or fetch error
+          console.error(error);
+        }
+      }
+  };
 
   render() {
     return (
@@ -265,7 +385,7 @@ export default class PortalLayout extends Component {
             transformOrigin={{ horizontal: "right", vertical: "top" }}
             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           >
-            <MenuItem>
+            <MenuItem onClick={this.handleOpenModal}>
             <ListItemIcon>
               <PersonIcon fontSize="small"/>
               </ListItemIcon>
@@ -292,6 +412,120 @@ export default class PortalLayout extends Component {
             </MenuItem>
           </Menu>
         </React.Fragment>
+        <Modal
+        centered
+        show={this.state.isModalOpen}
+        onHide={() => {
+          this.setState({isModalOpen:false,email:'',password:'',cpassword:''})
+        }}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Edit User</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Box
+            component="form"
+            onSubmit={this.handleSubmit}
+            noValidate
+            sx={{ mt: 1 }}
+          >
+            <TextField
+              id="email"
+              name="name"
+              type="email"
+              fullWidth
+              variant="outlined"
+              label="Email"
+              value={this.state.email}
+              onChange={(e) =>this.setState({email:e.target.value})}
+              required
+            />
+              <>
+                <FormControl
+                  sx={{ mt: 2, width: "100%" }}
+                  variant="outlined"
+                  required
+                >
+                  <InputLabel
+                    htmlFor="outlined-adornment-password"
+                    fullwidth="true"
+                  >
+                    Password
+                  </InputLabel>
+                  <OutlinedInput
+                    id="password"
+                    name="password"
+                    value={this.state.password}
+                    onChange={(e) =>this.setState({password:e.target.value})}
+                    type={this.state.showPassword ? "text" : "password"}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={() => this.setState({showPassword:!this.state.showPassword})}
+                          edge="end"
+                        >
+                          {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                    label="Password"
+                  />
+                </FormControl>
+                <FormControl
+                  sx={{ mt: 2, width: "100%" }}
+                  variant="outlined"
+                  required
+                >
+                  <InputLabel
+                    htmlFor="outlined-adornment-password"
+                    fullwidth="true"
+                  >
+                    Confirm Password
+                  </InputLabel>
+                  <OutlinedInput
+                    id="cpassword"
+                    value={this.state.cpassword}
+                    name="cpassword"
+                    onChange={(e) =>this.setState({cpassword:e.target.value})}
+                    type={this.state.cshowPassword ? "text" : "password"}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={() => this.setState({cshowPassword:!this.state.cshowPassword})}
+                          edge="end"
+                        >
+                          {this.state.cshowPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                    label="Confirm Password"
+                  />
+                </FormControl>
+              </>
+            <Button
+              disabled={this.state.isLoading}
+              className="bg-blue-500"
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              {this.state.isLoading ? (
+                <>
+                  <span>Please Wait...</span>
+                  <Spinner animation="border" role="status" />
+                </>
+              ) : (
+                "Submit"
+              )}
+            </Button>
+          </Box>
+        </Modal.Body>
+      </Modal>
       </div>
       :
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>

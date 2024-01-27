@@ -88,6 +88,20 @@ const FilterComponent = ({
           </FormControl>
         </div>
     </div>
+   
+    //    <div class={Classes["filter-list-container"]}  id="div1">
+    //     <div class={Classes["filter-option"]}> 
+    // STREAM 
+    // <span class={Classes["icon"]}></span>
+    // </div>
+    // <div class="filter-deta-outer"><div class="search-filters"><form><div class="search-inner"><input type="text" class="form-control search" placeholder="Search" onkeyup="filterFunction('div1')"/></div></form></div><ul class="filter-option-list"><li><label class="gs_control  gs_radio "><i>Commerce &amp; Banking</i><input type="radio"  class="filter-input" data-tag="commerce-banking" data-folder="level" name="radiobutton" onchange="loadResults(this)" data-category="stream"/><span class="gs_control__indicator"></span><span class="count-number">
+    //                                     (6608)
+    //                                 </span></label></li><li><label class="gs_control  gs_radio "><i>Design</i><input type="radio"  class="filter-input" data-tag="design" data-folder="level" name="radiobutton" onchange="loadResults(this)" data-category="stream"/><span class="gs_control__indicator"></span><span class="count-number">
+    //                                     (1242)
+    //                                 </span></label></li></ul></div>
+    //                     </div>
+
+
   );
 };
 

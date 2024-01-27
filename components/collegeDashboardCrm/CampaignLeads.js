@@ -3,9 +3,12 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import Loading from "../Comps/Loading";
 import { Spinner } from "react-bootstrap";
+import styles from "/styles/clgdb.module.css";
 import Tablenav from "../Comps/Tablenav";
+
 var oldData = []
-export default class Studentappliedclg extends Component {
+
+export default class CampaignLeads extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -16,8 +19,10 @@ export default class Studentappliedclg extends Component {
       selectedCategory: [],
       username: localStorage.getItem("username"),
       statusAnchorEl: null,
+      lastrecid:"-1",
       searchInput: "", // Search input
-      lastrecid:"-1"
+      error:""
+
       // selectedAsset: null,
     };
   }
@@ -41,21 +46,33 @@ export default class Studentappliedclg extends Component {
   }
 
   getAssetList() {
+    try {
     this.setState({ isApiHitComplete: false, isDataFound: false });
-    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/leads?lid=${this.state.lastrecid}&type=2`, {
+    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/college/campaing-leads`, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("pt")}`,
+        Authorization: `Bearer ${localStorage.getItem("ct")}`,
       },
     }).then(async (res) => {
-        console.log(res)
+        if (res.ok) {
+
+        // console.log(res)
       let response = await res.json();
       // console.log(response.data);
       if (response.data.length > 0) {
         this.setState({ clgList: response.data, isDataFound: true });
       }
       oldData=response.data
-      this.setState({ isApiHitComplete: true });
+
+    }else{
+      let response = await res.json();
+        this.setState({error:response.error})
+    }
+    this.setState({ isApiHitComplete: true });
+
     });
+}catch (error) {
+    console.error(error);
+  }
   }
 
   componentDidMount() {
@@ -75,20 +92,17 @@ export default class Studentappliedclg extends Component {
       }
   } else {
     const filteredData = oldData.filter(data =>
-      searchKeyword.test(data.full_name.toLowerCase())||
-      searchKeyword.test(data.contact_no.toLowerCase())||
-      searchKeyword.test(data.course_interested.toLowerCase())||
+      searchKeyword.test(data.name.toLowerCase())||
       searchKeyword.test(data.email.toLowerCase())||
-      searchKeyword.test(data.state.toLowerCase())
-
-
-      
-
+      searchKeyword.test(data.mobile.toLowerCase())||
+      searchKeyword.test(data.state.toLowerCase())||
+      searchKeyword.test(data.city.toLowerCase())
   );
 
   if (filteredData.length > 0) {
       this.setState({ clgList: filteredData, isDataFound: true });
   } else {
+
       this.setState({ isDataFound: false });
   }
   }
@@ -96,7 +110,11 @@ export default class Studentappliedclg extends Component {
   render() {
     return (
       <>
-          <Tablenav
+            {/* <div className={styles["basic-details"]}> */}
+
+{this.state.error =="" ?
+<>
+        <Tablenav
           Actions={{
             Actions: (
               <input
@@ -112,12 +130,13 @@ export default class Studentappliedclg extends Component {
         {this.state.isApiHitComplete ? (
           this.state.isDataFound ? (
             <table className={`table table-hover custom-table`}>
-              <thead>
+              <thead style={{ top: `8vh` }}>
                 <tr>
-                  <th style={{ background: "var(--primary)" }}>Full Name</th>
+                  <th style={{ background: "var(--primary)" }}>Name</th>
                   <th style={{ background: "var(--primary)" }}>Mobile Number</th>
-                  <th style={{ background: "var(--primary)" }}>Course Intrested</th>
+                  <th style={{ background: "var(--primary)" }}>Course</th>
                   <th style={{ background: "var(--primary)" }}>State</th>
+                  <th style={{ background: "var(--primary)" }}>City</th>
                   <th style={{ background: "var(--primary)" }}>Email</th>
                   <th style={{ background: "var(--primary)" }}>Date</th>
 
@@ -130,10 +149,11 @@ export default class Studentappliedclg extends Component {
                   return (
                     
                       <tr key={i}>
-                        <td>{clg.full_name}</td>
-                        <td>{clg.contact_no}</td>
-                        <td>{clg.course_interested}</td>
+                        <td>{clg.name}</td>
+                        <td>{clg.mobile}</td>
+                        <td>{clg.course}</td>
                         <td>{clg.state}</td>
+                        <td>{clg.city}</td>
                         <td>{clg.email}</td>
                         <td>{this.formatTimestamp(clg.createdAt)}</td>
                   
@@ -147,14 +167,14 @@ export default class Studentappliedclg extends Component {
               </tbody>
             </table>
           ) : (
-            <div style={{ display: "flex", width: "100%", height: '80vh', justifyContent: "center", alignItems: 'center' }}>
+            <div style={{ display: "flex", width: "100%", height: 'inherit', justifyContent: "center", alignItems: 'center' }}>
             <div style={{ fontWeight: "500" }}>
               <span style={{ color: "#0d6efd", cursor: 'pointer' }}> No Records </span>
             </div>
           </div>
           )
         ) : (
-             <div style={{ display: "flex", width: "100%", height: '80vh', justifyContent: "center", alignItems: 'center' }}>
+             <div style={{ display: "flex", width: "100%", height: 'inherit', justifyContent: "center", alignItems: 'center' }}>
               <Spinner animation="border" role="status" variant="info">
                 <span className="visually-hidden">Loading...</span>
               </Spinner>
@@ -164,14 +184,8 @@ export default class Studentappliedclg extends Component {
           show={this.state.isLoading}
           onHide={() => this.setState({ isLoading: false })}
         />
-        {/* {this.state.openPreviewAsset && (
-          <Previewmodal
-            show={this.state.openPreviewAsset}
-            onHide={() => this.setState({ openPreviewAsset: false })}
-            data={this.state.selectedAsset}
-            baseurl={this.state.baseurl}
-          />
-        )} */}
+    </>:this.state.error}
+      {/* </div> */}
       </>
     );
   }
