@@ -278,7 +278,7 @@ export default function PrivacyPolicy() {
   If you have any questions or suggestions about my Privacy Policy, do not
   hesitate to contact me a{" "}
   <b>
-    <a href="contact@learnerhunt.com" className="text-blue-500">
+    <a href="mailto:contact@learnerhunt.com" className="text-blue-500">
       contact@learnerhunt.com
     </a>
   </b>

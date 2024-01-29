@@ -47,7 +47,7 @@ export default class Studentappliedclg extends Component {
         Authorization: `Bearer ${localStorage.getItem("pt")}`,
       },
     }).then(async (res) => {
-        console.log(res)
+        // console.log(res)
       let response = await res.json();
       // console.log(response.data);
       if (response.data.length > 0) {

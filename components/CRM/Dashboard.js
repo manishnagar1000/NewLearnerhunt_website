@@ -117,6 +117,47 @@ export default class Dashboard extends Component {
             ],
           },
         },
+        TestElStuds: {
+          series: [
+            {
+              name: "Students",
+              data: [],
+            },
+          ],
+          options: {
+            chart: {
+              id: "TestElStuds",
+              height: 350,
+              type: "line",
+              // background:'red',
+              zoom: {
+                enabled: false,
+              },
+              toolbar: {
+                show: false,
+              },
+            },
+            dataLabels: {
+              enabled: false,
+            },
+            stroke: {
+              curve: "straight",
+            },
+            title: {
+              text: "",
+              align: "left",
+            },
+            grid: {
+              row: {
+                colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
+                opacity: 0.5,
+              },
+            },
+            xaxis: {
+              categories: [],
+            },
+          },
+        },
       },
     };
   }
@@ -145,6 +186,11 @@ export default class Dashboard extends Component {
       this.state.chartObj.collegeCount.series = series;
       this.state.chartObj.collegeCount.options.labels = labels;
       this.state.chartObj.collegeCount.options.title.text = title;
+      // test count
+      var { series, title, xaxis } = response.data.TestElStuds || {};
+      this.state.chartObj.TestElStuds.series[0].data = series[0].data;
+      this.state.chartObj.TestElStuds.options.title.text = title;
+      this.state.chartObj.TestElStuds.options.xaxis = xaxis;
       this.setState({ isApiHitComplete: true });
       // this.setState({
       //   collegeCount: response.data.total_college_count,
@@ -198,6 +244,19 @@ export default class Dashboard extends Component {
                     <Chart
                       options={this.state.chartObj.registeredStud.options}
                       series={this.state.chartObj.registeredStud.series}
+                      type="line"
+                      height={300}
+                    />
+                  </div>
+                </div>
+              )}
+
+              {this.state.chartObj.TestElStuds.series[0].data?.length > 0 && (
+                <div className="col-md-6">
+                  <div className="p-2 border bg-white shadow-sm">
+                    <Chart
+                      options={this.state.chartObj.TestElStuds.options}
+                      series={this.state.chartObj.TestElStuds.series}
                       type="line"
                       height={300}
                     />

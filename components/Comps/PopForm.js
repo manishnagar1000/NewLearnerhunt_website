@@ -56,7 +56,7 @@ const PopForm = () => {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    console.log(name,value)
+    // console.log(name,value)
     setFormData({
       ...formData,
       [name]: value,
@@ -134,7 +134,7 @@ const PopForm = () => {
         }
       
         const res = await response.json();
-        console.log(res); // Log the response data
+        // console.log(res); // Log the response data
         // Handle successful response here
         alert(res.message);
         closeModal()
