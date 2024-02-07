@@ -181,12 +181,12 @@ export default class PortalLayout extends Component {
   }
 
   handleOpenModal(){
-    console.log('hello')
+    // console.log('hello')
     this.setState({isModalOpen:true,email:localStorage.getItem("admincrmemail")})
   }
  handleSubmit = (e) => {
     e.preventDefault();
-      console.log(email);
+      // console.log(email);
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
       if (this.state.email == "") {
@@ -253,7 +253,7 @@ export default class PortalLayout extends Component {
             }
           ).then(async (response) => {
             var res = await response.json();
-            console.log(res);
+            // console.log(res);
             // console.log(res.message)
             if (response.ok) {
               // console.log("hello", response.data);

@@ -9,7 +9,7 @@ const ImportExport = () => {
   const [csvData, setCsvData] = useState('');
 
   const onDrop = (acceptedFiles) => {
-    console.log(acceptedFiles)
+    // console.log(acceptedFiles)
     const file = acceptedFiles[0];
     const reader = new FileReader();
 
@@ -19,7 +19,7 @@ const ImportExport = () => {
       const sheetName = workbook.SheetNames[0];
       const sheet = workbook.Sheets[sheetName];
       const json = XLSX.utils.sheet_to_json(sheet);
-      console.log(json)
+      // console.log(json)
 
       setJsonData(json);
 

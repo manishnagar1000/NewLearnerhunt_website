@@ -77,7 +77,7 @@ export default function fest() {
       <nav className={styles.navbar}>
         <div className={styles.logo}>
           {/* Your logo */}
-          <img src="/assets/images/Learnerhunt-Logo.png" alt="Logo" />
+          <img src="/assets/images/Learnerhunt-Logo.webp" alt="Logo" />
         </div>
         {/* <div style={{display:"flex",alignItems:"center"}}> */}
         <div className={`${styles.registerButton} ${styles.blink}`}>
@@ -350,7 +350,7 @@ export default function fest() {
                 autoPlay={true}
                 autoPlaySpeed={2000}
                 arrows={false}
-                dotListClass={styles["custom-dot-list-style"]}
+                dotListclassName={styles["custom-dot-list-style"]}
                 className={styles["react-multi-carousel-list"]}
               >
                 {edufestPhoto.map((e, index) => (

@@ -279,7 +279,7 @@ export default function isbr() {
                         <img
                           src="/assets/images/isbr/icon-1.png"
                           className="img-fluid"
-                          alt=""
+                          alt="icon-1"
                         />
                         <p>
                           Foundation
@@ -291,7 +291,7 @@ export default function isbr() {
                         <img
                           src="/assets/images/isbr/icon-2.png"
                           className="img-fluid"
-                          alt=""
+                          alt="icon-1"
                         />
                         <p>
                           Core
@@ -303,7 +303,7 @@ export default function isbr() {
                         <img
                           src="/assets/images/isbr/icon-3.png"
                           className="img-fluid"
-                          alt=""
+                          alt="icon-1"
                         />
                         <p>
                           Concentration
@@ -315,7 +315,7 @@ export default function isbr() {
                         <img
                           src="/assets/images/isbr/icon-4.png"
                           className="img-fluid"
-                          alt=""
+                          alt="icon-1"
                         />
                         <p>
                           Leadership
@@ -329,7 +329,7 @@ export default function isbr() {
                         <img
                           src="/assets/images/isbr/icon-5.png"
                           className="img-fluid"
-                          alt=""
+                          alt="icon-1"
                         />
                         <p>
                           Finance <br />
@@ -340,7 +340,7 @@ export default function isbr() {
                         <img
                           src="/assets/images/isbr/icon-6.png"
                           className="img-fluid"
-                          alt=""
+                          alt="icon-1"
                         />
                         <p>
                           Character
@@ -352,7 +352,7 @@ export default function isbr() {
                         <img
                           src="/assets/images/isbr/icon-7.png"
                           className="img-fluid"
-                          alt=""
+                          alt="icon-1"
                         />
                         <p>
                           International Guest
@@ -364,7 +364,7 @@ export default function isbr() {
                         <img
                           src="/assets/images/isbr/icon-8.png"
                           className="img-fluid"
-                          alt=""
+                          alt="icon-1"
                         />
                         <p>
                           Life Skill
@@ -382,7 +382,7 @@ export default function isbr() {
                         <img
                           src="/assets/images/isbr/icon-1.png"
                           className="img-fluid"
-                          alt=""
+                          alt="icon-1"
                         />
                         <p>
                           Foundation
@@ -394,7 +394,7 @@ export default function isbr() {
                         <img
                           src="/assets/images/isbr/icon-2.png"
                           className="img-fluid"
-                          alt=""
+                          alt="icon-1"
                         />
                         <p>
                           Core
@@ -425,7 +425,7 @@ export default function isbr() {
                         <img
                           src="/assets/images/isbr/academic_img-6.jpg"
                           className="img-fluid"
-                          alt=""
+                          alt="icon-1"
                         />
                       </div>
                       <p>
@@ -441,7 +441,7 @@ export default function isbr() {
                         <img
                           src="/assets/images/isbr/academic_img-7.jpg"
                           className="img-fluid"
-                          alt=""
+                          alt="icon-1"
                         />
                       </div>
                       <p>
@@ -459,7 +459,7 @@ export default function isbr() {
                         <img
                           src="/assets/images/isbr/academic_img-8.jpg"
                           className="img-fluid"
-                          alt=""
+                          alt="icon-1"
                         />
                       </div>
                       <p>
@@ -490,42 +490,42 @@ export default function isbr() {
                         <img
                           src="/assets/images/isbr/recruiter_img-17.png"
                           className="img-fluid"
-                          alt=""
+                          alt="icon-1"
                         />
                       </div>
                       <div className="icon">
                         <img
                           src="/assets/images/isbr/recruiter_img-18.png"
                           className="img-fluid"
-                          alt=""
+                          alt="icon-1"
                         />
                       </div>
                       <div className="icon">
                         <img
                           src="/assets/images/isbr/recruiter_img-19.png"
                           className="img-fluid"
-                          alt=""
+                          alt="icon-1"
                         />
                       </div>
                       <div className="icon">
                         <img
                           src="/assets/images/isbr/recruiter_img-9.png"
                           className="img-fluid"
-                          alt=""
+                          alt="icon-1"
                         />
                       </div>
                       <div className="icon">
                         <img
                           src="/assets/images/isbr/recruiter_img-1.png"
                           className="img-fluid"
-                          alt=""
+                          alt="icon-1"
                         />
                       </div>
                       <div className="icon">
                         <img
                           src="/assets/images/isbr/recruiter_img-2.png"
                           className="img-fluid"
-                          alt=""
+                          alt="icon-1"
                         />
                       </div>
                     </div>
@@ -534,42 +534,42 @@ export default function isbr() {
                         <img
                           src="/assets/images/isbr/recruiter_img-11.png"
                           className="img-fluid"
-                          alt=""
+                          alt="icon-1"
                         />
                       </div>
                       <div className="icon">
                         <img
                           src="/assets/images/isbr/recruiter_img-22.png"
                           className="img-fluid"
-                          alt=""
+                          alt="icon-1"
                         />
                       </div>
                       <div className="icon">
                         <img
                           src="/assets/images/isbr/recruiter_img-12.png"
                           className="img-fluid"
-                          alt=""
+                          alt="icon-1"
                         />
                       </div>
                       <div className="icon">
                         <img
                           src="/assets/images/isbr/recruiter_img-24.png"
                           className="img-fluid"
-                          alt=""
+                          alt="icon-1"
                         />
                       </div>
                       <div className="icon">
                         <img
                           src="/assets/images/isbr/recruiter_img-3.png"
                           className="img-fluid"
-                          alt=""
+                          alt="icon-1"
                         />
                       </div>
                       <div className="icon">
                         <img
                           src="/assets/images/isbr/recruiter_img-4.png"
                           className="img-fluid"
-                          alt=""
+                          alt="icon-1"
                         />
                       </div>
                     </div>
@@ -588,21 +588,21 @@ export default function isbr() {
                             <img
                               src="/assets/images/isbr/recruiter_img-17.png"
                               className="img-fluid"
-                              alt=""
+                              alt="icon-1"
                             />
                           </div>
                           <div className="icon">
                             <img
                               src="/assets/images/isbr/recruiter_img-18.png"
                               className="img-fluid"
-                              alt=""
+                              alt="icon-1"
                             />
                           </div>
                           <div className="icon">
                             <img
                               src="/assets/images/isbr/recruiter_img-19.png"
                               className="img-fluid"
-                              alt=""
+                              alt="icon-1"
                             />
                           </div>
                         </div>

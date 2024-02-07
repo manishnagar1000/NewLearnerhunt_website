@@ -43,7 +43,7 @@ export default function ClgadminRegister() {
       );
       const data = await response.json();
       var rs = data.data.filter((s) => s.type == "college");
-      console.log(data);
+      // console.log(data);
     //   if(role == 1){
         if (rs.length == 0) {
           rs = [{ title: "+ Add New", slug: "", type: "-1" }];
@@ -94,7 +94,7 @@ export default function ClgadminRegister() {
     }
   ).then(async (response) => {
     var res = await response.json();
-    console.log(res.message)
+    // console.log(res.message)
     if (response.ok) {
       // console.log("hello", response.data);
       Swal.fire({

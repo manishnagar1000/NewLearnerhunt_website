@@ -170,7 +170,7 @@ export default class Dashboard extends Component {
       },
     }).then(async (res) => {
       let response = await res.json();
-      console.log(response.data);
+      // console.log(response.data);
       // Registered Student
       var { series, title, xaxis } = response.data.registeredStuds || {};
       this.state.chartObj.registeredStud.series[0].data = series[0].data;
@@ -206,7 +206,7 @@ export default class Dashboard extends Component {
     this.getAssetList();
   }
   render() {
-    console.log(this.state.chartObj.registeredStud.series);
+    // console.log(this.state.chartObj.registeredStud.series);
     return (
       <div className={Classes["home-outer-div"]}>
         <h2>Dashboard Analysis</h2>

@@ -89,14 +89,14 @@ const FilterComponent = ({
         </div>
     </div>
    
-    //    <div class={Classes["filter-list-container"]}  id="div1">
-    //     <div class={Classes["filter-option"]}> 
+    //    <div className={Classes["filter-list-container"]}  id="div1">
+    //     <div className={Classes["filter-option"]}> 
     // STREAM 
-    // <span class={Classes["icon"]}></span>
+    // <span className={Classes["icon"]}></span>
     // </div>
-    // <div class="filter-deta-outer"><div class="search-filters"><form><div class="search-inner"><input type="text" class="form-control search" placeholder="Search" onkeyup="filterFunction('div1')"/></div></form></div><ul class="filter-option-list"><li><label class="gs_control  gs_radio "><i>Commerce &amp; Banking</i><input type="radio"  class="filter-input" data-tag="commerce-banking" data-folder="level" name="radiobutton" onchange="loadResults(this)" data-category="stream"/><span class="gs_control__indicator"></span><span class="count-number">
+    // <div className="filter-deta-outer"><div className="search-filters"><form><div className="search-inner"><input type="text" className="form-control search" placeholder="Search" onkeyup="filterFunction('div1')"/></div></form></div><ul className="filter-option-list"><li><label className="gs_control  gs_radio "><i>Commerce &amp; Banking</i><input type="radio"  className="filter-input" data-tag="commerce-banking" data-folder="level" name="radiobutton" onchange="loadResults(this)" data-category="stream"/><span className="gs_control__indicator"></span><span className="count-number">
     //                                     (6608)
-    //                                 </span></label></li><li><label class="gs_control  gs_radio "><i>Design</i><input type="radio"  class="filter-input" data-tag="design" data-folder="level" name="radiobutton" onchange="loadResults(this)" data-category="stream"/><span class="gs_control__indicator"></span><span class="count-number">
+    //                                 </span></label></li><li><label className="gs_control  gs_radio "><i>Design</i><input type="radio"  className="filter-input" data-tag="design" data-folder="level" name="radiobutton" onchange="loadResults(this)" data-category="stream"/><span className="gs_control__indicator"></span><span className="count-number">
     //                                     (1242)
     //                                 </span></label></li></ul></div>
     //                     </div>

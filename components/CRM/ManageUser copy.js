@@ -122,7 +122,7 @@ export default class ManageUser extends Component {
     }).then(async (res) => {
       // console.log(res)
       let response = await res.json();
-      console.log(response);
+      // console.log(response);
       if (response.data) {
         if (response.data.length > 0) {
           this.setState({ clgList: response.data, isDataFound: true });
@@ -177,7 +177,7 @@ handleSubmit(e){
     // const { name, password } = formData;
 
     // // Check if email is empty
-    console.log(this.state.email)
+    // console.log(this.state.email)
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (this.state.email == "") {
@@ -247,7 +247,7 @@ handleSubmit(e){
         body: fd,
       }).then(async (response) => {
         var res = await response.json();
-        console.log(res)
+        // console.log(res)
         // console.log(res.message)
         if (response.ok) {
           // console.log("hello", response.data);

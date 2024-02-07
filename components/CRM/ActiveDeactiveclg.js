@@ -189,7 +189,7 @@ export default class CollegeAdmins extends Component {
                     <tr key={i}>
                        <td>
                         <div>
-              <img src={clg.verified?"/assets/images/verified.png":"/assets/images/notverified.png"} width={35} height={35}/>
+              <img src={clg.verified?"/assets/images/verified.png":"/assets/images/notverified.png"} alt="img" width={35} height={35}/>
                           
                         </div>
                       </td>

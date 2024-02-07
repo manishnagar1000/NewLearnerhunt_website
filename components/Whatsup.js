@@ -1,6 +1,7 @@
 // components/WhatsAppButton.js
 import { useState,useEffect } from 'react';
 import styles from '../styles/Whatsup.module.css'; // Import the module CSS file
+import Image from 'next/image';
 
 const WhatsAppButton = () => {
   const [isWhatsAppOpen, setIsWhatsAppOpen] = useState(false);
@@ -17,7 +18,7 @@ const WhatsAppButton = () => {
       className={`${styles['whatsapp-button']} ${isWhatsAppOpen ? styles.open : ''}`}
       onClick={openWhatsApp}
     >
-        <img id="whatsapp-image" src='/assets/images/whatsapp.png' width={50} height={50} alt='whatsup'></img>
+        <Image id="whatsapp-image" src='/assets/images/whatsapp.png' width={50} height={50} alt='whatsup'></Image>
       {/* <button>Open WhatsApp</button> */}
     </div>
   );

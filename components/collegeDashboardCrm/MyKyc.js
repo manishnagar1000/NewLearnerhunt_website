@@ -16,7 +16,7 @@ import { Spinner } from "react-bootstrap";
 import { IndianStates } from "/components/Comps/StatesIndia";
 
 import { TextField, MenuItem } from "@mui/material";
-var oldData = []
+var oldData = [];
 const MyKyc = () => {
   const [showmykycinput, setshowmykycinput] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -28,17 +28,17 @@ const MyKyc = () => {
   const [gender, setGender] = useState("");
   const [maritalstatus, setMaritalstatus] = useState("");
   const [physically, setPhysically] = useState("");
-  const [adminname, setAdminName] = useState(""); 
-  const [clgmobile, setClgMobile] = useState(""); 
-  const [designation, setDesignation] = useState(""); 
-  const [referrer, setReferrer] = useState(""); 
-  const [linkedIn, setLinkedIn] = useState(""); 
-  const [mobile, setMobile] = useState("");
+  const [adminname, setAdminName] = useState("");
+  const [clgmobile, setClgMobile] = useState("");
+  const [designation, setDesignation] = useState("");
+  const [referrer, setReferrer] = useState("");
+  const [linkedIn, setLinkedIn] = useState("");
+  // const [mobile, setMobile] = useState("");
   const [email, setEmail] = useState("");
   const [country, setCountry] = useState("");
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
-  const [verified,setVerified] = useState(false);
+  const [verified, setVerified] = useState(false);
   const [error, setError] = useState(false);
 
   const studentDataApi = () => {
@@ -51,23 +51,22 @@ const MyKyc = () => {
       .then(async (response) => {
         var res = await response.json();
         // console.log(res.data);
-        oldData = res.data
-        setcollegename(res.data.college_name)
-        setAdminName(res.data.name)
-        setDate(res.data.dob)
-        setGender(res.data.gender)
-        setMaritalstatus(res.data.merital_status)
-        setPhysically(res.data.disablity)
-        setMobile(res.data.mobile)
-        setCountry(res.data.country)
-        setState(res.data.state)
-        setCity(res.data.city)
-        setEmail(res.data.email)
-        setDesignation(res.data.designation)
-        setReferrer(res.data.referrer)
-        setLinkedIn(res.data.linkedin_link)
-        setVerified(res.data.verified)
-
+        oldData = res.data;
+        setcollegename(res.data.college_name);
+        setAdminName(res.data.name);
+        setDate(res.data.dob.split('T')[0]);
+        setGender(res.data.gender);
+        setMaritalstatus(res.data.merital_status);
+        setPhysically(res.data.disablity);
+        setClgMobile(res.data.mobile);
+        setCountry(res.data.country);
+        setState(res.data.state);
+        setCity(res.data.city);
+        setEmail(res.data.email);
+        setDesignation(res.data.designation);
+        setReferrer(res.data.referrer);
+        setLinkedIn(res.data.linkedin_link);
+        setVerified(res.data.verified);
 
         setIsLoading(false);
       })
@@ -80,132 +79,107 @@ const MyKyc = () => {
   }, []);
   const handleSubmit = () => {
     // console.log("hello");
-    if(showmykycinput){
+    if (showmykycinput) {
       if (clgmobile.length !== 10 || /\s/.test(clgmobile)) {
         // Display an error message or take the appropriate action
-        setError(true)
+        setError(true);
       } else {
         // Your form submission logic
-        setError(false)
+        setError(false);
         setIsLoading(true);
-      const fd = new FormData();
-      fd.append(
-        "name",
-        adminname 
-      );
-      fd.append(
-        "dob",
-        date 
-      );
-      fd.append(
-        "gender",
-        gender 
-      );
-      fd.append(
-        "linkedin_link",
-        linkedIn 
-      );
-      fd.append(
-        "designation",
-        designation 
-      );
-      fd.append(
-        "referrer",
-        referrer 
-      );
-      fd.append(
-        "merital_status",
-        maritalstatus 
-      );
-      fd.append(
-        "disablity",
-        physically 
-      );
-      fd.append(
-        "mobile",
-        mobile 
-      );
-      fd.append(
-        "city",
-        city 
-      );
-      fd.append(
-        "state",
-        state 
-      );
-      fd.append(
-        "country",
-        country
-      );
-      fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/college/my-kyc`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("ct")}`,
-        },
-        method: "PUT",
-        body: fd,
-      }).then(async (response) => {
-        var res = await response.json();
-        // console.log(res);
-        setIsLoading(false);
-        if (response.ok) {
-          // console.log("hello", response.data);
-  
-          Swal.fire({
-            title: "Success",
-            text: `${res.message}`,
-            icon: "success",
-            confirmButtonText: "Ok",
-          }).then(() => {
-            setshowmykycinput(false);
-            studentDataApi();
-      
-          });
-        } else {
-          Swal.fire({
-            title: "error",
-            text: `${res.error}`,
-            icon: "error",
-            confirmButtonText: "Ok",
-          }).then(() => {
-            setIsLoading(false);
-          });
-        }
-      });
+        const fd = new FormData();
+        fd.append("name", adminname);
+        fd.append("dob", date);
+        fd.append("gender", gender);
+        fd.append("linkedin_link", linkedIn);
+        fd.append("designation", designation);
+        fd.append("referrer", referrer);
+        fd.append("merital_status", maritalstatus);
+        fd.append("disablity", physically);
+        fd.append("mobile", clgmobile);
+        fd.append("city", city);
+        fd.append("state", state);
+        fd.append("country", country);
+        fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/college/my-kyc`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("ct")}`,
+          },
+          method: "PUT",
+          body: fd,
+        }).then(async (response) => {
+          var res = await response.json();
+          // console.log(res);
+          setIsLoading(false);
+          if (response.ok) {
+            // console.log("hello", response.data);
+
+            Swal.fire({
+              title: "Success",
+              text: `${res.message}`,
+              icon: "success",
+              confirmButtonText: "Ok",
+            }).then(() => {
+              setshowmykycinput(false);
+              studentDataApi();
+            });
+          } else {
+            Swal.fire({
+              title: "error",
+              text: `${res.error}`,
+              icon: "error",
+              confirmButtonText: "Ok",
+            }).then(() => {
+              setIsLoading(false);
+            });
+          }
+        });
       }
     }
-    
-      
-   
   };
 
-   const handleKycclose =()=>{
+  const handleKycclose = () => {
     // console.log(oldData)
-   setcollegename(oldData.college_name)
-        setAdminName(oldData.name)
-        setDate(oldData.dob)
-        setGender(oldData.gender)
-        setMaritalstatus(oldData.merital_status)
-        setPhysically(oldData.disablity)
-        setMobile(oldData.mobile)
-        setCountry(oldData.country)
-        setState(oldData.state)
-        setCity(oldData.city)
-        setEmail(oldData.email)
-        setDesignation(oldData.designation)
-        setReferrer(oldData.referrer)
-        setLinkedIn(oldData.linkedin_link)
-    setshowmykycinput(false)
-   }
+    setcollegename(oldData.college_name);
+    setAdminName(oldData.name);
+    setDate(oldData.dob.split('T')[0]);
+    setGender(oldData.gender);
+    setMaritalstatus(oldData.merital_status);
+    setPhysically(oldData.disablity);
+    setClgMobile(oldData.mobile);
+    setCountry(oldData.country);
+    setState(oldData.state);
+    setCity(oldData.city);
+    setEmail(oldData.email);
+    setDesignation(oldData.designation);
+    setReferrer(oldData.referrer);
+    setLinkedIn(oldData.linkedin_link);
+    setshowmykycinput(false);
+  };
 
   return (
     <>
-     {!isLoading ? (
-        <> 
-          <div className={styles["basic-details"]} style={{margin:"0.5rem"}}>
+      {!isLoading ? (
+        <>
+          <div className={styles["basic-details"]} style={{ margin: "0.5rem" }}>
             <div className={styles["basic"]}>
-              <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
-              <h3 style={{margin:"0px 5px"}}>My KYC</h3>
-              <img src={verified?"/assets/images/verified.png":"/assets/images/notverified.png"} width={35} height={35}/>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <h3 style={{ margin: "0px 5px" }}>My KYC</h3>
+                <img
+                  src={
+                    verified
+                      ? "/assets/images/verified.png"
+                      : "/assets/images/notverified.png"
+                  }
+                  width={35}
+                  height={35}
+                  alt="img"
+                />
               </div>
               {showmykycinput ? (
                 <div style={{ display: "flex" }}>
@@ -232,12 +206,15 @@ const MyKyc = () => {
                       type="text"
                       disabled
                       value={collegename}
-                      onChange={(e) => setcollegename(e.target.value.charAt(0).toUpperCase()+e.target.value.slice(1))}
+                      onChange={(e) =>
+                        setcollegename(
+                          e.target.value.charAt(0).toUpperCase() +
+                            e.target.value.slice(1)
+                        )
+                      }
                     />
                   ) : (
-                    <h6>
-                      {collegename || "N/A"}
-                    </h6>
+                    <h6>{collegename || "N/A"}</h6>
                   )}
                 </div>
               </div>
@@ -251,12 +228,31 @@ const MyKyc = () => {
                       margin="dense"
                       type="text"
                       value={adminname}
-                      onChange={(e) => setAdminName(e.target.value.charAt(0).toUpperCase()+e.target.value.slice(1))}
+                      onChange={(e) => {
+                        const inputValue = e.target.value;
+                    
+                        // Regular expression to check if the input contains only English characters
+                        const isEnglish = /^[a-zA-Z\s]*$/.test(inputValue);
+                    
+                        // If the input contains only English characters, update the state
+                        if (isEnglish) {
+                          setAdminName(
+                            inputValue
+                              .split(' ')
+                              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                              .join(' ')
+                          );
+                        } else {
+                          Swal.fire({
+                            icon: "error",
+                            title: "Invalid input",
+                            text: "Please enter only English characters!",
+                          });
+                        }
+                      }}
                     />
                   ) : (
-                    <h6>
-                      {adminname || "N/A"}
-                    </h6>
+                    <h6>{adminname || "N/A"}</h6>
                   )}
                 </div>
               </div>
@@ -273,14 +269,11 @@ const MyKyc = () => {
                       onChange={(e) => setDate(e.target.value)}
                     />
                   ) : (
-                    <h6>
-                      {FormatDate(date) || "N/A"}
-                    </h6>
+                    <h6>{date && FormatDate(date) || "N/A"}</h6>
                   )}
                 </div>
               </div>
 
-             
               <div className="col-md-6 col-lg-4">
                 <div className={styles["box"]}>
                   <div className={styles.heading}>Gender </div>
@@ -301,9 +294,7 @@ const MyKyc = () => {
                       ))}
                     </TextField>
                   ) : (
-                    <h6>
-                      {gender || "N/A"}
-                    </h6>
+                    <h6>{gender || "N/A"}</h6>
                   )}
                 </div>
               </div>
@@ -327,9 +318,7 @@ const MyKyc = () => {
                       ))}
                     </TextField>
                   ) : (
-                    <h6>
-                      {designation || "N/A"}
-                    </h6>
+                    <h6>{designation || "N/A"}</h6>
                   )}
                 </div>
               </div>
@@ -343,12 +332,28 @@ const MyKyc = () => {
                       margin="dense"
                       type="text"
                       value={referrer}
-                      onChange={(e) => setReferrer(e.target.value)}
+                      onChange={(e) => {
+                        const inputValue = e.target.value;
+                    
+                        // Regular expression to check if the input contains only English characters
+                        const isEnglish = /^[a-zA-Z\s]*$/.test(inputValue);
+                    
+                        // If the input contains only English characters, update the state
+                        if (isEnglish) {
+                          setReferrer(
+                            inputValue
+                          );
+                        } else {
+                          Swal.fire({
+                            icon: "error",
+                            title: "Invalid input",
+                            text: "Please enter only English characters!",
+                          });
+                        }
+                      }}
                     />
                   ) : (
-                    <h6>
-                      {referrer || "N/A"}
-                    </h6>
+                    <h6>{referrer || "N/A"}</h6>
                   )}
                 </div>
               </div>
@@ -362,11 +367,33 @@ const MyKyc = () => {
                       margin="dense"
                       type="text"
                       value={linkedIn}
-                      onChange={(e) => setLinkedIn(e.target.value)}
+                      onChange={(e) => {
+                        const inputValue = e.target.value;
+                    
+                        // Regular expression to check if the input contains only English characters
+                        const isEnglish = /^[a-zA-Z\s]*$/.test(inputValue);
+                    
+                        // If the input contains only English characters, update the state
+                        if (isEnglish) {
+                          setLinkedIn(
+                            inputValue
+                          );
+                        } else {
+                          Swal.fire({
+                            icon: "error",
+                            title: "Invalid input",
+                            text: "Please enter only English characters!",
+                          });
+                        }
+                      }}
                     />
                   ) : (
                     <h6>
-                     {<a href={linkedIn} target="_blank">{linkedIn}</a> || "N/A"}
+                      { linkedIn &&
+                        <a href={linkedIn} target="_blank">
+                          {linkedIn}
+                        </a>
+                       || "N/A"}
                     </h6>
                   )}
                 </div>
@@ -391,9 +418,7 @@ const MyKyc = () => {
                       ))}
                     </TextField>
                   ) : (
-                    <h6>
-                      {maritalstatus || "N/A"}
-                    </h6>
+                    <h6>{maritalstatus || "N/A"}</h6>
                   )}
                 </div>
               </div>
@@ -417,11 +442,7 @@ const MyKyc = () => {
                       ))}
                     </TextField>
                   ) : (
-                    <h6>
-                      {physically
-                        ? "Yes"
-                        : "No"}
-                    </h6>
+                    <h6>{physically ? "Yes" : "No"}</h6>
                   )}
                 </div>
               </div>
@@ -430,7 +451,6 @@ const MyKyc = () => {
                   <div className={styles.heading}>Mobile Number</div>
                   {showmykycinput ? (
                     <TextField
-                    
                       fullWidth
                       size="small"
                       margin="dense"
@@ -439,13 +459,11 @@ const MyKyc = () => {
                       onChange={(e) =>
                         setClgMobile(e.target.value.replace(/\D/g, ""))
                       }
-                      helperText={error ?"Incorrect Entry" :""}
-                      error={error ?true :false}
+                      helperText={error ? "Incorrect Entry" : ""}
+                      error={error ? true : false}
                     />
                   ) : (
-                    <h6>
-                      {mobile || "N/A"}
-                    </h6>
+                    <h6>{clgmobile || "N/A"}</h6>
                   )}
                 </div>
               </div>
@@ -456,17 +474,13 @@ const MyKyc = () => {
                     <TextField
                       disabled
                       placeholder={email}
-                    
                       fullWidth
                       size="small"
                       margin="dense"
                       type="text"
                     />
                   ) : (
-                    <h6>
-                                       {email || "N/A"}
-
-                    </h6>
+                    <h6>{email || "N/A"}</h6>
                   )}
                 </div>
               </div>
@@ -494,10 +508,7 @@ const MyKyc = () => {
                       ))}
                     </TextField>
                   ) : (
-                    <h6>
-                                          {country || "N/A"}
-
-                    </h6>
+                    <h6>{country || "N/A"}</h6>
                   )}{" "}
                 </div>
               </div>
@@ -524,10 +535,7 @@ const MyKyc = () => {
                         ))}
                     </TextField>
                   ) : (
-                    <h6>
-                                          {state || "N/A"}
-
-                    </h6>
+                    <h6>{state || "N/A"}</h6>
                   )}
                 </div>
               </div>
@@ -554,27 +562,21 @@ const MyKyc = () => {
                         ))}
                     </TextField>
                   ) : (
-                    <h6>
-                                         {city || "N/A"}
-
-                    </h6>
+                    <h6>{city || "N/A"}</h6>
                   )}
                 </div>
               </div>
             </div>
           </div>
 
-          
-
-{showmykycinput == true  &&
-  <CTA
-            title="Save"
-            color="white"
-            fontWeight="bold"
-            onClick={handleSubmit}
-          />
-}
-          
+          {showmykycinput == true && (
+            <CTA
+              title="Save"
+              color="white"
+              fontWeight="bold"
+              onClick={handleSubmit}
+            />
+          )}
         </>
       ) : (
         <div
@@ -584,7 +586,6 @@ const MyKyc = () => {
           <Spinner variant="outlined" />
         </div>
       )}
-   
     </>
   );
 };

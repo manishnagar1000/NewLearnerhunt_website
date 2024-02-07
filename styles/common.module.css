@@ -7,9 +7,7 @@
     background-color: #0151c1;
     width: 100%;
 }
-.mobile-top-header .top-header-para{
-    font-size: 12px;
-}
+
 
 .top-header .topnav-icons{
     display: flex;
@@ -30,11 +28,32 @@
 .top-header-para img {
     vertical-align: baseline;
 }
+/* .mobile-center-part{
+display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 0.1rem;
+} */
 .top-header-para a{
     text-decoration: none;
     background-color: #fff;
     padding: 3px;
     border-radius: 5px;
+    color: black;
+    font-weight: 500;
+}
+.mobile-center-part{
+    text-align: center;
+    margin-bottom: 0rem;
+    color: #fff;
+    padding: 0.5rem;
+}
+.mobile-center-part a{
+    text-decoration: none;
+    background-color: #fff;
+    padding: 2px 3px;
+    border-radius: 2px;
     color: black;
     font-weight: 500;
 }

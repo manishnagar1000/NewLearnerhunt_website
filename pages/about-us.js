@@ -11,11 +11,12 @@ const AboutUsPage = () => {
             Learner Hunt is a digital platform for educational career
             counselling, providing detailed information related to educational
             institutions & universities offering Undergraduate Programs, Post
-            Graduate Programs, MBBS, and other Professional Courses. It started
+            Graduate Programs, MBBS, and other Professional Courses.
+          </p>
+          <p> It started
             its journey in September 2017 and presently housed at two locations
             in Faridabad (Sector 37 & Mathura road, Sector 11). Over 300+
-            Business Schools and universities are registered with us.
-          </p>
+            Business Schools and universities are registered with us.</p>
           <p>
             It is a Division of Decred Digital Services Pvt Ltd. Presently
             mastered to be a storehouse of detailed information to enable the
@@ -41,8 +42,8 @@ const AboutUsPage = () => {
         </div>
         <div className="col-lg-4 ">
           <img
-            src="/assets/images/about-us.webp"
-            className="img-fluid"
+            src="/assets/images/about-us/about-us.webp"
+            // className="img-fluid"
             alt="Logo"
             width={400}
             height={400}
@@ -50,7 +51,7 @@ const AboutUsPage = () => {
           {/* <Image
       width={350}
       height={350}
-      src="/assets/images/about-us.png"
+      src="/assets/images/about-us.webp"
       alt="Picture of the art"
       style={{objectFit:"fit"}}
     /> */}
@@ -77,7 +78,7 @@ const AboutUsPage = () => {
             <div className="card text-center p-4">
               <div style={{ width: "100%" }}>
                 <img
-                  src="/assets/images/courseimg.png"
+                  src="/assets/images/about-us/courseimg.webp"
                   alt="Card image cap"
                   width={50}
                   height={50}
@@ -95,7 +96,7 @@ const AboutUsPage = () => {
             <div className="card text-center p-4">
                 <div style={{ width: "100%" }}>
               <img
-                src="/assets/images/collegeimg.png"
+                src="/assets/images/about-us/collegeimg.webp"
                 alt="Card image cap"
                 width={50}
                 height={50}
@@ -113,7 +114,7 @@ const AboutUsPage = () => {
             <div className="card text-center p-4">
             <div style={{ width: "100%" }}>
               <img
-                src="/assets/images/counsellors.png"
+                src="/assets/images/about-us/counsellors.webp"
                 alt="Card image cap"
                 width={50}
                 height={50}

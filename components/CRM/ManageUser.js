@@ -241,7 +241,7 @@ export default function EnhancedTable() {
     }).then(async (res) => {
       // console.log(res)
       let response = await res.json();
-      console.log(response);
+      // console.log(response);
       if (response.data) {
         if (response.data.length > 0) {
           setRows(response.data);
@@ -289,7 +289,7 @@ export default function EnhancedTable() {
   };
 
   const handleClick = (event, id) => {
-    console.log(id);
+    // console.log(id);
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
     if (selectedIndex === -1) {
@@ -358,11 +358,11 @@ export default function EnhancedTable() {
       setRows(oldData);
       // setIsDataFound(oldData.length > 0);
     } else {
-      console.log("else part");
+      // console.log("else part");
       const filteredData = oldData.filter((data) =>
         searchKeyword.test(data.email.toLowerCase())
       );
-      console.log(filteredData);
+      // console.log(filteredData);
       setRows(filteredData);
     }
   };
@@ -375,8 +375,8 @@ export default function EnhancedTable() {
     setIsLoading(false);
   };
   const handleDeleteData = (value) => {
-    console.log(value, "delete");
-    console.log(selected.join("&"));
+    // console.log(value, "delete");
+    // console.log(selected.join("&"));
     Swal.fire({
       title: "Do you want to delete ?",
       showCancelButton: true,
@@ -399,7 +399,7 @@ export default function EnhancedTable() {
             }
           ).then(async (response) => {
             var res = await response.json();
-            console.log(res);
+            // console.log(res);
             // console.log(res.message)
             if (response.ok) {
               Swal.fire("Deleted!", "", "success");
@@ -431,7 +431,7 @@ export default function EnhancedTable() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!editModal) {
-      console.log(email);
+      // console.log(email);
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
       if (email == "") {
@@ -499,7 +499,7 @@ export default function EnhancedTable() {
             }
           ).then(async (response) => {
             var res = await response.json();
-            console.log(res);
+            // console.log(res);
             // console.log(res.message)
             if (response.ok) {
               // console.log("hello", response.data);
@@ -597,7 +597,7 @@ export default function EnhancedTable() {
     }
   };
   const handleEditModal = (e, row) => {
-    console.log(row);
+    // console.log(row);
     setIsModalOpen(true);
     setEmail(row.email);
     setRole(row.role);

@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 // import Head from "next/head";
+import Image from "next/image";
 import QrCodeSection from '@/components/QrCodeSection'
 
 const Footer = () => {
@@ -113,7 +114,7 @@ const Footer = () => {
               </ul>
             </div>
           </div>
-          <div className="row">
+          <div className="row flex-column-reverse flex-sm-row">
             <div className="col-lg-5 col-md-5">
               <p className="cmp-name">
                 © 2023 Decred Digital Services Pvt. Ltd.
@@ -125,12 +126,12 @@ const Footer = () => {
                 style={{lineHeight:"16px",textAlign:"center",position:"relative",zIndex:"100000"}}
               >
               
-                {/* <noscript> */}
                 <div>
                   <a
                     title="Website visitors visitor Ip address stats"
                     href="https://www.tracemyip.org/pv1-2-72734-2"
                   >
+                    
                     <img
                       src="//s2.tracemyip.org/vLg/1105/4684NR-IPIB/101878/2/12/ans/"
                       alt="website visitors visitor Ip address stats"
@@ -139,12 +140,7 @@ const Footer = () => {
                     />
                   </a>
                   </div>
-                  {/* <script
-          async
-          type="text/javascript"
-          src="//s2.tracemyip.org/vLg/lgUrl.php?pidnVar2=101878&amp;prtVar2=2&amp;stlVar2=1105&amp;rgtype=4684NR-IPIB&amp;scvVar2=12&amp;gustVarS=2&amp;gustVarU=72734&amp;gustVarM=2"
-        ></script> */}
-                {/* </noscript> */}
+               
                   
               </div>
             </div>
@@ -154,16 +150,17 @@ const Footer = () => {
                   target="_blank"
                   href="https://www.facebook.com/learnerhunt/"
                 >
-                  <img
-                    src="/assets/images/footer/facebook.png"
-                    alt="facebook"
-                    width={50}
-                    height={50}
-                  />
+                      <Image
+      src="/assets/images/footer/facebook.webp"
+      alt="facebook"
+      width={50}
+      height={50}
+    />
                 </Link>
                 <Link target="_blank" href="https://twitter.com/learnerhunt">
-                  <img
-                    src="/assets/images/footer/twitter.png"
+                  
+                  <Image
+                    src="/assets/images/footer/twitter.webp"
                     alt="twitter"
                     width={50}
                     height={50}
@@ -173,8 +170,8 @@ const Footer = () => {
                   target="_blank"
                   href="https://www.instagram.com/learnerhunt_india/"
                 >
-                  <img
-                    src="/assets/images/footer/instagram.png"
+                  <Image
+                    src="/assets/images/footer/instagram.webp"
                     alt="instagram"
                     width={50}
                     height={50}
@@ -184,8 +181,8 @@ const Footer = () => {
                   target="_blank"
                   href="https://in.linkedin.com/company/learnerhunt-com"
                 >
-                  <img
-                    src="/assets/images/footer/linkedin.png"
+                  <Image
+                    src="/assets/images/footer/linkedin.webp"
                     alt="linkedIn"
                     width={50}
                     height={50}
@@ -195,8 +192,8 @@ const Footer = () => {
                   target="_blank"
                   href="https://www.youtube.com/@Learnerhunt"
                 >
-                  <img
-                    src="/assets/images/footer/youtube.png"
+                  <Image
+                    src="/assets/images/footer/youtube.webp"
                     alt="youtube"
                     width={50}
                     height={50}
@@ -205,6 +202,92 @@ const Footer = () => {
               </div>
             </div>
           </div>
+          {/* <div className="flex-column-reverse flex-sm-row d-md-none">
+            <div className="col-lg-5 col-md-5">
+              <p className="cmp-name">
+                © 2023 Decred Digital Services Pvt. Ltd.
+              </p>
+            </div>
+            <div className="col-lg-2 col-md-2">
+              <div
+                id="elemID031021"
+                style={{lineHeight:"16px",textAlign:"center",position:"relative",zIndex:"100000"}}
+              >
+              
+                <div>
+                  <a
+                    title="Website visitors visitor Ip address stats"
+                    href="https://www.tracemyip.org/pv1-2-72734-2"
+                  >
+                    <Image
+                      src="//s2.tracemyip.org/vLg/1105/4684NR-IPIB/101878/2/12/ans/"
+                      alt="website visitors visitor Ip address stats"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      style={{border:"0px"}}
+                    />
+                  </a>
+                  </div>
+              
+                  
+              </div>
+            </div>
+            <div className="col-lg-5 col-md-5">
+              <div className="social-media">
+                <Link
+                  target="_blank"
+                  href="https://www.facebook.com/learnerhunt/"
+                >
+                  <Image
+                    src="/assets/images/footer/facebook.webp"
+                    alt="facebook"
+                    width={50}
+                    height={50}
+                  />
+                </Link>
+                <Link target="_blank" href="https://twitter.com/learnerhunt">
+                  <Image
+                    src="/assets/images/footer/twitter.webp"
+                    alt="twitter"
+                    width={50}
+                    height={50}
+                  />
+                </Link>
+                <Link
+                  target="_blank"
+                  href="https://www.instagram.com/learnerhunt_india/"
+                >
+                  <Image
+                    src="/assets/images/footer/instagram.webp"
+                    alt="instagram"
+                    width={50}
+                    height={50}
+                  />
+                </Link>
+                <Link
+                  target="_blank"
+                  href="https://in.linkedin.com/company/learnerhunt-com"
+                >
+                  <Image
+                    src="/assets/images/footer/linkedin.webp"
+                    alt="linkedIn"
+                    width={50}
+                    height={50}
+                  />
+                </Link>
+                <Link
+                  target="_blank"
+                  href="https://www.youtube.com/@Learnerhunt"
+                >
+                  <Image
+                    src="/assets/images/footer/youtube.webp"
+                    alt="youtube"
+                    width={50}
+                    height={50}
+                  />
+                </Link>
+              </div>
+            </div>
+          </div> */}
         </div>
       </div>
     </>

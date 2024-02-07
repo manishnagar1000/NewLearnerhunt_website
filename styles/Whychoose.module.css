@@ -75,6 +75,10 @@
     .imageContainer {
         flex-direction: column;
     }
+    .cardBox {
+        height: 120px;
+        padding: 0rem;
+    }
 }
 
 

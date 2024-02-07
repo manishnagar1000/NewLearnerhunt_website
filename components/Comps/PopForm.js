@@ -140,7 +140,8 @@ const PopForm = () => {
         closeModal()
       } catch (error) {
         alert(error.message || "An error occurred while processing the request.");
-        isLoading(false)
+        setIsLoading(false);
+
       }
     }
   };
@@ -155,7 +156,9 @@ const PopForm = () => {
         onClose={closeModal}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-        centered
+        centered ='true'
+        
+        
       >
         <Box
           sx={{
@@ -163,7 +166,7 @@ const PopForm = () => {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: 400,
+            width: 350,
             bgcolor: "background.paper",
             // boxShadow: 24,
             p: 3,
@@ -279,6 +282,7 @@ const PopForm = () => {
               sx={{ mt: 2 }}
               type="submit"
               className="submit-button"
+              disabled={isLoading?true:false}
             >
               {isLoading ? "Wait..." : "Submit"}
             </Button>

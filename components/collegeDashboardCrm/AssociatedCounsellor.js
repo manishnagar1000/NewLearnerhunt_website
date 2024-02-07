@@ -6,6 +6,14 @@ import { Spinner } from "react-bootstrap";
 import Tablenav from "../Comps/Tablenav";
 import styles from "/styles/clgdb.module.css";
 import Switch from '@mui/material/Switch';
+// import List from '@mui/material/List';
+// import ListItem from '@mui/material/ListItem';
+// import ListItemText from '@mui/material/ListItemText';
+// import ListItemAvatar from '@mui/material/ListItemAvatar';
+// import Avatar from '@mui/material/Avatar';
+// import ImageIcon from '@mui/icons-material/Image';
+// import WorkIcon from '@mui/icons-material/Work';
+// import BeachAccessIcon from '@mui/icons-material/BeachAccess';
 
 var oldData = []
 
@@ -154,7 +162,7 @@ export default class AssociatedCounsellor extends Component {
   render() {
     return (
       <>
-          {/* <div className={styles["basic-details"]}> */}
+          <div className={styles["basic-details"]}>
 
 {this.state.error =="" ?
 <>
@@ -228,7 +236,34 @@ export default class AssociatedCounsellor extends Component {
           onHide={() => this.setState({ isLoading: false })}
         />
     </>:this.state.error}
-      {/* </div> */}
+      </div>
+
+{/* <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+      <ListItem>
+        <ListItemAvatar>
+          <Avatar>
+            <ImageIcon />
+          </Avatar>
+        </ListItemAvatar>
+        <ListItemText primary="Photos" secondary="Jan 9, 2014" />
+      </ListItem>
+      <ListItem>
+        <ListItemAvatar>
+          <Avatar>
+            <WorkIcon />
+          </Avatar>
+        </ListItemAvatar>
+        <ListItemText primary="Work" secondary="Jan 7, 2014" />
+      </ListItem>
+      <ListItem>
+        <ListItemAvatar>
+          <Avatar>
+            <BeachAccessIcon />
+          </Avatar>
+        </ListItemAvatar>
+        <ListItemText primary="Vacation" secondary="July 20, 2014" />
+      </ListItem>
+    </List> */}
       </>
     );
   }

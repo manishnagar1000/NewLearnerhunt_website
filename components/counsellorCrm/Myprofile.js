@@ -205,7 +205,7 @@ const Myprofile = () => {
             <div className={styles["basic"]}>
               <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
               <h3 style={{margin:"0px 5px"}}>My Profile</h3>
-              <img src={verified?"/assets/images/verified.png":"/assets/images/notverified.png"} width={35} height={35}/>
+              <img src={verified?"/assets/images/verified.png":"/assets/images/notverified.png"} width={35} height={35} alt="img"/>
               </div>
               {showmykycinput ? (
                 <div style={{ display: "flex" }}>

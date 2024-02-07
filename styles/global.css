@@ -61,6 +61,8 @@ p {
 .custom_footer .cmp-name {
     margin-inline: 0;
     color: #fff;
+    text-align: center;
+    margin: 0.5rem 0rem;
 }
 
 .custom_footer .custom-row {
