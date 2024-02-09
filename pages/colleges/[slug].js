@@ -45,11 +45,12 @@ export default function CollegeName({ collegedata }) {
   const router = useRouter();
   const { slug } = router.query;
   // console.log(slug);
-  useEffect(()=>{
-    setShowModal(!localStorage.getItem("userid")&& pagesHavePopup.includes(slug));
-  },[slug])
   useEffect(() => {
-    
+    setShowModal(
+      !localStorage.getItem("userid") && pagesHavePopup.includes(slug)
+    );
+  }, [slug]);
+  useEffect(() => {
     const newstatus = localStorage.getItem("userid");
     // console.log(newstatus);
     if (newstatus) {
@@ -140,7 +141,7 @@ export default function CollegeName({ collegedata }) {
             text: `${res.error}`,
             icon: "error",
             confirmButtonText: "Ok",
-          }).then(()=>{
+          }).then(() => {
             setShowModal(res.show);
           });
         } else {
@@ -243,10 +244,10 @@ export default function CollegeName({ collegedata }) {
           });
         } else {
           setIsApplyformOpen(false);
-          if(slug == "-isbr-international-school-of-business-and-research-"){
-          router.push('/thankyou-isbr')
-          }else{
-            router.push('/thankyou')
+          if (slug == "-isbr-international-school-of-business-and-research-") {
+            router.push("/thankyou-isbr");
+          } else {
+            router.push("/thankyou");
           }
           // Swal.fire({
           //   title: "Success",
@@ -945,7 +946,6 @@ export default function CollegeName({ collegedata }) {
                           <div className={Classes["cardHeading"]}>
                             {/* <a href="#course">{s.course_name}</a> */}
                             <span>{s.course_name}</span>
-
                           </div>
 
                           <div className={Classes["courseCardDetails"]}>
@@ -1548,12 +1548,22 @@ export async function getServerSideProps(context) {
       };
     } else {
       return {
-        notFound: true,
+        // notFound: true,
+        redirect: {
+          permanent: false,
+          destination: "/",
+        },
+        props:{}
       };
     }
   } else {
     return {
-      notFound: true,
+      // notFound: true,
+      redirect: {
+        permanent: false,
+        destination: "/",
+      },
+      props:{}
     };
   }
 }

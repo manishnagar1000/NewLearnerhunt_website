@@ -335,12 +335,22 @@ export async function getServerSideProps(context) {
       };
     } else {
       return {
-        notFound: true,
+        // notFound: true,
+        redirect: {
+          permanent: false,
+          destination: "/",
+        },
+        props:{}
       };
     }
   } else {
     return {
-      notFound: true,
+      // notFound: true,
+      redirect: {
+        permanent: false,
+        destination: "/",
+      },
+      props:{}
     };
   }
 }

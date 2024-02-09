@@ -142,7 +142,7 @@ display: flex;
 
 .sage-menu-item ul .sage-menu-list:hover ul {
     visibility: visible;
-    webkit-transform: scale(1);
+    /* webkit-transform: scale(1); */
     -moz-transform: scale(1);
     transform: scale(1);
 }
