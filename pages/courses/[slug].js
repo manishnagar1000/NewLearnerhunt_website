@@ -4,20 +4,24 @@ import Link from "next/link";
 import FAQ from "@/components/Faq";
 
 const formatStringToList = (str) => {
-  const [dynamicLine, ...listItems] = str.split("<LIST>");
-  const formattedList = listItems
-    .filter((item) => item !== "")
-    .map((item, index) => <li key={index}>{item.trim()}</li>);
+  const [dynamicLine, ...listItems] = str?.split("<LIST>");
+  try {
+    const formattedList = listItems
+      .filter((item) => item !== "")
+      .map((item, index) => <li key={index}>{item.trim()}</li>);
 
-  return (
-    <>
-      {dynamicLine && <p>{dynamicLine}</p>}
-      <ul>{formattedList}</ul>
-    </>
-  );
+    return (
+      <>
+        {dynamicLine && <p>{dynamicLine}</p>}
+        <ul>{formattedList}</ul>
+      </>
+    );
+  } catch (error) {
+    console.error(error);
+  }
 };
 export default function CourseName({ coursedata }) {
-  // console.log(coursedata);
+  console.log(coursedata);
 
   return (
     <div className={Classes["colleges-slug"]}>
@@ -29,59 +33,72 @@ export default function CourseName({ coursedata }) {
             </div>
             {coursedata.course_description &&
               coursedata.course_description != "" && (
-            <div className={Classes["small-description"]}>
-              <h2>Course Description</h2>
-              <div className="row">
-                <div className="col-md-12">
-                  <table className="table table-bordered">
-                    <tbody>
-                      <tr>
-                        <th scope="row">Name of degree</th>
-                        <td style={{ wordBreak: 'break-all' }}>{coursedata.course_description[0].degree_name}</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">Commonly known as</th>
-                        <td style={{ wordBreak: 'break-all' }}>{coursedata.course_description[0].known_as}</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">Degree level</th>
-                        <td style={{ wordBreak: 'break-all' }}>{coursedata.course_description[0].degree_level}</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">Course Duration</th>
-                        <td style={{ wordBreak: 'break-all' }}>
-                          {coursedata.course_description[0].course_duration}
-                        </td>
-                      </tr>
-                      <tr>
-                        <th scope="row">Admission Process</th>
-                        <td style={{ wordBreak: 'break-all' }}>
-                          {coursedata.course_description[0].admission_process}
-                        </td>
-                      </tr>
-                      <tr>
-                        <th scope="row">Annual Course Fee</th>
-                        <td style={{ wordBreak: 'break-all' }}>
-                          {coursedata.course_description[0].annual_course_fee}
-                        </td>
-                      </tr>
-                      <tr>
-                        <th scope="row">Top Institutes</th>
-                        <td style={{ wordBreak: 'break-all' }}>
-                          {coursedata.course_description[0].top_institutes}
-                        </td>
-                      </tr>{" "}
-                      <tr>
-                        <th scope="row">Specilaisations</th>
-                        <td style={{ wordBreak: 'break-all' }}>
-                          {coursedata.course_description[0].specialisation}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                <div className={Classes["small-description"]}>
+                  <h2>Course Description</h2>
+                  <div className="row">
+                    <div className="col-md-12">
+                      <table className="table table-bordered">
+                        <tbody>
+                          <tr>
+                            <th scope="row">Name of degree</th>
+                            <td style={{ wordBreak: "break-all" }}>
+                              {coursedata.course_description[0].degree_name}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th scope="row">Commonly known as</th>
+                            <td style={{ wordBreak: "break-all" }}>
+                              {coursedata.course_description[0].known_as}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th scope="row">Degree level</th>
+                            <td style={{ wordBreak: "break-all" }}>
+                              {coursedata.course_description[0].degree_level}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th scope="row">Course Duration</th>
+                            <td style={{ wordBreak: "break-all" }}>
+                              {coursedata.course_description[0].course_duration}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th scope="row">Admission Process</th>
+                            <td style={{ wordBreak: "break-all" }}>
+                              {
+                                coursedata.course_description[0]
+                                  .admission_process
+                              }
+                            </td>
+                          </tr>
+                          <tr>
+                            <th scope="row">Annual Course Fee</th>
+                            <td style={{ wordBreak: "break-all" }}>
+                              {
+                                coursedata.course_description[0]
+                                  .annual_course_fee
+                              }
+                            </td>
+                          </tr>
+                          <tr>
+                            <th scope="row">Top Institutes</th>
+                            <td style={{ wordBreak: "break-all" }}>
+                              {coursedata.course_description[0].top_institutes}
+                            </td>
+                          </tr>{" "}
+                          <tr>
+                            <th scope="row">Specilaisations</th>
+                            <td style={{ wordBreak: "break-all" }}>
+                              {coursedata.course_description[0].specialisation}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>)}
+              )}
             {coursedata.course_eligibility &&
               coursedata.course_eligibility != "" && (
                 <div className={Classes["small-description"]}>
@@ -100,7 +117,10 @@ export default function CourseName({ coursedata }) {
               coursedata.course_entrance_exams_description != "" && (
                 <div className={Classes["small-description"]}>
                   <h2> Entrance Exams</h2>
-                  <p>{coursedata.course_entrance_exams_description}</p>
+
+                  {formatStringToList(
+                    coursedata.course_entrance_exams_description
+                  )}
                   <div className="row">
                     <div className="col-md-12">
                       <table className="table table-bordered">
@@ -115,9 +135,15 @@ export default function CourseName({ coursedata }) {
                           {coursedata.course_entrance_exams.map((s) => {
                             return (
                               <tr>
-                                <td style={{ wordBreak: 'break-all' }}>{s.entrance_exam_name}</td>
-                                <td style={{ wordBreak: 'break-all' }}>{s.registration_details}</td>
-                                <td style={{ wordBreak: 'break-all' }}>{s.exam_details}</td>
+                                <td style={{ wordBreak: "break-all" }}>
+                                  {s.entrance_exam_name}
+                                </td>
+                                <td style={{ wordBreak: "break-all" }}>
+                                  {s.registration_details}
+                                </td>
+                                <td style={{ wordBreak: "break-all" }}>
+                                  {s.exam_details}
+                                </td>
                               </tr>
                             );
                           })}
@@ -131,7 +157,9 @@ export default function CourseName({ coursedata }) {
               coursedata.course_specialisations_description != "" && (
                 <div className={Classes["small-description"]}>
                   <h2>Specilaisations</h2>
-                  <p>{coursedata.course_specialisations_description}</p>
+                  {formatStringToList(
+                    coursedata.course_specialisations_description
+                  )}
                   <div className="row">
                     {coursedata.course_specialisations
                       .split(",")
@@ -154,7 +182,7 @@ export default function CourseName({ coursedata }) {
               coursedata.course_curriculum_description != "" && (
                 <div className={Classes["small-description"]}>
                   <h2>Course Curriculum</h2>
-                  <p>{coursedata.course_curriculum_description}</p>
+                  {formatStringToList(coursedata.course_curriculum_description)}
                   <div className="row">
                     {coursedata.course_curriculum_specialisations
                       .split(",")
@@ -177,7 +205,9 @@ export default function CourseName({ coursedata }) {
               coursedata.top_ranked_colleges_description != "" && (
                 <div className={Classes["small-description"]}>
                   <h2>Top Ranked Colleges</h2>
-                  <p>{coursedata.top_ranked_colleges_description}</p>
+                  {formatStringToList(
+                    coursedata.top_ranked_colleges_description
+                  )}
                   <div className="row">
                     <div className="col-md-12">
                       <table className="table table-bordered">
@@ -192,9 +222,15 @@ export default function CourseName({ coursedata }) {
                           {coursedata.top_ranked_colleges.map((s) => {
                             return (
                               <tr>
-                                <td style={{ wordBreak: 'break-all' }}>{s.institute}</td>
-                                <td style={{ wordBreak: 'break-all' }}>{s.eligibility}</td>
-                                <td style={{ wordBreak: 'break-all' }}>{s.course_fee}</td>
+                                <td style={{ wordBreak: "break-all" }}>
+                                  {s.institute}
+                                </td>
+                                <td style={{ wordBreak: "break-all" }}>
+                                  {s.eligibility}
+                                </td>
+                                <td style={{ wordBreak: "break-all" }}>
+                                  {s.course_fee}
+                                </td>
                               </tr>
                             );
                           })}
@@ -208,7 +244,9 @@ export default function CourseName({ coursedata }) {
               coursedata.top_ten_private_colleges_description != "" && (
                 <div className={Classes["small-description"]}>
                   <h2>Top 10 Private Colleges</h2>
-                  <p>{coursedata.top_ten_private_colleges_description}</p>
+                  {formatStringToList(
+                    coursedata.top_ten_private_colleges_description
+                  )}
                   <div className="row">
                     <div className="col-md-12">
                       <table className="table table-bordered">
@@ -223,9 +261,15 @@ export default function CourseName({ coursedata }) {
                           {coursedata.top_ten_private_colleges.map((s) => {
                             return (
                               <tr>
-                                <td style={{ wordBreak: 'break-all' }}>{s.institute}</td>
-                                <td style={{ wordBreak: 'break-all' }}>{s.eligibility}</td>
-                                <td style={{ wordBreak: 'break-all' }}>{s.course_fee}</td>
+                                <td style={{ wordBreak: "break-all" }}>
+                                  {s.institute}
+                                </td>
+                                <td style={{ wordBreak: "break-all" }}>
+                                  {s.eligibility}
+                                </td>
+                                <td style={{ wordBreak: "break-all" }}>
+                                  {s.course_fee}
+                                </td>
                               </tr>
                             );
                           })}
@@ -241,9 +285,9 @@ export default function CourseName({ coursedata }) {
                 "" && (
                 <div className={Classes["small-description"]}>
                   <h2>Top Recruiters For Graduates</h2>
-                  <p>
-                    {coursedata.top_recruiters_for_course_graduates_description}
-                  </p>
+                  {formatStringToList(
+                    coursedata.top_recruiters_for_course_graduates_description
+                  )}
                   <div className="row">
                     {coursedata.top_recruiters_for_course_graduates
                       .split(",")
@@ -265,20 +309,7 @@ export default function CourseName({ coursedata }) {
 
             {coursedata.faqs && coursedata.faqs != "" && (
               <div className={Classes["small-description"]}>
-                {/* <h2>Frequently Asked Question</h2>
-                <div className="row">
-                  {coursedata.faqs.map((s, index) => {
-                    return (
-                      <div className="col-md-12">
-                        <div className={Classes.question}>
-                          Ques. {s.question}
-                        </div>
-                        <div className={Classes.answer}>Ans. {s.answer}</div>
-                      </div>
-                    );
-                  })}
-                </div> */}
-                <FAQ data={coursedata.faqs}/>
+                <FAQ data={coursedata.faqs} />
               </div>
             )}
           </div>
@@ -297,7 +328,7 @@ export async function getServerSideProps(context) {
     // console.log(url);
     const res = await fetch(url);
     const data = await res.json();
-    // console.log(data.data);
+    console.log(data.data);
     if (data.data && data.data.length > 0) {
       return {
         props: { coursedata: data.data[0] },

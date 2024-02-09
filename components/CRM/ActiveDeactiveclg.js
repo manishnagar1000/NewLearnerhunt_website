@@ -100,7 +100,7 @@ export default class CollegeAdmins extends Component {
     ).then(async (res) => {
       // console.log(res)
       let response = await res.json();
-      console.log(response.data);
+      // console.log(response.data);
       if (response.data.length > 0) {
         this.setState({
           clgList: response.data.filter(

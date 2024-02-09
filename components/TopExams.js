@@ -39,7 +39,7 @@ export default function TopExams({ exams }) {
   return (
     <div id="examId" className="container  my-5">
       <div className="d-flex justify-content-between align-items-center my-4">
-        <h2>Top Exams</h2>
+        <h2 style={{ fontSize: "calc(1em + 1vw)" }}>Top Exams</h2>
         <Link href={"/exams"} >
           <Button className={Classes.linkButton}>Explore More<ArrowOutwardOutlinedIcon  style={{marginLeft:"2px"}}/></Button>
         </Link>

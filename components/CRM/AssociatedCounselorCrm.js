@@ -3,13 +3,21 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import Loading from "../Comps/Loading";
 import { Spinner } from "react-bootstrap";
-import Switch from '@mui/material/Switch';
 import Tablenav from "../Comps/Tablenav";
-
+import styles from "/styles/clgdb.module.css";
+import Switch from '@mui/material/Switch';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import Avatar from '@mui/material/Avatar';
+import ImageIcon from '@mui/icons-material/Image';
+import WorkIcon from '@mui/icons-material/Work';
+import BeachAccessIcon from '@mui/icons-material/BeachAccess';
 
 var oldData = []
 
-export default class CollegeAdmins extends Component {
+export default class AssociatedCounsellorCrm extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -21,55 +29,16 @@ export default class CollegeAdmins extends Component {
       username: localStorage.getItem("username"),
       statusAnchorEl: null,
       lastrecid:"-1",
-      approvalStatus: '',
       searchInput: "", // Search input
+      error:"",
+      approvalStatus: '',
 
       // selectedAsset: null,
     };
   }
 
+  
 
-  handleApprovalChange = (e,clg) => {
-    // this.setState({ approvalStatus: e.target.value });
-    // console.log(e.target.checked,e.target.value)
-    const s =  e.target.checked?"1":"0"
-    this.setState({isLoading:true})
-    
-    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/verify-clg-admin?id=${clg._id}&s=${s}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("pt")}`,
-        },
-        method: "PUT",
-      }).then(async (response) => {
-        var res = await response.json();
-        // console.log(res);
-        this.setState({isLoading:false})
-        // setIsLoading(false);
-        if (response.ok) {
-     
-          Swal.fire({
-            title: "Success",
-            html: `${res.message}`,
-            icon: "success",
-            confirmButtonText: "Ok",
-          }).then(() => {
-            this.getAssetList();
-          });
-        } else {
-          Swal.fire({
-            title: "error",
-            html: `${res.error}`,
-            icon: "error",
-            confirmButtonText: "Ok",
-          }).then(() => {
-            this.setState({isLoading:false})
-          });
-        }
-      });
-
-
-   
-  };
  formatTimestamp(timestamp) {
     const dateObject = new Date(timestamp);
   
@@ -89,21 +58,33 @@ export default class CollegeAdmins extends Component {
   }
 
   getAssetList() {
+    try {
     this.setState({ isApiHitComplete: false, isDataFound: false });
-    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/leads?lid=${this.state.lastrecid}&type=5`, {
+    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/assoc-counsellor`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("pt")}`,
       },
     }).then(async (res) => {
+        if (res.ok) {
+
         // console.log(res)
       let response = await res.json();
-      // console.log(response.data);
+    //   console.log(response.data);
       if (response.data.length > 0) {
         this.setState({ clgList: response.data, isDataFound: true });
       }
       oldData=response.data
-      this.setState({ isApiHitComplete: true });
+
+    }else{
+      let response = await res.json();
+        this.setState({error:response.error})
+    }
+    this.setState({ isApiHitComplete: true });
+
     });
+}catch (error) {
+    console.error(error);
+  }
   }
 
   componentDidMount() {
@@ -123,24 +104,70 @@ export default class CollegeAdmins extends Component {
       }
   } else {
     const filteredData = oldData.filter(data =>
-      searchKeyword.test(data.college_name.toLowerCase())||
-      searchKeyword.test(data.name.toLowerCase())||
-      searchKeyword.test(data.designation.toLowerCase())||
-      searchKeyword.test(data.mobile.toLowerCase())||
-      searchKeyword.test(data.email.toLowerCase())
+      searchKeyword.test(data.name.toLowerCase())
+
   );
 
   if (filteredData.length > 0) {
       this.setState({ clgList: filteredData, isDataFound: true });
   } else {
+
       this.setState({ isDataFound: false });
   }
   }
   };
+
+  handleApprovalChange = (e,clg) => {
+    // this.setState({ approvalStatus: e.target.value });
+    // console.log(e.target.checked,e.target.value)
+    const s =  e.target.checked?"1":"0"
+    this.setState({isLoading:true})
+    
+    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/college/verify-clg-counsellor?id=${clg._id}&s=${s}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("pt")}`,
+        },
+        method: "PUT",
+      }).then(async (response) => {
+        var res = await response.json();
+        // console.log(res);
+        this.setState({isLoading:false})
+        // setIsLoading(false);
+        if (response.ok) {
+     
+          Swal.fire({
+            title: "Success",
+            text: `${res.message}`,
+            icon: "success",
+            confirmButtonText: "Ok",
+          }).then(() => {
+            this.getAssetList();
+       
+          });
+        } else {
+          Swal.fire({
+            title: "error",
+            text: `${res.error}`,
+            icon: "error",
+            confirmButtonText: "Ok",
+          }).then(() => {
+            this.setState({isLoading:false})
+
+          });
+        }
+      });
+
+
+   
+  };
   render() {
     return (
       <>
-       <Tablenav
+          <div className={styles["basic-details"]}>
+
+{this.state.error =="" ?
+<>
+        <Tablenav
           Actions={{
             Actions: (
               <input
@@ -157,37 +184,33 @@ export default class CollegeAdmins extends Component {
           this.state.isDataFound ? (
             <table className={`table table-hover custom-table`}>
               <thead>
-              <tr>
-              <th style={{ background: "var(--primary)" }}>Verified</th>
-                  <th style={{ background: "var(--primary)" }}>College name</th>
-                  <th style={{ background: "var(--primary)" }}>Admin Name</th>
-                  <th style={{ background: "var(--primary)" }}>Designation</th>
-                  <th style={{ background: "var(--primary)" }}>Referrer</th>
+                <tr>
+                  <th style={{ background: "var(--primary)" }}>Name</th>
+                  <th style={{ background: "var(--primary)" }}>College Name</th>
                   <th style={{ background: "var(--primary)" }}>Mobile Number</th>
-                  <th style={{ background: "var(--primary)" }}>Email Address</th>
+                  <th style={{ background: "var(--primary)" }}>Email</th>
+                  <th style={{ background: "var(--primary)" }}>Experence in year</th>
                   <th style={{ background: "var(--primary)" }}>Date</th>
-
+                  <th style={{ background: "var(--primary)" }}>Verified</th>
 
                 </tr>
               </thead>
               <tbody>
-                {this.state.clgList.reverse().map((clg, i) => {
+                {this.state.clgList.map((clg, i) => {
                   return (
                     
                       <tr key={i}>
-                          <td>
+                        <td>{clg.name}</td>
+                        <td>{clg.college_name}</td>
+                        <td>{clg.mobile}</td>
+                        <td>{clg.email}</td>
+                        <td>{clg.experience_in_year}</td>
+                        <td>{this.formatTimestamp(clg.createdAt)}</td>
+                        <td>
               <div>
               <Switch  value={clg.verified} defaultChecked={clg.verified} onChange={(e)=>this.handleApprovalChange(e,clg)} />
               </div>
             </td>
-                        <td>{clg.college_name}</td>
-                        <td>{clg.name}</td>
-                        <td>{clg.designation}</td>
-                        <td>{clg.referrer}</td>
-                        <td>{clg.mobile}</td>
-                        <td>{clg.email}</td>
-            <td>{this.formatTimestamp(clg.createdAt)}</td>
-                  
 
 
 
@@ -198,14 +221,14 @@ export default class CollegeAdmins extends Component {
               </tbody>
             </table>
           ) : (
-            <div style={{ display: "flex", width: "100%", height: '80vh', justifyContent: "center", alignItems: 'center' }}>
+            <div style={{ display: "flex", width: "100%", height: 'inherit', justifyContent: "center", alignItems: 'center' }}>
             <div style={{ fontWeight: "500" }}>
-              <span style={{ color: "#0d6efd", cursor: 'pointer' }}> No Records </span>
+              <span style={{ color: "#0d6efd", cursor: 'pointer' }}> No Records Yet </span>
             </div>
           </div>
           )
         ) : (
-             <div style={{ display: "flex", width: "100%", height: '80vh', justifyContent: "center", alignItems: 'center' }}>
+             <div style={{ display: "flex", width: "100%", height: 'inherit', justifyContent: "center", alignItems: 'center' }}>
               <Spinner animation="border" role="status" variant="info">
                 <span className="visually-hidden">Loading...</span>
               </Spinner>
@@ -215,15 +238,10 @@ export default class CollegeAdmins extends Component {
           show={this.state.isLoading}
           onHide={() => this.setState({ isLoading: false })}
         />
-        {/* {this.state.openPreviewAsset && (
-          <Previewmodal
-            show={this.state.openPreviewAsset}
-            onHide={() => this.setState({ openPreviewAsset: false })}
-            data={this.state.selectedAsset}
-            baseurl={this.state.baseurl}
-          />
-        )} */}
+    </>:this.state.error}
+      </div>
       </>
     );
   }
 }
+

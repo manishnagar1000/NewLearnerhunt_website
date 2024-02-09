@@ -18,6 +18,7 @@ import PopUpRegister from "/components/CRM/PopUpRegister";
 import ClgadminRegister from "@/components/CRM/ClgadminRegister";
 import ActiveDeactiveclg from "@/components/CRM/ActiveDeactiveclg";
 import ManageUser from "@/components/CRM/ManageUser";
+import AssociatedCounsellorCrm from "@/components/CRM/AssociatedCounselorCrm";
 
 const componentList = [
   {
@@ -94,6 +95,11 @@ const componentList = [
     comp:<ManageUser/>,
     slug:"manage-users",
     role:[0]
+  },
+  {
+    comp:<AssociatedCounsellorCrm/>,
+    slug:"associated-counsellor",
+    role:[4]
   },
   // {
   //   comp:<ImportExport/>,

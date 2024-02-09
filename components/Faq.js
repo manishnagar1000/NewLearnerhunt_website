@@ -2,20 +2,21 @@ import React from "react";
 import Classes from "/styles/faq.module.css";
 import { useRouter } from "next/router";
 
-const formatStringToList = (str) => {
-    const [dynamicLine, ...listItems] = str.split("<LIST>");
+
+const FAQ = ({data}) => {
+  const formatStringToList = (str,index) => {
+    const [dynamicLine, ...listItems] = str?.split("<LIST>");
     const formattedList = listItems
       .filter((item) => item !== "")
       .map((item, index) => <li key={index}>{item.trim()}</li>);
   
     return (
       <>
-        {dynamicLine && <span>{dynamicLine}</span>}
+        {dynamicLine && <p className={index == data.length - 1 ? Classes['b-none'] : ""} >{dynamicLine}</p>}
         <ul>{formattedList}</ul>
       </>
     );
   };
-const FAQ = ({data}) => {
   return (
       
           <div className={`${Classes["faq-box"]} pt-3`}>
@@ -25,7 +26,7 @@ const FAQ = ({data}) => {
                 <div className={Classes["question-ans-box"]} key={faq.question}>
                   <h3>{faq.question}</h3>
                   {/* <p className={index == data.length - 1 ? Classes['b-none'] : ""} dangerouslySetInnerHTML={{ __html: faq.answer }} /> */}
-                  <p className={index == data.length - 1 ? Classes['b-none'] : ""} >{formatStringToList(faq.answer)}</p>
+                  {formatStringToList(faq.answer,index)}
                 
                   {/* {index !== data.length - 1 && !faq.List && <hr />} */}
 

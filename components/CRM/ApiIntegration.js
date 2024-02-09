@@ -56,7 +56,7 @@ export default class ApiIntegration extends Component {
         const resp = await response.json();
         // console.log(resp)
 
-        console.log(resp.data);
+        // console.log(resp.data);
         const expOpt = [];
         for (let i = 0; i < resp.data.length; i++) {
           let iid = resp.data[i].institute_id,
@@ -160,20 +160,20 @@ export default class ApiIntegration extends Component {
     });
   };
   handleCampusChange = (selectedCampusName) => {
-    console.log(selectedCampusName);
+    // console.log(selectedCampusName);
     // const selectedCourseNames = this.state.collegeList
     //   .find((apiDetails) => apiDetails.institute_id === parseInt(this.state.selectedInstituteId))
     //   ?.courses.find((api) => api.campus === selectedCampusName)
     //   ?.course.map((course) => course);
-    console.log(this.state.selectedInstituteId);
+    // console.log(this.state.selectedInstituteId);
     let selectedcourse = this.state.apiList
       .find((apiDetails) => apiDetails.id == this.state.selectedApiId)
       ?.courses.find((c) => c.campus == selectedCampusName)?.course;
-    console.log(selectedcourse);
+    // console.log(selectedcourse);
     if (this.state.selectedInstituteId == 3) {
-      console.log("entry");
+      // console.log("entry");
       selectedcourse = Object.keys(selectedcourse);
-      console.log(selectedcourse);
+      // console.log(selectedcourse);
     }
     this.setState({
       selectedCampusName,
@@ -183,7 +183,7 @@ export default class ApiIntegration extends Component {
   };
 
   handleCourseChange = (selectedCourse) => {
-    console.log(this.state.selectedInstituteId, selectedCourse);
+    // console.log(this.state.selectedInstituteId, selectedCourse);
     let selectedspec = this.state.apiList
       .find((apiDetails) => apiDetails.id == this.state.selectedApiId)
       ?.courses.find((c) => c.campus == this.state.selectedCampusName)?.course[
@@ -191,7 +191,7 @@ export default class ApiIntegration extends Component {
     ];
     // ?.Object.keys(course)
     // ?.course;
-    console.log(selectedspec);
+    // console.log(selectedspec);
 
     this.setState({
       selectedCourseName: selectedCourse,

@@ -52,7 +52,7 @@ function Index() {
      
         <PortalLogin
           onLogin={(pt,role,name) => {
-            console.log(pt,role,name)
+            // console.log(pt,role,name)
             localStorage.setItem("pt", pt);
             localStorage.setItem("crmrole", role);
             localStorage.setItem('admincrmemail',name);

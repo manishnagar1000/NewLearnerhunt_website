@@ -75,7 +75,6 @@ export default function StudyAbroad({ StudyAbroad }) {
   // };
   useEffect(() => {
     setsCreenWidth(screen.width);
-  
   }, []);
 
   useEffect(() => {
@@ -90,13 +89,12 @@ export default function StudyAbroad({ StudyAbroad }) {
       const collegesData = await collegesRes.json();
       const resp = [...collegesData.data];
       // console.log(resp)
-     
+
       setIsColleges(resp);
       setIsLoading(false);
-     
     };
 
-    if(selectedCollegeType !==""){
+    if (selectedCollegeType !== "") {
       fetchCourses();
     }
   }, [selectedCollegeType]);
@@ -167,8 +165,8 @@ export default function StudyAbroad({ StudyAbroad }) {
       <section id="collegeId" className=" container my-5">
         <div className="d-flex justify-content-between align-items-center my-4">
           <h2 style={{ fontSize: "calc(1em + 1vw)" }}>
-           Study Abroad{" "}
-            <span style={{ color: "#0151c1" }}>{nameactive}</span> Course
+            Study Abroad <span style={{ color: "#0151c1" }}>{nameactive}</span>{" "}
+            Course
           </h2>
           {/* <Link href={`/colleges?course=${active}&fee=200000`}>
             <Button className={Classes.linkButton}>
@@ -194,28 +192,121 @@ export default function StudyAbroad({ StudyAbroad }) {
                     key={college.type}
                     onClick={(e) => handleTabChange(college.type, college.name)}
                     label={college.name}
-                    className={`${Classes["customchip"]} ${
-                      active == college.type ? Classes["active"] : ""
-                    }`}
+                    color="primary"
+                    variant={active == college.type ? "" : "outlined"}
+                    // className={`${Classes["customchip"]} ${
+                    //   active == college.type ? Classes["active"] : ""
+                    // }`}
                   />
                 );
               })}
             </Stack>
           </div>
         </div>
-        
-        {screenWidth < 1024  ? (
-          <Carousel
-            responsive={responsive}
-            showDots={true}
-            partialVisbile={false}
-          >
-            {
-              // isColleges.length>0?
+
+        {screenWidth < 1024 ? (
+          isColleges.length > 0 ? (
+            <Carousel
+              responsive={responsive}
+              showDots={true}
+              partialVisbile={false}
+            >
+              {
+                // isColleges.length>0?
+                isColleges.map((s) => {
+                  // console.log(s);
+                  return s != null ? (
+                    <div key={s._id} style={{ marginBottom: "2rem" }}>
+                      {isLoading ? (
+                        <div className="d-flex justify-content-center align-items-center h-100">
+                          <Skeleton
+                            variant="rectangular"
+                            width={210}
+                            height={118}
+                          />
+                        </div>
+                      ) : (
+                        <Link
+                          href={`/colleges/${s.slug}`}
+                          style={{ textDecoration: "none" }}
+                        >
+                          <Card className={Classes.CustomCard}>
+                            <span className={Classes.Custombadge}>
+                              {" "}
+                              <StarIcon
+                                fontSize="inherit"
+                                style={{ marginRight: "2px" }}
+                              />{" "}
+                              {s.ratings}
+                            </span>
+                            <Card.Img
+                              //  onError={(e)=>e.target.src="/assets/images/DummySQUARE.jpg"}
+                              variant="top"
+                              src={
+                                s.square_img_path && s.square_img_path !== ""
+                                  ? s.square_img_path
+                                  : "/assets/images/DummySQUARE.jpg"
+                              }
+                              alt="Image not Found"
+                              className="img-fluid"
+                              width={200}
+                              height={250}
+                            />
+                            <Card.Body className="card-body">
+                              <Card.Title>{s.name}</Card.Title>
+                              <Card.Text className="d-flex align-items-center">
+                                <LocationOnOutlinedIcon
+                                  fontSize="inherit"
+                                  style={{ marginRight: "2px" }}
+                                />
+                                {s.short_address}
+                              </Card.Text>
+                            </Card.Body>
+                            <Card.Footer
+                              className={Classes["custom-card-footer"]}
+                            >
+                              <Button className={Classes.linkButton}>
+                                <span style={{ marginRight: "3px" }}>
+                                  <ArrowOutwardOutlinedIcon fontSize="inherit" />
+                                </span>
+                                View College
+                              </Button>
+                            </Card.Footer>
+                          </Card>
+                        </Link>
+                      )}
+                    </div>
+                  ) : null;
+                })
+                // :"no record"
+              }
+            </Carousel>
+          ) : (
+            <div
+              style={{
+                border: "1px solid gainsboro",
+                borderRadius: "5px",
+                padding: "1.5rem",
+                fontSize: "24px",
+                fontWeight: "bold",
+                backgroundColor: "#fff",
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              Coming Soon
+            </div>
+          )
+        ) : (
+          <div className="row">
+            {isColleges.length > 0 ? (
               isColleges.map((s) => {
-                // console.log(s);
-                return s != null ? (
-                  <div key={s._id} style={{ marginBottom: "2rem" }}>
+                const cardImg =
+                  s.square_img_path && s.square_img_path !== ""
+                    ? s.square_img_path
+                    : "/assets/images/DummySQUARE.jpg";
+                return (
+                  <div key={s._id} className="col-lg-3 col-md-6 mb-3">
                     {isLoading ? (
                       <div className="d-flex justify-content-center align-items-center h-100">
                         <Skeleton
@@ -241,15 +332,8 @@ export default function StudyAbroad({ StudyAbroad }) {
                           <Card.Img
                             //  onError={(e)=>e.target.src="/assets/images/DummySQUARE.jpg"}
                             variant="top"
-                            src={
-                              s.square_img_path && s.square_img_path !== ""
-                                ? s.square_img_path
-                                : "/assets/images/DummySQUARE.jpg"
-                            }
+                            src={cardImg}
                             alt="Image not Found"
-                            className="img-fluid"
-                            width={200}
-                            height={250}
                           />
                           <Card.Body className="card-body">
                             <Card.Title>{s.name}</Card.Title>
@@ -266,7 +350,7 @@ export default function StudyAbroad({ StudyAbroad }) {
                           >
                             <Button className={Classes.linkButton}>
                               <span style={{ marginRight: "3px" }}>
-                                <ArrowOutwardOutlinedIcon fontSize="inherit" />
+                                <VisibilityIcon fontSize="inherit" />
                               </span>
                               View College
                             </Button>
@@ -275,84 +359,24 @@ export default function StudyAbroad({ StudyAbroad }) {
                       </Link>
                     )}
                   </div>
-                ) : null;
+                );
               })
-              // :"no record"
-            }
-          </Carousel>
-        ) : (
-          <div className="row">
-            {isColleges.length>0?
-            isColleges.map((s) => {
-              const cardImg =
-                s.square_img_path && s.square_img_path !== ""
-                  ? s.square_img_path
-                  : "/assets/images/DummySQUARE.jpg";
-              return (
-                <div key={s._id} className="col-lg-3 col-md-6 mb-3">
-                  {isLoading ? (
-                    <div className="d-flex justify-content-center align-items-center h-100">
-                      <Skeleton
-                        variant="rectangular"
-                        width={210}
-                        height={118}
-                      />
-                    </div>
-                  ) : (
-                    <Link
-                      href={`/colleges/${s.slug}`}
-                      style={{ textDecoration: "none" }}
-                    >
-                      <Card className={Classes.CustomCard}>
-                        <span className={Classes.Custombadge}>
-                          {" "}
-                          <StarIcon
-                            fontSize="inherit"
-                            style={{ marginRight: "2px" }}
-                          />{" "}
-                          {s.ratings}
-                        </span>
-                        <Card.Img
-                          //  onError={(e)=>e.target.src="/assets/images/DummySQUARE.jpg"}
-                          variant="top"
-                          src={cardImg}
-                          alt="Image not Found"
-                        />
-                        <Card.Body className="card-body">
-                          <Card.Title>{s.name}</Card.Title>
-                          <Card.Text className="d-flex align-items-center">
-                            <LocationOnOutlinedIcon
-                              fontSize="inherit"
-                              style={{ marginRight: "2px" }}
-                            />
-                            {s.short_address}
-                          </Card.Text>
-                        </Card.Body>
-                        <Card.Footer className={Classes["custom-card-footer"]}>
-                          <Button className={Classes.linkButton}>
-                            <span style={{ marginRight: "3px" }}>
-                              <VisibilityIcon fontSize="inherit" />
-                            </span>
-                            View College
-                          </Button>
-                        </Card.Footer>
-                      </Card>
-                    </Link>
-                  )}
-                </div>
-              );
-            })
-:
-<div style={{border: "1px solid gainsboro",
-borderRadius: "5px",
-padding: "1.5rem",
-fontSize:"24px",
-fontWeight:"bold",
-backgroundColor: "#fff",
-display:"flex",
-justifyContent:"center"
-}}>Coming Soon</div>
-          }
+            ) : (
+              <div
+                style={{
+                  border: "1px solid gainsboro",
+                  borderRadius: "5px",
+                  padding: "1.5rem",
+                  fontSize: "24px",
+                  fontWeight: "bold",
+                  backgroundColor: "#fff",
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                Coming Soon
+              </div>
+            )}
           </div>
         )}
       </section>

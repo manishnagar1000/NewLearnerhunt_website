@@ -152,9 +152,11 @@ export default function TopColleges({ colleges }) {
                     key={college.type}
                     onClick={(e) => handleTabChange(college.type, college.name)}
                     label={college.name}
-                    className={`${Classes["customchip"]} ${
-                      active == college.type ? Classes["active"] : ""
-                    }`}
+                    color="primary"
+                    variant={active == college.type ? "" : "outlined"}
+                    // className={`${Classes["customchip"]} ${
+                    //   active == college.type ? Classes["active"] : ""
+                    // }`}
                   />
                 );
               })}

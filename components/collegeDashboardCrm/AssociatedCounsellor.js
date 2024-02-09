@@ -1,4 +1,3 @@
-import React, { Component } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import Loading from "../Comps/Loading";
@@ -6,265 +5,283 @@ import { Spinner } from "react-bootstrap";
 import Tablenav from "../Comps/Tablenav";
 import styles from "/styles/clgdb.module.css";
 import Switch from '@mui/material/Switch';
-// import List from '@mui/material/List';
-// import ListItem from '@mui/material/ListItem';
-// import ListItemText from '@mui/material/ListItemText';
-// import ListItemAvatar from '@mui/material/ListItemAvatar';
-// import Avatar from '@mui/material/Avatar';
-// import ImageIcon from '@mui/icons-material/Image';
-// import WorkIcon from '@mui/icons-material/Work';
-// import BeachAccessIcon from '@mui/icons-material/BeachAccess';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import ImageIcon from '@mui/icons-material/Image';
+import WorkIcon from '@mui/icons-material/Work';
+import BeachAccessIcon from '@mui/icons-material/BeachAccess';
+import  React,{useState,useEffect} from 'react';
+import { styled } from '@mui/material/styles';
+import Badge from '@mui/material/Badge';
+import Avatar from '@mui/material/Avatar';
+import AddIcon from '@mui/icons-material/Add';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import MenuItem from '@mui/material/MenuItem';
+import ArchiveIcon from '@mui/icons-material/Archive';
+import FileCopyIcon from '@mui/icons-material/FileCopy';
+import Menu from '@mui/material/Menu';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
-var oldData = []
 
-export default class AssociatedCounsellor extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoading: false,
-      clgList: [],
-      isDataFound: false,
-      isApiHitComplete: false,
-      selectedCategory: [],
-      username: localStorage.getItem("username"),
-      statusAnchorEl: null,
-      lastrecid:"-1",
-      searchInput: "", // Search input
-      error:"",
-      approvalStatus: '',
+export default function AssociatedCounsellor() {
+  const [clgList, setClgList] = useState([]);
+  const [isDataFound, setIsDataFound] = useState(false);
+  const [isApiHitComplete, setIsApiHitComplete] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
+  const [error, setError] = useState("");
+  const [oldData, setOldData] = useState([]);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [randomColor, setRandomColor] = useState('');
 
-      // selectedAsset: null,
-    };
-  }
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = (e,verified) => {
+    setAnchorEl(null);
+    if (verified == '0') {
+      var filteredData = oldData.filter(data =>
+        (data.verified==true))
+    setAnchorEl(null);
+      setClgList(filteredData);
+      setIsDataFound(filteredData.length > 0);
 
- formatTimestamp(timestamp) {
-    const dateObject = new Date(timestamp);
-  
-    const formattedTime = dateObject.toLocaleTimeString('en-US', {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true,
-    });
-  
-    const formattedDate = dateObject.toLocaleDateString('en-US', {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric',
-    });
-  
-    return `${formattedTime}, ${formattedDate}`;
-  }
-
-  getAssetList() {
-    try {
-    this.setState({ isApiHitComplete: false, isDataFound: false });
-    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/college/assoc-counsellor`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("ct")}`,
-      },
-    }).then(async (res) => {
-        if (res.ok) {
-
-        // console.log(res)
-      let response = await res.json();
-    //   console.log(response.data);
-      if (response.data.length > 0) {
-        this.setState({ clgList: response.data, isDataFound: true });
-      }
-      oldData=response.data
-
-    }else{
-      let response = await res.json();
-        this.setState({error:response.error})
+    } else if(verified == '1') {
+      var filteredData = oldData.filter(data =>
+        (data.verified==false))
+      setClgList(filteredData);
+      setIsDataFound(filteredData.length > 0);
+         setAnchorEl(null);
     }
-    this.setState({ isApiHitComplete: true });
 
-    });
-}catch (error) {
-    console.error(error);
-  }
-  }
-
-  componentDidMount() {
-    this.getAssetList();
-  }
-  handleSearchChange = (e) => {
-    this.setState({searchInput:e.target.value})
-    const searchTerm = e.target.value.trim().replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-    const searchKeyword = new RegExp(`\\b${searchTerm}\\w*\\b`, 'i');
-
-    if (e.target.value == '') {
-      this.setState({ clgList: oldData })
-      if (oldData.length > 0) {
-          this.setState({ isDataFound: true })
-      } else {
-          this.setState({ isDataFound: false })
-      }
-  } else {
-    const filteredData = oldData.filter(data =>
-      searchKeyword.test(data.full_name.toLowerCase())
-     
-
-  );
-
-  if (filteredData.length > 0) {
-      this.setState({ clgList: filteredData, isDataFound: true });
-  } else {
-
-      this.setState({ isDataFound: false });
-  }
-  }
   };
 
-  handleApprovalChange = (e,clg) => {
-    // this.setState({ approvalStatus: e.target.value });
-    // console.log(e.target.checked,e.target.value)
-    const s =  e.target.checked?"1":"0"
-    this.setState({isLoading:true})
-    
-    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/college/verify-clg-counsellor?id=${clg._id}&s=${s}`, {
+  useEffect(() => {
+    getAssetList();
+    setRandomColor(generateRandomColor());
+  }, []);
+
+  const getAssetList = async () => {
+    setIsApiHitComplete(false);
+    setIsDataFound(false);
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/assoc-counsellor`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("ct")}`,
         },
-        method: "PUT",
-      }).then(async (response) => {
-        var res = await response.json();
-        // console.log(res);
-        this.setState({isLoading:false})
-        // setIsLoading(false);
-        if (response.ok) {
-     
-          Swal.fire({
-            title: "Success",
-            text: `${res.message}`,
-            icon: "success",
-            confirmButtonText: "Ok",
-          }).then(() => {
-            this.getAssetList();
-       
-          });
-        } else {
-          Swal.fire({
-            title: "error",
-            text: `${res.error}`,
-            icon: "error",
-            confirmButtonText: "Ok",
-          }).then(() => {
-            this.setState({isLoading:false})
-
-          });
-        }
       });
-
-
-   
+      if (res.ok) {
+        const response = await res.json();
+        if (response.data.length > 0) {
+          setClgList(response.data);
+          setIsDataFound(true);
+        }
+        setOldData(response.data);
+      } else {
+        const response = await res.json();
+        setError(response.error);
+      }
+      setIsApiHitComplete(true);
+    } catch (error) {
+      console.error(error);
+    }
   };
-  render() {
-    return (
-      <>
-          <div className={styles["basic-details"]}>
 
-{this.state.error =="" ?
-<>
-        <Tablenav
-          Actions={{
-            Actions: (
-              <input
-            type="text"
-            className="form-control"
-            value={this.state.searchInput}
-            placeholder="Search..."
-            onChange={this.handleSearchChange}
-          />
-            ),
-          }}
-        />
-        {this.state.isApiHitComplete ? (
-          this.state.isDataFound ? (
-            <table className={`table table-hover custom-table`}>
-              <thead>
-                <tr>
-                  <th style={{ background: "var(--primary)" }}>Name</th>
-                  <th style={{ background: "var(--primary)" }}>Mobile Number</th>
-                  <th style={{ background: "var(--primary)" }}>Email</th>
-                  <th style={{ background: "var(--primary)" }}>Experence in year</th>
-                  <th style={{ background: "var(--primary)" }}>Date</th>
-                  <th style={{ background: "var(--primary)" }}>Verified</th>
+  const handleSearchChange = (e) => {
+    setSearchInput(e.target.value);
+    const searchTerm = e.target.value.trim().replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    const searchKeyword = new RegExp(`\\b${searchTerm}\\w*\\b`, 'i');
 
-                </tr>
-              </thead>
-              <tbody>
-                {this.state.clgList.map((clg, i) => {
-                  return (
-                    
-                      <tr key={i}>
-                        <td>{clg.name}</td>
-                        <td>{clg.mobile}</td>
-                        <td>{clg.email}</td>
-                        <td>{clg.experience_in_year}</td>
-                        <td>{this.formatTimestamp(clg.createdAt)}</td>
-                        <td>
-              <div>
-              <Switch  value={clg.verified} defaultChecked={clg.verified} onChange={(e)=>this.handleApprovalChange(e,clg)} />
-              </div>
-            </td>
+    if (e.target.value === '') {
+      setClgList(oldData);
+      setIsDataFound(oldData.length > 0);
+    } else {
+      const filteredData = oldData.filter(data =>
+        searchKeyword.test(data.name.toLowerCase())
+      );
 
+      setClgList(filteredData);
+      setIsDataFound(filteredData.length > 0);
+    }
+  };
 
+  const StyledMenu = styled((props) => (
+    <Menu
+      elevation={0}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'right',
+      }}
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      {...props}
+    />
+  ))(({ theme }) => ({
+    '& .MuiPaper-root': {
+      borderRadius: 6,
+      marginTop: theme.spacing(1),
+      minWidth: 180,
+      color:
+        theme.palette.mode === 'light' ? 'rgb(55, 65, 81)' : theme.palette.grey[300],
+      boxShadow:
+        'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
+      '& .MuiMenu-list': {
+        padding: '4px 0',
+      },
+      '& .MuiMenuItem-root': {
+        '& .MuiSvgIcon-root': {
+          fontSize: 18,
+          color: theme.palette.text.secondary,
+          marginRight: theme.spacing(1.5),
+        },
+       
+      },
+    },
+  }));
 
-                      </tr>
-                    
-                  );
-                })}
-              </tbody>
-            </table>
+  const StyledBadge = styled(Badge)(({ theme,verified }) =>
+   ({
+    '& .MuiBadge-badge': {
+      backgroundColor: `${verified?'#44b700':'#ff0000'}`,
+      color: `${verified?'#44b700':'#ff0000'}`,
+      boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+      '&::after': {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        borderRadius: '50%',
+        animation: 'ripple 1.2s infinite ease-in-out',
+        border: '1px solid currentColor',
+        content: '""',
+      },
+    },
+    '@keyframes ripple': {
+      '0%': {
+        transform: 'scale(.8)',
+        opacity: 1,
+      },
+      '100%': {
+        transform: 'scale(2.4)',
+        opacity: 0,
+      },
+    },
+  }));
+ 
+  
+
+  // Function to generate a random color
+  const generateRandomColor = () => {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
+  return (
+    <>
+    {error =="" ?
+
+    <div className={styles["counsellor-list"]}>
+    <Tablenav
+              Actions={{
+                Actions: (
+                  <>
+                  <div style={{display:'flex'}}>
+                  <input
+                type="text"
+                className="form-control"
+                value={searchInput}
+                placeholder="Search..."
+                onChange={handleSearchChange}
+              />
+            <div>
+      <Button
+      style={{margin:'0 1rem'}}
+        id="demo-customized-button"
+        aria-controls={open ? 'demo-customized-menu' : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? 'true' : undefined}
+        variant="contained"
+        disableElevation
+        onClick={handleClick}
+        endIcon={<KeyboardArrowDownIcon />}
+      >
+        Filter
+      </Button>
+      <StyledMenu
+        id="demo-customized-menu"
+        MenuListProps={{
+          'aria-labelledby': 'demo-customized-button',
+        }}
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={(e)=>handleClose(e,'0')} disableRipple>
+          <ArchiveIcon />
+          Active
+        </MenuItem>
+        <MenuItem onClick={(e)=>handleClose(e,'1')} disableRipple>
+          <FileCopyIcon />
+          Deactive
+        </MenuItem>
+      
+      </StyledMenu>
+    </div>
+                        </div>
+              </>
+                ),
+              }}
+            />
+              {isApiHitComplete ? (
+          isDataFound ? (
+    <List sx={{ width: '100%', height:'80vh', maxHeight:'80vh', bgcolor: 'background.paper',overflowY:'scroll' }}>
+    {clgList.map((clg, i) => {
+                      return (
+                        <>
+          <ListItem sx={{ background:'#f8f8f8',borderRadius:'0.2rem',marginBottom:'0.1rem' }}>
+          <StyledBadge
+            overlap="circular"
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+            variant="dot"
+            verified={clg.verified}
+          >
+            <Avatar sx={{bgcolor: randomColor  }}>{clg.name.charAt(0)}</Avatar>
+
+          </StyledBadge>
+
+        <ListItemText primary={clg.name} style={{margin:'0rem 1rem'}} />
+
+          </ListItem>
+          
+          </>
+                      )
+    })}
+        </List>
           ) : (
-            <div style={{ display: "flex", width: "100%", height: 'inherit', justifyContent: "center", alignItems: 'center' }}>
-            <div style={{ fontWeight: "500" }}>
-              <span style={{ color: "#0d6efd", cursor: 'pointer' }}> No Records Yet </span>
-            </div>
-          </div>
-          )
-        ) : (
-             <div style={{ display: "flex", width: "100%", height: 'inherit', justifyContent: "center", alignItems: 'center' }}>
-              <Spinner animation="border" role="status" variant="info">
-                <span className="visually-hidden">Loading...</span>
-              </Spinner>
-            </div>
-        )}
-        <Loading
-          show={this.state.isLoading}
-          onHide={() => this.setState({ isLoading: false })}
-        />
-    </>:this.state.error}
-      </div>
-
-{/* <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-      <ListItem>
-        <ListItemAvatar>
-          <Avatar>
-            <ImageIcon />
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="Photos" secondary="Jan 9, 2014" />
-      </ListItem>
-      <ListItem>
-        <ListItemAvatar>
-          <Avatar>
-            <WorkIcon />
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="Work" secondary="Jan 7, 2014" />
-      </ListItem>
-      <ListItem>
-        <ListItemAvatar>
-          <Avatar>
-            <BeachAccessIcon />
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="Vacation" secondary="July 20, 2014" />
-      </ListItem>
-    </List> */}
-      </>
-    );
-  }
+                      <div style={{ display: "flex", width: "100%", height: '80vh', justifyContent: "center", alignItems: 'center' }}>
+                      <div style={{ fontWeight: "500" }}>
+                        <span style={{ color: "#0d6efd", cursor: 'pointer' }}> No Records Yet </span>
+                      </div>
+                    </div>
+                    )
+                  ) : (
+                       <div style={{ display: "flex", width: "100%", height: '80vh', justifyContent: "center", alignItems: 'center' }}>
+                        <Spinner animation="border" role="status" variant="info">
+                          <span className="visually-hidden">Loading...</span>
+                        </Spinner>
+                      </div>
+                  )} 
+        </div>
+        :error}
+</>
+  );
 }

@@ -104,7 +104,7 @@ export default function Topbar() {
                 <span style={{ cursor: "pointer" }}>{el.name}</span>
               )}
               {isMob ? (
-                <Image
+                <img
                   src="/assets/images/01/down-arrow.svg"
                   alt="downarrow"
                   className={`${
@@ -251,7 +251,7 @@ export default function Topbar() {
                   <div className={`${Classes["sage-logo"]}`}>
                     {!isWindowScroll && (
                       <Link href="/">
-                        <Image
+                        <img
                           loading="lazy"
                           src="/assets/images/Svglogo.svg"
                           alt="sagenext logo"
@@ -295,7 +295,7 @@ export default function Topbar() {
                 <div className="row">
                   <div className="col-3">
                     <p className={`${Classes["top-header-para"]}`}>
-                      <Image
+                      <img
                         loading="lazy"
                         src="/assets/images/topbar/support.svg"
                         className="me-1"
@@ -324,7 +324,7 @@ export default function Topbar() {
                         target="_blank"
                         href="https://www.facebook.com/learnerhunt/"
                       >
-                        <Image
+                        <img
                           src="/assets/images/footer/facebook.webp"
                           alt="facebook"
                           width={30}
@@ -335,7 +335,7 @@ export default function Topbar() {
                         target="_blank"
                         href="https://twitter.com/learnerhunt"
                       >
-                        <Image
+                        <img
                           src="/assets/images/footer/twitter.webp"
                           alt="twitter"
                           width={30}
@@ -346,7 +346,7 @@ export default function Topbar() {
                         target="_blank"
                         href="https://www.instagram.com/learnerhunt_india/"
                       >
-                        <Image
+                        <img
                           src="/assets/images/footer/instagram.webp"
                           alt="instagram"
                           width={30}
@@ -357,7 +357,7 @@ export default function Topbar() {
                         target="_blank"
                         href="https://in.linkedin.com/company/learnerhunt-com"
                       >
-                        <Image
+                        <img
                           src="/assets/images/footer/linkedin.webp"
                           alt="linkedIn"
                           width={30}
@@ -368,7 +368,7 @@ export default function Topbar() {
                         target="_blank"
                         href="https://www.youtube.com/@Learnerhunt"
                       >
-                        <Image
+                        <img
                           src="/assets/images/footer/youtube.webp"
                           alt="youtube"
                           width={30}
@@ -401,7 +401,7 @@ export default function Topbar() {
                 <div className={`${Classes["sage-sticky-logo"]}`}>
                   {/* {isWindowScroll && (
                     <Link href="/">
-                      <Image
+                      <img
                         loading="lazy"
                         src="/assets/images/Svglogo.svg"
                         alt="sagenext logo"
@@ -411,7 +411,7 @@ export default function Topbar() {
                     </Link>
                   )} */}
                   <Link href="/">
-                    <Image
+                    <img
                       loading="lazy"
                       // src="/assets/images/Svglogo.svg"
                       src="/assets/images/Learnerhunt-Logo.webp"
@@ -561,7 +561,7 @@ export default function Topbar() {
                 <div className="col-6">
                   <div className={`${Classes["sage-logo"]}`}>
                     <Link href="/">
-                      <Image
+                      <img
                         loading="lazy"
                         // src="/assets/images/Svglogo.svg"
                         src="/assets/images/Learnerhunt-Logo.webp"
@@ -584,7 +584,7 @@ export default function Topbar() {
                 </div>
                 <div className="col-4">
                   <div className={`${Classes["sage-toggle-icon"]} text-end`}>
-                    <Image
+                    <img
                       loading="lazy"
                       onClick={() => setShowToggleMenu(!showToggleMenu)}
                       src="/assets/images/topbar/toggle-icon.svg"
@@ -672,7 +672,7 @@ export default function Topbar() {
                     </ul>
 
                     <span onClick={() => setShowToggleMenu(!showToggleMenu)}>
-                      <Image
+                      <img
                         loading="lazy"
                         src="/assets/images/topbar/Cancel-Icon.svg"
                         alt="cancel"
@@ -721,7 +721,7 @@ export default function Topbar() {
                       <li>
                         <Link href="#">
                           <>
-                            <Image
+                            <img
                               loading="lazy"
                               src="/assets/images/topbar/my-account.svg"
                               alt=""
@@ -735,7 +735,7 @@ export default function Topbar() {
                       <li>
                         <Link href="#">
                           <>
-                            <Image
+                            <img
                               loading="lazy"
                               src="/assets/images/topbar/blog.svg"
                               alt=""

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import Classes from '/styles/collegeranking.module.css'
 import axios from 'axios';
+import Stack from "@mui/material/Stack";
+
 import {
     FormControl,
     InputLabel,
@@ -10,6 +12,7 @@ import {
     Typography
 } from "@mui/material";
 import Link from 'next/link';
+import Chip from "@mui/material/Chip";
 
 const CollegeRanking = ({ zones, departments, rankingtypes }) => {
     // console.log(zones,departments,rankingtypes,departments[0])
@@ -49,19 +52,37 @@ const CollegeRanking = ({ zones, departments, rankingtypes }) => {
             <div className="container">
                 <div className="row">
                     <div className="col-md-6">
-                        <h2>College Ranking</h2>
+                        <h2 style={{ fontSize: "calc(1em + 1vw)" }}>College Ranking</h2>
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-md-6">
                         <div className={Classes['chip-stack']}>
+                        <Stack
+              direction="row"
+              spacing={1}
+              style={{
+                width: "100%",
+                // paddingBottom: "1.5rem",
+                overflowX: "auto",
+              }}
+            >
                             {
                                 rankingtypes.map((r,i) => {
                                     return (
-                                        <span key={i} onClick={() => setSelectedChip(r.value)} className={`${Classes['chip']} ${selectedChip == r.value ? Classes['active'] : ""}`}>{r.label}</span>
+                                        <Chip
+                                        key={r.value}
+                                        onClick={() => setSelectedChip(r.value)}
+                                        label={r.label}
+                                        color="primary"
+                                        variant={selectedChip == r.value ? "" : "outlined"}
+                                       
+                                      />
+                                        // <span key={i} onClick={() => setSelectedChip(r.value)} className={`${Classes['chip']} ${selectedChip == r.value ? Classes['active'] : ""}`}>{r.label}</span>
                                     )
                                 })
                             }
+                            </Stack>
                         </div>
                     </div>
                     <div className={`col-md-3`}>

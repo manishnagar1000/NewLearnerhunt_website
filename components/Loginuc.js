@@ -683,7 +683,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
             <Col md={12} lg={7} style={{ padding: "1rem" }}>
               <div className="text-center mb-3">
                 <img
-                  src="/assets/images/Svglogo.svg"
+                  src="/assets/images/learnerhunt-logo.webp"
                   width={200}
                   height={60}
                   alt="logo"
