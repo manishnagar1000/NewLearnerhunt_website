@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import Classes from "/styles/contant.module.css";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 const StructuredDataOrg = [
   {
