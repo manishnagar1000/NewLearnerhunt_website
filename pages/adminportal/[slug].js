@@ -19,6 +19,8 @@ import ClgadminRegister from "@/components/CRM/ClgadminRegister";
 import ActiveDeactiveclg from "@/components/CRM/ActiveDeactiveclg";
 import ManageUser from "@/components/CRM/ManageUser";
 import AssociatedCounsellorCrm from "@/components/CRM/AssociatedCounselorCrm";
+import LandingPageLeads from "@/components/CRM/LandingPageLeads";
+
 
 const componentList = [
   {
@@ -100,6 +102,11 @@ const componentList = [
     comp:<AssociatedCounsellorCrm/>,
     slug:"associated-counsellor",
     role:[4]
+  },
+  {
+    comp:<LandingPageLeads/>,
+    slug:"landingpageleads",
+    role:[0,4]
   },
   // {
   //   comp:<ImportExport/>,

@@ -1,8 +1,77 @@
 import React from "react";
 import Image from "next/image";
 
+
+const StructuredDataOrg = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Decred Digital Services Pvt. Ltd.",
+    url: "https://www.learnerhunt.com",
+    logo: "https://www.learnerhunt.com/assets/images/Learnerhunt-Logo.webp",
+    contactPoint: [
+      {
+        "@type": "ContactPoint",
+        telephone: "+918800756846",
+        contactType: "customer service",
+        email: "contact@learnerhunt.com"
+      }
+    ],
+    description: "Learnerhunt is a digital platform for educational career counseling, offering comprehensive information about top colleges and universities in India and abroad that provide undergraduate programs, postgraduate programs, MBBS, and other professional courses. We have over 300 business schools and universities registered with us. We have become a trusted source of detailed information to assist you in making the right college and career decisions."
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: "Educational Career Counseling",
+    description: "Comprehensive educational career counseling services to help you make informed decisions about college and career paths.",
+    url: "https://www.learnerhunt.com",
+    provider: {
+      "@type": "Organization",
+      name: "Decred Digital Services Pvt. Ltd.",
+      url: "https://www.learnerhunt.com",
+      logo: "https://www.learnerhunt.com/assets/images/Learnerhunt-Logo.webp",
+      contactPoint: {
+        "@type": "ContactPoint",
+        telephone: "+918800756846",
+        contactType: "customer service",
+        email: "contact@learnerhunt.com"
+      }
+    }
+  }
+]
 const AboutUsPage = () => {
+  
   return (
+    <>
+    <Head>
+    <title>
+    About Us | Premier Educational Career Counseling Platform
+        </title>
+        <meta
+          name="description"
+          content="We leading digital platform providing comprehensive information on colleges, universities, courses & career counseling. Trusted by students & professional."
+        />
+        {/* <!-- Open Graph (OG) Tags --> */}
+<meta property="og:title" content="About Us | Premier Educational Career Counseling Platform"/>
+<meta property="og:description" content="We leading digital platform providing comprehensive information on colleges, universities, courses & career counseling. Trusted by students & professional."/>
+<meta property="og:image" content="https://www.learnerhunt.com/assets/images/Learnerhunt-Logo.webp"/>
+<meta property="og:url" content="https://www.learnerhunt.com"/>
+<meta property="og:type" content="website"/>
+  
+  {/* <!-- Twitter Card --> */}
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="About Us | Premier Educational Career Counseling Platform"/>
+<meta name="twitter:description" content="We leading digital platform providing comprehensive information on colleges, universities, courses & career counseling. Trusted by students & professional."/>
+<meta name="twitter:image" content="https://www.learnerhunt.com/assets/images/Learnerhunt-Logo.webp"/>
+<meta name="twitter:site" content="@learnerhunt"/>
+<meta name="twitter:creator" content="@learnerhunt"/>
+<script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(StructuredDataOrg),
+          }}
+        />
+    </Head>
     <div className="container">
       <div className="row my-4">
         <div className="col-lg-8 col-sm-12">
@@ -132,6 +201,7 @@ const AboutUsPage = () => {
         <div></div>
       </div>
     </div>
+    </>
   );
 };
 

@@ -5,6 +5,14 @@ import Col from "react-bootstrap/Col";
 
 export default function PrivacyPolicy() {
   return (
+    <><Head>
+    <title>
+    Privacy Policy | Safeguarding Your Data Security        </title>
+        <meta
+          name="description"
+          content="Our privacy policy is to understand how prioritize safeguarding personal information. Your privacy is important to us."
+        />
+    </Head>
     <Container className="my-4">
       <Row>
         <Col>
@@ -287,5 +295,6 @@ export default function PrivacyPolicy() {
         </Col>
       </Row>
     </Container>
+    </>
   );
 }

@@ -20,10 +20,14 @@ const Layout = ({ children }) => {
         !pathname.startsWith("/edufest/2023") &&
         !pathname.startsWith("/counsellorportal") &&
         !pathname.startsWith("/collegeportal") && 
+        !pathname.startsWith("/ads/mbaleads") && 
+
      <Topbar />}
      {!pathname.startsWith("/adminportal") &&
      !pathname.startsWith("/collegeportal") &&
      !pathname.startsWith("/counsellorportal") &&
+     !pathname.startsWith("/ads/mbaleads") && 
+
      <PopForm/>}
 
       <WhatsAppButton />
@@ -35,7 +39,9 @@ const Layout = ({ children }) => {
         !pathname.startsWith("/ads/thankupageisbr") &&
         !pathname.startsWith("/ads/isbr") &&
         !pathname.startsWith("/collegeportal") &&
-        !pathname.startsWith("/counsellorportal") &&<Footer />}
+        !pathname.startsWith("/counsellorportal") &&
+        !pathname.startsWith("/ads/mbaleads") && 
+        <Footer />}
     </>
   );
 };

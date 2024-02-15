@@ -3,7 +3,43 @@ import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import Classes from "/styles/contant.module.css";
 import { useRouter } from "next/router";
 
-
+const StructuredDataOrg = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Decred Digital Services Pvt. Ltd.",
+    url: "https://www.learnerhunt.com",
+    logo: "https://www.learnerhunt.com/assets/images/Learnerhunt-Logo.webp",
+    contactPoint: [
+      {
+        "@type": "ContactPoint",
+        telephone: "+918800756846",
+        contactType: "customer service",
+        email: "contact@learnerhunt.com"
+      }
+    ],
+    description: "Learnerhunt is a digital platform for educational career counseling, offering comprehensive information about top colleges and universities in India and abroad that provide undergraduate programs, postgraduate programs, MBBS, and other professional courses. We have over 300 business schools and universities registered with us. We have become a trusted source of detailed information to assist you in making the right college and career decisions."
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: "Educational Career Counseling",
+    description: "Comprehensive educational career counseling services to help you make informed decisions about college and career paths.",
+    url: "https://www.learnerhunt.com",
+    provider: {
+      "@type": "Organization",
+      name: "Decred Digital Services Pvt. Ltd.",
+      url: "https://www.learnerhunt.com",
+      logo: "https://www.learnerhunt.com/assets/images/Learnerhunt-Logo.webp",
+      contactPoint: {
+        "@type": "ContactPoint",
+        telephone: "+918800756846",
+        contactType: "customer service",
+        email: "contact@learnerhunt.com"
+      }
+    }
+  }
+]
 export default function contact() {
   const router = useRouter();
   const [fullname, setFullname] = useState("");
@@ -112,6 +148,21 @@ const [isLoading, setIsLoading] = useState(false);
     }
   };
   return (
+    <>  <Head>
+    <title>
+    Contact Us | Expert Educational Guidance at Your Fingertips
+        </title>
+        <meta
+          name="description"
+          content="Contact us for personalized educational counseling & assistance. Reach out to us for queries, suggestions. Start your journey to informed career decisions today."
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(StructuredDataOrg),
+          }}
+        />
+    </Head>
     <div
       className={`container my-5 `}
     >
@@ -273,5 +324,6 @@ const [isLoading, setIsLoading] = useState(false);
         </Container>
       </div>
     </div>
+    </>
   );
 }

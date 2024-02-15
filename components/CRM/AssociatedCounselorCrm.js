@@ -32,7 +32,7 @@ export default class AssociatedCounsellorCrm extends Component {
       searchInput: "", // Search input
       error:"",
       approvalStatus: '',
-
+      TotalCountNumber:''
       // selectedAsset: null,
     };
   }
@@ -71,7 +71,7 @@ export default class AssociatedCounsellorCrm extends Component {
       let response = await res.json();
     //   console.log(response.data);
       if (response.data.length > 0) {
-        this.setState({ clgList: response.data, isDataFound: true });
+        this.setState({ clgList: response.data, isDataFound: true ,TotalCountNumber:response.data.length});
       }
       oldData=response.data
 
@@ -168,6 +168,11 @@ export default class AssociatedCounsellorCrm extends Component {
 {this.state.error =="" ?
 <>
         <Tablenav
+           TotalCount={{
+            Total:(
+                <h5>Total Count :{this.state.TotalCountNumber == ''?'0':this.state.TotalCountNumber}</h5>
+            )
+           }}
           Actions={{
             Actions: (
               <input

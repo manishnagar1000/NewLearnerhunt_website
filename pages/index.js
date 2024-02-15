@@ -13,18 +13,78 @@ import WhyChoose from '@/components/WhyChoose'
 import axios from 'axios'
 import Head from 'next/head'
 import PopForm from '@/components/Comps/PopForm'
+
+const StructuredDataOrg = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Decred Digital Services Pvt. Ltd.",
+    url: "https://www.learnerhunt.com",
+    logo: "https://www.learnerhunt.com/assets/images/Learnerhunt-Logo.webp",
+    contactPoint: [
+      {
+        "@type": "ContactPoint",
+        telephone: "+918800756846",
+        contactType: "customer service",
+        email: "contact@learnerhunt.com"
+      }
+    ],
+    description: "Learnerhunt is a digital platform for educational career counseling, offering comprehensive information about top colleges and universities in India and abroad that provide undergraduate programs, postgraduate programs, MBBS, and other professional courses. We have over 300 business schools and universities registered with us. We have become a trusted source of detailed information to assist you in making the right college and career decisions."
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: "Educational Career Counseling",
+    description: "Comprehensive educational career counseling services to help you make informed decisions about college and career paths.",
+    url: "https://www.learnerhunt.com",
+    provider: {
+      "@type": "Organization",
+      name: "Decred Digital Services Pvt. Ltd.",
+      url: "https://www.learnerhunt.com",
+      logo: "https://www.learnerhunt.com/assets/images/Learnerhunt-Logo.webp",
+      contactPoint: {
+        "@type": "ContactPoint",
+        telephone: "+918800756846",
+        contactType: "customer service",
+        email: "contact@learnerhunt.com"
+      }
+    }
+  }
+]
+
 export default function Home({colleges,courses,exams,testeligibility,ukcolleges}) {
   // console.log(colleges)
  
   return (
     <>
       <Head>
-        <title>Learnerhunt: Top Colleges & Universities in India | Latest News About Courses & Admission</title>
-        <meta name="description" content="Learnerhunt - The one-stop platform to explore top UG & PG colleges, universities and diploma, certificate courses in India and abroad. Get all the latest education news and more at www.learnerhunt.com" />
+        <title>Explore Top Colleges & Universities in India | Learnerhunt</title>
+        <meta name="description" content="Discover over 1,000 colleges & universities, 150+ courses & get the latest updates on admissions, exams & news | ultimate educational career counselling platform." />
         <meta name="keyword" content="admission counselling, college admissions, university admissions, student guidance, career counselling, student support, educational portal, college details" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="facebook-domain-verification" content="dlwg9ck6pstfnxvx0h76eu38irnw2x" />
         <link rel="icon" href="/favicon.ico" />
+        {/* <!-- Open Graph (OG) Tags --> */}
+<meta property="og:title" content="Explore Top Colleges & Universities in India | Learnerhunt"/>
+<meta property="og:description" content="Discover over 1,000 colleges & universities, 150+ courses & get the latest updates on admissions, exams & news | ultimate educational career counselling platform"/>
+<meta property="og:image" content="https://www.learnerhunt.com/assets/images/Learnerhunt-Logo.webp"/>
+<meta property="og:url" content="https://www.learnerhunt.com"/>
+<meta property="og:type" content="website"></meta>
+
+{/* <!-- Twitter Card --> */}
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Explore Top Colleges & Universities in India | Learnerhunt"/>
+<meta name="twitter:description" content="Discover over 1,000 colleges & universities, 150+ courses & get the latest updates on admissions, exams & news | ultimate educational career counseling platform"/>
+<meta name="twitter:image" content="https://www.learnerhunt.com/assets/images/Learnerhunt-Logo.webp"/>
+<meta name="twitter:site" content="@learnerhunt"/>
+<meta name="twitter:creator" content="@learnerhunt"></meta>
+
+<script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(StructuredDataOrg),
+          }}
+        />
       </Head>
       <HomepageHeroSection data={testeligibility}/>
       {/* <WhatsAppButton/> */}

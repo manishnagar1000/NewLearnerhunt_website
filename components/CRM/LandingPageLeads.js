@@ -5,7 +5,8 @@ import Loading from "../Comps/Loading";
 import { Spinner } from "react-bootstrap";
 import Tablenav from "../Comps/Tablenav";
 var oldData = []
-export default class Studentappliedclg extends Component {
+
+export default class LandingPageLeads extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -43,16 +44,15 @@ export default class Studentappliedclg extends Component {
 
   getAssetList() {
     this.setState({ isApiHitComplete: false, isDataFound: false });
-    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/leads?lid=${this.state.lastrecid}&type=2`, {
+    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/learnerhunt-landing-page-leads`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("pt")}`,
       },
     }).then(async (res) => {
-        // console.log(res)
       let response = await res.json();
       // console.log(response.data);
       if (response.data.length > 0) {
-        this.setState({ clgList: response.data, isDataFound: true,TotalCountNumber:response.data.length });
+        this.setState({ clgList: response.data, isDataFound: true ,TotalCountNumber:response.data.length });
       }
       oldData=response.data
       this.setState({ isApiHitComplete: true });
@@ -62,6 +62,7 @@ export default class Studentappliedclg extends Component {
   componentDidMount() {
     this.getAssetList();
   }
+
   handleSearchChange = (e) => {
     this.setState({searchInput:e.target.value})
     const searchTerm = e.target.value.trim().replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
@@ -76,12 +77,9 @@ export default class Studentappliedclg extends Component {
       }
   } else {
     const filteredData = oldData.filter(data =>
-      searchKeyword.test(data.full_name.toLowerCase())||
-      searchKeyword.test(data.contact_no.toLowerCase())||
-      searchKeyword.test(data.course_interested.toLowerCase())||
-      searchKeyword.test(data.email.toLowerCase())||
-      searchKeyword.test(data.state.toLowerCase())
-
+      searchKeyword.test(data.name.toLowerCase())||
+      searchKeyword.test(data.mobile.toLowerCase())||
+      searchKeyword.test(data.course.toLowerCase())
 
       
 
@@ -97,13 +95,14 @@ export default class Studentappliedclg extends Component {
   render() {
     return (
       <>
-          <Tablenav
-            TotalCount={{
-              Total:(
-                  <h5>Total Count :{this.state.TotalCountNumber == ''?'0':this.state.TotalCountNumber}</h5>
-              )
-             }}
+       <Tablenav
+       TotalCount={{
+        Total:(
+            <h5>Total Count :{this.state.TotalCountNumber == ''?'0':this.state.TotalCountNumber}</h5>
+        )
+       }}
           Actions={{
+          
             Actions: (
               <input
             type="text"
@@ -120,11 +119,11 @@ export default class Studentappliedclg extends Component {
             <table className={`table table-hover custom-table`}>
               <thead>
                 <tr>
-                  <th style={{ background: "var(--primary)" }}>Full Name</th>
+                  <th style={{ background: "var(--primary)" }}>Student Name</th>
                   <th style={{ background: "var(--primary)" }}>Mobile Number</th>
-                  <th style={{ background: "var(--primary)" }}>Course Intrested</th>
-                  <th style={{ background: "var(--primary)" }}>State</th>
                   <th style={{ background: "var(--primary)" }}>Email</th>
+                  <th style={{ background: "var(--primary)" }}>Courses</th>
+                  <th style={{ background: "var(--primary)" }}>State</th>
                   <th style={{ background: "var(--primary)" }}>Date</th>
 
 
@@ -132,20 +131,16 @@ export default class Studentappliedclg extends Component {
                 </tr>
               </thead>
               <tbody>
-                {this.state.clgList.map((clg, i) => {
+                {this.state.clgList.reverse().map((clg, i) => {
                   return (
                     
                       <tr key={i}>
-                        <td>{clg.full_name}</td>
-                        <td>{clg.contact_no}</td>
-                        <td>{clg.course_interested}</td>
-                        <td>{clg.state}</td>
+                        <td>{clg.name}</td>
+                        <td>{clg.mobile}</td>
                         <td>{clg.email}</td>
+                        <td>{clg.course}</td>
+                        <td>{clg.state}</td>
                         <td>{this.formatTimestamp(clg.createdAt)}</td>
-                  
-
-
-
                       </tr>
                     
                   );

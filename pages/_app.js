@@ -9,6 +9,7 @@ export default function App({ Component, pageProps }) {
   //   console.log(metric)
   // })
 
+  
   return (
     <>
       <Head>
