@@ -20,6 +20,7 @@ import ActiveDeactiveclg from "@/components/CRM/ActiveDeactiveclg";
 import ManageUser from "@/components/CRM/ManageUser";
 import AssociatedCounsellorCrm from "@/components/CRM/AssociatedCounselorCrm";
 import LandingPageLeads from "@/components/CRM/LandingPageLeads";
+import TopCollegeSection from "@/components/CRM/TopCollegeSection";
 
 
 const componentList = [
@@ -107,6 +108,11 @@ const componentList = [
     comp:<LandingPageLeads/>,
     slug:"landingpageleads",
     role:[0,4]
+  },
+  {
+    comp:<TopCollegeSection/>,
+    slug:"web-top-colleges",
+    role:[4]
   },
   // {
   //   comp:<ImportExport/>,

@@ -19,8 +19,11 @@ export const ImarticusApi = [
   { Coursename: "DSB - PGDM Fintech", value: "DSB - PGDM in Fintech" },
   { Coursename: "Rathinam", value: "Rathinam - BCOM-IB" },
   { Coursename: "Rathinam - BCOM-IB", value: "Rathinam - BCOM-IB" },
-
-
+  { Coursename: "JIMS - PGDM in Business Analytics", value: "JIMS - PGDM in Business Analytics" },
+  { Coursename: "Sanjivani - pgdm in fintech", value: "Sanjivani - pgdm in fintech" },
+  { Coursename: "Firebird PGDM in Fintech", value: "Firebird PGDM in Fintech" },
+  { Coursename: "Firebird PGDM in Business Analytics", value: "Firebird PGDM in Business Analytics" },
+  { Coursename: "JECRC MBA in Fintech", value: "JECRC MBA in Fintech" },
 ];
 // export const coursenameList = [
 //   { label: 'DE'},

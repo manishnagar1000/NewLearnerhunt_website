@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import IconButton from "@mui/material/IconButton";
 import Classes from  "/styles/portaldashboard.module.css";
-
+import AddReactionIcon from '@mui/icons-material/AddReaction';
 import Avatar from "@mui/material/Avatar";
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import BusinessIcon from '@mui/icons-material/Business';
@@ -41,6 +41,11 @@ const sidebarList = [
     name: "My Profile",
     icon: <AccountBoxIcon />,
     path: "/counsellorportal/my-profile",
+  },
+  {
+    name: "Interested Student",
+    icon: <AddReactionIcon />,
+    path: "/counsellorportal/interested-student",
   },
 
   

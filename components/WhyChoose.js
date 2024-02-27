@@ -8,42 +8,44 @@ import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import ApartmentIcon from '@mui/icons-material/Apartment';
 import ContactMailIcon from '@mui/icons-material/ContactMail';
+import Link from "next/link";
 const MyComponent = () => {
   const data = [
     {
       title: "Top Colleges",
       content: "Get placed in the best colleges",
-      src: <AccountBalanceIcon/>,
+      src: '/assets/images/Home/Top Colleges.webp',
+      href:'/colleges'
     },
     {
       title: "Top Courses",
       content: "Explore various courses with vivid varieties",
-      src: <MenuBookIcon/>,
-
+      src: '/assets/images/Home/Top Courses.webp',
+      href:'/courses?course=ug'
     },
     {
       title: "Counselling",
       content: "Get counselling from the best counsellors",
-      src: <ContactPhoneIcon/>,
-
+      src: '/assets/images/Home/Counselling.webp',
+      href:'/contact-us'
     },
     {
       title: "150+ Courses",
       content: "Discover the year’s top best course and select the best",
-      src: <AutoStoriesIcon/>,
-
+      src: '/assets/images/Home/150+ Courses.webp',
+      href:'/courses?course=ug'
     },
     {
       title: "1000+ Colleges",
       content: "Discover the best college with vivid choices",
-      src: <ApartmentIcon />,
-
+      src: '/assets/images/Home/1000+ Colleges.webp',
+      href:'/colleges'
     },
     {
       title: "50+ Counsellors",
       content: "Get counselling from the best counsellors ",
-      src: <ContactMailIcon/>,
-
+      src:'/assets/images/Home/50+ Counsellors.webp',
+      href:'/contact-us'
     },
   ];
 
@@ -69,7 +71,7 @@ const MyComponent = () => {
               data.map((e, i) => {
                 return (
                   <Col key={i}>
-                    <div className={styles.cardBox}>
+                    {/* <div className={styles.cardBox}>
                       <div className={styles.imageContainer}>
                         <div className={styles.imageCard}>
                       {e.src}
@@ -77,6 +79,13 @@ const MyComponent = () => {
                         <h5 className={styles.cardContent}>{e.title}</h5>
                       </div>
 
+                      <p className={styles.whychoosepara}>{e.content}</p>
+                    </div> */}
+                    <div className={styles.whyBox}>
+                      <Link href={e.href}>
+                      <img src={e.src} alt="why choose" width={100} height={100}/>
+                      </Link>
+                      <h5 className={styles.cardContent}>{e.title}</h5>
                       <p className={styles.whychoosepara}>{e.content}</p>
                     </div>
                   </Col>

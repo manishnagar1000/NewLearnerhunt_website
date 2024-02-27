@@ -14,7 +14,7 @@ import "react-multi-carousel/lib/styles.css";
 
 export default function TopColleges({ colleges }) {
   // console.log(colleges);
-  const [selectedCollegeType, setSelectedCollegeType] = useState("");
+  const [selectedCollegeType, setSelectedCollegeType] = useState("MBA");
   const [isColleges, setIsColleges] = useState(colleges);
   const [active, setActive] = useState("MBA");
   const [nameactive, setNameActive] = useState("MBA");
@@ -41,7 +41,7 @@ export default function TopColleges({ colleges }) {
         `${process.env.NEXT_PUBLIC_API_ENDPOINT}/colleges?limit=${limit}&page=0&course=${selectedCollegeType}`
       );
       const collegesData = await collegesRes.json();
-      const resp = [...collegesData.data];
+      // const resp = [...collegesData.data];
       // if (collegesData.data.length < limit) {
       //   for (let i = 0; i < 4; i++) {
       //     if (i < collegesData.data.length) {
@@ -50,7 +50,8 @@ export default function TopColleges({ colleges }) {
       //   }
       // }
       // console.log(resp);
-      setIsColleges(resp);
+      // const sortedColleges = [...collegesData.data].sort((a, b) => a.position - b.position);
+      setIsColleges(collegesData.data);
       setIsLoading(false);
       // }
       //  else {
@@ -213,7 +214,7 @@ export default function TopColleges({ colleges }) {
           >
             {
               // isColleges.length>0?
-              isColleges.map((s) => {
+              isColleges.sort((a, b) => a.position - b.position).map((s) => {
                 // console.log(s);
                 return s != null ? (
                   <div key={s._id} style={{ marginBottom: "2rem" }}>
@@ -231,14 +232,14 @@ export default function TopColleges({ colleges }) {
                         style={{ textDecoration: "none" }}
                       >
                         <Card className={Classes.CustomCard}>
-                          <span className={Classes.Custombadge}>
+                          {/* <span className={Classes.Custombadge}>
                             {" "}
                             <StarIcon
                               fontSize="inherit"
                               style={{ marginRight: "2px" }}
                             />{" "}
                             {s.ratings}
-                          </span>
+                          </span> */}
                           <Card.Img
                             //  onError={(e)=>e.target.src="/assets/images/DummySQUARE.jpg"}
                             variant="top"
@@ -253,7 +254,7 @@ export default function TopColleges({ colleges }) {
                             height={250}
                           />
                           <Card.Body className="card-body">
-                            <Card.Title>{s.name}</Card.Title>
+                            <Card.Title>{s.name.length > 20 ? `${s.name.substring(0, 50)}...` : s.name}</Card.Title>
                             <Card.Text className="d-flex align-items-center">
                               <LocationOnOutlinedIcon
                                 fontSize="inherit"
@@ -283,7 +284,7 @@ export default function TopColleges({ colleges }) {
           </Carousel>
         ) : (
           <div className="row">
-            {isColleges.map((s) => {
+            {isColleges.sort((a, b) => a.position - b.position).map((s) => {
               const cardImg =
                 s.square_img_path && s.square_img_path !== ""
                   ? s.square_img_path
@@ -304,14 +305,14 @@ export default function TopColleges({ colleges }) {
                       style={{ textDecoration: "none" }}
                     >
                       <Card className={Classes.CustomCard}>
-                        <span className={Classes.Custombadge}>
+                        {/* <span className={Classes.Custombadge}>
                           {" "}
                           <StarIcon
                             fontSize="inherit"
                             style={{ marginRight: "2px" }}
                           />{" "}
                           {s.ratings}
-                        </span>
+                        </span> */}
                         <Card.Img
                           //  onError={(e)=>e.target.src="/assets/images/DummySQUARE.jpg"}
                           variant="top"
@@ -319,7 +320,7 @@ export default function TopColleges({ colleges }) {
                           alt="Image not Found"
                         />
                         <Card.Body className="card-body">
-                          <Card.Title>{s.name}</Card.Title>
+                          <Card.Title>{s.name.length > 20 ? `${s.name.substring(0, 40)}...` : s.name}</Card.Title>
                           <Card.Text className="d-flex align-items-center">
                             <LocationOnOutlinedIcon
                               fontSize="inherit"

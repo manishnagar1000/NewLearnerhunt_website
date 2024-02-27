@@ -4,208 +4,183 @@ import CloseIcon from "@mui/icons-material/Close";
 import SaveIcon from "@mui/icons-material/Save";
 import CheckIcon from "@mui/icons-material/Check";
 import styles from "/styles/studentProfile.module.css";
-import { genderType } from "@/components/Comps/type";
-import { maritalType } from "@/components/Comps/type";
 import { Physicalchallenge } from "@/components/Comps/type";
-import { DesignationType } from "@/components/Comps/type";
-
 import FormatDate from "/components/Comps/FormatDate";
 import Swal from "sweetalert2";
 import CTA from "/components/Comps/CTA";
+import { genderType } from "@/components/Comps/type";
+import { maritalType } from "@/components/Comps/type";
 import { Spinner } from "react-bootstrap";
 import { IndianStates } from "/components/Comps/StatesIndia";
-
 import { TextField, MenuItem } from "@mui/material";
-var oldData = []
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+var oldData = [];
 const Myprofile = () => {
   const [showmykycinput, setshowmykycinput] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   // kyc Details
 
-  const [collegename, setcollegename] = useState("");
+  const [name, setname] = useState("");
   const [date, setDate] = useState("");
+  const [physically, setPhysically] = useState("");
   const [gender, setGender] = useState("");
   const [maritalstatus, setMaritalstatus] = useState("");
-  const [physically, setPhysically] = useState("");
-  const [adminname, setAdminName] = useState(""); 
-  const [clgmobile, setClgMobile] = useState(""); 
-  const [designation, setDesignation] = useState(""); 
-  const [referrer, setReferrer] = useState(""); 
-  const [linkedIn, setLinkedIn] = useState(""); 
+  const [linkedIn, setLinkedIn] = useState("");
+  const [Experience, setExperience] = useState("");
   const [mobile, setMobile] = useState("");
   const [email, setEmail] = useState("");
   const [country, setCountry] = useState("");
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
-  const [verified,setVerified] = useState(false);
+  const [verified, setVerified] = useState(false);
   const [error, setError] = useState(false);
 
-  // const studentDataApi = () => {
-  //   setIsLoading(true);
-  //   fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/college/my-kyc", {
-  //     headers: {
-  //       Authorization: `Bearer ${localStorage.getItem("cst")}`,
-  //     },
-  //   })
-  //     .then(async (response) => {
-  //       var res = await response.json();
-  //       // console.log(res.data);
-  //       oldData = res.data
-  //       setcollegename(res.data.college_name)
-  //       setAdminName(res.data.name)
-  //       setDate(res.data.dob)
-  //       setGender(res.data.gender)
-  //       setMaritalstatus(res.data.merital_status)
-  //       setPhysically(res.data.disablity)
-  //       setMobile(res.data.mobile)
-  //       setCountry(res.data.country)
-  //       setState(res.data.state)
-  //       setCity(res.data.city)
-  //       setEmail(res.data.email)
-  //       setDesignation(res.data.designation)
-  //       setReferrer(res.data.referrer)
-  //       setLinkedIn(res.data.linkedin_link)
-  //       setVerified(res.data.verified)
+  const studentDataApi = () => {
+    setIsLoading(true);
+    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/counsellor/my-profile", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("cst")}`,
+      },
+    })
+      .then(async (response) => {
+        if (response.ok) {
+          var res = await response.json();
+          console.log(res.data);
+          oldData = res.data;
+          setname(res.data.name);
+        setMaritalstatus(res.data.merital_status);
+        setGender(res.data.gender);
+        setDate(res.data.createdAt.split('T')[0]);
+          setPhysically(res.data.physically_challenged);
+          setMobile(res.data.mobile);
+          if (res.data.country) {
+            setCountry(res.data.country);
+            setState(res.data.state);
+            setCity(res.data.city);
+          }
+          setEmail(res.data.email);
+        setLinkedIn(res.data.linked_in_link);
+        setExperience(res.data.experience_in_year);
+          setVerified(res.data.verified);
+        } else {
+          var res = await response.json();
 
+          setError(res.error);
+          setIsLoading(false);
+        }
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  };
+  // console.log(studentDataApi())
+  useEffect(() => {
+    studentDataApi();
+  }, []);
+  const handleSubmit = () => {
+    // console.log("hello");
+    if (showmykycinput) {
+      if (mobile.length !== 10 || /\s/.test(mobile)) {
+        // Display an error message or take the appropriate action
+        setError(true);
+      } else {
+        // Your form submission logic
+        setError(false);
+        setIsLoading(true);
+        const fd = new FormData();
+        fd.append("name",name);
+        fd.append("mobile", mobile);
+        fd.append("disablity", physically);
+        fd.append("state", state);
+        fd.append("city", city);
+        fd.append("Experience", Experience);
+        fd.append("country", country);
+        fd.append("gender", gender);
+        fd.append("merital_status", maritalstatus);
+        fd.append("linkedin_link", linkedIn);
+        fd.append("dob", date);
+        fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/counsellor/my-profile`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("cst")}`,
+          },
+          method: "PUT",
+          body: fd,
+        }).then(async (response) => {
+          var res = await response.json();
+          // console.log(res);
+          setIsLoading(false);
+          if (response.ok) {
+            // console.log("hello", response.data);
 
-  //       setIsLoading(false);
-  //     })
-  //     .catch((error) => {
-  //       alert(error);
-  //     });
-  // };
-  // useEffect(() => {
-  //   studentDataApi();
-  // }, []);
-  // const handleSubmit = () => {
-  //   // console.log("hello");
-  //   if(showmykycinput){
-  //     if (clgmobile.length !== 10 || /\s/.test(clgmobile)) {
-  //       // Display an error message or take the appropriate action
-  //       setError(true)
-  //     } else {
-  //       // Your form submission logic
-  //       setError(false)
-  //       setIsLoading(true);
-  //     const fd = new FormData();
-  //     fd.append(
-  //       "name",
-  //       adminname 
-  //     );
-  //     fd.append(
-  //       "dob",
-  //       date 
-  //     );
-  //     fd.append(
-  //       "gender",
-  //       gender 
-  //     );
-  //     fd.append(
-  //       "linkedin_link",
-  //       linkedIn 
-  //     );
-  //     fd.append(
-  //       "designation",
-  //       designation 
-  //     );
-  //     fd.append(
-  //       "referrer",
-  //       referrer 
-  //     );
-  //     fd.append(
-  //       "merital_status",
-  //       maritalstatus 
-  //     );
-  //     fd.append(
-  //       "disablity",
-  //       physically 
-  //     );
-  //     fd.append(
-  //       "mobile",
-  //       mobile 
-  //     );
-  //     fd.append(
-  //       "city",
-  //       city 
-  //     );
-  //     fd.append(
-  //       "state",
-  //       state 
-  //     );
-  //     fd.append(
-  //       "country",
-  //       country
-  //     );
-  //     fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/college/my-kyc`, {
-  //       headers: {
-  //         Authorization: `Bearer ${localStorage.getItem("cst")}`,
-  //       },
-  //       method: "PUT",
-  //       body: fd,
-  //     }).then(async (response) => {
-  //       var res = await response.json();
-  //       // console.log(res);
-  //       setIsLoading(false);
-  //       if (response.ok) {
-  //         // console.log("hello", response.data);
-  
-  //         Swal.fire({
-  //           title: "Success",
-  //           text: `${res.message}`,
-  //           icon: "success",
-  //           confirmButtonText: "Ok",
-  //         }).then(() => {
-  //           setshowmykycinput(false);
-  //           studentDataApi();
-      
-  //         });
-  //       } else {
-  //         Swal.fire({
-  //           title: "error",
-  //           text: `${res.error}`,
-  //           icon: "error",
-  //           confirmButtonText: "Ok",
-  //         }).then(() => {
-  //           setIsLoading(false);
-  //         });
-  //       }
-  //     });
-  //     }
-  //   }
-    
-      
-   
-  // };
+            Swal.fire({
+              title: "Success",
+              text: `${res.message}`,
+              icon: "success",
+              confirmButtonText: "Ok",
+            }).then(() => {
+              setshowmykycinput(false);
+              studentDataApi();
+            });
+          } else {
+            Swal.fire({
+              title: "error",
+              text: `${res.error}`,
+              icon: "error",
+              confirmButtonText: "Ok",
+            }).then(() => {
+              setIsLoading(false);
+            });
+          }
+        });
+      }
+    }
+  };
 
-   const handleKycclose =()=>{
-    // console.log(oldData)
-  //  setcollegename(oldData.college_name)
-  //       setAdminName(oldData.name)
-  //       setDate(oldData.dob)
-  //       setGender(oldData.gender)
-  //       setMaritalstatus(oldData.merital_status)
-  //       setPhysically(oldData.disablity)
-  //       setMobile(oldData.mobile)
-  //       setCountry(oldData.country)
-  //       setState(oldData.state)
-  //       setCity(oldData.city)
-  //       setEmail(oldData.email)
-  //       setDesignation(oldData.designation)
-  //       setReferrer(oldData.referrer)
-  //       setLinkedIn(oldData.linkedin_link)
-    setshowmykycinput(false)
-   }
+  const handleKycclose = () => {
+    console.log(oldData);
+    setname(oldData.name);
+    setDate(oldData.createdAt.split('T')[0]);
+    setGender(oldData.gender);
+    setPhysically(oldData.physically_challenged);
+    setMaritalstatus(oldData.merital_status);
+    setMobile(oldData.mobile);
+    if(oldData.country){
+      setCity(oldData.city);
+      setState(oldData.state);
+    }
+    setEmail(oldData.email);
+    setLinkedIn(oldData.linked_in_link);
+    setExperience(oldData.experience_in_year);
+    setshowmykycinput(false);
+  };
 
   return (
     <>
-     {/* {!isLoading ? ( */}
-        <> 
-          <div className={styles["basic-details"]} style={{margin:"0.5rem"}}>
+      {!isLoading ? (
+        <>
+          <div className={styles["basic-details"]} style={{ margin: "0.5rem" }}>
             <div className={styles["basic"]}>
-              <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
-              <h3 style={{margin:"0px 5px"}}>My Profile</h3>
-              <img src={verified?"/assets/images/verified.png":"/assets/images/notverified.png"} width={35} height={35} alt="img"/>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <h3 style={{ margin: "0px 5px" }}>My Profile</h3>
+                <img
+                  src={
+                    verified
+                      ? "/assets/images/verified.png"
+                      : "/assets/images/notverified.png"
+                  }
+                  width={35}
+                  height={35}
+                  alt="img"
+                />
               </div>
               {showmykycinput ? (
                 <div style={{ display: "flex" }}>
@@ -222,41 +197,24 @@ const Myprofile = () => {
             <div className="row">
               <div className="col-md-6 col-lg-4">
                 <div className={styles["box"]}>
-                  <div className={styles.heading}>College Name</div>
+                  <div className={styles.heading}>Name</div>
                   {showmykycinput ? (
                     <TextField
                       fullWidth
-                      placeholder={collegename}
+                      placeholder={name}
                       size="small"
                       margin="dense"
                       type="text"
-                      disabled
-                      value={collegename}
-                      onChange={(e) => setcollegename(e.target.value.charAt(0).toUpperCase()+e.target.value.slice(1))}
+                      value={name}
+                      onChange={(e) =>
+                        setname(
+                          e.target.value.charAt(0).toUpperCase() +
+                            e.target.value.slice(1)
+                        )
+                      }
                     />
                   ) : (
-                    <h6>
-                      {collegename || "N/A"}
-                    </h6>
-                  )}
-                </div>
-              </div>
-              <div className="col-md-6 col-lg-4">
-                <div className={styles["box"]}>
-                  <div className={styles.heading}>Admin Name</div>
-                  {showmykycinput ? (
-                    <TextField
-                      fullWidth
-                      size="small"
-                      margin="dense"
-                      type="text"
-                      value={adminname}
-                      onChange={(e) => setAdminName(e.target.value.charAt(0).toUpperCase()+e.target.value.slice(1))}
-                    />
-                  ) : (
-                    <h6>
-                      {adminname || "N/A"}
-                    </h6>
+                    <h6>{name || "N/A"}</h6>
                   )}
                 </div>
               </div>
@@ -273,82 +231,58 @@ const Myprofile = () => {
                       onChange={(e) => setDate(e.target.value)}
                     />
                   ) : (
-                    <h6>
-                      {FormatDate(date) || "N/A"}
-                    </h6>
+                    <h6>{date && FormatDate(date) || "N/A"}</h6>
                   )}
                 </div>
               </div>
-
-             
               <div className="col-md-6 col-lg-4">
                 <div className={styles["box"]}>
                   <div className={styles.heading}>Gender </div>
                   {showmykycinput ? (
-                    <TextField
-                      select
-                      fullWidth
-                      size="small"
-                      margin="dense"
-                      value={gender}
+                     <Select
+                     sx={{ mt: 1 }}
+                     fullWidth
+                     size="small"
+                     margin="dense"
+                     value={gender}
                       onChange={(e) => setGender(e.target.value)}
-                    >
-                      <MenuItem disabled value="">
+                     displayEmpty
+                   >
+                     <MenuItem value="" disabled>
                         Select a gender
                       </MenuItem>
-                      {genderType.map((e) => (
-                        <MenuItem value={e.value}>{e.gendername}</MenuItem>
+                      {genderType.map((e,i) => (
+                        <MenuItem key={i} value={e.value}>{e.gendername}</MenuItem>
                       ))}
-                    </TextField>
+                   </Select>
                   ) : (
-                    <h6>
-                      {gender || "N/A"}
-                    </h6>
+                    <h6>{gender || "N/A"}</h6>
                   )}
                 </div>
               </div>
               <div className="col-md-6 col-lg-4">
                 <div className={styles["box"]}>
-                  <div className={styles.heading}>Designation</div>
+                  <div className={styles.heading}>Marital Status </div>
                   {showmykycinput ? (
-                    <TextField
-                      select
-                      fullWidth
-                      size="small"
-                      margin="dense"
-                      value={designation}
-                      onChange={(e) => setDesignation(e.target.value)}
-                    >
-                      <MenuItem disabled value="">
-                        Select a designation
+                     <Select
+                     sx={{ mt: 1 }}
+                     fullWidth
+                     size="small"
+                     margin="dense"
+                     value={maritalstatus}
+                     onChange={(e) => setMaritalstatus(e.target.value)}
+                     displayEmpty
+                   >
+                       <MenuItem disabled value="">
+                        Select a Marital Status
                       </MenuItem>
-                      {DesignationType.map((e) => (
-                        <MenuItem value={e}>{e}</MenuItem>
+                      {maritalType.map((e,i) => (
+                        <MenuItem key={i} value={e.value}>{e.MarrigeType}</MenuItem>
                       ))}
-                    </TextField>
+                   </Select>
+                  
                   ) : (
-                    <h6>
-                      {designation || "N/A"}
-                    </h6>
-                  )}
-                </div>
-              </div>
-              <div className="col-md-6 col-lg-4">
-                <div className={styles["box"]}>
-                  <div className={styles.heading}>Referrer</div>
-                  {showmykycinput ? (
-                    <TextField
-                      fullWidth
-                      size="small"
-                      margin="dense"
-                      type="text"
-                      value={referrer}
-                      onChange={(e) => setReferrer(e.target.value)}
-                    />
-                  ) : (
-                    <h6>
-                      {referrer || "N/A"}
-                    </h6>
+                    <h6>{maritalstatus || "N/A"}</h6>
                   )}
                 </div>
               </div>
@@ -362,41 +296,55 @@ const Myprofile = () => {
                       margin="dense"
                       type="text"
                       value={linkedIn}
-                      onChange={(e) => setLinkedIn(e.target.value)}
+                      onChange={(e) => {
+                        const inputValue = e.target.value;
+                    
+                        // Regular expression to check if the input contains only English characters
+                        const isEnglish = /^[a-zA-Z\s]*$/.test(inputValue);
+                    
+                        // If the input contains only English characters, update the state
+                        if (isEnglish) {
+                          setLinkedIn(
+                            inputValue
+                          );
+                        } else {
+                          Swal.fire({
+                            icon: "error",
+                            title: "Invalid input",
+                            text: "Please enter only English characters!",
+                          });
+                        }
+                      }}
                     />
                   ) : (
                     <h6>
-                     {<a href={linkedIn} target="_blank">{linkedIn}</a> || "N/A"}
+                      { linkedIn &&
+                        <a href={linkedIn} target="_blank">
+                          {linkedIn}
+                        </a>
+                       || "N/A"}
                     </h6>
                   )}
                 </div>
               </div>
               <div className="col-md-6 col-lg-4">
                 <div className={styles["box"]}>
-                  <div className={styles.heading}>Marital Status </div>
+                  <div className={styles.heading}>Experience</div>
                   {showmykycinput ? (
                     <TextField
-                      select
                       fullWidth
                       size="small"
                       margin="dense"
-                      value={maritalstatus}
-                      onChange={(e) => setMaritalstatus(e.target.value)}
-                    >
-                      <MenuItem disabled value="">
-                        Select a Marital Status
-                      </MenuItem>
-                      {maritalType.map((e) => (
-                        <MenuItem value={e.value}>{e.MarrigeType}</MenuItem>
-                      ))}
-                    </TextField>
+                      type="text"
+                      value={Experience}
+                      onChange={(e) => setExperience(e.target.value)}
+                    />
                   ) : (
-                    <h6>
-                      {maritalstatus || "N/A"}
-                    </h6>
+                    <h6>{Experience || "N/A"}</h6>
                   )}
                 </div>
               </div>
+
               <div className="col-md-6 col-lg-4">
                 <div className={styles["box"]}>
                   <div className={styles.heading}>Physically challenged?</div>
@@ -417,11 +365,7 @@ const Myprofile = () => {
                       ))}
                     </TextField>
                   ) : (
-                    <h6>
-                      {physically
-                        ? "Yes"
-                        : "No"}
-                    </h6>
+                    <h6>{physically ? "Yes" : "No"}</h6>
                   )}
                 </div>
               </div>
@@ -430,22 +374,19 @@ const Myprofile = () => {
                   <div className={styles.heading}>Mobile Number</div>
                   {showmykycinput ? (
                     <TextField
-                    
                       fullWidth
                       size="small"
                       margin="dense"
-                      value={clgmobile}
+                      value={mobile}
                       inputProps={{ minLength: 10, maxLength: 10 }}
                       onChange={(e) =>
-                        setClgMobile(e.target.value.replace(/\D/g, ""))
+                        setMobile(e.target.value.replace(/\D/g, ""))
                       }
-                      helperText={error ?"Incorrect Entry" :""}
-                      error={error ?true :false}
+                      helperText={error ? "Incorrect Entry" : ""}
+                      error={error ? true : false}
                     />
                   ) : (
-                    <h6>
-                      {mobile || "N/A"}
-                    </h6>
+                    <h6>{mobile || "N/A"}</h6>
                   )}
                 </div>
               </div>
@@ -456,17 +397,13 @@ const Myprofile = () => {
                     <TextField
                       disabled
                       placeholder={email}
-                    
                       fullWidth
                       size="small"
                       margin="dense"
                       type="text"
                     />
                   ) : (
-                    <h6>
-                                       {email || "N/A"}
-
-                    </h6>
+                    <h6>{email || "N/A"}</h6>
                   )}
                 </div>
               </div>
@@ -474,17 +411,21 @@ const Myprofile = () => {
                 <div className={styles["box"]}>
                   <div className={styles.heading}>Country</div>
                   {showmykycinput ? (
-                    <TextField
-                      select
-                      fullWidth
+                    <Select
+                     sx={{ mt: 1 }}
+                     fullWidth
                       size="small"
                       margin="dense"
                       value={country}
                       onChange={(e) => {
-                        setCountry(e.target.value), setState(""), setCity("");
+                        setCountry(e.target.value);
+                        setState("");
+                        setCity("");
                       }}
+                      displayEmpty
+                      //  inputProps={{ 'aria-label': 'Without label' }}
                     >
-                      <MenuItem disabled value="">
+                      <MenuItem value="" disabled>
                         Select a country
                       </MenuItem>
                       {Object.keys(IndianStates).map((country, i) => (
@@ -492,12 +433,9 @@ const Myprofile = () => {
                           {country}
                         </MenuItem>
                       ))}
-                    </TextField>
+                    </Select>
                   ) : (
-                    <h6>
-                                          {country || "N/A"}
-
-                    </h6>
+                    <h6>{country || "N/A"}</h6>
                   )}{" "}
                 </div>
               </div>
@@ -505,13 +443,14 @@ const Myprofile = () => {
                 <div className={styles["box"]}>
                   <div className={styles.heading}>State</div>
                   {showmykycinput ? (
-                    <TextField
-                      select
-                      fullWidth
+                    <Select
+                     sx={{ mt: 1 }}
+                     fullWidth
                       size="small"
                       margin="dense"
                       value={state}
                       onChange={(e) => setState(e.target.value)}
+                      displayEmpty
                     >
                       <MenuItem disabled value="">
                         Select a state
@@ -522,12 +461,9 @@ const Myprofile = () => {
                             {state}
                           </MenuItem>
                         ))}
-                    </TextField>
+                    </Select>
                   ) : (
-                    <h6>
-                                          {state || "N/A"}
-
-                    </h6>
+                    <h6>{state || "N/A"}</h6>
                   )}
                 </div>
               </div>
@@ -535,56 +471,51 @@ const Myprofile = () => {
                 <div className={styles["box"]}>
                   <div className={styles.heading}>City</div>
                   {showmykycinput ? (
-                    <TextField
-                      select
-                      fullWidth
-                      size="small"
-                      margin="dense"
-                      value={city}
-                      onChange={(e) => setCity(e.target.value)}
-                    >
-                      <MenuItem disabled value="">
+                     <Select
+                     sx={{ mt: 1 }}
+                     fullWidth
+                     size="small"
+                     margin="dense"
+                     value={city}
+                     onChange={(e) => setCity(e.target.value)}
+                     displayEmpty
+                   >
+                    <MenuItem disabled value="">
                         Select a city
                       </MenuItem>
-                      {state != "" &&
+                      {state &&
+                        state != "" &&
                         IndianStates[country][state].map((city, i) => (
                           <MenuItem key={i} value={city}>
                             {city}
                           </MenuItem>
                         ))}
-                    </TextField>
+                   </Select>
                   ) : (
-                    <h6>
-                                         {city || "N/A"}
-
-                    </h6>
+                    <h6>{city || "N/A"}</h6>
                   )}
                 </div>
               </div>
             </div>
           </div>
 
-          
-
-{showmykycinput == true  &&
-  <CTA
-            title="Save"
-            color="white"
-            fontWeight="bold"
-            // onClick={handleSubmit}
-          />
-}
-          
+          {showmykycinput == true && (
+            <CTA
+              title="Save"
+              color="white"
+              fontWeight="bold"
+              onClick={handleSubmit}
+            />
+          )}
         </>
-      {/* ) : (
+      ) : (
         <div
           className="d-flex justify-content-center align-items-center"
           style={{ height: "80vh" }}
         >
           <Spinner variant="outlined" />
         </div>
-      )} */}
-   
+      )}
     </>
   );
 };

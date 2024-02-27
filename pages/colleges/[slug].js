@@ -12,10 +12,54 @@ import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
 
-const pagesHavePopup = [
-  // "iilm-university-gurugram",
-  // "iilm-university-greater-noida",
+const pagesHavePopup = [];
+
+const counselorsData = [
+  {
+    id: 1,
+    name: "Dr. Emily Smith",
+    specialization: "Marriage and Family Therapist",
+    location: "New York, NY",
+    bio: "Dr. Emily Smith is a licensed Marriage and Family Therapist with over 10 years of experience. She specializes in helping couples and families navigate through challenging times and improve their relationships.",
+  },
+  {
+    id: 2,
+    name: "John Doe",
+    specialization: "Addiction Counselor",
+    location: "Los Angeles, CA",
+    bio: "John Doe is a certified Addiction Counselor with a passion for helping individuals overcome substance abuse and addiction. With a compassionate approach, he assists his clients in reclaiming their lives from addiction.",
+  },
+  {
+    id: 3,
+    name: "Dr. Sarah Johnson",
+    specialization: "Clinical Psychologist",
+    location: "Chicago, IL",
+    bio: "Dr. Sarah Johnson is a Clinical Psychologist specializing in anxiety, depression, and trauma. With a holistic approach, she empowers her clients to overcome obstacles and achieve mental wellness.",
+  },
+  {
+    id: 4,
+    name: "Dr. Sarah Johnson",
+    specialization: "Clinical Psychologist",
+    location: "Chicago, IL",
+    bio: "Dr. Sarah Johnson is a Clinical Psychologist specializing in anxiety, depression, and trauma. With a holistic approach, she empowers her clients to overcome obstacles and achieve mental wellness.",
+  },
+  {
+    id: 5,
+    name: "Dr. Sarah Johnson",
+    specialization: "Clinical Psychologist",
+    location: "Chicago, IL",
+    bio: "Dr. Sarah Johnson is a Clinical Psychologist specializing in anxiety, depression, and trauma. With a holistic approach, she empowers her clients to overcome obstacles and achieve mental wellness.",
+  },
+  {
+    id: 6,
+    name: "Dr. Sarah Johnson",
+    specialization: "Clinical Psychologist",
+    location: "Chicago, IL",
+    bio: "Dr. Sarah Johnson is a Clinical Psychologist specializing in anxiety, depression, and trauma. With a holistic approach, she empowers her clients to overcome obstacles and achieve mental wellness.",
+  },
 ];
 
 export default function CollegeName({ collegedata }) {
@@ -178,7 +222,10 @@ export default function CollegeName({ collegedata }) {
       [name]: value,
     }));
   };
-
+  const handleCall = (counselorName) => {
+    alert(`Calling ${counselorName}`);
+    // You can implement the calling functionality here
+  };
   const handleChangepopup = (e) => {
     const { name, value } = e.target;
     // console.log(name,value)
@@ -261,7 +308,26 @@ export default function CollegeName({ collegedata }) {
       console.error("Failed to fetch OTP:", error);
     }
   };
-
+  const responsive = {
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 4,
+      // partialVisibilityGutter: 40, // this is needed to tell the amount of px that should be visible.
+      slidestoSlide: 4,
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 2,
+      // partialVisibilityGutter: 50, // this is needed to tell the amount of px that should be visible.
+      slidestoSlide: 2,
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 1,
+      // partialVisibilityGutter: 80, // this is needed to tell the amount of px that should be visible.
+      slidestoSlide: 1,
+    },
+  };
   const dummyBannerImg =
     collegedata.generalinfo.banner_img_path &&
     collegedata.generalinfo.banner_img_path != ""
@@ -872,6 +938,165 @@ export default function CollegeName({ collegedata }) {
                     </div>
                   </div>
                 )}
+                {/* <div className={Classes["description-section"]}>
+                  <h3>Meet Our Counselors</h3>
+                  <div>
+                    <Carousel
+                      responsive={responsive}
+                      showDots={true}
+                      partialVisbile={false}
+                    >
+                      {counselorsData.length > 0
+                        ? counselorsData.map((counselor) => (
+                            <div
+                              key={counselor.id}
+                              style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                flexDirection: "column",
+                                width: "300px",
+                                margin: "20px",
+                                border: "1px solid #ccc",
+                                borderRadius: "10px",
+                              }}
+                            >
+                              <div
+                                className={Classes["img-div-counsellor"]}
+                                style={{
+                                  position: "relative",
+                                  background: "rgb(0, 123, 255)",
+                                  borderRadius: "9px 9px 0px 0px",
+                                  height: "100px",
+                                  width: "100%",
+                                  marginBottom: "50px",
+                                }}
+                              >
+                                <img
+                                  src={
+                                    "/assets/images/counsellorFolder/counsellor-profile.png"
+                                  }
+                                  alt={counselor.name}
+                                  style={{
+                                    width: "90px",
+                                    height: "90px",
+                                    borderRadius: "50px",
+                                    border: "3px solid white",
+                                    position: "absolute",
+                                    left: "50%",
+                                    bottom: "-38%",
+                                    transform: "translate(-50%,-8%)",
+                                  }}
+                                />
+                              </div>
+                              <h4 style={{ marginTop: "10px" }}>
+                                {counselor.name}
+                              </h4>
+                              <p> {counselor.specialization}</p>
+                              <p>
+                                <strong>Location:</strong> {counselor.location}
+                              </p>
+                              <div
+                                style={{
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                }}
+                              >
+                                <img
+                                  src={
+                                    "/assets/images/counsellorFolder/facebook.png"
+                                  }
+                                  alt={counselor.name}
+                                  style={{
+                                    width: "10%",
+                                    height: "10%",
+                                    margin: "0 0.2rem",
+                                    borderRadius: "5px",
+                                  }}
+                                />
+                                <img
+                                  src={
+                                    "/assets/images/counsellorFolder/linkedin.png"
+                                  }
+                                  alt={counselor.name}
+                                  style={{
+                                    width: "10%",
+                                    height: "10%",
+                                    margin: "0 0.2rem",
+                                    borderRadius: "5px",
+                                  }}
+                                />
+                                <img
+                                  src={
+                                    "/assets/images/counsellorFolder/twitter.png"
+                                  }
+                                  alt={counselor.name}
+                                  style={{
+                                    width: "10%",
+                                    height: "10%",
+                                    margin: "0 0.2rem",
+                                    borderRadius: "5px",
+                                  }}
+                                />
+                                <img
+                                  src={
+                                    "/assets/images/counsellorFolder/youtube.png"
+                                  }
+                                  alt={counselor.name}
+                                  style={{
+                                    width: "10%",
+                                    height: "10%",
+                                    margin: "0 0.2rem",
+                                    borderRadius: "5px",
+                                  }}
+                                />
+                              </div>
+                              <div
+                                style={{
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                  margin: "0.5rem 0",
+                                }}
+                              >
+                                <button
+                                  onClick={() => handleCall(counselor.name)}
+                                  style={{
+                                    padding: "10px 20px",
+                                    margin: "0 0.2rem",
+                                    backgroundColor: "#007bff",
+                                    color: "#fff",
+                                    border: "none",
+                                    borderRadius: "25px",
+                                    cursor: "pointer",
+                                  }}
+                                >
+                                  Call
+                                </button>
+
+                                <button
+                                  onClick={() => handleCall(counselor.name)}
+                                  style={{
+                                    padding: "10px 20px",
+                                    margin: "0 0.2rem",
+                                    backgroundColor: "#007bff",
+                                    color: "#fff",
+                                    border: "none",
+                                    borderRadius: "25px",
+                                    cursor: "pointer",
+                                  }}
+                                >
+                                  Message
+                                </button>
+                              </div>
+                            </div>
+                          ))
+                        : "no record"}
+                    </Carousel>
+                  </div>
+                </div> */}
+
                 {collegedata.overview.college_faqs.length > 0 && (
                   <div className={Classes["description-section"]}>
                     <h3>FAQs about {collegedata.generalinfo.college_name}</h3>
@@ -1298,6 +1523,7 @@ export default function CollegeName({ collegedata }) {
             </div>
           )}
         </Tab>
+
         <Tab eventKey="cutoff" title="Cutoff">
           <div className="container">
             <div className={Classes["content-section"]}>
@@ -1553,7 +1779,7 @@ export async function getServerSideProps(context) {
           permanent: false,
           destination: "/",
         },
-        props:{}
+        props: {},
       };
     }
   } else {
@@ -1563,7 +1789,7 @@ export async function getServerSideProps(context) {
         permanent: false,
         destination: "/",
       },
-      props:{}
+      props: {},
     };
   }
 }

@@ -16,14 +16,16 @@ import MyKyc from "/components/collegeDashboardCrm/MyKyc";
 import MyCollege from "/components/collegeDashboardCrm/MyCollege";
 import IntrestedLeads from "/components/collegeDashboardCrm/IntrestedLeads";
 import MyProfile from "@/components/counsellorCrm/Myprofile";
-
-
-
+import InterstedStudent from "@/components/counsellorCrm/InterstedStudent";
 
 const componentList = [
   {
     comp: <MyProfile />,
     slug: "my-profile",
+  },
+  {
+    comp: <InterstedStudent />,
+    slug: "interested-student",
   },
  
 ];
