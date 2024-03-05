@@ -14,7 +14,7 @@ import Avatar from '@mui/material/Avatar';
 import ImageIcon from '@mui/icons-material/Image';
 import WorkIcon from '@mui/icons-material/Work';
 import BeachAccessIcon from '@mui/icons-material/BeachAccess';
-
+import Chip from '@mui/material/Chip';
 var oldData = []
 
 export default class AssociatedCounsellorCrm extends Component {
@@ -69,7 +69,7 @@ export default class AssociatedCounsellorCrm extends Component {
 
         // console.log(res)
       let response = await res.json();
-    //   console.log(response.data);
+      // console.log(response.data);
       if (response.data.length > 0) {
         this.setState({ clgList: response.data, isDataFound: true ,TotalCountNumber:response.data.length});
       }
@@ -160,6 +160,8 @@ export default class AssociatedCounsellorCrm extends Component {
 
    
   };
+
+
   render() {
     return (
       <>
@@ -202,11 +204,19 @@ export default class AssociatedCounsellorCrm extends Component {
               </thead>
               <tbody>
                 {this.state.clgList.map((clg, i) => {
+                    const collegeNames = clg.college_name.split('##12##');
+
+                    // Mapping over the array to create MUI Chips
+                    const chips = collegeNames.map((name, index) => (
+                        <li>
+                        <Chip key={index} label={name} style={{ marginRight: '5px', marginBottom: '5px' }} />
+                        </li>
+                    ));
                   return (
                     
                       <tr key={i}>
                         <td>{clg.name}</td>
-                        <td>{clg.college_name}</td>
+                        <td><ol>{chips}</ol></td>
                         <td>{clg.mobile}</td>
                         <td>{clg.email}</td>
                         <td>{clg.experience_in_year}</td>

@@ -8,6 +8,12 @@ import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import { ExpinYear } from "@/components/Comps/type";
+import { CounsellorSpecilization } from "@/components/Comps/type";
+import { CounsellorLanguage } from "@/components/Comps/type";
+import { genderType } from "@/components/Comps/type";
+import { CounsellorQualification } from "@/components/Comps/type";
+
+
 
 import Classes from "/styles/searchmodal.module.css";
 import Link from "next/link";
@@ -59,6 +65,13 @@ export default function Loginuc({ isOpen, onClose, role }) {
   const [counsellorstate, setCounsellorstate] = useState(""); 
   const [counsellorcity, setCounsellorcity] = useState(""); 
   const [counsellorexp, setCounsellorexp] = useState(""); 
+  const [counsellorcountry, setCounsellorcountry] = useState("");
+  const [counsellorgender, setCounsellorgender] = useState("");
+  const [Counsellorspecilizationvalue, setCounsellorspecilizationvalue] = useState("");
+  const [counsellorpreLang, setCounsellorpreLang] = useState("");
+  const [CounsellorQualificationvalue, setCounsellorQualificationvalue] = useState("");
+
+
 
 
 
@@ -368,9 +381,15 @@ export default function Loginuc({ isOpen, onClose, role }) {
             fd.append("email", signupemail); // Add mobile to form data
             // fd.append("stream", clgLandline); // Add stream to form data
             fd.append("mobile", counsellormobile); // Add level to form data
+            fd.append("country", counsellorcountry);
             fd.append("state", counsellorstate);
             fd.append("city", counsellorcity); // Add password to form data
             fd.append("experience", counsellorexp);
+            fd.append("specialization", Counsellorspecilizationvalue);
+            fd.append("gender", counsellorgender);
+            fd.append("qualification", CounsellorQualificationvalue);
+            fd.append("preferredlang", counsellorpreLang);
+
             fetch(
               process.env.NEXT_PUBLIC_API_ENDPOINT + "/counsellor/register",
               {
@@ -938,6 +957,32 @@ export default function Loginuc({ isOpen, onClose, role }) {
                             min="0"
                           />
                         </Form.Group>
+                    <Form.Group controlId="state">
+                          <Form.Label style={{ fontWeight: "bold" }}>
+                            Country
+                          </Form.Label>
+                          <Form.Control
+                            as="select"
+                            style={{ marginBottom: "15px" }}
+                            value={counsellorcountry}
+                            onChange={(e) => {
+                              setCounsellorcountry(e.target.value), setCounsellorstate(""), setCounsellorcity("");
+                            }}
+                            required
+                          >
+                            <option disabled value="">
+                              Select Country
+                            </option>
+                            {Object.keys(IndianStates).map((country, i) => {
+                              return (
+                                <option key={i} value={country}>
+                                  {country}
+                                </option>
+                              );
+                            })}
+
+                          </Form.Control>
+                        </Form.Group>
                          <Form.Group controlId="state">
                           <Form.Label style={{ fontWeight: "bold" }}>
                             State
@@ -952,7 +997,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
                             <option disabled value="">
                               Select State
                             </option>
-                            {Object.keys(IndianStates["India"]).map((c, i) => {
+                            {counsellorcountry != "" && Object.keys(IndianStates[counsellorcountry]).map((c, i) => {
                               return (
                                 <option key={i} value={c}>
                                   {c}
@@ -977,7 +1022,103 @@ export default function Loginuc({ isOpen, onClose, role }) {
                               Select city
                             </option>
                             {counsellorstate != "" &&
-                              IndianStates["India"][counsellorstate].map((c, i) => {
+                              IndianStates[counsellorcountry][counsellorstate].map((c, i) => {
+                                return (
+                                  <option key={i} value={c}>
+                                    {c}
+                                  </option>
+                                );
+                              })}
+
+                          </Form.Control>
+                        </Form.Group>
+                        <Form.Group controlId="gender">
+                          <Form.Label style={{ fontWeight: "bold" }}>
+                          Gender
+                          </Form.Label>
+                          <Form.Control
+                            as="select"
+                            value={counsellorgender}
+                            style={{ marginBottom: "15px" }}
+                            onChange={(e) => setCounsellorgender(e.target.value)}
+                            required
+                          >
+                            <option disabled value="">
+                              Select..
+                            </option>
+                            {genderType.map((c, i) => {
+                                return (
+                                  <option key={i} value={c.value}>
+                                    {c.gendername}
+                                  </option>
+                                );
+                              })}
+
+                          </Form.Control>
+                        </Form.Group>
+                        <Form.Group controlId="qualification">
+                          <Form.Label style={{ fontWeight: "bold" }}>
+                          Qualification
+                          </Form.Label>
+                          <Form.Control
+                            as="select"
+                            value={CounsellorQualificationvalue}
+                            style={{ marginBottom: "15px" }}
+                            onChange={(e) => setCounsellorQualificationvalue(e.target.value)}
+                            required
+                          >
+                            <option disabled value="">
+                              Select..
+                            </option>
+                            {CounsellorQualification.map((c, i) => {
+                                return (
+                                  <option key={i} value={c}>
+                                    {c}
+                                  </option>
+                                );
+                              })}
+
+                          </Form.Control>
+                        </Form.Group>
+                        <Form.Group controlId="spe">
+                          <Form.Label style={{ fontWeight: "bold" }}>
+                          Specilization
+                          </Form.Label>
+                          <Form.Control
+                            as="select"
+                            value={Counsellorspecilizationvalue}
+                            style={{ marginBottom: "15px" }}
+                            onChange={(e) => setCounsellorspecilizationvalue(e.target.value)}
+                            required
+                          >
+                            <option disabled value="">
+                              Select..
+                            </option>
+                            {CounsellorSpecilization.map((c, i) => {
+                                return (
+                                  <option key={i} value={c}>
+                                    {c}
+                                  </option>
+                                );
+                              })}
+
+                          </Form.Control>
+                        </Form.Group>
+                        <Form.Group controlId="exp">
+                          <Form.Label style={{ fontWeight: "bold" }}>
+                          Preferred Language
+                          </Form.Label>
+                          <Form.Control
+                            as="select"
+                            value={counsellorpreLang}
+                            style={{ marginBottom: "15px" }}
+                            onChange={(e) => setCounsellorpreLang(e.target.value)}
+                            required
+                          >
+                            <option disabled value="">
+                              Select..
+                            </option>
+                            {CounsellorLanguage.map((c, i) => {
                                 return (
                                   <option key={i} value={c}>
                                     {c}

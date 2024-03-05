@@ -67,7 +67,7 @@ export default function Home({colleges,courses,exams,testeligibility,ukcolleges}
         {/* <!-- Open Graph (OG) Tags --> */}
 <meta property="og:title" content="Explore Top Colleges & Universities in India | Learnerhunt"/>
 <meta property="og:description" content="Discover over 1,000 colleges & universities, 150+ courses & get the latest updates on admissions, exams & news | ultimate educational career counselling platform"/>
-<meta property="og:image" content="https://www.learnerhunt.com/assets/images/Learnerhunt-Logo.webp"/>
+<meta property="og:image" content="https://www.learnerhunt.com/assets/images/ogTag.jpg"/>
 <meta property="og:url" content="https://www.learnerhunt.com"/>
 <meta property="og:type" content="website"></meta>
 

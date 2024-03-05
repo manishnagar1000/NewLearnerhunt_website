@@ -115,12 +115,12 @@ const Footer = () => {
             </div>
           </div>
           <div className="row flex-column-reverse flex-sm-row">
-            <div className="col-lg-5 col-md-5">
+            <div className="col-lg-6 col-md-6">
               <p className="cmp-name">
                 © 2023 Decred Digital Services Pvt. Ltd.
               </p>
             </div>
-            <div className="col-lg-2 col-md-2">
+            {/* <div className="col-lg-2 col-md-2">
               <div
                 id="elemID031021"
                 style={{lineHeight:"16px",textAlign:"center",position:"relative",zIndex:"100000"}}
@@ -143,8 +143,8 @@ const Footer = () => {
                
                   
               </div>
-            </div>
-            <div className="col-lg-5 col-md-5">
+            </div> */}
+            <div className="col-lg-6 col-md-6">
               <div className="social-media">
                 <Link
                   target="_blank"

@@ -340,6 +340,8 @@ export const Physicalchallenge = [
   { value: "false", PhysicalType: "No" },
 ]
 
+
+
 // educationofstudents
 
 export const classX = ["ICSE","CBSE","State Board","Other"]
@@ -349,6 +351,35 @@ export const StreamXII = ["PCM","PCB","PCMB","Rank","Commerce","Arts"]
 export const DesignationType = ["Chairman","Director","Marketing","Sales","Faculty","Other"]
 export const ExpinYear = ["1","2","3","4","5","6","7","8","9","10","above 10"]
 
+export const CounsellorQualification = ['Class 12th in any Stream/ Background',
+'Bachelors Degree in any subject',
+'B.Ed./ B.Ed. Special Education',
+'Post Graduate Courses or PG Diploma or Training',
+
+]
+export const CounsellorSpecilization = ['College Application & Admissions Specialist',
+'Standardized Testing & College Admissions Expert',
+'Financial Aid & Scholarship Strategist',
+'College Essay & Recommendation Letter Mentor',
+'College Selection & Matching Specialist',
+'First-Generation College Guidance Counselor',
+'Early College & Dual Enrollment Advisor',
+'College Interview & Presentation Coach',
+'Diversity & Inclusion College Admission Specialist',
+'Transfer Student Admissions Counselor',
+]
+export const CounsellorLanguage = [
+  "English",
+  "Hindi",
+  "Spanish",
+  "Vietnamese",
+  "Farsi",
+  "Mandarin/Cantonese",
+  "Hmong",
+  "Assyrian",
+  "German",
+  "Thai",
+]
 
 
 export const top100Films = [
@@ -477,3 +508,8 @@ export const top100Films = [
   { title: '3 Idiots', year: 2009 },
   { title: 'Monty Python and the Holy Grail', year: 1975 },
 ];
+export const options = [
+  { value: 'chocolate', label: 'Chocolate' },
+  { value: 'strawberry', label: 'Strawberry' },
+  { value: 'vanilla', label: 'Vanilla' }
+]

@@ -55,7 +55,7 @@ const AboutUsPage = () => {
         {/* <!-- Open Graph (OG) Tags --> */}
 <meta property="og:title" content="About Us | Premier Educational Career Counseling Platform"/>
 <meta property="og:description" content="We leading digital platform providing comprehensive information on colleges, universities, courses & career counseling. Trusted by students & professional."/>
-<meta property="og:image" content="https://www.learnerhunt.com/assets/images/Learnerhunt-Logo.webp"/>
+<meta property="og:image" content="https://www.learnerhunt.com/assets/images/ogTag.jpg"/>
 <meta property="og:url" content="https://www.learnerhunt.com"/>
 <meta property="og:type" content="website"/>
   

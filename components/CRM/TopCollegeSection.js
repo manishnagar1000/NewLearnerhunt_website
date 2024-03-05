@@ -68,14 +68,14 @@ export default function TopCollegeSection() {
     );
     const collegesData = await collegesRes.json();
     const resp = collegesData.data;
-    console.log(resp);
+    // console.log(resp);
     let d = resp.filter((obj) => obj.position != null);
     let data = {};
     d.forEach((obj) => {
       const { position, college_id, college_name } = obj;
       data[position] = { value: college_id, label: college_name };
     });
-    console.log(d);
+    // console.log(d);
     setIsColleges(resp);
     setSelectedColleges(data);
     // setSelectedCollegeType(d)
@@ -153,7 +153,7 @@ export default function TopCollegeSection() {
       });
   };
   const handleCollegeChange = (selectedOption, number) => {
-    console.log(selectedOption, number);
+    // console.log(selectedOption, number);
     setSelectedColleges({
       ...selectedColleges,
       [number]: selectedOption,

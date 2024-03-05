@@ -15,7 +15,16 @@ import { IndianStates } from "/components/Comps/StatesIndia";
 import { TextField, MenuItem } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { CounsellorSpecilization } from "@/components/Comps/type";
+import { CounsellorLanguage } from "@/components/Comps/type";
+import { CounsellorQualification } from "@/components/Comps/type";
+import Chip from '@mui/material/Chip';
+import InputLabel from '@mui/material/InputLabel';
+import Box from '@mui/material/Box';
+import OutlinedInput from '@mui/material/OutlinedInput';
+
 var oldData = [];
+
 const Myprofile = () => {
   const [showmykycinput, setshowmykycinput] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -23,12 +32,15 @@ const Myprofile = () => {
   // kyc Details
 
   const [name, setname] = useState("");
+  const [clgname, setclgname] = React.useState([]);
+  const [counsellorclglist, setcounsellorclglist] = React.useState([]);
+
   const [date, setDate] = useState("");
-  const [physically, setPhysically] = useState("");
   const [gender, setGender] = useState("");
-  const [maritalstatus, setMaritalstatus] = useState("");
-  const [linkedIn, setLinkedIn] = useState("");
+  const [specialization,setSpecialization] = useState('')
+  const [qualification,setQualification] = useState('')
   const [Experience, setExperience] = useState("");
+  const [Language,setLanguage] = useState('');
   const [mobile, setMobile] = useState("");
   const [email, setEmail] = useState("");
   const [country, setCountry] = useState("");
@@ -50,25 +62,27 @@ const Myprofile = () => {
           console.log(res.data);
           oldData = res.data;
           setname(res.data.name);
-        setMaritalstatus(res.data.merital_status);
         setGender(res.data.gender);
         setDate(res.data.createdAt.split('T')[0]);
-          setPhysically(res.data.physically_challenged);
           setMobile(res.data.mobile);
+          setQualification(res.data.qualification)
+          setSpecialization(res.data.specialization)
+          setclgname(res.data.college_name.split("##12##"))
+          setLanguage(res.data.preferredlang)
+          setcounsellorclglist(res.clgList)
           if (res.data.country) {
             setCountry(res.data.country);
             setState(res.data.state);
             setCity(res.data.city);
           }
           setEmail(res.data.email);
-        setLinkedIn(res.data.linked_in_link);
         setExperience(res.data.experience_in_year);
           setVerified(res.data.verified);
         } else {
           var res = await response.json();
 
           setError(res.error);
-          setIsLoading(false);
+          // setIsLoading(false);
         }
         setIsLoading(false);
       })
@@ -77,6 +91,8 @@ const Myprofile = () => {
       });
   };
   // console.log(studentDataApi())
+
+ 
   useEffect(() => {
     studentDataApi();
   }, []);
@@ -93,14 +109,16 @@ const Myprofile = () => {
         const fd = new FormData();
         fd.append("name",name);
         fd.append("mobile", mobile);
-        fd.append("disablity", physically);
         fd.append("state", state);
         fd.append("city", city);
-        fd.append("Experience", Experience);
+        fd.append("experience", Experience);
         fd.append("country", country);
         fd.append("gender", gender);
-        fd.append("merital_status", maritalstatus);
-        fd.append("linkedin_link", linkedIn);
+        // fd.append('qualification',qualification)
+        // fd.append('specialization',specialization)
+        fd.append('college_name',clgname.join('##12##'))
+        fd.append('preferredlang',Language)
+
         fd.append("dob", date);
         fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/counsellor/my-profile`, {
           headers: {
@@ -144,23 +162,51 @@ const Myprofile = () => {
     setname(oldData.name);
     setDate(oldData.createdAt.split('T')[0]);
     setGender(oldData.gender);
-    setPhysically(oldData.physically_challenged);
-    setMaritalstatus(oldData.merital_status);
     setMobile(oldData.mobile);
     if(oldData.country){
       setCity(oldData.city);
       setState(oldData.state);
     }
     setEmail(oldData.email);
-    setLinkedIn(oldData.linked_in_link);
     setExperience(oldData.experience_in_year);
+    setQualification(oldData.qualification)
+    setSpecialization(oldData.specialization)
+    setclgname(oldData.college_name.split("##12##"))
+    setLanguage(oldData.preferredlang)
+
     setshowmykycinput(false);
   };
 
+ 
+
+
+const handleChange = (event) => {
+  console.log(event.target.value)
+  // const {
+  //   target: { value },
+  // } = event;
+  // setclgname(
+  //   // On autofill we get a stringified value.
+  //   typeof value === 'string' ? value.split(',') : value,
+  // );
+  const selectedValues = event.target.value;
+  if (selectedValues.length <= 5) {
+    setclgname(selectedValues);
+}
+ 
+};
+
+
+useEffect(() => {
+ console.log(clgname)
+}, [clgname])
+
+ 
   return (
     <>
       {!isLoading ? (
         <>
+        {error =="" ?
           <div className={styles["basic-details"]} style={{ margin: "0.5rem" }}>
             <div className={styles["basic"]}>
               <div
@@ -195,6 +241,47 @@ const Myprofile = () => {
               )}
             </div>
             <div className="row">
+            <div className="col-md-12 ">
+                <div className={styles["box"]}>
+                  <div className={styles.heading}>College Name <span style={{color:'#ff000094'}}>(You can select maximum upto 5 colleges.)</span></div>
+                  {showmykycinput ? (
+                  
+                  <Select
+                  sx={{ mt: 1 }}
+                  labelId="demo-multiple-name-label"
+                  id="demo-multiple-name"
+                  fullWidth
+                  multiple
+                  value={clgname}
+                  onChange={handleChange}
+                  input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+                  renderValue={(selected) => (
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                      {selected.map((value) => (
+                        <Chip key={value} label={value} />
+                      ))}
+                    </Box>
+                  )}
+                >
+                  {counsellorclglist.map((clg) => (
+                    <MenuItem
+                      key={clg._id}
+                      value={clg.college_name}
+                    >
+                      {clg.college_name}
+                    </MenuItem>
+                  ))}
+                </Select>
+                  ) : (
+<>
+                    {clgname.map((s)=>
+                <Chip label={s} color="info" variant="outlined" style={{margin:'0.3rem'}}/> 
+                    )}
+                    </>
+                  )}
+                </div>
+                <hr/>
+              </div>
               <div className="col-md-6 col-lg-4">
                 <div className={styles["box"]}>
                   <div className={styles.heading}>Name</div>
@@ -235,6 +322,7 @@ const Myprofile = () => {
                   )}
                 </div>
               </div>
+             
               <div className="col-md-6 col-lg-4">
                 <div className={styles["box"]}>
                   <div className={styles.heading}>Gender </div>
@@ -262,68 +350,78 @@ const Myprofile = () => {
               </div>
               <div className="col-md-6 col-lg-4">
                 <div className={styles["box"]}>
-                  <div className={styles.heading}>Marital Status </div>
+                  <div className={styles.heading}>Qualification</div>
+                  {showmykycinput ? (
+                     <Select
+                     sx={{ mt: 1 }}
+                     fullWidth
+                     disabled
+                     size="small"
+                     margin="dense"
+                     value={qualification}
+                      onChange={(e) => setQualification(e.target.value)}
+                     displayEmpty
+                   >
+                     <MenuItem value="" disabled>
+                        Select a qualification
+                      </MenuItem>
+                      {CounsellorQualification.map((e,i) => (
+                        <MenuItem key={i} value={e}>{e}</MenuItem>
+                      ))}
+                   </Select>
+                  ) : (
+                    <h6>{qualification || "N/A"}</h6>
+                  )}
+                </div>
+              </div>
+              <div className="col-md-6 col-lg-4">
+                <div className={styles["box"]}>
+                  <div className={styles.heading}>Specialization</div>
+                  {showmykycinput ? (
+                     <Select
+                     sx={{ mt: 1 }}
+                     fullWidth
+                     disabled
+                     size="small"
+                     margin="dense"
+                     value={specialization}
+                      onChange={(e) => setSpecialization(e.target.value)}
+                     displayEmpty
+                   >
+                     <MenuItem value="" disabled>
+                        Select a Specialization
+                      </MenuItem>
+                      {CounsellorSpecilization.map((e,i) => (
+                        <MenuItem key={i} value={e}>{e}</MenuItem>
+                      ))}
+                   </Select>
+                  ) : (
+                    <h6>{specialization || "N/A"}</h6>
+                  )}
+                </div>
+              </div>
+              <div className="col-md-6 col-lg-4">
+                <div className={styles["box"]}>
+                  <div className={styles.heading}>Language</div>
                   {showmykycinput ? (
                      <Select
                      sx={{ mt: 1 }}
                      fullWidth
                      size="small"
                      margin="dense"
-                     value={maritalstatus}
-                     onChange={(e) => setMaritalstatus(e.target.value)}
+                     value={Language}
+                      onChange={(e) => setLanguage(e.target.value)}
                      displayEmpty
                    >
-                       <MenuItem disabled value="">
-                        Select a Marital Status
+                     <MenuItem value="" disabled>
+                        Select a Language
                       </MenuItem>
-                      {maritalType.map((e,i) => (
-                        <MenuItem key={i} value={e.value}>{e.MarrigeType}</MenuItem>
+                      {CounsellorLanguage.map((e,i) => (
+                        <MenuItem key={i} value={e}>{e}</MenuItem>
                       ))}
                    </Select>
-                  
                   ) : (
-                    <h6>{maritalstatus || "N/A"}</h6>
-                  )}
-                </div>
-              </div>
-              <div className="col-md-6 col-lg-4">
-                <div className={styles["box"]}>
-                  <div className={styles.heading}>LinkedIn Link</div>
-                  {showmykycinput ? (
-                    <TextField
-                      fullWidth
-                      size="small"
-                      margin="dense"
-                      type="text"
-                      value={linkedIn}
-                      onChange={(e) => {
-                        const inputValue = e.target.value;
-                    
-                        // Regular expression to check if the input contains only English characters
-                        const isEnglish = /^[a-zA-Z\s]*$/.test(inputValue);
-                    
-                        // If the input contains only English characters, update the state
-                        if (isEnglish) {
-                          setLinkedIn(
-                            inputValue
-                          );
-                        } else {
-                          Swal.fire({
-                            icon: "error",
-                            title: "Invalid input",
-                            text: "Please enter only English characters!",
-                          });
-                        }
-                      }}
-                    />
-                  ) : (
-                    <h6>
-                      { linkedIn &&
-                        <a href={linkedIn} target="_blank">
-                          {linkedIn}
-                        </a>
-                       || "N/A"}
-                    </h6>
+                    <h6>{Language || "N/A"}</h6>
                   )}
                 </div>
               </div>
@@ -345,30 +443,7 @@ const Myprofile = () => {
                 </div>
               </div>
 
-              <div className="col-md-6 col-lg-4">
-                <div className={styles["box"]}>
-                  <div className={styles.heading}>Physically challenged?</div>
-                  {showmykycinput ? (
-                    <TextField
-                      select
-                      fullWidth
-                      size="small"
-                      margin="dense"
-                      value={physically}
-                      onChange={(e) => setPhysically(e.target.value)}
-                    >
-                      <MenuItem disabled value="">
-                        Select a Physically challenged
-                      </MenuItem>
-                      {Physicalchallenge.map((e) => (
-                        <MenuItem value={e.value}>{e.PhysicalType}</MenuItem>
-                      ))}
-                    </TextField>
-                  ) : (
-                    <h6>{physically ? "Yes" : "No"}</h6>
-                  )}
-                </div>
-              </div>
+             
               <div className="col-md-6 col-lg-4">
                 <div className={styles["box"]}>
                   <div className={styles.heading}>Mobile Number</div>
@@ -498,7 +573,7 @@ const Myprofile = () => {
               </div>
             </div>
           </div>
-
+:<p style={{display:'flex',justifyContent:'center',alignItems:'center',height:'85vh',color:'red'}}>{error}</p>}
           {showmykycinput == true && (
             <CTA
               title="Save"
@@ -507,6 +582,7 @@ const Myprofile = () => {
               onClick={handleSubmit}
             />
           )}
+          
         </>
       ) : (
         <div

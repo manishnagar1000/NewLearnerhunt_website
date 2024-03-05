@@ -14,56 +14,16 @@ import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import CallIcon from "@mui/icons-material/Call";
+import dynamic from "next/dynamic";
+const AgoraUIKit = dynamic(() => import("agora-react-uikit"), { ssr: false });
+
+import BeforeUnloadPrompt from '/components/Comps/BeforeUnloadPrompt'
 
 const pagesHavePopup = [];
 
-const counselorsData = [
-  {
-    id: 1,
-    name: "Dr. Emily Smith",
-    specialization: "Marriage and Family Therapist",
-    location: "New York, NY",
-    bio: "Dr. Emily Smith is a licensed Marriage and Family Therapist with over 10 years of experience. She specializes in helping couples and families navigate through challenging times and improve their relationships.",
-  },
-  {
-    id: 2,
-    name: "John Doe",
-    specialization: "Addiction Counselor",
-    location: "Los Angeles, CA",
-    bio: "John Doe is a certified Addiction Counselor with a passion for helping individuals overcome substance abuse and addiction. With a compassionate approach, he assists his clients in reclaiming their lives from addiction.",
-  },
-  {
-    id: 3,
-    name: "Dr. Sarah Johnson",
-    specialization: "Clinical Psychologist",
-    location: "Chicago, IL",
-    bio: "Dr. Sarah Johnson is a Clinical Psychologist specializing in anxiety, depression, and trauma. With a holistic approach, she empowers her clients to overcome obstacles and achieve mental wellness.",
-  },
-  {
-    id: 4,
-    name: "Dr. Sarah Johnson",
-    specialization: "Clinical Psychologist",
-    location: "Chicago, IL",
-    bio: "Dr. Sarah Johnson is a Clinical Psychologist specializing in anxiety, depression, and trauma. With a holistic approach, she empowers her clients to overcome obstacles and achieve mental wellness.",
-  },
-  {
-    id: 5,
-    name: "Dr. Sarah Johnson",
-    specialization: "Clinical Psychologist",
-    location: "Chicago, IL",
-    bio: "Dr. Sarah Johnson is a Clinical Psychologist specializing in anxiety, depression, and trauma. With a holistic approach, she empowers her clients to overcome obstacles and achieve mental wellness.",
-  },
-  {
-    id: 6,
-    name: "Dr. Sarah Johnson",
-    specialization: "Clinical Psychologist",
-    location: "Chicago, IL",
-    bio: "Dr. Sarah Johnson is a Clinical Psychologist specializing in anxiety, depression, and trauma. With a holistic approach, she empowers her clients to overcome obstacles and achieve mental wellness.",
-  },
-];
-
 export default function CollegeName({ collegedata }) {
-  // console.log(collegedata);
+  console.log(collegedata);
   const collegeid = collegedata.generalinfo._id;
   const [userStatus, setUserStatus] = useState(false);
   const [userid, setUserid] = useState("");
@@ -71,6 +31,24 @@ export default function CollegeName({ collegedata }) {
   const [isLoginFormOpen, setIsLoginFormOpen] = useState(false);
   const [isApplyformOpen, setIsApplyformOpen] = useState(false);
   const [activetab, setActiveTab] = useState("overview");
+  const [videoCall, setVideoCall] = useState(false);
+  const [callingSession,setCallingSession] = useState(null)
+  const [rtcProps, setRtcProps] = useState({
+    appId: "a0ac742ba6f24cf88219cb67e7f1f342",
+    channel: "",
+    tokenUrl: "https://learnerhunt-backend.onrender.com",
+    uid: "",
+    enableScreensharing: true,
+  });
+  const [rtmProps, setRtmProps] = useState({
+    username: "",
+    // username: username || "user",
+    displayUsername: true,
+    tokenUrl: "https://learnerhunt-backend.onrender.com",
+    callActive: true,
+    enableVideo: true,
+    enableAudio: true,
+  });
   const [formData, setFormData] = useState({
     fullname: "",
     email: "",
@@ -128,6 +106,24 @@ export default function CollegeName({ collegedata }) {
     // console.log("formopen");
     setIsApplyformOpen(true);
   };
+
+  // const rtcProps = {
+  //     appId: "a0ac742ba6f24cf88219cb67e7f1f342",
+  //     channel: "",
+  //     tokenUrl: "https://learnerhunt-backend.onrender.com",
+  //     uid:'',
+  //     enableScreensharing: true,
+  // };
+  // const rtmProps = {
+  //     username: "",
+  //     // username: username || "user",
+  //     displayUsername: true,
+  //     tokenUrl: 'https://learnerhunt-backend.onrender.com',
+  //     callActive: true,
+  //     enableVideo: true,
+  //     enableAudio: true,
+  // }
+
   const indianStates = [
     "Andhra Pradesh",
     "Arunachal Pradesh",
@@ -205,6 +201,20 @@ export default function CollegeName({ collegedata }) {
     }
   };
 
+  const generateRandomHash = (length) => {
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let result = "";
+
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(
+        Math.floor(Math.random() * characters.length)
+      );
+    }
+
+    return result;
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -222,10 +232,117 @@ export default function CollegeName({ collegedata }) {
       [name]: value,
     }));
   };
-  const handleCall = (counselorName) => {
-    alert(`Calling ${counselorName}`);
-    // You can implement the calling functionality here
+  const handleCall = (e, counsellorInfo) => {
+    e.preventDefault();
+    // console.log(counsellorInfo);
+    // console.log('hello')
+    const channel = generateRandomHash(16),
+      uid = Math.floor(Math.random() * 900) + 100,
+      // cid = Math.floor(Math.random() * 900) + 100,
+      username = localStorage.getItem("useremail");
+    setRtcProps((prevProps) => ({
+      ...prevProps,
+      channel: channel,
+      uid: uid,
+    }));
+    setRtmProps((prevProps) => ({
+      ...prevProps,
+      username: username,
+    }));
+    setCallingSession((prevProps) => ({
+      ...prevProps,
+      counsEmail: counsellorInfo.email,
+      studEmail:username,
+      sid:uid,
+      channel:channel
+    }))
+    try {
+      const fd = new FormData();
+      fd.append("studEmail", username);
+      fd.append("counsEmail", counsellorInfo.email);
+      fd.append("sid", uid);
+      // fd.append("cid", cid);
+      fd.append("channel", channel);
+
+      fetch(
+        process.env.NEXT_PUBLIC_API_ENDPOINT + "/student/video-call",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("userid")}`,
+          },
+          method: "POST",
+          body: fd,
+        }
+      ).then(async (response) => {
+        var res = await response.json();
+        console.log(res);
+        // console.log(res.error)
+        if (res.error) {
+          Swal.fire({
+            title: "error",
+            text: `${res.error}`,
+            icon: "error",
+            confirmButtonText: "Ok",
+          });
+        } else {
+          setVideoCall(true);
+
+          // Swal.fire({
+          //   title: "Success",
+          //   text: `${res.message}`,
+          //   icon: "success",
+          //   confirmButtonText: "Ok",
+          // }).then(() => {
+          //   console.log('hello')
+          // });
+        }
+      });
+    } catch (error) {
+      console.error("Failed to fetch OTP:", error);
+    }
+    // setVideoCall(true)
   };
+
+  const handleCallEnd = (e)=>{
+    try {
+      const fd = new FormData();
+      fd.append("studEmail", callingSession.studEmail);
+      fd.append("counsEmail", callingSession.counsEmail);
+      fd.append("sid", callingSession.sid);
+      fd.append("channel",callingSession.channel);
+
+      fetch(
+        process.env.NEXT_PUBLIC_API_ENDPOINT + "/student/video-call",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("userid")}`,
+          },
+          method: "PUT",
+          body: fd,
+        }
+      ).then(async (response) => {
+        var res = await response.json();
+        console.log(res);
+        // console.log(res.error)
+        if (res.error) {
+          Swal.fire({
+            title: "error",
+            text: `${res.error}`,
+            icon: "error",
+            confirmButtonText: "Ok",
+          });
+        } else {
+          setVideoCall(false)
+        }
+      });
+    } catch (error) {
+      console.error("Failed to fetch OTP:", error);
+    }
+    
+  }
+
+ 
+
   const handleChangepopup = (e) => {
     const { name, value } = e.target;
     // console.log(name,value)
@@ -938,120 +1055,38 @@ export default function CollegeName({ collegedata }) {
                     </div>
                   </div>
                 )}
-                {/* <div className={Classes["description-section"]}>
+                <div className={Classes["description-section"]}>
                   <h3>Meet Our Counselors</h3>
                   <div>
                     <Carousel
                       responsive={responsive}
                       showDots={true}
                       partialVisbile={false}
+                      itemAriaLabel="counsellor"
                     >
-                      {counselorsData.length > 0
-                        ? counselorsData.map((counselor) => (
+                      {collegedata.counsellors.length > 0
+                        ? collegedata.counsellors.map((s) => (
                             <div
-                              key={counselor.id}
-                              style={{
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                flexDirection: "column",
-                                width: "300px",
-                                margin: "20px",
-                                border: "1px solid #ccc",
-                                borderRadius: "10px",
-                              }}
+                              key={s._id}
+                              className={Classes["Counsellor-box"]}
                             >
-                              <div
-                                className={Classes["img-div-counsellor"]}
-                                style={{
-                                  position: "relative",
-                                  background: "rgb(0, 123, 255)",
-                                  borderRadius: "9px 9px 0px 0px",
-                                  height: "100px",
-                                  width: "100%",
-                                  marginBottom: "50px",
-                                }}
-                              >
+                              <div className={Classes["img-div-counsellor"]}>
                                 <img
                                   src={
                                     "/assets/images/counsellorFolder/counsellor-profile.png"
                                   }
-                                  alt={counselor.name}
-                                  style={{
-                                    width: "90px",
-                                    height: "90px",
-                                    borderRadius: "50px",
-                                    border: "3px solid white",
-                                    position: "absolute",
-                                    left: "50%",
-                                    bottom: "-38%",
-                                    transform: "translate(-50%,-8%)",
-                                  }}
+                                  alt={s.name}
                                 />
                               </div>
                               <h4 style={{ marginTop: "10px" }}>
-                                {counselor.name}
+                                {s.name.charAt(0).toUpperCase() +
+                                  s.name.slice(1)}
                               </h4>
-                              <p> {counselor.specialization}</p>
+                              <p> {s.specialization}</p>
                               <p>
-                                <strong>Location:</strong> {counselor.location}
+                                <strong>Location:</strong> {s.state},{s.city}
                               </p>
-                              <div
-                                style={{
-                                  display: "flex",
-                                  justifyContent: "center",
-                                  alignItems: "center",
-                                }}
-                              >
-                                <img
-                                  src={
-                                    "/assets/images/counsellorFolder/facebook.png"
-                                  }
-                                  alt={counselor.name}
-                                  style={{
-                                    width: "10%",
-                                    height: "10%",
-                                    margin: "0 0.2rem",
-                                    borderRadius: "5px",
-                                  }}
-                                />
-                                <img
-                                  src={
-                                    "/assets/images/counsellorFolder/linkedin.png"
-                                  }
-                                  alt={counselor.name}
-                                  style={{
-                                    width: "10%",
-                                    height: "10%",
-                                    margin: "0 0.2rem",
-                                    borderRadius: "5px",
-                                  }}
-                                />
-                                <img
-                                  src={
-                                    "/assets/images/counsellorFolder/twitter.png"
-                                  }
-                                  alt={counselor.name}
-                                  style={{
-                                    width: "10%",
-                                    height: "10%",
-                                    margin: "0 0.2rem",
-                                    borderRadius: "5px",
-                                  }}
-                                />
-                                <img
-                                  src={
-                                    "/assets/images/counsellorFolder/youtube.png"
-                                  }
-                                  alt={counselor.name}
-                                  style={{
-                                    width: "10%",
-                                    height: "10%",
-                                    margin: "0 0.2rem",
-                                    borderRadius: "5px",
-                                  }}
-                                />
-                              </div>
+
                               <div
                                 style={{
                                   display: "flex",
@@ -1060,22 +1095,69 @@ export default function CollegeName({ collegedata }) {
                                   margin: "0.5rem 0",
                                 }}
                               >
-                                <button
-                                  onClick={() => handleCall(counselor.name)}
-                                  style={{
-                                    padding: "10px 20px",
-                                    margin: "0 0.2rem",
-                                    backgroundColor: "#007bff",
-                                    color: "#fff",
-                                    border: "none",
-                                    borderRadius: "25px",
-                                    cursor: "pointer",
-                                  }}
-                                >
-                                  Call
-                                </button>
+                                {userStatus ? ( // Check if userStatus is truthy
+                                  videoCall ? ( // Check if videoCall is truthy
+                                    // If both userStatus and videoCall are truthy, render the video call modal
+                                    <Modal
+                                      fullscreen
+                                      show={true}
+                                      centered
+                                      onHide={() => setVideoCall(false)}
+                                    >
+                                      <Modal.Body>
+                                        <div
+                                          style={{
+                                            display: "flex",
+                                            width: "100%",
+                                            height: "100%",
+                                          }}
+                                        >
+                                          <AgoraUIKit
+                                            rtcProps={rtcProps}
+                                            rtmProps={rtmProps}
+                                            callbacks={{
+                                              EndCall: handleCallEnd
+                                            }}
+                                          />
+                                        </div>
+                                      </Modal.Body>
+                                    </Modal>
+                                  ) : (
+                                    // If userStatus is truthy but videoCall is falsey, render the call button
+                                    <button
+                                      onClick={(e) => handleCall(e, s)}
+                                      style={{
+                                        padding: "10px 20px",
+                                        margin: "0 0.2rem",
+                                        backgroundColor: "#007bff",
+                                        color: "#fff",
+                                        border: "none",
+                                        borderRadius: "25px",
+                                        cursor: "pointer",
+                                      }}
+                                    >
+                                      <CallIcon fontSize="small" /> Call
+                                    </button>
+                                  )
+                                ) : (
+                                  // If userStatus is falsey, render a default button (e.g., "hello")
+                                  <button
+                                    onClick={handlelogin}
+                                    style={{
+                                      padding: "10px 20px",
+                                      margin: "0 0.2rem",
+                                      backgroundColor: "#007bff",
+                                      color: "#fff",
+                                      border: "none",
+                                      borderRadius: "25px",
+                                      cursor: "pointer",
+                                    }}
+                                  >
+                                    <CallIcon fontSize="small" /> Call
+                                  </button>
+                                )}
 
-                                <button
+                                {/* <button
                                   onClick={() => handleCall(counselor.name)}
                                   style={{
                                     padding: "10px 20px",
@@ -1088,14 +1170,17 @@ export default function CollegeName({ collegedata }) {
                                   }}
                                 >
                                   Message
-                                </button>
+                                </button> */}
                               </div>
                             </div>
                           ))
                         : "no record"}
                     </Carousel>
                   </div>
-                </div> */}
+                </div>
+
+                {videoCall &&
+                <BeforeUnloadPrompt onBeforeUnload={handleCallEnd} />}
 
                 {collegedata.overview.college_faqs.length > 0 && (
                   <div className={Classes["description-section"]}>

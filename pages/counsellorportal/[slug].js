@@ -25,7 +25,7 @@ const componentList = [
   },
   {
     comp: <InterstedStudent />,
-    slug: "interested-student",
+    slug: "call-history",
   },
  
 ];

@@ -533,7 +533,7 @@ export default function EnhancedTable() {
         }
       }
     } else {
-      console.log(email);
+      // console.log(email);
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
       if (email == "") {
