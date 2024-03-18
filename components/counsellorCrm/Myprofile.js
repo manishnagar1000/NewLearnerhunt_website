@@ -59,7 +59,7 @@ const Myprofile = () => {
       .then(async (response) => {
         if (response.ok) {
           var res = await response.json();
-          console.log(res.data);
+          // console.log(res.data);
           oldData = res.data;
           setname(res.data.name);
         setGender(res.data.gender);
@@ -158,7 +158,7 @@ const Myprofile = () => {
   };
 
   const handleKycclose = () => {
-    console.log(oldData);
+    // console.log(oldData);
     setname(oldData.name);
     setDate(oldData.createdAt.split('T')[0]);
     setGender(oldData.gender);
@@ -181,7 +181,7 @@ const Myprofile = () => {
 
 
 const handleChange = (event) => {
-  console.log(event.target.value)
+  // console.log(event.target.value)
   // const {
   //   target: { value },
   // } = event;
@@ -198,7 +198,7 @@ const handleChange = (event) => {
 
 
 useEffect(() => {
- console.log(clgname)
+//  console.log(clgname)
 }, [clgname])
 
  

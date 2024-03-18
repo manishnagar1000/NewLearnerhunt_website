@@ -21,6 +21,7 @@ import ManageUser from "@/components/CRM/ManageUser";
 import AssociatedCounsellorCrm from "@/components/CRM/AssociatedCounselorCrm";
 import LandingPageLeads from "@/components/CRM/LandingPageLeads";
 import TopCollegeSection from "@/components/CRM/TopCollegeSection";
+import SEOManage from "@/components/CRM/SeoManage";
 
 
 const componentList = [
@@ -113,6 +114,11 @@ const componentList = [
     comp:<TopCollegeSection/>,
     slug:"web-top-colleges",
     role:[4]
+  },
+  {
+    comp:<SEOManage/>,
+    slug:"seo-manager",
+    role:[0,4]
   },
   // {
   //   comp:<ImportExport/>,

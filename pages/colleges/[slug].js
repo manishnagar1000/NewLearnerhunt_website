@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Classes from "/styles/colleges.module.css";
-// import Link from 'next/link'
 import { useRouter } from "next/router";
 import LoginForm from "../../components/Loginuc";
 import { Container, Row, Col, Modal, Form, Button } from "react-bootstrap";
@@ -10,20 +9,28 @@ import Tabs from "react-bootstrap/Tabs";
 import Table from "react-bootstrap/Table";
 import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
-import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import CallIcon from "@mui/icons-material/Call";
+import DuoIcon from "@mui/icons-material/Duo";
+// import CallIcon from "@mui/icons-material/Call";
+import VideoCameraFrontIcon from "@mui/icons-material/VideoCameraFront";
 import dynamic from "next/dynamic";
 const AgoraUIKit = dynamic(() => import("agora-react-uikit"), { ssr: false });
 
-import BeforeUnloadPrompt from '/components/Comps/BeforeUnloadPrompt'
+import BeforeUnloadPrompt from "/components/Comps/BeforeUnloadPrompt";
+// tags title and metatag
+// import { getMetaData } from "/components/metadata";
+import Head from "next/head";
 
 const pagesHavePopup = [];
 
+const agoraAppid = process.env.NEXT_PUBLIC_AGORA_APP_ID,
+  agoraTokenurl = process.env.NEXT_PUBLIC_AGORA_TOKEN_URL;
+
 export default function CollegeName({ collegedata }) {
-  console.log(collegedata);
+  // console.log(collegedata);
+  console.log(collegedata.seodata)
   const collegeid = collegedata.generalinfo._id;
   const [userStatus, setUserStatus] = useState(false);
   const [userid, setUserid] = useState("");
@@ -32,11 +39,11 @@ export default function CollegeName({ collegedata }) {
   const [isApplyformOpen, setIsApplyformOpen] = useState(false);
   const [activetab, setActiveTab] = useState("overview");
   const [videoCall, setVideoCall] = useState(false);
-  const [callingSession,setCallingSession] = useState(null)
+  const [callingSession, setCallingSession] = useState(null);
   const [rtcProps, setRtcProps] = useState({
-    appId: "a0ac742ba6f24cf88219cb67e7f1f342",
+    appId: agoraAppid,
     channel: "",
-    tokenUrl: "https://learnerhunt-backend.onrender.com",
+    tokenUrl: agoraTokenurl,
     uid: "",
     enableScreensharing: true,
   });
@@ -44,7 +51,7 @@ export default function CollegeName({ collegedata }) {
     username: "",
     // username: username || "user",
     displayUsername: true,
-    tokenUrl: "https://learnerhunt-backend.onrender.com",
+    tokenUrl: agoraTokenurl,
     callActive: true,
     enableVideo: true,
     enableAudio: true,
@@ -66,6 +73,9 @@ export default function CollegeName({ collegedata }) {
   const [showModal, setShowModal] = useState(false);
   const router = useRouter();
   const { slug } = router.query;
+  console.log(slug)
+  // const meta = getMetaData(slug);
+  // console.log(meta);
   // console.log(slug);
   useEffect(() => {
     setShowModal(
@@ -252,10 +262,10 @@ export default function CollegeName({ collegedata }) {
     setCallingSession((prevProps) => ({
       ...prevProps,
       counsEmail: counsellorInfo.email,
-      studEmail:username,
-      sid:uid,
-      channel:channel
-    }))
+      studEmail: username,
+      sid: uid,
+      channel: channel,
+    }));
     try {
       const fd = new FormData();
       fd.append("studEmail", username);
@@ -264,16 +274,13 @@ export default function CollegeName({ collegedata }) {
       // fd.append("cid", cid);
       fd.append("channel", channel);
 
-      fetch(
-        process.env.NEXT_PUBLIC_API_ENDPOINT + "/student/video-call",
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("userid")}`,
-          },
-          method: "POST",
-          body: fd,
-        }
-      ).then(async (response) => {
+      fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/student/video-call", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("userid")}`,
+        },
+        method: "POST",
+        body: fd,
+      }).then(async (response) => {
         var res = await response.json();
         console.log(res);
         // console.log(res.error)
@@ -303,26 +310,23 @@ export default function CollegeName({ collegedata }) {
     // setVideoCall(true)
   };
 
-  const handleCallEnd = (e)=>{
+  const handleCallEnd = (e) => {
     try {
       const fd = new FormData();
       fd.append("studEmail", callingSession.studEmail);
       fd.append("counsEmail", callingSession.counsEmail);
       fd.append("sid", callingSession.sid);
-      fd.append("channel",callingSession.channel);
+      fd.append("channel", callingSession.channel);
 
-      fetch(
-        process.env.NEXT_PUBLIC_API_ENDPOINT + "/student/video-call",
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("userid")}`,
-          },
-          method: "PUT",
-          body: fd,
-        }
-      ).then(async (response) => {
+      fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/student/video-call", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("userid")}`,
+        },
+        method: "PUT",
+        body: fd,
+      }).then(async (response) => {
         var res = await response.json();
-        console.log(res);
+        // console.log(res);
         // console.log(res.error)
         if (res.error) {
           Swal.fire({
@@ -332,16 +336,13 @@ export default function CollegeName({ collegedata }) {
             confirmButtonText: "Ok",
           });
         } else {
-          setVideoCall(false)
+          setVideoCall(false);
         }
       });
     } catch (error) {
       console.error("Failed to fetch OTP:", error);
     }
-    
-  }
-
- 
+  };
 
   const handleChangepopup = (e) => {
     const { name, value } = e.target;
@@ -456,28 +457,82 @@ export default function CollegeName({ collegedata }) {
       ? collegedata.generalinfo.logo_img_path
       : "/assets/images/DummyLOGO.jpg";
   return (
-    <div className={Classes["colleges-slug"]}>
-      <div
-        className={Classes["banner-img"]}
-        style={{
-          backgroundImage: `url(${dummyBannerImg})`,
-          position: "relative",
-        }}
-      >
-        <div className={Classes["clg-hero-section"]}>
-          <div className={Classes["heading-section"]}>
-            <div className={Classes["left-div"]}>
-              <img src={dummyLogoImg} alt="dummylogo" />
-            </div>
-            <div className={Classes["right-div"]}>
-              <h1>{collegedata.generalinfo.college_name}</h1>
-              <p>
-                <img src="/assets/images/location.png" alt="location" />
-                <span>Campus Location : {collegedata.generalinfo.city}</span>
-                &nbsp;&nbsp;
-                <img src="/assets/images/bookmark.png" alt="bookmark" />
-                <span>Approved By : {collegedata.generalinfo.approved_by}</span>
-                {/* &nbsp;&nbsp;
+    <>
+      <Head>
+        <title>{collegedata.seodata.title}</title>
+        <meta name="description" content={collegedata.seodata.description} />
+        <meta name="keywords" content={collegedata.seodata.keywords} />
+        <link rel="canonical" href={collegedata.seodata.canonical} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(collegedata.seodata.structured_data),
+          }}
+        />
+
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(collegedata.seodata.faq_structured_data),
+          }}
+        />
+        {/* Open Graph data */}
+        <meta property="og:locale" content={collegedata.seodata.og_locale}/>
+        <meta property="og:type" content={collegedata.seodata.og_type} />
+        <meta property="og:title" content={collegedata.seodata.og_title} />
+        <meta property="og:description" content={collegedata.seodata.og_description}/>
+        <meta
+          property="og:url"
+          content={collegedata.seodata.og_url}
+        />
+        <meta property="og:site_name" content='Learnerhunt' />
+        <meta
+          property="og:image"
+          content={collegedata.seodata.og_image}
+        />
+        <meta
+          property="og:image:secure_url"
+          content={collegedata.seodata.og_image_secure_url}
+        />
+        <meta property="og:image:width" content={collegedata.seodata.og_image_width} />
+        <meta property="og:image:height" content={collegedata.seodata.og_image_height}/>
+        <meta property="og:image:alt" content={collegedata.seodata.og_image_alt} />
+        {/* Twitter Card data */}
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:description" content={collegedata.seodata.twitter_description} />
+        <meta name="twitter:title" content={collegedata.seodata.twitter_title} />
+        <meta name="twitter:site" content={collegedata.seodata.twitter_site} />
+        <meta
+          name="twitter:image"
+          content="/assets/images/01/qb-license/banner/banner.webp"
+        />
+        <meta name="twitter:creator" content={collegedata.seodata.twitter_creater} />
+      </Head>
+
+      <div className={Classes["colleges-slug"]}>
+        <div
+          className={Classes["banner-img"]}
+          style={{
+            backgroundImage: `url(${dummyBannerImg})`,
+            position: "relative",
+          }}
+        >
+          <div className={Classes["clg-hero-section"]}>
+            <div className={Classes["heading-section"]}>
+              <div className={Classes["left-div"]}>
+                <img src={dummyLogoImg} alt="dummylogo" />
+              </div>
+              <div className={Classes["right-div"]}>
+                <h1>{collegedata.generalinfo.college_name}</h1>
+                <p>
+                  <img src="/assets/images/location.png" alt="location" />
+                  <span>Campus Location : {collegedata.generalinfo.city}</span>
+                  &nbsp;&nbsp;
+                  <img src="/assets/images/bookmark.png" alt="bookmark" />
+                  <span>
+                    Approved By : {collegedata.generalinfo.approved_by}
+                  </span>
+                  {/* &nbsp;&nbsp;
                 {userStatus ? (
                   <>
                     <ReceiptLongIcon />
@@ -526,33 +581,33 @@ export default function CollegeName({ collegedata }) {
                 >
                   Download Brochure
                 </span> */}
-              </p>
+                </p>
+              </div>
             </div>
+          </div>
+
+          <div className={Classes["commonStickyFooter"]}>
+            {/* <div className={Classes["form-buttons"]}> */}
+            {userStatus ? (
+              <button onClick={handleopenform}>Apply Form</button>
+            ) : (
+              <button onClick={handlelogin}>Apply Now</button>
+            )}
+            <button onClick={handleDownloadBrochure}>Download Brochure</button>
+
+            {/* </div> */}
           </div>
         </div>
 
-        <div className={Classes["commonStickyFooter"]}>
-          {/* <div className={Classes["form-buttons"]}> */}
-          {userStatus ? (
-            <button onClick={handleopenform}>Apply Form</button>
-          ) : (
-            <button onClick={handlelogin}>Apply Now</button>
-          )}
-          <button onClick={handleDownloadBrochure}>Download Brochure</button>
+        <Tabs
+          activeKey={activetab}
+          id="uncontrolled-tab-example"
+          className={Classes["tabs-bar"]}
+          onSelect={(k) => setActiveTab(k)}
+        >
+          {/* <Tab eventKey="general" title="General"> */}
 
-          {/* </div> */}
-        </div>
-      </div>
-
-      <Tabs
-        activeKey={activetab}
-        id="uncontrolled-tab-example"
-        className={Classes["tabs-bar"]}
-        onSelect={(k) => setActiveTab(k)}
-      >
-        {/* <Tab eventKey="general" title="General"> */}
-
-        {/* <div className="container">
+          {/* <div className="container">
         <div className={Classes["content-section"]}>
           <div className={Classes["heading-section"]}>
             <div className={Classes["left-div"]}>
@@ -674,12 +729,12 @@ export default function CollegeName({ collegedata }) {
         </div>
       </div> */}
 
-        {/* </Tab> */}
-        <Tab eventKey="overview" title="Overview">
-          {Object.keys(collegedata.overview).length > 0 && (
-            <div className="container">
-              <div className={Classes["content-section"]}>
-                {/* <div className={Classes["heading-section"]}>
+          {/* </Tab> */}
+          <Tab eventKey="overview" title="Overview">
+            {Object.keys(collegedata.overview).length > 0 && (
+              <div className="container">
+                <div className={Classes["content-section"]}>
+                  {/* <div className={Classes["heading-section"]}>
                 <div className={Classes["left-div"]}>
                   <img src={dummyLogoImg} alt="" />
                 </div>
@@ -693,300 +748,305 @@ export default function CollegeName({ collegedata }) {
                   </p>
                 </div>
               </div> */}
-                {collegedata.overview.description.length > 0 && (
-                  <div className={Classes["description-section"]}>
-                    <h3>{collegedata.generalinfo.college_name} Overview</h3>
-                    <p style={{ whiteSpace: "pre-line" }}>
-                      {collegedata.overview.description}
-                    </p>
-                  </div>
-                )}
-                <div className={Classes["description-section"]}>
-                  <h3>{collegedata.generalinfo.college_name} Highlights</h3>
-                  <Table responsive bordered>
-                    <thead>
-                      <tr>
-                        <th>Particulars </th>
-                        <th>Details </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>Establishment Year</td>
-                        <td>
-                          {new Date(
-                            collegedata.overview.establishment_year
-                          ).getFullYear() || "-"}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Institute Type </td>
-                        <td>{collegedata.generalinfo.college_type || "-"}</td>
-                      </tr>
-                      <tr>
-                        <td>Recognised By</td>
-                        <td>{collegedata.overview.recognised_by || "-"}</td>
-                      </tr>
-                      <tr>
-                        <td>Approved By</td>
-                        <td>{collegedata.generalinfo.approved_by || "-"}</td>
-                      </tr>
-                      <tr>
-                        <td>Foreign Collaborations</td>
-                        <td>
-                          {collegedata.overview.foreign_collaboration || "-"}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Campus Size</td>
-                        <td>{collegedata.overview.campus_size || "-"}</td>
-                      </tr>
-                      <tr>
-                        <td>Where to Apply</td>
-                        <td>
-                          {collegedata.overview.where_to_apply ? (
-                            <a
-                              href={collegedata.overview.where_to_apply}
-                              target="_blank"
-                            >
-                              {collegedata.overview.where_to_apply}
-                            </a>
-                          ) : userStatus ? (
-                            <>
-                              <ReceiptLongIcon />
-
-                              <span
-                                style={{
-                                  color: "#0d6fed",
-                                  cursor: "pointer",
-                                  textDecoration: "underline",
-                                  paddingLeft: "0.3rem",
-                                  fontWeight: "600",
-                                }}
-                                onClick={handleopenform}
-                              >
-                                Apply Form
-                              </span>
-                            </>
-                          ) : (
-                            <>
-                              <ReceiptLongIcon />
-                              <span
-                                style={{
-                                  color: "#0d6fed",
-                                  cursor: "pointer",
-                                  textDecoration: "underline",
-                                  paddingLeft: "0.3rem",
-                                  fontWeight: "600",
-                                }}
-                                onClick={handlelogin}
-                              >
-                                Apply Now
-                              </span>
-                            </>
-                          )}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>No. of Courses Offered</td>
-                        <td>
-                          {collegedata.overview.course_offered_count || "-"}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Total Faculty</td>
-                        <td>{collegedata.overview.total_faculty || "-"}</td>
-                      </tr>
-                      <tr>
-                        <td>Total Intake</td>
-                        <td>{collegedata.overview.total_intake || "-"}</td>
-                      </tr>
-                      <tr>
-                        <td>Average Package</td>
-                        <td>{collegedata.overview.avg_package || "-"}</td>
-                      </tr>
-                      <tr>
-                        <td>Highest Package</td>
-                        <td>
-                          {collegedata.overview.highest_annual_package || "-"}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Top Recruiters</td>
-                        <td>{collegedata.overview.top_recruiter || "-"}</td>
-                      </tr>
-                      <tr>
-                        <td>Campus Facilities</td>
-                        <td>{collegedata.overview.campus_facilities || "-"}</td>
-                      </tr>
-                      <tr>
-                        <td>Exams Accepted</td>
-                        <td>{collegedata.overview.exams_accepted || "-"}</td>
-                      </tr>
-                      <tr>
-                        <td>College Collaborations</td>
-                        <td>
-                          {collegedata.overview.college_collaborations || "-"}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </Table>
-
-                  {collegedata.overview.application_process && (
-                    <>
-                      <h3>
-                        {collegedata.generalinfo.college_name} Application
-                        process
-                      </h3>
-                      <p>{collegedata.overview.application_process}</p>
-                    </>
+                  {collegedata.overview.description.length > 0 && (
+                    <div className={Classes["description-section"]}>
+                      <h3>{collegedata.generalinfo.college_name} Overview</h3>
+                      <p style={{ whiteSpace: "pre-line" }}>
+                        {collegedata.overview.description}
+                      </p>
+                    </div>
                   )}
-                </div>
-                {collegedata.overview.offered_courses.length > 0 && (
                   <div className={Classes["description-section"]}>
-                    <h3>
-                      {collegedata.generalinfo.college_name} Offered Courses
-                    </h3>
-                    <Table responsive bordered hover>
-                      <thead>
-                        <tr>
-                          <th>Course Name </th>
-                          <th>Course Duration</th>
-                          <th>Annual Fees</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {collegedata.overview.offered_courses.map((s, i) => {
-                          return (
-                            <tr key={i}>
-                              <td
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setActiveTab("courses");
-                                  // console.log("hello");
-                                }}
-                              >
-                                {s.course_name}
-                              </td>
-                              <td>{s.course_duration}</td>
-                              <td>{s.annual_fees}</td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </Table>
-                  </div>
-                )}
-                {collegedata.overview.college_faculty.length > 0 && (
-                  <div className={Classes["description-section"]}>
-                    <h3>{collegedata.generalinfo.college_name} Faculty</h3>
-                    <Container>
-                      <Row>
-                        {collegedata.overview.college_faculty.map((s, i) => {
-                          return (
-                            <Col key={i} xs={12} md={6} lg={3}>
-                              <Card
-                                style={{
-                                  width: "100%",
-                                  margin: "1rem 0rem",
-                                }}
-                              >
-                                <Card.Body>
-                                  <blockquote className="blockquote mb-0">
-                                    <p>{s.designation}</p>
-                                    <footer className="blockquote-footer">
-                                      <cite title="Source Title">
-                                        {s.faculty_name}
-                                      </cite>
-                                    </footer>
-                                  </blockquote>
-                                </Card.Body>
-                              </Card>
-                            </Col>
-                          );
-                        })}
-                      </Row>
-                    </Container>
-                  </div>
-                )}
-                {collegedata.overview.admission_dates.length > 0 && (
-                  <div className={Classes["description-section"]}>
-                    <h3>
-                      {collegedata.generalinfo.college_name} Admission Dates
-                    </h3>
+                    <h3>{collegedata.generalinfo.college_name} Highlights</h3>
                     <Table responsive bordered>
                       <thead>
                         <tr>
-                          <th>Date</th>
-                          <th>Event Name</th>
-                          <th>Year</th>
+                          <th>Particulars </th>
+                          <th>Details </th>
                         </tr>
                       </thead>
                       <tbody>
-                        {collegedata.overview.admission_dates.map((s, i) => {
-                          return (
-                            <tr key={i}>
-                              <td>{s.date ? s.date.substring(0, 10) : "-"}</td>
-                              <td>{s.event_name || "-"}</td>
-                              <td>{s.year || "-"}</td>
-                            </tr>
-                          );
-                        })}
+                        <tr>
+                          <td>Establishment Year</td>
+                          <td>
+                            {new Date(
+                              collegedata.overview.establishment_year
+                            ).getFullYear() || "-"}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Institute Type </td>
+                          <td>{collegedata.generalinfo.college_type || "-"}</td>
+                        </tr>
+                        <tr>
+                          <td>Recognised By</td>
+                          <td>{collegedata.overview.recognised_by || "-"}</td>
+                        </tr>
+                        <tr>
+                          <td>Approved By</td>
+                          <td>{collegedata.generalinfo.approved_by || "-"}</td>
+                        </tr>
+                        <tr>
+                          <td>Foreign Collaborations</td>
+                          <td>
+                            {collegedata.overview.foreign_collaboration || "-"}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Campus Size</td>
+                          <td>{collegedata.overview.campus_size || "-"}</td>
+                        </tr>
+                        <tr>
+                          <td>Where to Apply</td>
+                          <td>
+                            {collegedata.overview.where_to_apply ? (
+                              <a
+                                href={collegedata.overview.where_to_apply}
+                                target="_blank"
+                              >
+                                {collegedata.overview.where_to_apply}
+                              </a>
+                            ) : userStatus ? (
+                              <>
+                                <ReceiptLongIcon />
+
+                                <span
+                                  style={{
+                                    color: "#0d6fed",
+                                    cursor: "pointer",
+                                    textDecoration: "underline",
+                                    paddingLeft: "0.3rem",
+                                    fontWeight: "600",
+                                  }}
+                                  onClick={handleopenform}
+                                >
+                                  Apply Form
+                                </span>
+                              </>
+                            ) : (
+                              <>
+                                <ReceiptLongIcon />
+                                <span
+                                  style={{
+                                    color: "#0d6fed",
+                                    cursor: "pointer",
+                                    textDecoration: "underline",
+                                    paddingLeft: "0.3rem",
+                                    fontWeight: "600",
+                                  }}
+                                  onClick={handlelogin}
+                                >
+                                  Apply Now
+                                </span>
+                              </>
+                            )}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>No. of Courses Offered</td>
+                          <td>
+                            {collegedata.overview.course_offered_count || "-"}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Total Faculty</td>
+                          <td>{collegedata.overview.total_faculty || "-"}</td>
+                        </tr>
+                        <tr>
+                          <td>Total Intake</td>
+                          <td>{collegedata.overview.total_intake || "-"}</td>
+                        </tr>
+                        <tr>
+                          <td>Average Package</td>
+                          <td>{collegedata.overview.avg_package || "-"}</td>
+                        </tr>
+                        <tr>
+                          <td>Highest Package</td>
+                          <td>
+                            {collegedata.overview.highest_annual_package || "-"}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Top Recruiters</td>
+                          <td>{collegedata.overview.top_recruiter || "-"}</td>
+                        </tr>
+                        <tr>
+                          <td>Campus Facilities</td>
+                          <td>
+                            {collegedata.overview.campus_facilities || "-"}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Exams Accepted</td>
+                          <td>{collegedata.overview.exams_accepted || "-"}</td>
+                        </tr>
+                        <tr>
+                          <td>College Collaborations</td>
+                          <td>
+                            {collegedata.overview.college_collaborations || "-"}
+                          </td>
+                        </tr>
                       </tbody>
                     </Table>
+
+                    {collegedata.overview.application_process && (
+                      <>
+                        <h3>
+                          {collegedata.generalinfo.college_name} Application
+                          process
+                        </h3>
+                        <p>{collegedata.overview.application_process}</p>
+                      </>
+                    )}
                   </div>
-                )}
-                {collegedata.overview.top_course.length > 0 && (
-                  <div className={Classes["description-section"]}>
-                    <h3>
-                      {collegedata.generalinfo.college_name} Top Courses & Fees
-                    </h3>
-                    <div className={Classes["collegeDetail_classNotToggled"]}>
-                      <Table>
+                  {collegedata.overview.offered_courses.length > 0 && (
+                    <div className={Classes["description-section"]}>
+                      <h3>
+                        {collegedata.generalinfo.college_name} Offered Courses
+                      </h3>
+                      <Table responsive bordered hover>
+                        <thead>
+                          <tr>
+                            <th>Course Name </th>
+                            <th>Course Duration</th>
+                            <th>Annual Fees</th>
+                          </tr>
+                        </thead>
                         <tbody>
-                          {collegedata.overview.top_course.map((s, i) => {
+                          {collegedata.overview.offered_courses.map((s, i) => {
                             return (
                               <tr key={i}>
                                 <td
-                                  className={
-                                    Classes["collegeDetail_courseName"]
-                                  }
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     setActiveTab("courses");
+                                    // console.log("hello");
                                   }}
                                 >
                                   {s.course_name}
-                                  <span
-                                    className={
-                                      Classes["collegeDetail_courseCount"]
-                                    }
-                                  >
-                                    {s.course_count}
-                                  </span>
                                 </td>
-                                <td
-                                  className={
-                                    Classes["collegeDetail_courseFees"]
-                                  }
-                                >
-                                  <span
-                                    className={
-                                      Classes["collegeDetail_customSpan"]
-                                    }
-                                  >
-                                    Annual Fee
-                                  </span>
-                                  <span
-                                    className={Classes["collegeDetail_price"]}
-                                  >
-                                    {s.annual_fees}
-                                  </span>
-                                </td>
+                                <td>{s.course_duration}</td>
+                                <td>{s.annual_fees}</td>
                               </tr>
                             );
                           })}
-                          {/* <tr>
+                        </tbody>
+                      </Table>
+                    </div>
+                  )}
+                  {collegedata.overview.college_faculty.length > 0 && (
+                    <div className={Classes["description-section"]}>
+                      <h3>{collegedata.generalinfo.college_name} Faculty</h3>
+                      <Container>
+                        <Row>
+                          {collegedata.overview.college_faculty.map((s, i) => {
+                            return (
+                              <Col key={i} xs={12} md={6} lg={3}>
+                                <Card
+                                  style={{
+                                    width: "100%",
+                                    margin: "1rem 0rem",
+                                  }}
+                                >
+                                  <Card.Body>
+                                    <blockquote className="blockquote mb-0">
+                                      <p>{s.designation}</p>
+                                      <footer className="blockquote-footer">
+                                        <cite title="Source Title">
+                                          {s.faculty_name}
+                                        </cite>
+                                      </footer>
+                                    </blockquote>
+                                  </Card.Body>
+                                </Card>
+                              </Col>
+                            );
+                          })}
+                        </Row>
+                      </Container>
+                    </div>
+                  )}
+                  {collegedata.overview.admission_dates.length > 0 && (
+                    <div className={Classes["description-section"]}>
+                      <h3>
+                        {collegedata.generalinfo.college_name} Admission Dates
+                      </h3>
+                      <Table responsive bordered>
+                        <thead>
+                          <tr>
+                            <th>Date</th>
+                            <th>Event Name</th>
+                            <th>Year</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {collegedata.overview.admission_dates.map((s, i) => {
+                            return (
+                              <tr key={i}>
+                                <td>
+                                  {s.date ? s.date.substring(0, 10) : "-"}
+                                </td>
+                                <td>{s.event_name || "-"}</td>
+                                <td>{s.year || "-"}</td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </Table>
+                    </div>
+                  )}
+                  {collegedata.overview.top_course.length > 0 && (
+                    <div className={Classes["description-section"]}>
+                      <h3>
+                        {collegedata.generalinfo.college_name} Top Courses &
+                        Fees
+                      </h3>
+                      <div className={Classes["collegeDetail_classNotToggled"]}>
+                        <Table>
+                          <tbody>
+                            {collegedata.overview.top_course.map((s, i) => {
+                              return (
+                                <tr key={i}>
+                                  <td
+                                    className={
+                                      Classes["collegeDetail_courseName"]
+                                    }
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setActiveTab("courses");
+                                    }}
+                                  >
+                                    {s.course_name}
+                                    <span
+                                      className={
+                                        Classes["collegeDetail_courseCount"]
+                                      }
+                                    >
+                                      {s.course_count}
+                                    </span>
+                                  </td>
+                                  <td
+                                    className={
+                                      Classes["collegeDetail_courseFees"]
+                                    }
+                                  >
+                                    <span
+                                      className={
+                                        Classes["collegeDetail_customSpan"]
+                                      }
+                                    >
+                                      Annual Fee
+                                    </span>
+                                    <span
+                                      className={Classes["collegeDetail_price"]}
+                                    >
+                                      {s.annual_fees}
+                                    </span>
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                            {/* <tr>
                         <td className={Classes["collegeDetail_courseName"]}>
                           BSc
                           <span className={Classes["collegeDetail_courseCount"]}>
@@ -1050,85 +1110,117 @@ export default function CollegeName({ collegedata }) {
                           </span>
                         </td>
                       </tr> */}
-                        </tbody>
-                      </Table>
+                          </tbody>
+                        </Table>
+                      </div>
                     </div>
-                  </div>
-                )}
-                <div className={Classes["description-section"]}>
-                  <h3>Meet Our Counselors</h3>
-                  <div>
-                    <Carousel
-                      responsive={responsive}
-                      showDots={true}
-                      partialVisbile={false}
-                      itemAriaLabel="counsellor"
-                    >
-                      {collegedata.counsellors.length > 0
-                        ? collegedata.counsellors.map((s) => (
-                            <div
-                              key={s._id}
-                              className={Classes["Counsellor-box"]}
-                            >
-                              <div className={Classes["img-div-counsellor"]}>
-                                <img
-                                  src={
-                                    "/assets/images/counsellorFolder/counsellor-profile.png"
-                                  }
-                                  alt={s.name}
-                                />
-                              </div>
-                              <h4 style={{ marginTop: "10px" }}>
-                                {s.name.charAt(0).toUpperCase() +
-                                  s.name.slice(1)}
-                              </h4>
-                              <p> {s.specialization}</p>
-                              <p>
-                                <strong>Location:</strong> {s.state},{s.city}
-                              </p>
-
+                  )}
+                  <div className={Classes["description-section"]}>
+                    <h3>Meet Our Counselors</h3>
+                    <div>
+                      <Carousel
+                        responsive={responsive}
+                        showDots={true}
+                        partialVisbile={false}
+                        itemAriaLabel="counsellor"
+                      >
+                        {collegedata.counsellors.length > 0
+                          ? collegedata.counsellors.map((s) => (
                               <div
-                                style={{
-                                  display: "flex",
-                                  justifyContent: "center",
-                                  alignItems: "center",
-                                  margin: "0.5rem 0",
-                                }}
+                                key={s._id}
+                                className={Classes["Counsellor-box"]}
                               >
-                                {userStatus ? ( // Check if userStatus is truthy
-                                  videoCall ? ( // Check if videoCall is truthy
-                                    // If both userStatus and videoCall are truthy, render the video call modal
-                                    <Modal
-                                      fullscreen
-                                      show={true}
-                                      centered
-                                      onHide={() => setVideoCall(false)}
-                                    >
-                                      <Modal.Body>
-                                        <div
-                                          style={{
-                                            display: "flex",
-                                            width: "100%",
-                                            height: "100%",
-                                          }}
-                                        >
-                                          <AgoraUIKit
-                                            rtcProps={rtcProps}
-                                            rtmProps={rtmProps}
-                                            callbacks={{
-                                              EndCall: handleCallEnd
+                                <div className={Classes["img-div-counsellor"]}>
+                                  <img
+                                    src={
+                                      "/assets/images/counsellorFolder/counsellor-profile.png"
+                                    }
+                                    alt={s.name}
+                                  />
+                                </div>
+                                <h4 style={{ marginTop: "10px" }}>
+                                  {s.name.charAt(0).toUpperCase() +
+                                    s.name.slice(1)}
+                                </h4>
+                                <p>
+                                  {" "}
+                                  <strong>Specializaion:</strong>{" "}
+                                  {s.specialization}
+                                </p>
+                                <p>
+                                  <strong>Location:</strong> {s.state},{s.city}
+                                </p>
+
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    margin: "0.5rem 0",
+                                  }}
+                                >
+                                  {userStatus ? ( // Check if userStatus is truthy
+                                    videoCall ? ( // Check if videoCall is truthy
+                                      // If both userStatus and videoCall are truthy, render the video call modal
+                                      <Modal
+                                        fullscreen
+                                        show={true}
+                                        centered
+                                        onHide={() => setVideoCall(false)}
+                                      >
+                                        <Modal.Body>
+                                          <div
+                                            style={{
+                                              display: "flex",
+                                              width: "100%",
+                                              height: "100%",
                                             }}
-                                          />
-                                        </div>
-                                      </Modal.Body>
-                                    </Modal>
+                                          >
+                                            <AgoraUIKit
+                                              rtcProps={rtcProps}
+                                              rtmProps={rtmProps}
+                                              callbacks={{
+                                                EndCall: handleCallEnd,
+                                              }}
+                                            />
+                                          </div>
+                                        </Modal.Body>
+                                      </Modal>
+                                    ) : s.counsellorJoined &&
+                                      !s.counsellorDisconnected ? (
+                                      <button
+                                        style={{
+                                          padding: "0.4rem 1rem",
+                                          backgroundColor: "red",
+                                          color: "#fff",
+                                          border: "none",
+                                          borderRadius: "25px",
+                                          cursor: "no-drop",
+                                        }}
+                                      >
+                                        <DuoIcon fontSize="small" /> Busy
+                                      </button>
+                                    ) : (
+                                      <button
+                                        onClick={(e) => handleCall(e, s)}
+                                        style={{
+                                          padding: "0.4rem 1rem",
+                                          backgroundColor: "#007bff",
+                                          color: "#fff",
+                                          border: "none",
+                                          borderRadius: "25px",
+                                          cursor: "pointer",
+                                        }}
+                                      >
+                                        <DuoIcon fontSize="small" /> Call
+                                      </button>
+                                    )
                                   ) : (
-                                    // If userStatus is truthy but videoCall is falsey, render the call button
+                                    // If userStatus is falsey, render a default button (e.g., "hello")
                                     <button
-                                      onClick={(e) => handleCall(e, s)}
+                                      onClick={handlelogin}
                                       style={{
-                                        padding: "10px 20px",
-                                        margin: "0 0.2rem",
+                                        padding: "0.4rem 1rem",
                                         backgroundColor: "#007bff",
                                         color: "#fff",
                                         border: "none",
@@ -1136,28 +1228,12 @@ export default function CollegeName({ collegedata }) {
                                         cursor: "pointer",
                                       }}
                                     >
-                                      <CallIcon fontSize="small" /> Call
+                                      <VideoCameraFrontIcon fontSize="small" />{" "}
+                                      Call
                                     </button>
-                                  )
-                                ) : (
-                                  // If userStatus is falsey, render a default button (e.g., "hello")
-                                  <button
-                                    onClick={handlelogin}
-                                    style={{
-                                      padding: "10px 20px",
-                                      margin: "0 0.2rem",
-                                      backgroundColor: "#007bff",
-                                      color: "#fff",
-                                      border: "none",
-                                      borderRadius: "25px",
-                                      cursor: "pointer",
-                                    }}
-                                  >
-                                    <CallIcon fontSize="small" /> Call
-                                  </button>
-                                )}
+                                  )}
 
-                                {/* <button
+                                  {/* <button
                                   onClick={() => handleCall(counselor.name)}
                                   style={{
                                     padding: "10px 20px",
@@ -1171,481 +1247,616 @@ export default function CollegeName({ collegedata }) {
                                 >
                                   Message
                                 </button> */}
+                                </div>
                               </div>
-                            </div>
-                          ))
-                        : "no record"}
-                    </Carousel>
+                            ))
+                          : "no record"}
+                      </Carousel>
+                    </div>
                   </div>
-                </div>
 
-                {videoCall &&
-                <BeforeUnloadPrompt onBeforeUnload={handleCallEnd} />}
+                  {videoCall && (
+                    <BeforeUnloadPrompt onBeforeUnload={handleCallEnd} />
+                  )}
 
-                {collegedata.overview.college_faqs.length > 0 && (
-                  <div className={Classes["description-section"]}>
-                    <h3>FAQs about {collegedata.generalinfo.college_name}</h3>
-                    {collegedata.overview.college_faqs.map((s, index) => {
-                      return (
-                        <Accordion
-                          key={index}
-                          defaultActiveKey={0}
-                          style={{ margin: "1rem 0rem" }}
-                        >
-                          <Accordion.Item eventKey={index}>
-                            <Accordion.Header>{s.question}</Accordion.Header>
-                            <Accordion.Body style={{ background: "#f6f6f6" }}>
-                              {s.answer}
-                            </Accordion.Body>
-                          </Accordion.Item>
-                        </Accordion>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-        </Tab>
-        <Tab eventKey="courses" title="Courses">
-          {Object.keys(collegedata.courses).length > 0 && (
-            <div className="container">
-              <div className={Classes["content-section"]}>
-                {collegedata.courses.courses.length > 0 && (
-                  <div className={Classes["description-section"]}>
-                    <h3>
-                      {collegedata.generalinfo.college_name} Courses, Fees and
-                      Eligibility Criteria
-                    </h3>
-                    <Table responsive bordered>
-                      <thead>
-                        <tr>
-                          <th>Course </th>
-                          <th>Annual Fees </th>
-                          <th> Eligibility Criteria</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {collegedata.courses.courses.map((s, i) => {
-                          return (
-                            <tr key={i}>
-                              <td>{s.course_name || "-"}</td>
-                              <td>{s.course_annual_fees || "-"}</td>
-                              <td>{s.eligibility_criteria || "-"}</td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </Table>
-                  </div>
-                )}
-                <div>
-                  <div className={Classes["description-section"]}>
-                    <h3>
-                      Courses are offered by{" "}
-                      {collegedata.generalinfo.college_name}
-                    </h3>
-                    {collegedata.courses.courses.map((s, i) => {
-                      const specializations = s.course_specialization
-                        .split(",")
-                        .map((s) => s.trim())
-                        .filter(Boolean);
-                      // console.log(specializations);
-                      return (
-                        <div key={i} className={Classes["courseCardBox"]}>
-                          <div className={Classes["cardHeading"]}>
-                            {/* <a href="#course">{s.course_name}</a> */}
-                            <span>{s.course_name}</span>
-                          </div>
-
-                          <div className={Classes["courseCardDetails"]}>
-                            <div className={Classes["courseDetailLeft"]}>
-                              <div>
-                                <p>
-                                  Total Intake:{" "}
-                                  <span
-                                    className={
-                                      Classes["collegeDetail_detailStrong"]
-                                    }
-                                  >
-                                    {s.course_total_intake}
-                                  </span>
-                                </p>
-                                <p>
-                                  Study Mody:{" "}
-                                  <span
-                                    className={
-                                      Classes["collegeDetail_detailStrong"]
-                                    }
-                                  >
-                                    {s.study_mode}
-                                  </span>
-                                </p>
-                              </div>
-                              <div>
-                                <p>
-                                  Exam Accepted:{" "}
-                                  <span
-                                    className={
-                                      Classes["collegeDetail_detailStrong"]
-                                    }
-                                  >
-                                    {" "}
-                                    {s.exam_accepted}
-                                  </span>
-                                </p>
-                                <p>
-                                  Annual Fees:{" "}
-                                  <span
-                                    className={
-                                      Classes["collegeDetail_detailStrong"]
-                                    }
-                                  >
-                                    {s.course_annual_fees}
-                                  </span>
-                                </p>
-                              </div>
-                              <div>
-                                <p>
-                                  Duration:{" "}
-                                  <span
-                                    className={
-                                      Classes["collegeDetail_detailStrong"]
-                                    }
-                                  >
-                                    {s.course_duration}
-                                  </span>
-                                </p>
-                                <p>
-                                  Average Fees:{" "}
-                                  <span
-                                    className={
-                                      Classes["collegeDetail_detailStrong"]
-                                    }
-                                  >
-                                    {s.avg_fees}
-                                  </span>
-                                </p>
-                              </div>
-                            </div>
-                            {/* <div className={Classes["courseDetailRight"]}>
-                        <Button variant="primary">Apply Now</Button>
-                        <Button variant="outline-primary">
-                          Request A Callback
-                        </Button>
-                      </div> */}
-                          </div>
-                          <div className={Classes["cardChips"]}>
-                            <ul>
-                              {specializations.map((specialization, index) => (
-                                <li key={index}>{specialization}</li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
+                  {collegedata.overview.college_faqs.length > 0 && (
+                    <div className={Classes["description-section"]}>
+                      <h3>FAQs about {collegedata.generalinfo.college_name}</h3>
+                      {collegedata.overview.college_faqs.map((s, index) => {
+                        return (
+                          <Accordion
+                            key={index}
+                            defaultActiveKey={0}
+                            style={{ margin: "1rem 0rem" }}
+                          >
+                            <Accordion.Item eventKey={index}>
+                              <Accordion.Header>{s.question}</Accordion.Header>
+                              <Accordion.Body style={{ background: "#f6f6f6" }}>
+                                {s.answer}
+                              </Accordion.Body>
+                            </Accordion.Item>
+                          </Accordion>
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
               </div>
-            </div>
-          )}
-        </Tab>
-        <Tab eventKey="campus" title="Campus">
-          {Object.keys(collegedata.campus).length > 0 && (
-            <div className="container" id="campus">
-              <div className={Classes["content-section"]}>
-                {collegedata.campus.campus_description && (
-                  <div className={Classes["description-section"]}>
-                    <h3>{collegedata.generalinfo.college_name} Description</h3>
-                    <p style={{ whiteSpace: "pre-line" }}>
-                      {collegedata.campus.campus_description}
-                    </p>
-                  </div>
-                )}
-                {collegedata.campus.hostel_fees_structure && (
-                  <div className={Classes["description-section"]}>
-                    <h3>
-                      {collegedata.generalinfo.college_name} Hostel & Fees
-                      Structure
-                    </h3>
-
-                    <p>{collegedata.campus.hostel_fees_structure}</p>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-        </Tab>
-        <Tab eventKey="admission" title="Admission">
-          {Object.keys(collegedata.admission).length > 0 && (
-            <div className="container">
-              <div className={Classes["content-section"]}>
-                {collegedata.admission.admission_process && (
-                  <div className={Classes["description-section"]}>
-                    <h3>{collegedata.generalinfo.college_name} Admission</h3>
-                    <p style={{ whiteSpace: "pre-line" }}>
-                      {collegedata.admission.admission_process}
-                    </p>
-                  </div>
-                )}
-                <div className={Classes["description-section"]}>
-                  {collegedata.admission.admission_eligibility_criteria.length >
-                    0 && (
-                    <>
+            )}
+          </Tab>
+          <Tab eventKey="courses" title="Courses">
+            {Object.keys(collegedata.courses).length > 0 && (
+              <div className="container">
+                <div className={Classes["content-section"]}>
+                  {collegedata.courses.courses.length > 0 && (
+                    <div className={Classes["description-section"]}>
                       <h3>
-                        {collegedata.generalinfo.college_name} Courses and
+                        {collegedata.generalinfo.college_name} Courses, Fees and
                         Eligibility Criteria
                       </h3>
-
                       <Table responsive bordered>
                         <thead>
                           <tr>
                             <th>Course </th>
-                            <th>Eligibility</th>
+                            <th>Annual Fees </th>
+                            <th> Eligibility Criteria</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {collegedata.admission.admission_eligibility_criteria.map(
-                            (s, i) => {
-                              return (
-                                <tr key={i}>
-                                  <td>{s.course_name || "-"}</td>
-                                  <td>{s.eligibility || "-"}</td>
-                                </tr>
-                              );
-                            }
-                          )}
-                        </tbody>
-                      </Table>
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
-        </Tab>
-        <Tab eventKey="scholarship" title="Scholarship">
-          {Object.keys(collegedata.scholorship).length > 0 && (
-            <div className="container">
-              <div className={Classes["content-section"]}>
-                {collegedata.scholorship.scholorship_description && (
-                  <div className={Classes["description-section"]}>
-                    <h3>{collegedata.generalinfo.college_name} Description</h3>
-                    <p style={{ whiteSpace: "pre-line" }}>
-                      {collegedata.scholorship.scholorship_description}
-                    </p>
-                  </div>
-                )}
-                <div className={Classes["description-section"]}>
-                  {collegedata.scholorship.scholorship_scheme.length > 0 && (
-                    <>
-                      <h3>
-                        {collegedata.generalinfo.college_name} Scholarship
-                        Scheme
-                      </h3>
-
-                      <Table responsive bordered>
-                        <thead>
-                          <tr>
-                            <th>Category</th>
-                            <th>Eligibility Criteria</th>
-                            <th>Scholarship</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {collegedata.scholorship.scholorship_scheme.map(
-                            (s, i) => {
-                              return (
-                                <tr key={i}>
-                                  <td>{s.category || "-"}</td>
-                                  <td>{s.eligibility_criteria || "-"}</td>
-                                  <td>{s.scholorship || "-"}</td>
-                                </tr>
-                              );
-                            }
-                          )}
-                        </tbody>
-                      </Table>
-                    </>
-                  )}
-                  {collegedata.scholorship.sports_scholorship.length > 0 && (
-                    <>
-                      <h3>
-                        {collegedata.generalinfo.college_name} Sports
-                        Scholarships
-                      </h3>
-
-                      <Table responsive bordered>
-                        <thead>
-                          <tr>
-                            <th>Level</th>
-                            <th>Scholarship</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {collegedata.scholorship.sports_scholorship.map(
-                            (s, i) => {
-                              return (
-                                <tr key={i}>
-                                  <td>{s.level || "-"}</td>
-                                  <td>{s.scholorship || "-"}</td>
-                                </tr>
-                              );
-                            }
-                          )}
-                        </tbody>
-                      </Table>
-                    </>
-                  )}
-                  {collegedata.scholorship.merit_cum_means_scholorship.length >
-                    0 && (
-                    <>
-                      <h3>
-                        {collegedata.generalinfo.college_name} Merit Cum Means
-                        Scholarships
-                      </h3>
-                      <Table responsive bordered>
-                        <thead>
-                          <tr>
-                            <th>Annual Income </th>
-                            <th>Scholarship</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {collegedata.scholorship.merit_cum_means_scholorship.map(
-                            (s, i) => {
-                              return (
-                                <tr key={i}>
-                                  <td>{s.annual_income || "-"}</td>
-                                  <td>{s.scholorship || "-"}</td>
-                                </tr>
-                              );
-                            }
-                          )}
-                        </tbody>
-                      </Table>
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
-        </Tab>
-        <Tab eventKey="placement" title="Placement">
-          {Object.keys(collegedata.placement).length > 0 && (
-            <div className="container">
-              <div className={Classes["content-section"]}>
-                <div className={Classes["description-section"]}>
-                  <h3>{collegedata.generalinfo.college_name} Description</h3>
-                  <p style={{ whiteSpace: "pre-line" }}>
-                    {collegedata.placement.placement_description}
-                  </p>
-                </div>
-                <div className={Classes["description-section"]}>
-                  <h3>
-                    {collegedata.generalinfo.college_name} Placement Process
-                  </h3>
-                  <p style={{ whiteSpace: "pre-line" }}>
-                    {collegedata.placement.placement_process}
-                  </p>
-                  {collegedata.placement.placement_year.length > 0 && (
-                    <>
-                      <h3>{collegedata.generalinfo.college_name} Highlights</h3>
-                      <Table responsive bordered>
-                        <thead>
-                          <tr>
-                            <th>Year</th>
-                            <th>Particulars</th>
-                            <th>Statistics</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {collegedata.placement.placement_year.map((s, i) => {
+                          {collegedata.courses.courses.map((s, i) => {
                             return (
                               <tr key={i}>
-                                <td>{s.year}</td>
-                                <td>{s.particular}</td>
-                                <td>{s.statistics}</td>
+                                <td>{s.course_name || "-"}</td>
+                                <td>{s.course_annual_fees || "-"}</td>
+                                <td>{s.eligibility_criteria || "-"}</td>
                               </tr>
                             );
                           })}
                         </tbody>
                       </Table>
-                    </>
+                    </div>
                   )}
+                  <div>
+                    <div className={Classes["description-section"]}>
+                      <h3>
+                        Courses are offered by{" "}
+                        {collegedata.generalinfo.college_name}
+                      </h3>
+                      {collegedata.courses.courses.map((s, i) => {
+                        const specializations = s.course_specialization
+                          .split(",")
+                          .map((s) => s.trim())
+                          .filter(Boolean);
+                        // console.log(specializations);
+                        return (
+                          <div key={i} className={Classes["courseCardBox"]}>
+                            <div className={Classes["cardHeading"]}>
+                              {/* <a href="#course">{s.course_name}</a> */}
+                              <span>{s.course_name}</span>
+                            </div>
 
-                  <h3>{collegedata.generalinfo.college_name} Report</h3>
-
-                  <Table responsive bordered>
-                    <thead>
-                      <tr>
-                        <th>Particulars</th>
-                        <th>Statistics</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>Highest package</td>
-                        <td>{collegedata.placement.highest_package}</td>
-                      </tr>
-                      <tr>
-                        <td>Average package</td>
-                        <td>{collegedata.placement.avg_package}</td>
-                      </tr>
-                      <tr>
-                        <td>Total Number of job offers</td>
-                        <td>{collegedata.placement.total_job_offers}</td>
-                      </tr>
-                      <tr>
-                        <td>Total Number of companies visited</td>
-                        <td>{collegedata.placement.total_companies_visited}</td>
-                      </tr>
-                    </tbody>
-                  </Table>
+                            <div className={Classes["courseCardDetails"]}>
+                              <div className={Classes["courseDetailLeft"]}>
+                                <div>
+                                  <p>
+                                    Total Intake:{" "}
+                                    <span
+                                      className={
+                                        Classes["collegeDetail_detailStrong"]
+                                      }
+                                    >
+                                      {s.course_total_intake}
+                                    </span>
+                                  </p>
+                                  <p>
+                                    Study Mody:{" "}
+                                    <span
+                                      className={
+                                        Classes["collegeDetail_detailStrong"]
+                                      }
+                                    >
+                                      {s.study_mode}
+                                    </span>
+                                  </p>
+                                </div>
+                                <div>
+                                  <p>
+                                    Exam Accepted:{" "}
+                                    <span
+                                      className={
+                                        Classes["collegeDetail_detailStrong"]
+                                      }
+                                    >
+                                      {" "}
+                                      {s.exam_accepted}
+                                    </span>
+                                  </p>
+                                  <p>
+                                    Annual Fees:{" "}
+                                    <span
+                                      className={
+                                        Classes["collegeDetail_detailStrong"]
+                                      }
+                                    >
+                                      {s.course_annual_fees}
+                                    </span>
+                                  </p>
+                                </div>
+                                <div>
+                                  <p>
+                                    Duration:{" "}
+                                    <span
+                                      className={
+                                        Classes["collegeDetail_detailStrong"]
+                                      }
+                                    >
+                                      {s.course_duration}
+                                    </span>
+                                  </p>
+                                  <p>
+                                    Average Fees:{" "}
+                                    <span
+                                      className={
+                                        Classes["collegeDetail_detailStrong"]
+                                      }
+                                    >
+                                      {s.avg_fees}
+                                    </span>
+                                  </p>
+                                </div>
+                              </div>
+                              {/* <div className={Classes["courseDetailRight"]}>
+                        <Button variant="primary">Apply Now</Button>
+                        <Button variant="outline-primary">
+                          Request A Callback
+                        </Button>
+                      </div> */}
+                            </div>
+                            <div className={Classes["cardChips"]}>
+                              <ul>
+                                {specializations.map(
+                                  (specialization, index) => (
+                                    <li key={index}>{specialization}</li>
+                                  )
+                                )}
+                              </ul>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
-        </Tab>
-
-        <Tab eventKey="cutoff" title="Cutoff">
-          <div className="container">
-            <div className={Classes["content-section"]}>
-              {Object.keys(collegedata.cutoff).length > 0 &&
-                collegedata.cutoff.yearwise_description.map((s, i) => {
-                  return (
-                    <div key={i} className={Classes["description-section"]}>
+            )}
+          </Tab>
+          <Tab eventKey="campus" title="Campus">
+            {Object.keys(collegedata.campus).length > 0 && (
+              <div className="container" id="campus">
+                <div className={Classes["content-section"]}>
+                  {collegedata.campus.campus_description && (
+                    <div className={Classes["description-section"]}>
                       <h3>
-                        {" "}
-                        {collegedata.generalinfo.college_name} Cut off {s.year}
+                        {collegedata.generalinfo.college_name} Description
                       </h3>
-                      <p style={{ whiteSpace: "pre-line" }}>{s.description}</p>
+                      <p style={{ whiteSpace: "pre-line" }}>
+                        {collegedata.campus.campus_description}
+                      </p>
                     </div>
-                  );
-                })}
-            </div>
-          </div>
-        </Tab>
-      </Tabs>
+                  )}
+                  {collegedata.campus.hostel_fees_structure && (
+                    <div className={Classes["description-section"]}>
+                      <h3>
+                        {collegedata.generalinfo.college_name} Hostel & Fees
+                        Structure
+                      </h3>
 
-      {isLoginFormOpen && (
-        <LoginForm
-          isOpen={isLoginFormOpen}
-          onClose={() => setIsLoginFormOpen(false)}
-          role="3"
-        />
-      )}
-      {isApplyformOpen && (
+                      <p>{collegedata.campus.hostel_fees_structure}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </Tab>
+          <Tab eventKey="admission" title="Admission">
+            {Object.keys(collegedata.admission).length > 0 && (
+              <div className="container">
+                <div className={Classes["content-section"]}>
+                  {collegedata.admission.admission_process && (
+                    <div className={Classes["description-section"]}>
+                      <h3>{collegedata.generalinfo.college_name} Admission</h3>
+                      <p style={{ whiteSpace: "pre-line" }}>
+                        {collegedata.admission.admission_process}
+                      </p>
+                    </div>
+                  )}
+                  <div className={Classes["description-section"]}>
+                    {collegedata.admission.admission_eligibility_criteria
+                      .length > 0 && (
+                      <>
+                        <h3>
+                          {collegedata.generalinfo.college_name} Courses and
+                          Eligibility Criteria
+                        </h3>
+
+                        <Table responsive bordered>
+                          <thead>
+                            <tr>
+                              <th>Course </th>
+                              <th>Eligibility</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {collegedata.admission.admission_eligibility_criteria.map(
+                              (s, i) => {
+                                return (
+                                  <tr key={i}>
+                                    <td>{s.course_name || "-"}</td>
+                                    <td>{s.eligibility || "-"}</td>
+                                  </tr>
+                                );
+                              }
+                            )}
+                          </tbody>
+                        </Table>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+          </Tab>
+          <Tab eventKey="scholarship" title="Scholarship">
+            {Object.keys(collegedata.scholorship).length > 0 && (
+              <div className="container">
+                <div className={Classes["content-section"]}>
+                  {collegedata.scholorship.scholorship_description && (
+                    <div className={Classes["description-section"]}>
+                      <h3>
+                        {collegedata.generalinfo.college_name} Description
+                      </h3>
+                      <p style={{ whiteSpace: "pre-line" }}>
+                        {collegedata.scholorship.scholorship_description}
+                      </p>
+                    </div>
+                  )}
+                  <div className={Classes["description-section"]}>
+                    {collegedata.scholorship.scholorship_scheme.length > 0 && (
+                      <>
+                        <h3>
+                          {collegedata.generalinfo.college_name} Scholarship
+                          Scheme
+                        </h3>
+
+                        <Table responsive bordered>
+                          <thead>
+                            <tr>
+                              <th>Category</th>
+                              <th>Eligibility Criteria</th>
+                              <th>Scholarship</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {collegedata.scholorship.scholorship_scheme.map(
+                              (s, i) => {
+                                return (
+                                  <tr key={i}>
+                                    <td>{s.category || "-"}</td>
+                                    <td>{s.eligibility_criteria || "-"}</td>
+                                    <td>{s.scholorship || "-"}</td>
+                                  </tr>
+                                );
+                              }
+                            )}
+                          </tbody>
+                        </Table>
+                      </>
+                    )}
+                    {collegedata.scholorship.sports_scholorship.length > 0 && (
+                      <>
+                        <h3>
+                          {collegedata.generalinfo.college_name} Sports
+                          Scholarships
+                        </h3>
+
+                        <Table responsive bordered>
+                          <thead>
+                            <tr>
+                              <th>Level</th>
+                              <th>Scholarship</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {collegedata.scholorship.sports_scholorship.map(
+                              (s, i) => {
+                                return (
+                                  <tr key={i}>
+                                    <td>{s.level || "-"}</td>
+                                    <td>{s.scholorship || "-"}</td>
+                                  </tr>
+                                );
+                              }
+                            )}
+                          </tbody>
+                        </Table>
+                      </>
+                    )}
+                    {collegedata.scholorship.merit_cum_means_scholorship
+                      .length > 0 && (
+                      <>
+                        <h3>
+                          {collegedata.generalinfo.college_name} Merit Cum Means
+                          Scholarships
+                        </h3>
+                        <Table responsive bordered>
+                          <thead>
+                            <tr>
+                              <th>Annual Income </th>
+                              <th>Scholarship</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {collegedata.scholorship.merit_cum_means_scholorship.map(
+                              (s, i) => {
+                                return (
+                                  <tr key={i}>
+                                    <td>{s.annual_income || "-"}</td>
+                                    <td>{s.scholorship || "-"}</td>
+                                  </tr>
+                                );
+                              }
+                            )}
+                          </tbody>
+                        </Table>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+          </Tab>
+          <Tab eventKey="placement" title="Placement">
+            {Object.keys(collegedata.placement).length > 0 && (
+              <div className="container">
+                <div className={Classes["content-section"]}>
+                  <div className={Classes["description-section"]}>
+                    <h3>{collegedata.generalinfo.college_name} Description</h3>
+                    <p style={{ whiteSpace: "pre-line" }}>
+                      {collegedata.placement.placement_description}
+                    </p>
+                  </div>
+                  <div className={Classes["description-section"]}>
+                    <h3>
+                      {collegedata.generalinfo.college_name} Placement Process
+                    </h3>
+                    <p style={{ whiteSpace: "pre-line" }}>
+                      {collegedata.placement.placement_process}
+                    </p>
+                    {collegedata.placement.placement_year.length > 0 && (
+                      <>
+                        <h3>
+                          {collegedata.generalinfo.college_name} Highlights
+                        </h3>
+                        <Table responsive bordered>
+                          <thead>
+                            <tr>
+                              <th>Year</th>
+                              <th>Particulars</th>
+                              <th>Statistics</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {collegedata.placement.placement_year.map(
+                              (s, i) => {
+                                return (
+                                  <tr key={i}>
+                                    <td>{s.year}</td>
+                                    <td>{s.particular}</td>
+                                    <td>{s.statistics}</td>
+                                  </tr>
+                                );
+                              }
+                            )}
+                          </tbody>
+                        </Table>
+                      </>
+                    )}
+
+                    <h3>{collegedata.generalinfo.college_name} Report</h3>
+
+                    <Table responsive bordered>
+                      <thead>
+                        <tr>
+                          <th>Particulars</th>
+                          <th>Statistics</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Highest package</td>
+                          <td>{collegedata.placement.highest_package}</td>
+                        </tr>
+                        <tr>
+                          <td>Average package</td>
+                          <td>{collegedata.placement.avg_package}</td>
+                        </tr>
+                        <tr>
+                          <td>Total Number of job offers</td>
+                          <td>{collegedata.placement.total_job_offers}</td>
+                        </tr>
+                        <tr>
+                          <td>Total Number of companies visited</td>
+                          <td>
+                            {collegedata.placement.total_companies_visited}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </Table>
+                  </div>
+                </div>
+              </div>
+            )}
+          </Tab>
+
+          <Tab eventKey="cutoff" title="Cutoff">
+            <div className="container">
+              <div className={Classes["content-section"]}>
+                {Object.keys(collegedata.cutoff).length > 0 &&
+                  collegedata.cutoff.yearwise_description.map((s, i) => {
+                    return (
+                      <div key={i} className={Classes["description-section"]}>
+                        <h3>
+                          {" "}
+                          {collegedata.generalinfo.college_name} Cut off{" "}
+                          {s.year}
+                        </h3>
+                        <p style={{ whiteSpace: "pre-line" }}>
+                          {s.description}
+                        </p>
+                      </div>
+                    );
+                  })}
+              </div>
+            </div>
+          </Tab>
+        </Tabs>
+
+        {isLoginFormOpen && (
+          <LoginForm
+            isOpen={isLoginFormOpen}
+            onClose={() => setIsLoginFormOpen(false)}
+            role="3"
+          />
+        )}
+        {isApplyformOpen && (
+          <Modal
+            centered
+            size="lg"
+            animation={false}
+            style={{ backgroundColor: "rgba(0,0,0,0.4)" }}
+            show={isApplyformOpen}
+            onHide={() => setIsApplyformOpen(false)}
+          >
+            <Modal.Header closeButton></Modal.Header>
+            <Modal.Body>
+              <Container>
+                <Row className="justify-content-center align-items-center">
+                  <Col md={12}>
+                    <div className="text-center mb-3">
+                      <h3>{collegedata.generalinfo.college_name}</h3>
+                      <p>(Student Application Form)</p>
+                    </div>
+                    <Form onSubmit={handleSubmit}>
+                      <Form.Group className="mb-3" controlId="fullname">
+                        <Form.Label>Full Name</Form.Label>
+                        <Form.Control
+                          type="text"
+                          name="fullname"
+                          value={formData.fullname}
+                          onChange={handleChange}
+                          placeholder="Enter your full name"
+                          required
+                        />
+                      </Form.Group>
+
+                      <Form.Group className="mb-3" controlId="email">
+                        <Form.Label>Email address</Form.Label>
+                        <Form.Control
+                          type="email"
+                          name="email"
+                          value={useremail}
+                          disabled
+                          // onChange={handleChange}
+                          placeholder="Enter email"
+                        />
+                      </Form.Group>
+
+                      <Form.Group className="mb-3" controlId="mobile">
+                        <Form.Label>Mobile Number</Form.Label>
+                        <Form.Control
+                          type="text"
+                          name="mobile"
+                          value={formData.mobile}
+                          onChange={handleChange}
+                          maxLength={10}
+                          minLength={10}
+                          placeholder="Enter your mobile number"
+                          required
+                        />
+                      </Form.Group>
+
+                      <Form.Group className="mb-3" controlId="gender">
+                        <Form.Label>Gender</Form.Label>
+                        <Form.Select
+                          name="gender"
+                          value={formData.gender}
+                          onChange={handleChange}
+                          placeholder="Select gender"
+                        >
+                          <option value="">Select gender</option>
+                          <option value="male">Male</option>
+                          <option value="female">Female</option>
+                          <option value="other">Other</option>
+                        </Form.Select>
+                      </Form.Group>
+
+                      <Form.Group className="mb-3" controlId="state">
+                        <Form.Label>State</Form.Label>
+                        <Form.Select
+                          name="state"
+                          value={formData.state}
+                          onChange={handleChange}
+                          placeholder="Select state"
+                        >
+                          <option value="">Select state</option>
+                          {indianStates.map((state, i) => (
+                            <option key={i} value={state}>
+                              {state}
+                            </option>
+                          ))}
+                        </Form.Select>
+                      </Form.Group>
+
+                      <Form.Group className="mb-3" controlId="course">
+                        <Form.Label>Course</Form.Label>
+                        <Form.Control
+                          as="select"
+                          name="course"
+                          value={formData.course}
+                          onChange={handleChange}
+                        >
+                          <option value="">Select course</option>
+                          {listcoursesOffered.map((course, index) => (
+                            <option key={index} value={course.course_name}>
+                              {course.course_name}
+                            </option>
+                          ))}
+                        </Form.Control>
+                      </Form.Group>
+
+                      <Button variant="primary" type="submit">
+                        Submit
+                      </Button>
+                    </Form>
+                  </Col>
+                </Row>
+              </Container>
+            </Modal.Body>
+          </Modal>
+        )}
+
+        {/* pop up form */}
         <Modal
           centered
           size="lg"
           animation={false}
           style={{ backgroundColor: "rgba(0,0,0,0.4)" }}
-          show={isApplyformOpen}
-          onHide={() => setIsApplyformOpen(false)}
+          show={showModal}
+          onHide={() => setShowModal(false)}
+          backdrop="static"
+          keyboard={false}
         >
-          <Modal.Header closeButton></Modal.Header>
+          {/* <Modal.Header closeButton></Modal.Header> */}
           <Modal.Body>
             <Container>
               <Row className="justify-content-center align-items-center">
@@ -1654,14 +1865,14 @@ export default function CollegeName({ collegedata }) {
                     <h3>{collegedata.generalinfo.college_name}</h3>
                     <p>(Student Application Form)</p>
                   </div>
-                  <Form onSubmit={handleSubmit}>
+                  <Form onSubmit={handleFormSubmit}>
                     <Form.Group className="mb-3" controlId="fullname">
                       <Form.Label>Full Name</Form.Label>
                       <Form.Control
                         type="text"
-                        name="fullname"
-                        value={formData.fullname}
-                        onChange={handleChange}
+                        name="popupfullname"
+                        value={popupformData.popupfullname}
+                        onChange={handleChangepopup}
                         placeholder="Enter your full name"
                         required
                       />
@@ -1671,11 +1882,11 @@ export default function CollegeName({ collegedata }) {
                       <Form.Label>Email address</Form.Label>
                       <Form.Control
                         type="email"
-                        name="email"
-                        value={useremail}
-                        disabled
-                        // onChange={handleChange}
+                        name="popupemail"
+                        value={popupformData.useremail}
+                        onChange={handleChangepopup}
                         placeholder="Enter email"
+                        required
                       />
                     </Form.Group>
 
@@ -1683,9 +1894,9 @@ export default function CollegeName({ collegedata }) {
                       <Form.Label>Mobile Number</Form.Label>
                       <Form.Control
                         type="text"
-                        name="mobile"
-                        value={formData.mobile}
-                        onChange={handleChange}
+                        name="popupmobile"
+                        value={popupformData.popupmobile}
+                        onChange={handleChangepopup}
                         maxLength={10}
                         minLength={10}
                         placeholder="Enter your mobile number"
@@ -1693,45 +1904,14 @@ export default function CollegeName({ collegedata }) {
                       />
                     </Form.Group>
 
-                    <Form.Group className="mb-3" controlId="gender">
-                      <Form.Label>Gender</Form.Label>
-                      <Form.Select
-                        name="gender"
-                        value={formData.gender}
-                        onChange={handleChange}
-                        placeholder="Select gender"
-                      >
-                        <option value="">Select gender</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="other">Other</option>
-                      </Form.Select>
-                    </Form.Group>
-
-                    <Form.Group className="mb-3" controlId="state">
-                      <Form.Label>State</Form.Label>
-                      <Form.Select
-                        name="state"
-                        value={formData.state}
-                        onChange={handleChange}
-                        placeholder="Select state"
-                      >
-                        <option value="">Select state</option>
-                        {indianStates.map((state, i) => (
-                          <option key={i} value={state}>
-                            {state}
-                          </option>
-                        ))}
-                      </Form.Select>
-                    </Form.Group>
-
                     <Form.Group className="mb-3" controlId="course">
                       <Form.Label>Course</Form.Label>
                       <Form.Control
                         as="select"
-                        name="course"
-                        value={formData.course}
-                        onChange={handleChange}
+                        name="popupcourse"
+                        value={popupformData.popupcourse}
+                        onChange={handleChangepopup}
+                        required
                       >
                         <option value="">Select course</option>
                         {listcoursesOffered.map((course, index) => (
@@ -1751,95 +1931,8 @@ export default function CollegeName({ collegedata }) {
             </Container>
           </Modal.Body>
         </Modal>
-      )}
-
-      {/* pop up form */}
-      <Modal
-        centered
-        size="lg"
-        animation={false}
-        style={{ backgroundColor: "rgba(0,0,0,0.4)" }}
-        show={showModal}
-        onHide={() => setShowModal(false)}
-        backdrop="static"
-        keyboard={false}
-      >
-        {/* <Modal.Header closeButton></Modal.Header> */}
-        <Modal.Body>
-          <Container>
-            <Row className="justify-content-center align-items-center">
-              <Col md={12}>
-                <div className="text-center mb-3">
-                  <h3>{collegedata.generalinfo.college_name}</h3>
-                  <p>(Student Application Form)</p>
-                </div>
-                <Form onSubmit={handleFormSubmit}>
-                  <Form.Group className="mb-3" controlId="fullname">
-                    <Form.Label>Full Name</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="popupfullname"
-                      value={popupformData.popupfullname}
-                      onChange={handleChangepopup}
-                      placeholder="Enter your full name"
-                      required
-                    />
-                  </Form.Group>
-
-                  <Form.Group className="mb-3" controlId="email">
-                    <Form.Label>Email address</Form.Label>
-                    <Form.Control
-                      type="email"
-                      name="popupemail"
-                      value={popupformData.useremail}
-                      onChange={handleChangepopup}
-                      placeholder="Enter email"
-                      required
-                    />
-                  </Form.Group>
-
-                  <Form.Group className="mb-3" controlId="mobile">
-                    <Form.Label>Mobile Number</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="popupmobile"
-                      value={popupformData.popupmobile}
-                      onChange={handleChangepopup}
-                      maxLength={10}
-                      minLength={10}
-                      placeholder="Enter your mobile number"
-                      required
-                    />
-                  </Form.Group>
-
-                  <Form.Group className="mb-3" controlId="course">
-                    <Form.Label>Course</Form.Label>
-                    <Form.Control
-                      as="select"
-                      name="popupcourse"
-                      value={popupformData.popupcourse}
-                      onChange={handleChangepopup}
-                      required
-                    >
-                      <option value="">Select course</option>
-                      {listcoursesOffered.map((course, index) => (
-                        <option key={index} value={course.course_name}>
-                          {course.course_name}
-                        </option>
-                      ))}
-                    </Form.Control>
-                  </Form.Group>
-
-                  <Button variant="primary" type="submit">
-                    Submit
-                  </Button>
-                </Form>
-              </Col>
-            </Row>
-          </Container>
-        </Modal.Body>
-      </Modal>
-    </div>
+      </div>
+    </>
   );
 }
 

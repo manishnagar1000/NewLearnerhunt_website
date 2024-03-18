@@ -69,7 +69,7 @@ const HeroSection = ({ inputRef }) => {
 
   const router = useRouter();
   const { pathname } = router;
-  console.log(pathname)
+  // console.log(pathname)
 
   const handleMobileChange = (event) => {
     const input = event.target.value;
@@ -85,7 +85,7 @@ const HeroSection = ({ inputRef }) => {
   };
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    console.log("hello world");
+    // console.log("hello world");
     if (name == "") {
       setIsNameValid(false);
     } else if (email == "" || !emailRegex.test(email)) {
@@ -97,7 +97,7 @@ const HeroSection = ({ inputRef }) => {
     } else if (course == "") {
       setIsCourseValid(false);
     } else {
-      console.log("api hit");
+      // console.log("api hit");
       const hitApi = (ip) => {
           const fd = new FormData();
           fd.append("name", name);

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component,createRef  } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import IconButton from "@mui/material/IconButton";
 import Classes from "/styles/portaldashboard.module.css";
@@ -20,6 +20,11 @@ import { Container, Row, Col, Modal, Form, Button } from "react-bootstrap";
 import DuoIcon from "@mui/icons-material/Duo";
 import dynamic from "next/dynamic";
 const AgoraUIKit = dynamic(() => import("agora-react-uikit"), { ssr: false });
+// import CallingSound from "@/assets/audio/callingAudio.mp3";
+
+const agoraAppid = process.env.NEXT_PUBLIC_AGORA_APP_ID,
+  agoraTokenurl = process.env.NEXT_PUBLIC_AGORA_TOKEN_URL;
+
 const sidebarList = [
   {
     name: "My Profile",
@@ -35,7 +40,9 @@ const sidebarList = [
 export default class PortalLayout extends Component {
   constructor(props) {
     super(props);
+    this.audioRef = createRef();
     this.state = {
+      isPlaying: false,
       isSidebarOpen: true,
       // selectedLi: "",
       // selectedItem: "",
@@ -46,17 +53,18 @@ export default class PortalLayout extends Component {
       error: "",
       isloading: false,
       videoCall: false,
+      callingModal: false,
       rtcProps: {
-        appId: "a0ac742ba6f24cf88219cb67e7f1f342",
+        appId: agoraAppid,
         channel: "",
-        tokenUrl: "https://learnerhunt-backend.onrender.com",
+        tokenUrl: agoraTokenurl,
         uid: "",
         enableScreensharing: true,
       },
       rtmProps: {
         username: "",
         displayUsername: true,
-        tokenUrl: "https://learnerhunt-backend.onrender.com",
+        tokenUrl: agoraTokenurl,
         callActive: true,
         enableVideo: true,
         enableAudio: true,
@@ -75,7 +83,14 @@ export default class PortalLayout extends Component {
         if (response.ok) {
           var res = await response.json();
           // console.log(res.data);
-          this.setState({ notifications: res.data });
+          // this.togglePlay();
+
+          this.setState({
+            notifications: res.data,
+            // callingModal: true,
+            // isPlaying: true,
+          })
+          
         } else {
           var res = await response.json();
           // setError(res.error);
@@ -94,6 +109,9 @@ export default class PortalLayout extends Component {
   //   }
   //   // console.log(this.props)
   // }
+
+ 
+
   componentDidMount() {
     this.NotificationApi();
     this.interval = setInterval(this.NotificationApi, 30000);
@@ -221,9 +239,8 @@ export default class PortalLayout extends Component {
         </Button>
       );
     }
-
-    
   };
+
 
   render() {
     return (
@@ -231,6 +248,9 @@ export default class PortalLayout extends Component {
         <div className={Classes.dashboard}>
           <div className={Classes.navbar}>
             <div className={Classes["left-div"]}>
+              {/* <button onClick={this.togglePlay}>
+                {this.state.isPlaying ? "Pause" : "Play"}
+              </button> */}
               <IconButton
                 onClick={() =>
                   this.setState({ isSidebarOpen: !this.state.isSidebarOpen })
@@ -254,7 +274,7 @@ export default class PortalLayout extends Component {
             <div className={Classes["right-div"]}>
               <Tooltip title="Notification">
                 <IconButton
-                  onClick={(e) => this.setState({ anchorE2: e.currentTarget })}
+                  onClick={(e) => this.setState({ anchorE2: e.currentTarget },()=> this.NotificationApi())}
                   size="small"
                   aria-controls={
                     Boolean(this.state.anchorE2) ? "account-menu" : undefined
@@ -432,11 +452,20 @@ export default class PortalLayout extends Component {
                   <List
                     sx={{
                       width: "100%",
-                      height: "80vh",
-                      maxHeight: "40vh",
+                      maxHeight: "80vh",
+                      overflowY:'auto',
                       bgcolor: "background.paper",
                     }}
                   >
+                  <ListItem
+                            sx={{
+                              fontSize:'larger',
+                              fontWeight:'500',
+                              marginBottom: "0.1rem",
+                            }}
+                          >
+                            Notifications...
+                            </ListItem>
                     {this.state.notifications.map((notification, i) => {
                       return (
                         <>
@@ -518,6 +547,54 @@ export default class PortalLayout extends Component {
             </Modal.Body>
           </Modal>
         )}
+
+        {/* <Modal
+          keyboard={false}
+          backdrop="static"
+          size="sm"
+          show={this.state.callingModal}
+          onHide={() => this.setState({ callingModal: false })}
+        >
+          <Modal.Body>
+            <div className="d-flex align-items-center justify-content-center">
+              <img
+                src="/assets/images/video.gif"
+                alt="gif"
+                width={50}
+                height={50}
+              />
+              <span style={{ fontSize: "20px", fontWeight: "500" }}>
+                Incoming Video Call...
+              </span>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-around",
+                alignItems: "center",
+                margin: "1rem",
+              }}
+            >
+              <Button variant="success">Accept</Button>
+              <Button
+                variant="danger"
+                onClick={() =>
+                  this.setState({ callingModal: false, isPlaying: false })
+                }
+              >
+                Reject
+              </Button>
+            </div>
+          </Modal.Body>
+        </Modal> */}
+{/* {this.state.isPlaying && */}
+       {/* <audio autoPlay>
+       <source src="/assets/audio/callingAudio.mp3" type="audio/mp3" />
+       Your browser does not support the audio element.
+     </audio> */}
+{/* } */}
+        {/* <audio ref={this.audioRef} src="/assets/audio/callingAudio.mp3" /> */}
+
       </>
     );
   }

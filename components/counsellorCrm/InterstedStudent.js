@@ -46,7 +46,7 @@ export default class IntrestedLeads extends Component {
   }
 
   Callend(counsellor,student){
-    console.log(counsellor,student)
+    // console.log(counsellor,student)
 
     if(counsellor && student){
       return 'Both'

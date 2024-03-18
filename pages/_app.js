@@ -13,14 +13,14 @@ export default function App({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <title>
+        {/* <title>
           Learnerhunt: Top Colleges & Universities in India | Latest News About
           Courses & Admission
         </title>
         <meta
           name="description"
           content="Learnerhunt - The one-stop platform to explore top UG & PG colleges, universities and diploma, certificate courses in India and abroad. Get all the latest education news and more at www.learnerhunt.com"
-        />
+        /> */}
         <meta
           name="facebook-domain-verification"
           content="dlwg9ck6pstfnxvx0h76eu38irnw2x"
@@ -35,7 +35,7 @@ export default function App({ Component, pageProps }) {
         />
 
         {/* og tag */}
-        <meta
+        {/* <meta
           property="og:title"
           content="Top Colleges & Universities in India | Explore Courses, Exams, Admissions & Latest News"
         />
@@ -49,10 +49,10 @@ export default function App({ Component, pageProps }) {
         <meta
           property="og:image"
           content="https://www.learnerhunt.com/assets/images/Learnerhunt-Logo.webp"
-        />
+        /> */}
 
         {/* Twitter Tag */}
-        <meta name="twitter:card" content="summary_large_image" />
+        {/* <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@ Learnerhunt" />
         <meta
           name="twitter:title"
@@ -65,7 +65,7 @@ export default function App({ Component, pageProps }) {
         <meta
           name="twitter:image"
           content="https://www.learnerhunt.com/assets/images/Learnerhunt-Logo.webp"
-        />
+        /> */}
 
         <script
           async

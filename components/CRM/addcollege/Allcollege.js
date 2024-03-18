@@ -1,22 +1,10 @@
 import React, { Component } from "react";
-import axios from "axios";
 import Swal from "sweetalert2";
 import Loading from "../../Comps/Loading";
 import Tablenav from "../../Comps/Tablenav";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
-import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import Dropdown from "react-bootstrap/Dropdown";
-import RestartAltIcon from "@mui/icons-material/RestartAlt";
-import PrecisionManufacturingIcon from "@mui/icons-material/PrecisionManufacturing";
-import AutoDeleteIcon from "@mui/icons-material/AutoDelete";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { Spinner } from "react-bootstrap";
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
-// import Classes from '/styles/Allcolleges.module.css'
-import MultipleSelectInput from "@/components/Comps/MultipleSelectInput";
 import Link from "next/link";
 
 var oldData = []
