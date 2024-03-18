@@ -50,7 +50,7 @@ const QRCodeComponent = () => {
             }}
           >
             <Image
-              src="/assets/images/footer/qrcode.webp"
+              src="/assets/images/footer/qrcode.png"
               alt="QR Code"
               width={250}
               height={250}
