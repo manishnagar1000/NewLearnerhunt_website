@@ -1,109 +1,245 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-<!--  created with Free Online Sitemap Generator www.xml-sitemaps.com  -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"
+>
 <url>
-<loc>https://www.learnerhunt.com/</loc>
-<lastmod>2024-03-13T07:04:17+00:00</lastmod>
-<priority>1.00</priority>
+  <loc>http://www.learnerhunt.com/</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
 </url>
 <url>
-<loc>https://www.learnerhunt.com/colleges</loc>
-<lastmod>2024-03-13T07:04:17+00:00</lastmod>
-<priority>0.80</priority>
+  <loc>http://www.learnerhunt.com/colleges</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
 </url>
 <url>
-<loc>https://www.learnerhunt.com/courses</loc>
-<lastmod>2024-03-13T07:04:17+00:00</lastmod>
-<priority>0.80</priority>
+  <loc>http://www.learnerhunt.com/courses</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
 </url>
 <url>
-<loc>https://www.learnerhunt.com/exams</loc>
-<lastmod>2024-03-13T07:04:17+00:00</lastmod>
-<priority>0.80</priority>
+  <loc>http://www.learnerhunt.com/exams</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
 </url>
 <url>
-<loc>https://www.learnerhunt.com/comingsoon</loc>
-<lastmod>2024-03-13T07:04:17+00:00</lastmod>
-<priority>0.80</priority>
+  <loc>http://www.learnerhunt.com/comingsoon</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
 </url>
 <url>
-<loc>https://www.learnerhunt.com/contact-us</loc>
-<lastmod>2024-03-13T07:04:17+00:00</lastmod>
-<priority>0.80</priority>
+  <loc>http://www.learnerhunt.com/contact-us</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
 </url>
 <url>
-<loc>https://www.learnerhunt.com/courses?course=ug</loc>
-<lastmod>2024-03-13T07:04:17+00:00</lastmod>
-<priority>0.80</priority>
+  <loc>http://www.learnerhunt.com/courses?course=ug</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
 </url>
 <url>
-<loc>https://www.learnerhunt.com/colleges?course=MBA&fee=200000</loc>
-<lastmod>2024-03-13T07:04:17+00:00</lastmod>
-<priority>0.80</priority>
+  <loc>http://www.learnerhunt.com/colleges?course=MBA%26fee=200000</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
 </url>
 <url>
-<loc>https://www.learnerhunt.com/colleges/bml-munjal-university</loc>
-<lastmod>2024-03-13T07:04:17+00:00</lastmod>
-<priority>0.80</priority>
+  <loc>http://www.learnerhunt.com/colleges/bml-munjal-university</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
 </url>
 <url>
-<loc>https://www.learnerhunt.com/colleges/-upes-university-of-petroleum-and-energy-studies</loc>
-<lastmod>2024-03-13T07:04:17+00:00</lastmod>
-<priority>0.80</priority>
+  <loc>http://www.learnerhunt.com/colleges/-upes-university-of-petroleum-and-energy-studies</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
 </url>
 <url>
-<loc>https://www.learnerhunt.com/colleges/iilm-university-greater-noida</loc>
-<lastmod>2024-03-13T07:04:17+00:00</lastmod>
-<priority>0.80</priority>
+  <loc>http://www.learnerhunt.com/colleges/iilm-university-greater-noida</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
 </url>
 <url>
-<loc>https://www.learnerhunt.com/colleges/shoolini-university</loc>
-<lastmod>2024-03-13T07:04:17+00:00</lastmod>
-<priority>0.80</priority>
+  <loc>http://www.learnerhunt.com/colleges/shoolini-university</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
 </url>
 <url>
-<loc>https://www.learnerhunt.com/colleges/soil-institute-of-management</loc>
-<lastmod>2024-03-13T07:04:17+00:00</lastmod>
-<priority>0.80</priority>
+  <loc>http://www.learnerhunt.com/colleges/soil-institute-of-management</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
 </url>
 <url>
-<loc>https://www.learnerhunt.com/colleges/-itm-information-technology-management-</loc>
-<lastmod>2024-03-13T07:04:17+00:00</lastmod>
-<priority>0.80</priority>
+  <loc>http://www.learnerhunt.com/colleges/-itm-information-technology-management-</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
 </url>
 <url>
-<loc>https://www.learnerhunt.com/colleges/atlas-skilltech-university</loc>
-<lastmod>2024-03-13T07:04:17+00:00</lastmod>
-<priority>0.80</priority>
+  <loc>http://www.learnerhunt.com/colleges/atlas-skilltech-university</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
 </url>
 <url>
-<loc>https://www.learnerhunt.com/colleges/alliance-university</loc>
-<lastmod>2024-03-13T07:04:17+00:00</lastmod>
-<priority>0.80</priority>
+  <loc>http://www.learnerhunt.com/colleges/alliance-university</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
 </url>
 <url>
-<loc>https://www.learnerhunt.com/exams/Joint-Entrance-Examination-Main</loc>
-<lastmod>2024-03-13T07:04:17+00:00</lastmod>
-<priority>0.80</priority>
+  <loc>http://www.learnerhunt.com/exams/Joint-Entrance-Examination-Main</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
 </url>
 <url>
-<loc>https://www.learnerhunt.com/exams/Joint-Entrance-Examination-Advanced</loc>
-<lastmod>2024-03-13T07:04:17+00:00</lastmod>
-<priority>0.80</priority>
+  <loc>http://www.learnerhunt.com/exams/Joint-Entrance-Examination-Advanced</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
 </url>
 <url>
-<loc>https://www.learnerhunt.com/exams/National-Eligibility-cum-Entrance-Test</loc>
-<lastmod>2024-03-13T07:04:17+00:00</lastmod>
-<priority>0.80</priority>
+  <loc>http://www.learnerhunt.com/exams/National-Eligibility-cum-Entrance-Test</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
 </url>
 <url>
-<loc>https://www.learnerhunt.com/privacy</loc>
-<lastmod>2024-03-13T07:04:17+00:00</lastmod>
-<priority>0.80</priority>
+  <loc>http://www.learnerhunt.com/privacy</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
 </url>
 <url>
-<loc>https://www.learnerhunt.com/about-us</loc>
-<lastmod>2024-03-13T07:04:17+00:00</lastmod>
-<priority>0.80</priority>
+  <loc>http://www.learnerhunt.com/about-us</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
+</url>
+<url>
+  <loc>http://www.learnerhunt.com/sitemap.xml</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
+</url>
+<url>
+  <loc>http://www.learnerhunt.com/tel:+918800756846</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
+</url>
+<url>
+  <loc>https://learnerhunt.com/</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
+</url>
+<url>
+  <loc></loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
+</url>
+<url>
+  <loc>http://learnerhunt.com/</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
+</url>
+<url>
+  <loc>http://learnerhunt.com/colleges</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
+</url>
+<url>
+  <loc>http://learnerhunt.com/courses</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
+</url>
+<url>
+  <loc>http://learnerhunt.com/exams</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
+</url>
+<url>
+  <loc>http://learnerhunt.com/comingsoon</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
+</url>
+<url>
+  <loc>http://learnerhunt.com/contact-us</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
+</url>
+<url>
+  <loc>http://learnerhunt.com/courses?course=ug</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
+</url>
+<url>
+  <loc>http://learnerhunt.com/colleges?course=MBA%26fee=200000</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
+</url>
+<url>
+  <loc>http://learnerhunt.com/colleges/bml-munjal-university</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
+</url>
+<url>
+  <loc>http://learnerhunt.com/colleges/-upes-university-of-petroleum-and-energy-studies</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
+</url>
+<url>
+  <loc>http://learnerhunt.com/colleges/iilm-university-greater-noida</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
+</url>
+<url>
+  <loc>http://learnerhunt.com/colleges/shoolini-university</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
+</url>
+<url>
+  <loc>http://learnerhunt.com/colleges/soil-institute-of-management</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
+</url>
+<url>
+  <loc>http://learnerhunt.com/colleges/-itm-information-technology-management-</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
+</url>
+<url>
+  <loc>http://learnerhunt.com/colleges/atlas-skilltech-university</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
+</url>
+<url>
+  <loc>http://learnerhunt.com/colleges/alliance-university</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
+</url>
+<url>
+  <loc>http://learnerhunt.com/exams/Joint-Entrance-Examination-Main</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
+</url>
+<url>
+  <loc>http://learnerhunt.com/exams/Joint-Entrance-Examination-Advanced</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
+</url>
+<url>
+  <loc>http://learnerhunt.com/exams/National-Eligibility-cum-Entrance-Test</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
+</url>
+<url>
+  <loc>http://learnerhunt.com/privacy</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
+</url>
+<url>
+  <loc>http://learnerhunt.com/about-us</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
+</url>
+<url>
+  <loc>http://learnerhunt.com/sitemap.xml</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
+</url>
+<url>
+  <loc>http://learnerhunt.com/tel:+918800756846</loc>
+  <priority>0.3</priority>
+  <changefreq>always</changefreq>
 </url>
 </urlset>

@@ -11,7 +11,10 @@ import { Spinner } from "react-bootstrap";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import Zoom from '@mui/material/Zoom';
+import Zoom from "@mui/material/Zoom";
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
+
 var oldData = [];
 
 const SEOManage = () => {
@@ -41,7 +44,7 @@ const SEOManage = () => {
   });
   const [ogDetails, setOgDetails] = useState({
     ogLocale: "en_US",
-    ogType: "",
+    ogType: "website",
     ogTitle: "",
     ogDescription: "",
     ogUrl: "",
@@ -78,17 +81,15 @@ const SEOManage = () => {
       canonical: "",
     });
     setTwitterDetails({
-       
       twittertitle: "",
       twitterdescription: "",
       twitterImage: "",
       twitterCreator: "@learnerhunt",
-    twitterSite: "@learnerhunt",
-      
+      twitterSite: "@learnerhunt",
     });
     setOgDetails({
-        ogLocale: "en_US",
-      ogType: "",
+      ogLocale: "en_US",
+      ogType: "website",
       ogTitle: "",
       ogDescription: "",
       ogUrl: "",
@@ -97,7 +98,6 @@ const SEOManage = () => {
       ogImageWidth: "",
       ogImageHeight: "",
       ogImageAlt: "",
-      
     });
 
     setCustomSchema({
@@ -114,7 +114,7 @@ const SEOManage = () => {
       customSchemafaqStructuredData: false,
     });
   };
-  const handleModalShow = () => setShowModal(true);
+  const handleModalShow =() => setShowModal(true);
 
   const collegeDataApi = () => {
     setIsApiHitComplete(false);
@@ -147,18 +147,43 @@ const SEOManage = () => {
     collegeDataApi();
   }, []);
 
-  const handleInputChange = (e, group,type="text") => {
+  const handleInputChange = (e, group, type = "text") => {
     const { name, value } = e.target;
+    // console.log(name,value)
     if (group === "basic") {
-        if(type == 'select'){
-            // console.log("selectlist onchange")
-            const selectedObj = collegeApi.find((obj)=>obj._id==value)
-            // console.log(selectedObj)
-            // console.log(selectedObj.square_img_path)
-            setTwitterDetails({...twitterDetails,["twitterImage"]:`https://learnerhunt-assets.s3.us-east-1.amazonaws.com/${selectedObj.square_img_path}`})
+      if (type == "select") {
+        // console.log("selectlist onchange")
+        // const selectedObj = collegeApi.find((obj) => console.log(obj));
 
-        }
-      setFormData({ ...formData, [name]: value });
+        const selectedObj = collegeApi.find((obj) => obj._id == value.value);
+        // console.log(selectedObj);
+        // console.log(selectedObj.square_img_path)
+        setFormData({
+          ...formData,
+          ["canonical"]: `https://www.learnerhunt.com/${selectedObj.slug}`,
+          ["collegename"]: value,
+        });
+        setTwitterDetails({
+          ...twitterDetails,
+          ["twitterImage"]: `https://learnerhunt-assets.s3.us-east-1.amazonaws.com/${selectedObj.square_img_path}`,
+        });
+        setOgDetails({
+          ...ogDetails,
+          ["ogUrl"]: `https://www.learnerhunt.com/${selectedObj.slug}`,
+        });
+      } else if (type == "title") {
+        setFormData({ ...formData, [name]: value });
+        setTwitterDetails({ ...twitterDetails, ["twittertitle"]: value });
+        setOgDetails({ ...ogDetails, ["ogTitle"]: value });
+      }
+      else if (type == "desc") {
+        setFormData({ ...formData, [name]: value });
+        setTwitterDetails({ ...twitterDetails, ["twitterdescription"]: value });
+        setOgDetails({ ...ogDetails, ["ogDescription"]: value });
+      }
+       else {
+        setFormData({ ...formData, [name]: value });
+      }
       setErrors({ ...errors, [name]: false });
     } else if (group === "twitter") {
       setTwitterDetails({ ...twitterDetails, [name]: value });
@@ -210,7 +235,7 @@ const SEOManage = () => {
       // Additional validation if needed
       newErrors.keywords = true;
       Swal.fire({
-        title: "Keywords length must be between 1 and 160 characters.",
+        title: "Keywords length must be between 1 and 65 characters.",
       });
     }
     if (formData.canonical.trim() === "") {
@@ -218,11 +243,11 @@ const SEOManage = () => {
       Swal.fire({
         title: "Please enter a canonical.",
       });
-    } else if (formData.canonical.length > 65) {
+    } else if (formData.canonical.length > 265) {
       // Additional validation if needed
       newErrors.canonical = true;
       Swal.fire({
-        title: "Canonical length must be between 1 and 160 characters.",
+        title: "Canonical length must be between 1 and 265 characters.",
       });
     }
 
@@ -257,7 +282,7 @@ const SEOManage = () => {
       setErrors(newErrors);
     } else {
       // If no errors, proceed to save
-    //   console.log(formData, twitterDetails, ogDetails, customSchema);
+      //   console.log(formData, twitterDetails, ogDetails, customSchema);
       try {
         const fd = new FormData();
         fd.append("cid", formData.collegename);
@@ -316,7 +341,6 @@ const SEOManage = () => {
                 twitterImage: "",
               });
               setOgDetails({
-                ogType: "",
                 ogTitle: "",
                 ogDescription: "",
                 ogUrl: "",
@@ -416,7 +440,7 @@ const SEOManage = () => {
       setErrors(newErrors);
     } else {
       // If no errors, proceed to save
-    //   console.log(formData, twitterDetails, ogDetails, customSchema);
+      //   console.log(formData, twitterDetails, ogDetails, customSchema);
       try {
         const fd = new FormData();
         fd.append("cid", formData.collegename);
@@ -436,14 +460,8 @@ const SEOManage = () => {
         fd.append("og_url", ogDetails.ogUrl);
         fd.append("og_image", ogDetails.ogImage);
         fd.append("og_image_secure_url", ogDetails.ogImageSecureUrl);
-        fd.append(
-          "og_image_width",
-          ogDetails.ogImageWidth || 0
-        );
-        fd.append(
-          "og_image_height",
-          ogDetails.ogImageHeight || 0
-        );
+        fd.append("og_image_width", ogDetails.ogImageWidth || 0);
+        fd.append("og_image_height", ogDetails.ogImageHeight || 0);
         fd.append("og_image_alt", ogDetails.ogImageAlt);
         fd.append("structured_data", customSchema.structuredData);
         fd.append("faq_structured_data", customSchema.faqStructuredData);
@@ -485,7 +503,7 @@ const SEOManage = () => {
               });
               setOgDetails({
                 ogLocale: "en_US",
-                ogType: "",
+                ogType: "website",
                 ogTitle: "",
                 ogDescription: "",
                 ogUrl: "",
@@ -559,12 +577,12 @@ const SEOManage = () => {
     })
       .then(async (response) => {
         var res = await response.json();
-        // console.log(res.data);
+        console.log(res.data);
         // console.log(res.data[0].title);
         setIsApiHitComplete(true);
         setIsDataFound(true);
         setFormData({
-          collegename: res.data[0].college_id,
+          collegename: res.data[0].college_name,
           title: res.data[0].title,
           description: res.data[0].description,
           keywords: res.data[0].keywords,
@@ -573,13 +591,13 @@ const SEOManage = () => {
         setTwitterDetails({
           twittertitle: res.data[0].twitter_title,
           twitterdescription: res.data[0].twitter_description,
-          twitterImage: res.data[0].twitter_image ,
+          twitterImage: res.data[0].twitter_image,
           twitterCreator: res.data[0].twitter_creator || "@learnerhunt",
           twitterSite: res.data[0].twitter_site || "@learnerhunt",
         });
         setOgDetails({
           ogLocale: res.data[0].og_locale || "en_US",
-          ogType: res.data[0].og_type,
+          ogType: res.data[0].og_type || "website",
           ogTitle: res.data[0].og_title,
           ogDescription: res.data[0].og_description,
           ogUrl: res.data[0].og_url,
@@ -595,7 +613,6 @@ const SEOManage = () => {
         });
 
         // setCollegeApi(res.data.college_list)
-        
       })
       .catch((error) => {
         console.log(error);
@@ -788,29 +805,47 @@ const SEOManage = () => {
           <Form>
             <Row>
               <Col md={12} className="mb-2">
-                <Form.Group controlId="collegename">
+                {/* <Form.Group controlId="collegename">
                   <Form.Label
                     className={errors.collegename ? "text-danger" : ""}
                   >
                     College Name *
-                  </Form.Label>
-                  <Form.Select
+                  </Form.Label> */}
+                  {/* <Form.Select
                     aria-label="Default select example"
                     name="collegename"
                     value={formData.collegename}
-                    onChange={(e) => handleInputChange(e, "basic","select")}
+                    onChange={(e) => handleInputChange(e, "basic", "select")}
                     required
                   >
                     <option disabled value="">
                       Select College Name
                     </option>
-                    {collegeApi.map((s,i) => (
+                    {collegeApi.map((s, i) => (
                       <option key={i} value={s._id}>
                         {s.college_name}
                       </option>
                     ))}
-                  </Form.Select>
-                </Form.Group>
+                  </Form.Select> */}
+      <Autocomplete
+  disablePortal
+  options={collegeApi.map((s) => ({
+    value: s._id,
+    label: s.college_name
+  }))}
+  value={formData.collegename} // Set the value attribute
+
+  // onChange={(e) => handleInputChange(e, "basic", "select")}
+  onChange={(event, value) => handleInputChange({ target: { name: "collegename", value: value } }, "basic", "select")}
+  renderInput={(params) => 
+    <TextField
+    {...params}
+    label="Select College Name"
+    name="collegename" // Set the name attribute
+    // value={formData.collegename}
+  />}
+/>
+                {/* </Form.Group> */}
               </Col>
             </Row>
             <h3>Basic Details</h3>
@@ -825,7 +860,7 @@ const SEOManage = () => {
                     type="text"
                     name="title"
                     value={formData.title}
-                    onChange={(e) => handleInputChange(e, "basic")}
+                    onChange={(e) => handleInputChange(e, "basic", "title")}
                   />
                   <Form.Text className="text-muted">
                     Character length must be 50-60.
@@ -843,7 +878,7 @@ const SEOManage = () => {
                     type="text"
                     name="description"
                     value={formData.description}
-                    onChange={(e) => handleInputChange(e, "basic")}
+                    onChange={(e) => handleInputChange(e, "basic","desc")}
                   />
                   <Form.Text className="text-muted">
                     Character length must be 150-160.
@@ -889,8 +924,19 @@ const SEOManage = () => {
             <Row>
               <Col md={4} className="mb-2">
                 <Form.Group controlId="twittertitle">
-                  <Form.Label>Twitter Title
-                  <Tooltip placement="top" TransitionComponent={Zoom} arrow title={<span style={{ fontSize:"13px" }}>The twitter:title attribute is used to specify the title of the content being shared on Twitter.</span>}>
+                  <Form.Label>
+                    Twitter Title
+                    <Tooltip
+                      placement="top"
+                      TransitionComponent={Zoom}
+                      arrow
+                      title={
+                        <span style={{ fontSize: "13px" }}>
+                          The twitter:title attribute is used to specify the
+                          title of the content being shared on Twitter.
+                        </span>
+                      }
+                    >
                       <IconButton>
                         <InfoOutlinedIcon />
                       </IconButton>
@@ -909,8 +955,20 @@ const SEOManage = () => {
               </Col>
               <Col md={4} className="mb-2">
                 <Form.Group controlId="twitterdescription">
-                  <Form.Label>Twitter Description
-                  <Tooltip placement="top" TransitionComponent={Zoom} arrow title={<span style={{ fontSize:"13px" }}>The twitter:description provides a concise summary or description of the content of the webpage, which can be displayed when the page is shared on Twitter.</span>}>
+                  <Form.Label>
+                    Twitter Description
+                    <Tooltip
+                      placement="top"
+                      TransitionComponent={Zoom}
+                      arrow
+                      title={
+                        <span style={{ fontSize: "13px" }}>
+                          The twitter:description provides a concise summary or
+                          description of the content of the webpage, which can
+                          be displayed when the page is shared on Twitter.
+                        </span>
+                      }
+                    >
                       <IconButton>
                         <InfoOutlinedIcon />
                       </IconButton>
@@ -929,15 +987,27 @@ const SEOManage = () => {
               </Col>
               <Col md={4} className="mb-2">
                 <Form.Group controlId="twitterImage">
-                  <Form.Label>Twitter Image
-                  <Tooltip placement="top" TransitionComponent={Zoom} arrow title={<span style={{ fontSize:"13px" }}>The twitter:image meta tag is used in SEO to specify the image that should be displayed when a webpage is shared on Twitter.</span>}>
+                  <Form.Label>
+                    Twitter Image
+                    <Tooltip
+                      placement="top"
+                      TransitionComponent={Zoom}
+                      arrow
+                      title={
+                        <span style={{ fontSize: "13px" }}>
+                          The twitter:image meta tag is used in SEO to specify
+                          the image that should be displayed when a webpage is
+                          shared on Twitter.
+                        </span>
+                      }
+                    >
                       <IconButton>
                         <InfoOutlinedIcon />
                       </IconButton>
                     </Tooltip>
                   </Form.Label>
                   <Form.Control
-                  title={twitterDetails.twitterImage}
+                    title={twitterDetails.twitterImage}
                     type="text"
                     name="twitterImage"
                     value={twitterDetails.twitterImage}
@@ -952,7 +1022,18 @@ const SEOManage = () => {
                 <Form.Group controlId="twitterCreator">
                   <Form.Label>
                     Twitter Creator
-                    <Tooltip placement="top" TransitionComponent={Zoom} arrow title={<span style={{ fontSize:"13px" }}>The twitter:creator tag in SEO Twitter tags is used to specify the Twitter username of the content creator or author.</span>}>
+                    <Tooltip
+                      placement="top"
+                      TransitionComponent={Zoom}
+                      arrow
+                      title={
+                        <span style={{ fontSize: "13px" }}>
+                          The twitter:creator tag in SEO Twitter tags is used to
+                          specify the Twitter username of the content creator or
+                          author.
+                        </span>
+                      }
+                    >
                       <IconButton>
                         <InfoOutlinedIcon />
                       </IconButton>
@@ -971,7 +1052,18 @@ const SEOManage = () => {
                 <Form.Group controlId="twitterSite">
                   <Form.Label>
                     Twitter Site
-                    <Tooltip placement="top" TransitionComponent={Zoom} arrow title={<span style={{ fontSize:"13px" }}>When a user shares the webpage's URL on Twitter, the twitter:site tag ensures that the specified Twitter account is attributed as the source of the content.</span>}>
+                    <Tooltip
+                      placement="top"
+                      TransitionComponent={Zoom}
+                      arrow
+                      title={
+                        <span style={{ fontSize: "13px" }}>
+                          When a user shares the webpage's URL on Twitter, the
+                          twitter:site tag ensures that the specified Twitter
+                          account is attributed as the source of the content.
+                        </span>
+                      }
+                    >
                       <IconButton>
                         <InfoOutlinedIcon />
                       </IconButton>
@@ -992,8 +1084,20 @@ const SEOManage = () => {
             <Row>
               <Col md={4} className="mb-2">
                 <Form.Group controlId="ogLocale">
-                  <Form.Label>OG Locale
-                  <Tooltip placement="top" TransitionComponent={Zoom} arrow title={<span style={{ fontSize:"13px" }}>The og:locale meta tag is used to specify the locale or language of the content on a webpage for Open Graph (OG) protocol.</span>}>
+                  <Form.Label>
+                    OG Locale
+                    <Tooltip
+                      placement="top"
+                      TransitionComponent={Zoom}
+                      arrow
+                      title={
+                        <span style={{ fontSize: "13px" }}>
+                          The og:locale meta tag is used to specify the locale
+                          or language of the content on a webpage for Open Graph
+                          (OG) protocol.
+                        </span>
+                      }
+                    >
                       <IconButton>
                         <InfoOutlinedIcon />
                       </IconButton>
@@ -1010,8 +1114,20 @@ const SEOManage = () => {
               </Col>
               <Col md={4} className="mb-2">
                 <Form.Group controlId="ogType">
-                  <Form.Label>OG Type
-                  <Tooltip placement="top" TransitionComponent={Zoom} arrow title={<span style={{ fontSize:"13px" }}>The og:type property in Open Graph (OG) meta tags is used to define the type or category of the content being shared.</span>}>
+                  <Form.Label>
+                    OG Type
+                    <Tooltip
+                      placement="top"
+                      TransitionComponent={Zoom}
+                      arrow
+                      title={
+                        <span style={{ fontSize: "13px" }}>
+                          The og:type property in Open Graph (OG) meta tags is
+                          used to define the type or category of the content
+                          being shared.
+                        </span>
+                      }
+                    >
                       <IconButton>
                         <InfoOutlinedIcon />
                       </IconButton>
@@ -1021,14 +1137,28 @@ const SEOManage = () => {
                     type="text"
                     name="ogType"
                     value={ogDetails.ogType}
-                    onChange={(e) => handleInputChange(e, "og")}
+                    disabled
+                    // onChange={(e) => handleInputChange(e, "og")}
                   />
                 </Form.Group>
               </Col>
               <Col md={4} className="mb-2">
                 <Form.Group controlId="ogTitle">
-                  <Form.Label>OG Title
-                  <Tooltip placement="top" TransitionComponent={Zoom} arrow title={<span style={{ fontSize:"13px" }}>The og:title tag is part of the Open Graph protocol, which allows webmasters to specify how content should be presented when shared on social media platforms like Facebook, LinkedIn, and others.</span>}>
+                  <Form.Label>
+                    OG Title
+                    <Tooltip
+                      placement="top"
+                      TransitionComponent={Zoom}
+                      arrow
+                      title={
+                        <span style={{ fontSize: "13px" }}>
+                          The og:title tag is part of the Open Graph protocol,
+                          which allows webmasters to specify how content should
+                          be presented when shared on social media platforms
+                          like Facebook, LinkedIn, and others.
+                        </span>
+                      }
+                    >
                       <IconButton>
                         <InfoOutlinedIcon />
                       </IconButton>
@@ -1044,8 +1174,21 @@ const SEOManage = () => {
               </Col>
               <Col md={4}>
                 <Form.Group controlId="ogDescription">
-                  <Form.Label>OG Description
-                  <Tooltip placement="top" TransitionComponent={Zoom} arrow title={<span style={{ fontSize:"13px" }}>The og:description provides a brief description of the content of the webpage and is primarily used by social media platforms and other services when a webpage is shared or linked.</span>}>
+                  <Form.Label>
+                    OG Description
+                    <Tooltip
+                      placement="top"
+                      TransitionComponent={Zoom}
+                      arrow
+                      title={
+                        <span style={{ fontSize: "13px" }}>
+                          The og:description provides a brief description of the
+                          content of the webpage and is primarily used by social
+                          media platforms and other services when a webpage is
+                          shared or linked.
+                        </span>
+                      }
+                    >
                       <IconButton>
                         <InfoOutlinedIcon />
                       </IconButton>
@@ -1061,8 +1204,19 @@ const SEOManage = () => {
               </Col>
               <Col md={4}>
                 <Form.Group controlId="ogUrl">
-                  <Form.Label>OG URL
-                  <Tooltip placement="top" TransitionComponent={Zoom} arrow title={<span style={{ fontSize:"13px" }}>The og:url tag in Open Graph (OG) meta tags is used to specify the canonical URL of the web page.</span>}>
+                  <Form.Label>
+                    OG URL
+                    <Tooltip
+                      placement="top"
+                      TransitionComponent={Zoom}
+                      arrow
+                      title={
+                        <span style={{ fontSize: "13px" }}>
+                          The og:url tag in Open Graph (OG) meta tags is used to
+                          specify the canonical URL of the web page.
+                        </span>
+                      }
+                    >
                       <IconButton>
                         <InfoOutlinedIcon />
                       </IconButton>
@@ -1078,8 +1232,20 @@ const SEOManage = () => {
               </Col>
               <Col md={4}>
                 <Form.Group controlId="ogImage">
-                  <Form.Label>OG Image
-                  <Tooltip placement="top" TransitionComponent={Zoom} arrow title={<span style={{ fontSize:"13px" }}>The og:image tag is used to specify the image that should be displayed when a webpage is shared on social media platforms like Twitter.</span>}>
+                  <Form.Label>
+                    OG Image
+                    <Tooltip
+                      placement="top"
+                      TransitionComponent={Zoom}
+                      arrow
+                      title={
+                        <span style={{ fontSize: "13px" }}>
+                          The og:image tag is used to specify the image that
+                          should be displayed when a webpage is shared on social
+                          media platforms like Twitter.
+                        </span>
+                      }
+                    >
                       <IconButton>
                         <InfoOutlinedIcon />
                       </IconButton>
@@ -1095,8 +1261,20 @@ const SEOManage = () => {
               </Col>
               <Col md={4}>
                 <Form.Group controlId="ogImageSecureUrl">
-                  <Form.Label>OG Image Secure URL
-                  <Tooltip placement="top" TransitionComponent={Zoom} arrow title={<span style={{ fontSize:"13px" }}>The og:image:secure_url property serves a similar purpose to the og:image property but ensures that the image URL is served over a secure connection.</span>}>
+                  <Form.Label>
+                    OG Image Secure URL
+                    <Tooltip
+                      placement="top"
+                      TransitionComponent={Zoom}
+                      arrow
+                      title={
+                        <span style={{ fontSize: "13px" }}>
+                          The og:image:secure_url property serves a similar
+                          purpose to the og:image property but ensures that the
+                          image URL is served over a secure connection.
+                        </span>
+                      }
+                    >
                       <IconButton>
                         <InfoOutlinedIcon />
                       </IconButton>
@@ -1112,8 +1290,20 @@ const SEOManage = () => {
               </Col>
               <Col md={4}>
                 <Form.Group controlId="ogImageWidth">
-                  <Form.Label>OG Image Width
-                  <Tooltip placement="top" TransitionComponent={Zoom} arrow title={<span style={{ fontSize:"13px" }}>The og:image:width property in Open Graph (OG) tags, including Twitter tags, is used to specify the width of the image being shared.</span>}>
+                  <Form.Label>
+                    OG Image Width
+                    <Tooltip
+                      placement="top"
+                      TransitionComponent={Zoom}
+                      arrow
+                      title={
+                        <span style={{ fontSize: "13px" }}>
+                          The og:image:width property in Open Graph (OG) tags,
+                          including Twitter tags, is used to specify the width
+                          of the image being shared.
+                        </span>
+                      }
+                    >
                       <IconButton>
                         <InfoOutlinedIcon />
                       </IconButton>
@@ -1129,8 +1319,20 @@ const SEOManage = () => {
               </Col>
               <Col md={4}>
                 <Form.Group controlId="ogImageHeight">
-                  <Form.Label>OG Image Height
-                  <Tooltip placement="top" TransitionComponent={Zoom} arrow title={<span style={{ fontSize:"13px" }}>The og:image:height property in Open Graph (OG) tags is used to specify the height of the image being shared.</span>}>
+                  <Form.Label>
+                    OG Image Height
+                    <Tooltip
+                      placement="top"
+                      TransitionComponent={Zoom}
+                      arrow
+                      title={
+                        <span style={{ fontSize: "13px" }}>
+                          The og:image:height property in Open Graph (OG) tags
+                          is used to specify the height of the image being
+                          shared.
+                        </span>
+                      }
+                    >
                       <IconButton>
                         <InfoOutlinedIcon />
                       </IconButton>
@@ -1146,8 +1348,19 @@ const SEOManage = () => {
               </Col>
               <Col md={4}>
                 <Form.Group controlId="ogImageAlt">
-                  <Form.Label>OG Image Alt
-                  <Tooltip placement="top" TransitionComponent={Zoom} arrow title={<span style={{ fontSize:"13px" }}>The og:image:alt property is used in Open Graph (OG) meta tags to provide alternative text for an image.</span>}>
+                  <Form.Label>
+                    OG Image Alt
+                    <Tooltip
+                      placement="top"
+                      TransitionComponent={Zoom}
+                      arrow
+                      title={
+                        <span style={{ fontSize: "13px" }}>
+                          The og:image:alt property is used in Open Graph (OG)
+                          meta tags to provide alternative text for an image.
+                        </span>
+                      }
+                    >
                       <IconButton>
                         <InfoOutlinedIcon />
                       </IconButton>
@@ -1173,7 +1386,18 @@ const SEOManage = () => {
                     }
                   >
                     Structured Data
-                    <Tooltip placement="top" TransitionComponent={Zoom} arrow title={<span style={{ fontSize:"13px" }}>By including schema markup on your website, you can potentially improve your search engine visibility and enhance the appearance of your search results.</span>}>
+                    <Tooltip
+                      placement="top"
+                      TransitionComponent={Zoom}
+                      arrow
+                      title={
+                        <span style={{ fontSize: "13px" }}>
+                          By including schema markup on your website, you can
+                          potentially improve your search engine visibility and
+                          enhance the appearance of your search results.
+                        </span>
+                      }
+                    >
                       <IconButton>
                         <InfoOutlinedIcon />
                       </IconButton>
@@ -1196,7 +1420,20 @@ const SEOManage = () => {
                     }
                   >
                     FAQ Structured Data
-                    <Tooltip placement="top" TransitionComponent={Zoom} arrow title={<span style={{ fontSize:"13px" }}>Implementing FAQ schema markup can enhance the visibility of FAQ content in search engine results pages (SERPs) and improve the chances of appearing in rich results such as rich snippets, FAQ carousels, or voice search results.</span>}>
+                    <Tooltip
+                      placement="top"
+                      TransitionComponent={Zoom}
+                      arrow
+                      title={
+                        <span style={{ fontSize: "13px" }}>
+                          Implementing FAQ schema markup can enhance the
+                          visibility of FAQ content in search engine results
+                          pages (SERPs) and improve the chances of appearing in
+                          rich results such as rich snippets, FAQ carousels, or
+                          voice search results.
+                        </span>
+                      }
+                    >
                       <IconButton>
                         <InfoOutlinedIcon />
                       </IconButton>
