@@ -63,7 +63,7 @@ const CollegeRanking = ({ zones, departments, rankingtypes }) => {
               spacing={1}
               style={{
                 width: "100%",
-                // paddingBottom: "1.5rem",
+                paddingBottom: "0.5rem",
                 overflowX: "auto",
               }}
             >

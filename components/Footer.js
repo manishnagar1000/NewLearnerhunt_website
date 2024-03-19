@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 // import Head from "next/head";
 import Image from "next/image";
-import QrCodeSection from '@/components/QrCodeSection'
+import QrCodeSection from "@/components/QrCodeSection";
 
 const Footer = () => {
   return (
@@ -30,7 +30,7 @@ const Footer = () => {
                 </li>
                 <li>
                   <Link href="/colleges/-itm-information-technology-management-">
-                    [ITM] INFORMATION TECHNOLOGY MANAGEMENT
+                  [ITM] Information Technology Management 
                   </Link>
                 </li>
                 <li>
@@ -115,11 +115,12 @@ const Footer = () => {
             </div>
           </div>
           <div className="row flex-column-reverse flex-sm-row">
-            <div className="col-lg-6 col-md-6">
+            <div className="col-lg-4 col-md-4">
               <p className="cmp-name">
-                © 2023 Decred Digital Services Pvt. Ltd.
+                © 2024 Decred Digital Services Pvt. Ltd.
               </p>
             </div>
+            <div className="col-md-4"></div>
             {/* <div className="col-lg-2 col-md-2">
               <div
                 id="elemID031021"
@@ -144,21 +145,20 @@ const Footer = () => {
                   
               </div>
             </div> */}
-            <div className="col-lg-6 col-md-6">
+            <div className="col-lg-4 col-md-4">
               <div className="social-media">
                 <Link
                   target="_blank"
                   href="https://www.facebook.com/learnerhunt/"
                 >
-                      <Image
-      src="/assets/images/footer/facebook.webp"
-      alt="facebook"
-      width={50}
-      height={50}
-    />
+                  <Image
+                    src="/assets/images/footer/facebook.webp"
+                    alt="facebook"
+                    width={50}
+                    height={50}
+                  />
                 </Link>
                 <Link target="_blank" href="https://twitter.com/learnerhunt">
-                  
                   <Image
                     src="/assets/images/footer/twitter.webp"
                     alt="twitter"
