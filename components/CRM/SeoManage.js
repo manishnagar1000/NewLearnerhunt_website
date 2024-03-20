@@ -251,12 +251,7 @@ const SEOManage = () => {
       });
     }
 
-    if (formData.canonical.length > 256 || formData.canonical == "") {
-      newErrors.canonical = true;
-      Swal.fire({
-        title: "Enter canonical.",
-      });
-    }
+   
     if (customSchema.structuredData !== "") {
       try {
         JSON.parse(customSchema.structuredData);
@@ -282,10 +277,11 @@ const SEOManage = () => {
       setErrors(newErrors);
     } else {
       // If no errors, proceed to save
-      //   console.log(formData, twitterDetails, ogDetails, customSchema);
+        // console.log(formData, twitterDetails, ogDetails, customSchema);
+        // console.log(formData.collegename)
       try {
         const fd = new FormData();
-        fd.append("cid", formData.collegename);
+        fd.append("cid", formData.collegename.value);
         fd.append("title", formData.title);
         fd.append("description", formData.description);
         fd.append("keywords", formData.keywords);
@@ -379,7 +375,7 @@ const SEOManage = () => {
       } catch (error) {
         console.error("Failed to fetch OTP:", error);
       }
-      //   handleModalClose();
+        // handleModalClose();
     }
   };
 
@@ -391,28 +387,52 @@ const SEOManage = () => {
         title: "Select college name",
       });
     }
-    if (formData.title.length > 60 || formData.title == "") {
+    if (formData.title.trim() === "") {
       newErrors.title = true;
       Swal.fire({
-        title: "Enter title.",
+        title: "Please enter a title.",
+      });
+    } else if (formData.title.length > 60) {
+      // Additional validation if needed
+      newErrors.title = true;
+      Swal.fire({
+        title: "Title length must be between 1 and 60 characters.",
       });
     }
-    if (formData.description.length > 160 || formData.description == "") {
+    if (formData.description.trim() === "") {
       newErrors.description = true;
       Swal.fire({
-        title: "Enter description.",
+        title: "Please enter a description.",
+      });
+    } else if (formData.description.length > 160) {
+      // Additional validation if needed
+      newErrors.description = true;
+      Swal.fire({
+        title: "Description length must be between 1 and 160 characters.",
       });
     }
-    if (formData.keywords.length > 65 || formData.keywords == "") {
+    if (formData.keywords.trim() === "") {
       newErrors.keywords = true;
       Swal.fire({
-        title: "Enter keyword.",
+        title: "Please enter a keywords.",
+      });
+    } else if (formData.keywords.length > 65) {
+      // Additional validation if needed
+      newErrors.keywords = true;
+      Swal.fire({
+        title: "Keywords length must be between 1 and 65 characters.",
       });
     }
-    if (formData.canonical.length > 256 || formData.canonical == "") {
+    if (formData.canonical.trim() === "") {
       newErrors.canonical = true;
       Swal.fire({
-        title: "Enter canonical.",
+        title: "Please enter a canonical.",
+      });
+    } else if (formData.canonical.length > 265) {
+      // Additional validation if needed
+      newErrors.canonical = true;
+      Swal.fire({
+        title: "Canonical length must be between 1 and 265 characters.",
       });
     }
     if (customSchema.structuredData !== "") {
@@ -440,10 +460,14 @@ const SEOManage = () => {
       setErrors(newErrors);
     } else {
       // If no errors, proceed to save
-      //   console.log(formData, twitterDetails, ogDetails, customSchema);
+        // console.log(formData, twitterDetails, ogDetails, customSchema);
+        // console.log(formData)
+      
+
       try {
         const fd = new FormData();
-        fd.append("cid", formData.collegename);
+        fd.append("recid",collegeId)
+        fd.append("cid", formData.collegename.value);
         fd.append("title", formData.title);
         fd.append("description", formData.description);
         fd.append("keywords", formData.keywords);
@@ -577,12 +601,12 @@ const SEOManage = () => {
     })
       .then(async (response) => {
         var res = await response.json();
-        console.log(res.data);
+        // console.log(res.data);
         // console.log(res.data[0].title);
         setIsApiHitComplete(true);
         setIsDataFound(true);
         setFormData({
-          collegename: res.data[0].college_name,
+          collegename: {value:res.data[0].college_id,label:res.data[0].college_name},
           title: res.data[0].title,
           description: res.data[0].description,
           keywords: res.data[0].keywords,
@@ -667,7 +691,7 @@ const SEOManage = () => {
     });
   };
   return (
-    <div>
+    <>
       {/* <Button variant="primary" onClick={handleModalShow}>
         Add SEO Data
       </Button> */}
@@ -719,6 +743,7 @@ const SEOManage = () => {
               {seoApi.map((clg, i) => {
                 return (
                   <tr key={i}>
+                    
                     <td style={{ wordWrap: "break-word", whiteSpace: "unset" }}>
                       {clg.college_name}
                     </td>
@@ -1463,7 +1488,7 @@ const SEOManage = () => {
           )}
         </Modal.Footer>
       </Modal>
-    </div>
+    </>
   );
 };
 
