@@ -12,8 +12,8 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import Zoom from "@mui/material/Zoom";
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
 
 var oldData = [];
 
@@ -72,6 +72,8 @@ const SEOManage = () => {
   const handleModalClose = () => {
     setShowModal(false);
     setCollegId("");
+    setIsloading(false);
+
     // console.log(formData.title);
     setFormData({
       collegename: "",
@@ -114,7 +116,7 @@ const SEOManage = () => {
       customSchemafaqStructuredData: false,
     });
   };
-  const handleModalShow =() => setShowModal(true);
+  const handleModalShow = () => setShowModal(true);
 
   const collegeDataApi = () => {
     setIsApiHitComplete(false);
@@ -160,7 +162,7 @@ const SEOManage = () => {
         // console.log(selectedObj.square_img_path)
         setFormData({
           ...formData,
-          ["canonical"]: `https://www.learnerhunt.com/${selectedObj.slug}`,
+          ["canonical"]: `https://www.learnerhunt.com/colleges/${selectedObj.slug}`,
           ["collegename"]: value,
         });
         setTwitterDetails({
@@ -169,19 +171,17 @@ const SEOManage = () => {
         });
         setOgDetails({
           ...ogDetails,
-          ["ogUrl"]: `https://www.learnerhunt.com/${selectedObj.slug}`,
+          ["ogUrl"]: `https://www.learnerhunt.com/colleges/${selectedObj.slug}`,
         });
       } else if (type == "title") {
         setFormData({ ...formData, [name]: value });
         setTwitterDetails({ ...twitterDetails, ["twittertitle"]: value });
         setOgDetails({ ...ogDetails, ["ogTitle"]: value });
-      }
-      else if (type == "desc") {
+      } else if (type == "desc") {
         setFormData({ ...formData, [name]: value });
         setTwitterDetails({ ...twitterDetails, ["twitterdescription"]: value });
         setOgDetails({ ...ogDetails, ["ogDescription"]: value });
-      }
-       else {
+      } else {
         setFormData({ ...formData, [name]: value });
       }
       setErrors({ ...errors, [name]: false });
@@ -251,7 +251,6 @@ const SEOManage = () => {
       });
     }
 
-   
     if (customSchema.structuredData !== "") {
       try {
         JSON.parse(customSchema.structuredData);
@@ -277,8 +276,9 @@ const SEOManage = () => {
       setErrors(newErrors);
     } else {
       // If no errors, proceed to save
-        // console.log(formData, twitterDetails, ogDetails, customSchema);
-        // console.log(formData.collegename)
+      // console.log(formData, twitterDetails, ogDetails, customSchema);
+      // console.log(formData.collegename)
+      setIsDataFound(false);
       try {
         const fd = new FormData();
         fd.append("cid", formData.collegename.value);
@@ -332,11 +332,15 @@ const SEOManage = () => {
                 canonical: "",
               });
               setTwitterDetails({
+                twitterCreator: "@learnerhunt",
+                twitterSite: "@learnerhunt",
                 twittertitle: "",
                 twitterdescription: "",
                 twitterImage: "",
               });
               setOgDetails({
+                ogLocale: "en_US",
+                ogType: "website",
                 ogTitle: "",
                 ogDescription: "",
                 ogUrl: "",
@@ -371,11 +375,14 @@ const SEOManage = () => {
             }).then(() => {});
             // console.log("else part");
           }
+          setIsDataFound(true);
+          setIsloading(false);
+
         });
       } catch (error) {
         console.error("Failed to fetch OTP:", error);
       }
-        // handleModalClose();
+      // handleModalClose();
     }
   };
 
@@ -460,13 +467,13 @@ const SEOManage = () => {
       setErrors(newErrors);
     } else {
       // If no errors, proceed to save
-        // console.log(formData, twitterDetails, ogDetails, customSchema);
-        // console.log(formData)
-      
+      // console.log(formData, twitterDetails, ogDetails, customSchema);
+      // console.log(formData)
+      setIsDataFound(false);
 
       try {
         const fd = new FormData();
-        fd.append("recid",collegeId)
+        fd.append("recid", collegeId);
         fd.append("cid", formData.collegename.value);
         fd.append("title", formData.title);
         fd.append("description", formData.description);
@@ -562,6 +569,9 @@ const SEOManage = () => {
             }).then(() => {});
             // console.log("else part");
           }
+          setIsDataFound(true);
+          setIsloading(false);
+
         });
       } catch (error) {
         console.error("Failed to fetch OTP:", error);
@@ -591,9 +601,8 @@ const SEOManage = () => {
 
   const handleEdit = (e, id) => {
     setCollegId(id);
-    setShowModal(true);
-    setIsApiHitComplete(false);
-    setIsDataFound(false);
+    // setIsApiHitComplete(false);
+    setIsloading(false);
     fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/admin/seomanager/" + id, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("pt")}`,
@@ -603,10 +612,15 @@ const SEOManage = () => {
         var res = await response.json();
         // console.log(res.data);
         // console.log(res.data[0].title);
-        setIsApiHitComplete(true);
-        setIsDataFound(true);
+        setShowModal(true);
+        // setIsApiHitComplete(true);
+        setIsloading(true);
+
         setFormData({
-          collegename: {value:res.data[0].college_id,label:res.data[0].college_name},
+          collegename: {
+            value: res.data[0].college_id,
+            label: res.data[0].college_name,
+          },
           title: res.data[0].title,
           description: res.data[0].description,
           keywords: res.data[0].keywords,
@@ -743,7 +757,6 @@ const SEOManage = () => {
               {seoApi.map((clg, i) => {
                 return (
                   <tr key={i}>
-                    
                     <td style={{ wordWrap: "break-word", whiteSpace: "unset" }}>
                       {clg.college_name}
                     </td>
@@ -836,7 +849,7 @@ const SEOManage = () => {
                   >
                     College Name *
                   </Form.Label> */}
-                  {/* <Form.Select
+                {/* <Form.Select
                     aria-label="Default select example"
                     name="collegename"
                     value={formData.collegename}
@@ -852,24 +865,30 @@ const SEOManage = () => {
                       </option>
                     ))}
                   </Form.Select> */}
-      <Autocomplete
-  disablePortal
-  options={collegeApi.map((s) => ({
-    value: s._id,
-    label: s.college_name
-  }))}
-  value={formData.collegename} // Set the value attribute
-
-  // onChange={(e) => handleInputChange(e, "basic", "select")}
-  onChange={(event, value) => handleInputChange({ target: { name: "collegename", value: value } }, "basic", "select")}
-  renderInput={(params) => 
-    <TextField
-    {...params}
-    label="Select College Name"
-    name="collegename" // Set the name attribute
-    // value={formData.collegename}
-  />}
-/>
+                <Autocomplete
+                  disablePortal
+                  options={collegeApi.map((s) => ({
+                    value: s._id,
+                    label: s.college_name,
+                  }))}
+                  value={formData.collegename} // Set the value attribute
+                  // onChange={(e) => handleInputChange(e, "basic", "select")}
+                  onChange={(event, value) =>
+                    handleInputChange(
+                      { target: { name: "collegename", value: value } },
+                      "basic",
+                      "select"
+                    )
+                  }
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Select College Name"
+                      name="collegename" // Set the name attribute
+                      // value={formData.collegename}
+                    />
+                  )}
+                />
                 {/* </Form.Group> */}
               </Col>
             </Row>
@@ -903,7 +922,7 @@ const SEOManage = () => {
                     type="text"
                     name="description"
                     value={formData.description}
-                    onChange={(e) => handleInputChange(e, "basic","desc")}
+                    onChange={(e) => handleInputChange(e, "basic", "desc")}
                   />
                   <Form.Text className="text-muted">
                     Character length must be 150-160.
@@ -1478,12 +1497,20 @@ const SEOManage = () => {
         </Modal.Body>
         <Modal.Footer>
           {collegeId == "" ? (
-            <Button variant="info" onClick={handleSaveSEOData}>
-              Save
+            <Button
+              variant="info"
+              disabled={!isDataFound}
+              onClick={handleSaveSEOData}
+            >
+              {isDataFound ? "Save" : "Waiting..."}
             </Button>
           ) : (
-            <Button variant="info" onClick={handleEditSEOData}>
-              Edit
+            <Button
+              variant="info"
+              disabled={!isDataFound}
+              onClick={handleEditSEOData}
+            >
+              {isDataFound ? "Edit" : "Waiting..."}
             </Button>
           )}
         </Modal.Footer>

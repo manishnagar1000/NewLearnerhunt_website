@@ -39,7 +39,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
 import InputLabel from "@mui/material/InputLabel";
 import { Spinner } from "react-bootstrap";
-
+import ScreenSearchDesktopOutlinedIcon from '@mui/icons-material/ScreenSearchDesktopOutlined';
 const headCells = [
   {
     id: "userrole",
@@ -653,9 +653,9 @@ export default function EnhancedTable() {
                         />
                       </TableCell>
                       <TableCell>
-                        {row.role == 0 ? (
+                        {row.role == 5 ? (
                           <span style={{ fontWeight: "500" }}>
-                            <AssignmentIndIcon /> Admin
+                            <ScreenSearchDesktopOutlinedIcon /> Digital Marketer
                           </span>
                         ) : (
                           <span style={{ fontWeight: "500" }}>
@@ -810,12 +810,15 @@ export default function EnhancedTable() {
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
               >
+
                 {/* <FormControlLabel value="0"  control={<Radio />} label="Admin" /> */}
                 <FormControlLabel
                   value="4"
                   control={<Radio />}
                   label="Support"
                 />
+                <FormControlLabel value="5"  control={<Radio />} label="Digital Marketer" />
+
               </RadioGroup>
             </FormControl>
             <Button

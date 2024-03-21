@@ -28,7 +28,7 @@ const componentList = [
   {
     comp: <Dashboard />,
     slug: "dashboard",
-    role:[0,4]
+    role:[0,4,5]
   },
   {
     comp: <Addcollege />,
@@ -118,7 +118,7 @@ const componentList = [
   {
     comp:<SEOManage/>,
     slug:"seo-manager",
-    role:[0,4]
+    role:[0,5]
   },
   // {
   //   comp:<ImportExport/>,
