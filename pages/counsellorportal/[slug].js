@@ -17,6 +17,7 @@ import MyCollege from "/components/collegeDashboardCrm/MyCollege";
 import IntrestedLeads from "/components/collegeDashboardCrm/IntrestedLeads";
 import MyProfile from "@/components/counsellorCrm/Myprofile";
 import InterstedStudent from "@/components/counsellorCrm/InterstedStudent";
+import PhoneCalls from "@/components/counsellorCrm/PhoneCalls";
 
 const componentList = [
   {
@@ -25,8 +26,12 @@ const componentList = [
   },
   {
     comp: <InterstedStudent />,
-    slug: "call-history",
+    slug: "video-calls",
   },
+  {
+    comp:<PhoneCalls/>,
+    slug:'phone-calls'
+  }
  
 ];
 export default function AdminPortalSlug() {

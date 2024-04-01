@@ -105,7 +105,7 @@
     margin: 10px 0;
     background-color: white;
     position: sticky;
-    top: 10vh;
+    top: 13vh;
     background: white;
     font-size: 17px;
     margin: 0 5rem;
@@ -384,4 +384,8 @@
         border: 1px solid #ccc;
         border-radius: 10px;
         text-align:center;
+}
+
+.react-multi-carousel-list {
+    z-index: 0 !important; 
 }

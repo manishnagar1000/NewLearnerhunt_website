@@ -215,7 +215,7 @@ color: #0151c1;
     position: sticky;
     top: 0;
     animation: slide-down 0.7s;
-    z-index: 9999;
+    z-index: 999;
 }
 
 @keyframes slide-down {

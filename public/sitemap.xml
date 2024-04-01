@@ -123,11 +123,6 @@
   <changefreq>always</changefreq>
 </url>
 <url>
-  <loc></loc>
-  <priority>0.3</priority>
-  <changefreq>always</changefreq>
-</url>
-<url>
   <loc>http://learnerhunt.com/</loc>
   <priority>0.3</priority>
   <changefreq>always</changefreq>

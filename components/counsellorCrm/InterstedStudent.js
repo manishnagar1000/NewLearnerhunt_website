@@ -6,6 +6,8 @@ import { Spinner } from "react-bootstrap";
 import styles from "/styles/clgdb.module.css";
 import Tablenav from "../Comps/Tablenav";
 
+import LoopIcon from '@mui/icons-material/Loop';
+import IconButton from '@mui/material/IconButton';
 var oldData = []
 
 export default class IntrestedLeads extends Component {
@@ -21,7 +23,8 @@ export default class IntrestedLeads extends Component {
       statusAnchorEl: null,
       lastrecid:"-1",
       searchInput: "", // Search input
-      error:""
+      error:"",
+      TotalCountNumber:''
 
       // selectedAsset: null,
     };
@@ -77,6 +80,8 @@ export default class IntrestedLeads extends Component {
       if (response.data.length > 0) {
         this.setState({ clgList: response.data, isDataFound: true });
       }
+      this.setState({TotalCountNumber:response.data.length})
+
       oldData=response.data
 
     }else{
@@ -132,8 +137,16 @@ export default class IntrestedLeads extends Component {
 {this.state.error =="" ?
 <>
         <Tablenav
+           TotalCount={{
+            Total: (
+              <h5>
+                Total Count :{this.state.TotalCountNumber == "" ? "0" : this.state.TotalCountNumber}
+              </h5>
+            ),
+          }}
           Actions={{
             Actions: (
+              <div className="d-flex justify-between align-center">
               <input
             type="text"
             className="form-control"
@@ -141,6 +154,10 @@ export default class IntrestedLeads extends Component {
             placeholder="Search..."
             onChange={this.handleSearchChange}
           />
+          <IconButton aria-label="Refresh" onClick={()=>this.getAssetList()}>
+          <LoopIcon/>
+          </IconButton>
+              </div>
             ),
           }}
         />
@@ -167,7 +184,7 @@ export default class IntrestedLeads extends Component {
                       <tr key={i}>
                         <td>{clg.studentDetails.name}</td>
                         <td>{clg.studentDetails.mobile}</td>
-                        <td>{clg.studentDetails.email}</td>
+                        <td>{clg.studentDetails.email.replace(/(?<=.{3}).(?=[^@]*?@)/g, '*')}</td>
                         <td>{this.formatTimestamp(clg.createdAt)}</td>
                         <td>{this.Callend(clg.counsellorDisconnected,clg.studentDisconnected)}</td>
                   

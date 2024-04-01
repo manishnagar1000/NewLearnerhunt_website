@@ -3,21 +3,15 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import Loading from "../Comps/Loading";
 import { Spinner } from "react-bootstrap";
-import Tablenav from "../Comps/Tablenav";
 import styles from "/styles/clgdb.module.css";
-import Switch from '@mui/material/Switch';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Avatar from '@mui/material/Avatar';
-import ImageIcon from '@mui/icons-material/Image';
-import WorkIcon from '@mui/icons-material/Work';
-import BeachAccessIcon from '@mui/icons-material/BeachAccess';
-import Chip from '@mui/material/Chip';
+import Tablenav from "../Comps/Tablenav";
+import LoopIcon from '@mui/icons-material/Loop';
+import IconButton from '@mui/material/IconButton';
+import CallIcon from "@mui/icons-material/Call";
+
 var oldData = []
 
-export default class AssociatedCounsellorCrm extends Component {
+export default class PhoneCalls extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -31,13 +25,11 @@ export default class AssociatedCounsellorCrm extends Component {
       lastrecid:"-1",
       searchInput: "", // Search input
       error:"",
-      approvalStatus: '',
       TotalCountNumber:''
+
       // selectedAsset: null,
     };
   }
-
-  
 
  formatTimestamp(timestamp) {
     const dateObject = new Date(timestamp);
@@ -57,22 +49,39 @@ export default class AssociatedCounsellorCrm extends Component {
     return `${formattedTime}, ${formattedDate}`;
   }
 
+  Callend(counsellor,student){
+    // console.log(counsellor,student)
+
+    if(counsellor && student){
+      return 'Both'
+    }
+
+    if(!counsellor && student){
+      return 'Student'
+    }
+    if(counsellor && !student){
+      return 'Counsellor'
+    }
+      return '-'
+  }
+
   getAssetList() {
     try {
     this.setState({ isApiHitComplete: false, isDataFound: false });
-    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/assoc-counsellor`, {
+    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/counsellor/phonecalls`, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("pt")}`,
+        Authorization: `Bearer ${localStorage.getItem("cst")}`,
       },
     }).then(async (res) => {
         if (res.ok) {
 
         // console.log(res)
       let response = await res.json();
-      // console.log(response.data);
+      console.log(response.data);
       if (response.data.length > 0) {
-        this.setState({ clgList: response.data, isDataFound: true ,TotalCountNumber:response.data.length});
+        this.setState({ clgList: response.data, isDataFound: true });
       }
+      this.setState({TotalCountNumber:response.data.length})
       oldData=response.data
 
     }else{
@@ -104,7 +113,11 @@ export default class AssociatedCounsellorCrm extends Component {
       }
   } else {
     const filteredData = oldData.filter(data =>
-      searchKeyword.test(data.name.toLowerCase())
+      searchKeyword.test(data.customer_number.toLowerCase())
+    //   searchKeyword.test(data.studentDetails.mobile.toLowerCase())||
+    //   searchKeyword.test(data.studentDetails.email.toLowerCase()),
+
+     
 
   );
 
@@ -117,66 +130,73 @@ export default class AssociatedCounsellorCrm extends Component {
   }
   };
 
-  handleApprovalChange = (e,clg) => {
-    // this.setState({ approvalStatus: e.target.value });
-    // console.log(e.target.checked,e.target.value)
-    const s =  e.target.checked?"1":"0"
-    this.setState({isLoading:true})
-    
-    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/college/verify-clg-counsellor?id=${clg._id}&s=${s}`, {
+
+  handleStudentCall = (e, counsellorInfo) => {
+    e.preventDefault();
+    console.log(counsellorInfo);
+
+    try {
+      this.setState({ isLoading: true });
+
+      const fd = new FormData();
+      fd.append("agentNum", counsellorInfo.agent_number); // agent number counsellor number
+      fd.append("customerNum",counsellorInfo.customer_number); // student number
+      fd.append("slug", counsellorInfo.slug); // college slug
+      fd.append("counsEmail", localStorage.getItem("useremail")); // counsellor email
+      fd.append("studEmail", counsellorInfo.studEmail); // student email
+
+      fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/counsellor/callback-student", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("pt")}`,
+          Authorization: `Bearer ${localStorage.getItem("cst")}`,
         },
-        method: "PUT",
+        method: "POST",
+        body: fd,
       }).then(async (response) => {
         var res = await response.json();
-        // console.log(res);
-        this.setState({isLoading:false})
-        // setIsLoading(false);
-        if (response.ok) {
-     
-          Swal.fire({
-            title: "Success",
-            text: `${res.message}`,
-            icon: "success",
-            confirmButtonText: "Ok",
-          }).then(() => {
-            this.getAssetList();
-       
-          });
-        } else {
+        console.log(res.data);
+        if (res.error) {
           Swal.fire({
             title: "error",
             text: `${res.error}`,
             icon: "error",
             confirmButtonText: "Ok",
-          }).then(() => {
-            this.setState({isLoading:false})
-
+          });
+        } else {
+          Swal.fire({
+            title: "success",
+            text: `${res.data.success.message}`,
+            icon: "success",
+            confirmButtonText: "Ok",
           });
         }
+        this.setState({ isLoading: false });
       });
-
-
-   
+    } catch (error) {
+      console.error("Failed to fetch OTP:", error);
+    }
   };
+
 
 
   render() {
     return (
       <>
-          {/* <div className={styles["basic-details"]}> */}
+            {/* <div className={styles["basic-details"]}> */}
 
 {this.state.error =="" ?
 <>
         <Tablenav
-           TotalCount={{
-            Total:(
-                <h5>Total Count :{this.state.TotalCountNumber == ''?'0':this.state.TotalCountNumber}</h5>
-            )
-           }}
+        TotalCount={{
+          Total: (
+            <h5>
+              Total Count :{this.state.TotalCountNumber == "" ? "0" : this.state.TotalCountNumber}
+            </h5>
+          ),
+        }}
           Actions={{
             Actions: (
+              <div className="d-flex justify-between align-center">
+           
               <input
             type="text"
             className="form-control"
@@ -184,48 +204,43 @@ export default class AssociatedCounsellorCrm extends Component {
             placeholder="Search..."
             onChange={this.handleSearchChange}
           />
-            ),
-          }}
+        <IconButton aria-label="Refresh" onClick={()=>this.getAssetList()}>
+        <LoopIcon/>
+        </IconButton>
+            </div>
+                ),
+              }}
         />
         {this.state.isApiHitComplete ? (
           this.state.isDataFound ? (
             <table className={`table table-hover custom-table`}>
               <thead>
                 <tr>
-                  <th style={{ background: "var(--primary)" }}>Name</th>
-                  <th style={{ background: "var(--primary)" }}>College Name</th>
-                  <th style={{ background: "var(--primary)" }}>Mobile Number</th>
-                  <th style={{ background: "var(--primary)" }}>Email</th>
-                  <th style={{ background: "var(--primary)" }}>Experence in year</th>
+                <th style={{ background: "var(--primary)" }}>College Name</th>
+                <th style={{ background: "var(--primary)" }}>Student Mobile</th>
+                <th style={{ background: "var(--primary)" }}>Student Email</th>
+                  <th style={{ background: "var(--primary)" }}>Message</th>
                   <th style={{ background: "var(--primary)" }}>Date</th>
-                  <th style={{ background: "var(--primary)" }}>Verified</th>
+
 
                 </tr>
               </thead>
               <tbody>
                 {this.state.clgList.map((clg, i) => {
-                    const collegeNames = clg.college_name.split('##12##');
-
-                    // Mapping over the array to create MUI Chips
-                    const chips = collegeNames.map((name, index) => (
-                        <li>
-                        <Chip key={index} label={name} style={{ marginRight: '5px', marginBottom: '5px' }} />
-                        </li>
-                    ));
                   return (
                     
                       <tr key={i}>
-                        <td>{clg.name}</td>
-                        <td><ol>{chips}</ol></td>
-                        <td>{clg.mobile}</td>
-                        <td>{clg.email}</td>
-                        <td>{clg.experience_in_year}</td>
+                        <td>{clg.college_name}</td>
+                        <td className="text-center"> <IconButton onClick={(e) => this.handleStudentCall(e, clg)}>
+                                         <CallIcon fontSize="small" />
+                                       </IconButton></td>
+                        {/* <td>{clg.customer_number}</td> */}
+                        <td>{clg.studEmail.replace(/(?<=.{3}).(?=[^@]*?@)/g, '*')}</td>
+                     
+                        <td>{clg.message}</td>
                         <td>{this.formatTimestamp(clg.createdAt)}</td>
-                        <td>
-              <div>
-              <Switch  value={clg.verified} defaultChecked={clg.verified} onChange={(e)=>this.handleApprovalChange(e,clg)} />
-              </div>
-            </td>
+                        {/* <td>{this.Callend(clg.counsellorDisconnected,clg.studentDisconnected)}</td> */}
+                  
 
 
 
@@ -238,7 +253,7 @@ export default class AssociatedCounsellorCrm extends Component {
           ) : (
             <div style={{ display: "flex", width: "100%", height: 'inherit', justifyContent: "center", alignItems: 'center' }}>
             <div style={{ fontWeight: "500" }}>
-              <span style={{ color: "#0d6efd", cursor: 'pointer' }}> No Records Yet </span>
+              <span style={{ color: "#0d6efd", cursor: 'pointer' }}> No Records </span>
             </div>
           </div>
           )
@@ -259,4 +274,3 @@ export default class AssociatedCounsellorCrm extends Component {
     );
   }
 }
-

@@ -14,12 +14,13 @@ p {
 }
 
 .custom_footer {
-    background-color: #013d8e;
+     /* background-color: #013d8e; */
+    background-color: #f9f9f9;
     padding: 2rem 0rem;
 }
 
 .custom_footer h3 {
-    color: #fff;
+    color:black;
     margin-bottom: 2rem;
 }
 
@@ -36,7 +37,9 @@ p {
     position: absolute;
     top: -10px;
     right: 0;
-    background-color: #ffffff35;
+    /* background-color: #ffffff35; */
+    background-color: black;
+
 }
 
 .custom_footer ul.last-ul::before {
@@ -45,12 +48,12 @@ p {
 
 .custom_footer ul li {
     padding-bottom: 1rem;
-    color: #fff;
+    color: #0c6be7;
 }
 
 .custom_footer ul li a {
     text-decoration: none;
-    color: #fff;
+    color: #0c6be7;
     font-size: 14px;
     transition: 0.2s;
 }
@@ -60,7 +63,7 @@ p {
 
 .custom_footer .cmp-name {
     margin-inline: 0;
-    color: #fff;
+    color: black;
     text-align: center;
     margin: 0.5rem 0rem;
 }
@@ -190,4 +193,4 @@ color: red;
     border-radius: 5px;
   }
   
- 
+  

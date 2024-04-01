@@ -1,10 +1,11 @@
 .hero-outer-section {
-    background-image: url('/assets/Landing/bg-img.webp');
+    background-image: url('/assets/Landing/landingImg.jpg');
+    /* background-image: url('/assets/Landing/bg-img.webp'); */
     width: 100%;
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
-    min-height: 80vh;
+    min-height: 85vh;
     padding: 2rem 0rem;
     position:relative;
     z-index: 1;
@@ -77,6 +78,39 @@
 .right-section-div .form-section {
     background-color: #1b305c;
     padding: 1rem;
+}
+.custom-slider-title{
+    color: white;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 900;
+    font-size: 48px;
+}
+.txt-rotate{
+    font-style: italic;
+    font-weight: bold;
+    color: #5744e0;
+    height: 48px;
+}
+.custom-slider-btn-container a{
+    border-radius: 10px !important;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 900 !important;
+    border: 1px solid #5744E0;
+    font-size: 16px !important;
+    line-height: 60px !important;
+    height: 60px;
+    letter-spacing: 0.5px !important;
+    outline: none;
+    position: relative;
+    background: #5744E0;
+    transition: all 0.3s;
+    box-shadow: 0px 28px 30px -10px #C9C2F7;
+    color: #FFFFFF !important;
+    display: inline-block !important;
+    text-align: center;
+    padding: 0 1rem;
 }
 
 @media screen and (max-width:768px) {

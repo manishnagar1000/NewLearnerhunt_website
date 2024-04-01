@@ -13,11 +13,11 @@ import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import DuoIcon from "@mui/icons-material/Duo";
-// import CallIcon from "@mui/icons-material/Call";
+import CallIcon from "@mui/icons-material/Call";
 import VideoCameraFrontIcon from "@mui/icons-material/VideoCameraFront";
 import dynamic from "next/dynamic";
 const AgoraUIKit = dynamic(() => import("agora-react-uikit"), { ssr: false });
-
+import Loading from "../../components/Comps/Loading";
 import BeforeUnloadPrompt from "/components/Comps/BeforeUnloadPrompt";
 // tags title and metatag
 // import { getMetaData } from "/components/metadata";
@@ -30,7 +30,7 @@ const agoraAppid = process.env.NEXT_PUBLIC_AGORA_APP_ID,
 
 export default function CollegeName({ collegedata }) {
   // console.log(collegedata);
-  console.log(collegedata.seodata)
+  // console.log(collegedata.seodata)
   const collegeid = collegedata.generalinfo._id;
   const [userStatus, setUserStatus] = useState(false);
   const [userid, setUserid] = useState("");
@@ -40,6 +40,8 @@ export default function CollegeName({ collegedata }) {
   const [activetab, setActiveTab] = useState("overview");
   const [videoCall, setVideoCall] = useState(false);
   const [callingSession, setCallingSession] = useState(null);
+  const [isloading, setIsloading] = useState(false);
+
   const [rtcProps, setRtcProps] = useState({
     appId: agoraAppid,
     channel: "",
@@ -73,7 +75,7 @@ export default function CollegeName({ collegedata }) {
   const [showModal, setShowModal] = useState(false);
   const router = useRouter();
   const { slug } = router.query;
-  console.log(slug)
+  // console.log(slug)
   // const meta = getMetaData(slug);
   // console.log(meta);
   // console.log(slug);
@@ -310,6 +312,58 @@ export default function CollegeName({ collegedata }) {
     // setVideoCall(true)
   };
 
+  const handleStudentCall = (e, counsellorInfo) => {
+    e.preventDefault();
+    // console.log(counsellorInfo)
+  
+    try {
+    setIsloading(true);
+
+      const fd = new FormData();
+      fd.append("agentNum", counsellorInfo.mobile); // agent number cousellor number
+      fd.append("customerNum",localStorage.getItem("usermobile") ); // student number
+      fd.append("slug", slug); // college slug
+      fd.append("counsEmail", counsellorInfo.email); // cousellor email
+      fd.append("studEmail", localStorage.getItem("useremail")); //student email
+
+      // console.log(fd)
+
+    //   setTimeout(() => {
+    // setIsloading(false);
+    //   }, 2000);
+
+      fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/student/makephonecall", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("userid")}`,
+        },
+        method: "POST",
+        body: fd,
+      }).then(async (response) => {
+        var res = await response.json();
+        // console.log(res.data);
+        if (res.error) {
+          Swal.fire({
+            title: "error",
+            text: `${res.error}`,
+            icon: "error",
+            confirmButtonText: "Ok",
+          });
+        } else {
+          Swal.fire({
+            title: "success",
+            text: `${res.data.success.message}`,
+            icon: "success",
+            confirmButtonText: "Ok",
+          });
+        }
+        setIsloading(false);
+
+      });
+    } catch (error) {
+      console.error("Failed to fetch OTP:", error);
+    }
+  };
+
   const handleCallEnd = (e) => {
     try {
       const fd = new FormData();
@@ -456,57 +510,59 @@ export default function CollegeName({ collegedata }) {
     collegedata.generalinfo.logo_img_path != ""
       ? collegedata.generalinfo.logo_img_path
       : "/assets/images/DummyLOGO.jpg";
+
+    const checkValues = (key)=>{
+      if(collegedata.seodata[key] && collegedata.seodata[key] !=''){
+        return true
+      }
+      return false
+    }
   return (
     <>
       <Head>
-        <title>{collegedata.seodata.title}</title>
-        <meta name="description" content={collegedata.seodata.description} />
-        <meta name="keywords" content={collegedata.seodata.keywords} />
-        <link rel="canonical" href={collegedata.seodata.canonical} />
+        {checkValues("title") && <title>{collegedata.seodata.title}</title>}
+        {checkValues("description") && <meta name="description" content={collegedata.seodata.description} />}
+      {checkValues("keywords") && <meta name="keywords" content={collegedata.seodata.keywords} />}
+      {checkValues("canonical") && <link rel="canonical" href={collegedata.seodata.canonical} />}
+        
+         {checkValues("structured_data") && (
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(collegedata.seodata.structured_data),
           }}
         />
+      )}
 
+      {checkValues("faq_structured_data") && (
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(collegedata.seodata.faq_structured_data),
           }}
         />
+      )}
         {/* Open Graph data */}
-        <meta property="og:locale" content={collegedata.seodata.og_locale}/>
-        <meta property="og:type" content={collegedata.seodata.og_type} />
-        <meta property="og:title" content={collegedata.seodata.og_title} />
-        <meta property="og:description" content={collegedata.seodata.og_description}/>
-        <meta
-          property="og:url"
-          content={collegedata.seodata.og_url}
-        />
-        <meta property="og:site_name" content='Learnerhunt' />
-        <meta
-          property="og:image"
-          content={collegedata.seodata.og_image}
-        />
-        <meta
-          property="og:image:secure_url"
-          content={collegedata.seodata.og_image_secure_url}
-        />
-        <meta property="og:image:width" content={collegedata.seodata.og_image_width} />
-        <meta property="og:image:height" content={collegedata.seodata.og_image_height}/>
-        <meta property="og:image:alt" content={collegedata.seodata.og_image_alt} />
+        {checkValues("og_locale") && <meta property="og:locale" content={collegedata.seodata.og_locale}/>}
+      {checkValues("og_type") && <meta property="og:type" content={collegedata.seodata.og_type} />}
+      {checkValues("og_title") && <meta property="og:title" content={collegedata.seodata.og_title} />}
+      {checkValues("og_description") && <meta property="og:description" content={collegedata.seodata.og_description}/>}
+      {checkValues("og_url") && <meta property="og:url" content={collegedata.seodata.og_url} />}
+      {checkValues("og_site_name") && <meta property="og:site_name" content='Learnerhunt' />}
+      {checkValues("og_image") && <meta property="og:image" content={collegedata.seodata.og_image} />}
+      {checkValues("og_image_secure_url") && <meta property="og:image:secure_url" content={collegedata.seodata.og_image_secure_url} />}
+      {checkValues("og_image_width") && <meta property="og:image:width" content={collegedata.seodata.og_image_width} />}
+      {checkValues("og_image_height") && <meta property="og:image:height" content={collegedata.seodata.og_image_height} />}
+      {checkValues("og_image_alt") && <meta property="og:image:alt" content={collegedata.seodata.og_image_alt} />}
+
         {/* Twitter Card data */}
         <meta name="twitter:card" content="summary" />
-        <meta name="twitter:description" content={collegedata.seodata.twitter_description} />
-        <meta name="twitter:title" content={collegedata.seodata.twitter_title} />
-        <meta name="twitter:site" content={collegedata.seodata.twitter_site} />
-        <meta
-          name="twitter:image"
-          content="/assets/images/01/qb-license/banner/banner.webp"
-        />
-        <meta name="twitter:creator" content={collegedata.seodata.twitter_creater} />
+      {checkValues("twitter_description") && <meta name="twitter:description" content={collegedata.seodata.twitter_description} />}
+      {checkValues("twitter_title") && <meta name="twitter:title" content={collegedata.seodata.twitter_title} />}
+      {checkValues("twitter_site") && <meta name="twitter:site" content={collegedata.seodata.twitter_site} />}
+      {checkValues("twitter_image") && <meta name="twitter:image" content={collegedata.seodata.twitter_image} />}
+      {checkValues("twitter_creator") && <meta name="twitter:creator" content={collegedata.seodata.twitter_creator} />}
+   
       </Head>
 
       <div className={Classes["colleges-slug"]}>
@@ -1201,6 +1257,7 @@ export default function CollegeName({ collegedata }) {
                                         <DuoIcon fontSize="small" /> Busy
                                       </button>
                                     ) : (
+                                      <>
                                       <button
                                         onClick={(e) => handleCall(e, s)}
                                         style={{
@@ -1210,13 +1267,32 @@ export default function CollegeName({ collegedata }) {
                                           border: "none",
                                           borderRadius: "25px",
                                           cursor: "pointer",
+                                          marginRight:'1rem'
+                                    
                                         }}
                                       >
-                                        <DuoIcon fontSize="small" /> Call
+                                        <DuoIcon fontSize="small" /> VideoCall
                                       </button>
+                                         <button
+                                        //  onClick={handlelogin}
+                                        onClick={(e) => handleStudentCall(e, s)}
+                                         style={{
+                                           padding: "0.4rem 1rem",
+                                           backgroundColor: "#007bff",
+                                           color: "#fff",
+                                           border: "none",
+                                           borderRadius: "25px",
+                                           cursor: "pointer",
+                                         }}
+                                       >
+                                         <CallIcon fontSize="small" />{" "}
+                                         Call
+                                       </button>
+                                       </>
                                     )
                                   ) : (
                                     // If userStatus is falsey, render a default button (e.g., "hello")
+                                   <>
                                     <button
                                       onClick={handlelogin}
                                       style={{
@@ -1226,11 +1302,27 @@ export default function CollegeName({ collegedata }) {
                                         border: "none",
                                         borderRadius: "25px",
                                         cursor: "pointer",
+                                        marginRight:'1rem'
                                       }}
                                     >
-                                      <VideoCameraFrontIcon fontSize="small" />{" "}
-                                      Call
+                                      <DuoIcon fontSize="small" />{" "}
+                                      Video Call
                                     </button>
+                                    <button
+                                    onClick={handlelogin}
+                                    style={{
+                                      padding: "0.4rem 1rem",
+                                      backgroundColor: "#007bff",
+                                      color: "#fff",
+                                      border: "none",
+                                      borderRadius: "25px",
+                                      cursor: "pointer",
+                                    }}
+                                  >
+                                    <CallIcon fontSize="small" />{" "}
+                                    Call
+                                  </button>
+                                  </>
                                   )}
 
                                   {/* <button
@@ -1931,6 +2023,7 @@ export default function CollegeName({ collegedata }) {
             </Container>
           </Modal.Body>
         </Modal>
+        <Loading show={isloading} onHide={() => setIsloading(false)} />
       </div>
     </>
   );

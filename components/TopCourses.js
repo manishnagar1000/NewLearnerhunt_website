@@ -120,6 +120,7 @@ export default function TopCourses({ courses }) {
         </div>
 
         {isCourses.length > 1 ? (
+          <div className={Classes.carouselWrapper}>
           <Carousel
             responsive={responsive}
             showDots={true}
@@ -128,7 +129,7 @@ export default function TopCourses({ courses }) {
             {isCourses.length > 0
               ? isCourses.map((s) => {
                   return (
-                    <div key={s.slug} style={{ marginBottom: "2rem" }}>
+                    <div key={s.slug} style={{ marginBottom: "2rem"}}>
                       {isLoading ? (
                         <div className="d-flex justify-content-center align-items-center h-100">
                           <Skeleton
@@ -198,6 +199,7 @@ export default function TopCourses({ courses }) {
                 })
               : "no record"}
           </Carousel>
+          </div>
         ) : (
           <div className="row">
             {isCourses.map((s) => {

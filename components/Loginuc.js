@@ -166,6 +166,8 @@ export default function Loginuc({ isOpen, onClose, role }) {
             var userstatus = res.data.status;
             var userid = res.data.token;
             var useremail = res.data.email;
+            var usermobile = res.data.mobile;
+
 
             Swal.fire({
               title: "Success",
@@ -178,6 +180,8 @@ export default function Loginuc({ isOpen, onClose, role }) {
               localStorage.setItem("status", userstatus);
               localStorage.setItem("userid", userid);
               localStorage.setItem("useremail", useremail);
+              localStorage.setItem("usermobile", usermobile);
+
               window.location.reload();
             });
           } else {
@@ -256,6 +260,8 @@ export default function Loginuc({ isOpen, onClose, role }) {
               var userstatus = res.data.status;
               var userid = res.data.token;
               var useremail = res.data.email;
+              var usermobile = res.data.mobile;
+
               var role = res.data.role;
               Swal.fire({
                 title: "Success",
@@ -268,6 +274,8 @@ export default function Loginuc({ isOpen, onClose, role }) {
                 localStorage.setItem("status", userstatus);
 
                 localStorage.setItem("useremail", useremail);
+                localStorage.setItem("usermobile", usermobile);
+
 
                 if (role == 3) {
                   localStorage.setItem("userid", userid);
@@ -447,6 +455,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
               var userstatus = res.data.status;
               var userid = res.data.token;
               var useremail = res.data.email;
+              var usermobile = res.data.mobile;
               var role = res.data.role;
 
               Swal.fire({
@@ -460,6 +469,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
                 localStorage.setItem("status", userstatus);
 
                 localStorage.setItem("useremail", useremail);
+                localStorage.setItem("usermobile", usermobile);
 
                 if (role == 3) {
                   localStorage.setItem("userid", userid);

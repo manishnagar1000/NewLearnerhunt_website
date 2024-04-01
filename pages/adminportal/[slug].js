@@ -22,6 +22,10 @@ import AssociatedCounsellorCrm from "@/components/CRM/AssociatedCounselorCrm";
 import LandingPageLeads from "@/components/CRM/LandingPageLeads";
 import TopCollegeSection from "@/components/CRM/TopCollegeSection";
 import SEOManage from "@/components/CRM/SeoManage";
+import CrmBlog from "@/components/CRM/CrmBlog";
+import CrmNews from "@/components/CRM/CrmNews";
+
+
 
 
 const componentList = [
@@ -103,7 +107,7 @@ const componentList = [
   {
     comp:<AssociatedCounsellorCrm/>,
     slug:"associated-counsellor",
-    role:[4]
+    role:[0,4]
   },
   {
     comp:<LandingPageLeads/>,
@@ -120,6 +124,16 @@ const componentList = [
     slug:"seo-manager",
     role:[0,5]
   },
+  // {
+  //   comp:<CrmBlog/>,
+  //   slug:"blog-manager",
+  //   role:[0,5]
+  // },
+  // {
+  //   comp:<CrmNews/>,
+  //   slug:"news-manager",
+  //   role:[0,5]
+  // },
   // {
   //   comp:<ImportExport/>,
   //   slug:"importexport"

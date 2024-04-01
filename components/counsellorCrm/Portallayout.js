@@ -18,6 +18,9 @@ import ListItemText from "@mui/material/ListItemText";
 import { deepOrange } from "@mui/material/colors";
 import { Container, Row, Col, Modal, Form, Button } from "react-bootstrap";
 import DuoIcon from "@mui/icons-material/Duo";
+import ContactPhoneIcon from '@mui/icons-material/ContactPhone'; 
+import VideoCallIcon from '@mui/icons-material/VideoCall'; 
+import PermPhoneMsgIcon from '@mui/icons-material/PermPhoneMsg';
 import dynamic from "next/dynamic";
 const AgoraUIKit = dynamic(() => import("agora-react-uikit"), { ssr: false });
 // import CallingSound from "@/assets/audio/callingAudio.mp3";
@@ -33,9 +36,20 @@ const sidebarList = [
   },
   {
     name: "Calling History",
-    icon: <DuoIcon />,
-    path: "/counsellorportal/call-history",
-  },
+    icon: <ContactPhoneIcon />,
+    children:[
+      {
+        name:'Video Calls',
+        icon:<VideoCallIcon/>,
+        path: "/counsellorportal/video-calls",
+      },
+      {
+        name: "Phone Calls",
+        icon: <PermPhoneMsgIcon />,
+        path: "/counsellorportal/phone-calls",
+      },
+    ]
+  }  
 ];
 export default class PortalLayout extends Component {
   constructor(props) {
