@@ -154,7 +154,7 @@ const LandingPage = ({ inputRef }) => {
         <div className={Styles["HomePageHero_overlay"]}></div>
         <div className="container">
           <div className="row">
-            <div className="col-md-7 d-flex align-items flex-column justify-content-evenly">
+            <div className="col-md-7">
             <h1 className={Styles["custom-slider-title"]}>Learnerhunt<br />Your Road to 
             <span className={Styles["txt-rotate"]}><TextRotation words={[" Outstanding Learning", " Exceptional Education"]} period={100} /></span>
       </h1>

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { Image, Spinner ,Button } from 'react-bootstrap';
-import Classes from "/styles/TopColleges.module.css";
+import Classes from "/styles/CollegeCard.module.css";
+
 import VisibilityIcon from '@mui/icons-material/Visibility';
 
 
@@ -15,8 +16,8 @@ const CollegeCard = ({ college }) => {
   };
 
   return (
-    <div className="bg-white shadow-md rounded-md p-4" key={college.slug}>
-      <div className="row border-bottom" >
+    <div className={Classes.CollegeCardOuterbox} key={college.slug}>
+      <div className={Classes.CollegeCardInnerbox} >
         <div className="col-md-9">
           <div className='row' >
             <div className='col-2'>
@@ -28,7 +29,7 @@ const CollegeCard = ({ college }) => {
             alt="Not Found Image"
             width={80}
             height={80}
-            className="me-4 rounded img-fluid"
+            className="me-4 rounded "
           />
           </div>
           <div className='col-md-10'>

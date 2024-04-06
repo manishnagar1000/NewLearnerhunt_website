@@ -1,0 +1,16 @@
+.counsellorList{
+    display: flex;
+    align-items: center;
+    padding: 0.7rem;
+    cursor: pointer;
+    transition: 0.2s;
+    border-radius: 5px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+.counsellorList.selected{
+    background-color: rgba(0, 0, 0, 0.09);
+}
+.counsellorList:hover{
+    background-color: rgba(0, 0, 0, 0.09);
+    
+}

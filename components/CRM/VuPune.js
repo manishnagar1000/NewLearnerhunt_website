@@ -4,13 +4,9 @@ import Loading from "/components/Comps/Loading";
 import CTA from "/components/Comps/CTA";
 import Swal from "sweetalert2";
 import { IndianStates } from "/components/Comps/StatesIndia";
-import { ImarticusApi } from "/components/Comps/type";
-import { Button } from "react-bootstrap";
-import FileDownloadIcon from '@mui/icons-material/FileDownload';
-import PublishIcon from '@mui/icons-material/Publish';
-import * as XLSX from 'xlsx';
+import { genderType } from "/components/Comps/type";
 
-export default class Imarticus extends Component {
+export default class Vupune extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -21,11 +17,42 @@ export default class Imarticus extends Component {
       email: "",
       selectedStateName: "",
       selectedCityName: "",
-      selectedCourseName: "",
-      medium: "",
+      selectedGenderName: "",
+      selectedLocationName: "",
       campaign: "",
-      jsonData: [],
+      locationList: [],
+      error: "",
     };
+  }
+
+  getAssetList() {
+    try {
+      fetch(
+        process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/vu-pune-basic-info`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("pt")}`,
+          },
+        }
+      ).then(async (res) => {
+        if (res.ok) {
+          let response = await res.json();
+          console.log(response.data.locations);
+          //   if (response.data.length > 0) {
+          this.setState({ locationList: response.data.locations });
+          //   }
+        } else {
+          let response = await res.json();
+          this.setState({ error: response.error });
+        }
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  componentDidMount() {
+    this.getAssetList();
   }
 
   handleSubmit = async (e) => {
@@ -33,18 +60,18 @@ export default class Imarticus extends Component {
     this.setState({ isLoading: true });
     try {
       const fd = new FormData();
-      fd.append("f_name", this.state.fname);
-      fd.append("l_name", this.state.lname);
-      fd.append("phone", this.state.mobilenumber);
-      fd.append("email", this.state.email);
-      fd.append("state", this.state.selectedStateName);
-      fd.append("city", this.state.selectedCityName);
-      fd.append("course", this.state.selectedCourseName);
-      fd.append("medium", this.state.medium);
-      fd.append("campaign", this.state.campaign);
+      fd.append("FirstName", this.state.fname);
+      fd.append("LastName", this.state.lname);
+      fd.append("MobileNumber", this.state.mobilenumber);
+      fd.append("Email", this.state.email);
+      fd.append("State", this.state.selectedStateName);
+      fd.append("City", this.state.selectedCityName);
+      fd.append("Gender ", this.state.selectedGenderName);
+      fd.append("Location", this.state.selectedLocationName);
+      fd.append("leadCampaign", this.state.campaign);
 
       fetch(
-        process.env.NEXT_PUBLIC_API_ENDPOINT + "/admin/imarticus-save-lead",
+        process.env.NEXT_PUBLIC_API_ENDPOINT + "/admin/vu-pune-leadsubmit",
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("pt")}`,
@@ -54,13 +81,13 @@ export default class Imarticus extends Component {
         }
       ).then(async (response) => {
         var res = await response.json();
-        // console.log(res);
+        console.log(res);
         this.setState({ isLoading: false });
 
-        if (res.data.Status == "Success") {
+        if (res.data == "Success") {
           Swal.fire({
-            title: "Lead Submitted",
-            // text: `${res.data.message}`,
+            title: `${res.data}`,
+            text: "Lead Submitted",
             icon: "success",
             confirmButtonText: "Ok",
           }).then(() => {
@@ -71,8 +98,8 @@ export default class Imarticus extends Component {
               email: "",
               selectedStateName: "",
               selectedCityName: "",
-              selectedCourseName: "",
-              medium: "",
+              selectedGenderName: "",
+              selectedLocationName: "",
               campaign: "",
             });
           });
@@ -91,88 +118,11 @@ export default class Imarticus extends Component {
       console.error(error);
     }
   };
-  handleFileUpload = (event) => {
-    const files = event.target.files;
-    // console.log('Files uploaded:', files);
-    const file = files[0];
-    const reader = new FileReader();
-
-    reader.onload = (e) => {
-      const data = new Uint8Array(e.target.result);
-      const workbook = XLSX.read(data, { type: 'array' });
-      const sheetName = workbook.SheetNames[0];
-      const sheet = workbook.Sheets[sheetName];
-      const json = XLSX.utils.sheet_to_json(sheet);
-      this.setState({ jsonData: json }, () => {
-        // This code will run after state has been updated
-        const fd = new FormData();
-        fd.append("jsondata", JSON.stringify(this.state.jsonData));
-        fetch(
-          process.env.NEXT_PUBLIC_API_ENDPOINT + "/admin/imarticus-save-lead",
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("pt")}`,
-            },
-            method: "POST",
-            body: fd,
-          }
-        ).then(async (response) => {
-          var res = await response.json();
-          // console.log(res);
-            if (res.ok) {
-              Swal.fire({
-                title: "Lead Submitted",
-                // text: `${res.data.message}`,
-                icon: "success",
-                confirmButtonText: "Ok",
-              }).then(() => {
-                this.setState({
-                  jsonData:[]
-                });
-              });
-            } else {
-              Swal.fire({
-                title: "error",
-                text: `${res.error}`,
-                icon: "error",
-                confirmButtonText: "Ok",
-              }).then(() => {
-                this.setState({ isLoading: false,jsonData:[] });
-
-              });
-            }
-         
-        
-        })
-        // console.log(this.state.jsonData);
-      });
-
-      // this.setState({ jsonData: json }.then((s)=>console.log(s)));
-
-    };
-
-    reader.readAsArrayBuffer(file);
-  };
-
-
 
   render() {
-    // console.log(IndianStates.India);
-    // console.log(IndianStates)
-    // console.log(IndianStates.India["Assam"].map((s) => console.log(s)));/
     return (
       <>
         <div className={Classes["add-user"]}>
-          {/* <div style={{display:"flex",justifyContent:"end",alignItems:"center",padding:"1rem"}}>
-          <div>
-          <input type="file" onChange={this.handleFileUpload} style={{ display: 'none' }} ref={(input) => this.fileInput = input} />
-          <Button onClick={() => this.fileInput.click()} className="m-1" variant="success" >
-            <PublishIcon /> Import
-          </Button>
-        </div>
-            <Button className="m-1" href='https://learnerhunt-assets.s3.amazonaws.com/Imarticus_Excel_Temp.xlsx' target='_blank'><FileDownloadIcon/>Export</Button>
-
-          </div> */}
           <div className={Classes["form-div"]}>
             <form action="#" onSubmit={(e) => this.handleSubmit(e)}>
               <div className="row">
@@ -304,60 +254,65 @@ export default class Imarticus extends Component {
                 <div className="col-md-4">
                   <div className={Classes["form-group"]}>
                     <label className={Classes["labelname"]} htmlFor="name">
-                      Select course Name{" "}
-                      <span className={Classes["error"]}>*</span>
+                      Select Gender <span className={Classes["error"]}>*</span>
                     </label>
                     <select
-                      name="Course"
-                      id="Course"
+                      name="Gender"
+                      id="Gender"
                       className="form-select"
                       required
-                      value={this.state.selectedCourseName}
+                      value={this.state.selectedGenderName}
                       onChange={(e) =>
-                        this.setState({ selectedCourseName: e.target.value })
+                        this.setState({ selectedGenderName: e.target.value })
                       }
                     >
                       <option disabled value="">
-                        Select a Course
+                        Select a Gender
                       </option>
-                      {ImarticusApi.map((s, i) => (
+                      {genderType.map((s, i) => (
                         <option key={i} value={s.value}>
-                          {s.Coursename}
+                          {s.gendername}
                         </option>
                       ))}
                     </select>
-                    {/* <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Enter Course Name"
-                    value={this.state.selectedCourseName}
-                    onChange={(e) => this.setState({ selectedCourseName: e.target.value })}
-                  /> */}
                   </div>
                 </div>
 
                 <div className="col-md-4">
                   <div className={Classes["form-group"]}>
                     <label className={Classes["labelname"]} htmlFor="name">
-                      {" "}
-                      Medium{" "}
+                      Select Program{" "}
+                      <span className={Classes["error"]}>*</span>
                     </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Enter Medium"
-                      value={this.state.medium}
+                    <select
+                      name="Location"
+                      id="Location"
+                      className="form-select"
+                      required
+                      value={this.state.selectedLocationName}
                       onChange={(e) =>
-                        this.setState({ medium: e.target.value })
+                        this.setState({ selectedLocationName: e.target.value })
                       }
-                    />
+                    >
+                      <option disabled value="">
+                        Select a Location
+                      </option>
+
+                      {this.state.locationList.map((s) => {
+                        return (
+                          <option key={s.Programme} value={s.Programme}>
+                            {s.Programme_id}
+                          </option>
+                        );
+                      })}
+                    </select>
                   </div>
                 </div>
                 <div className="col-md-4">
                   <div className={Classes["form-group"]}>
                     <label className={Classes["labelname"]} htmlFor="name">
                       {" "}
-                      Campaign{" "}
+                      Lead Campaign{" "}
                     </label>
                     <input
                       type="text"

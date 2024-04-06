@@ -21,6 +21,7 @@ import DuoIcon from "@mui/icons-material/Duo";
 import ContactPhoneIcon from '@mui/icons-material/ContactPhone'; 
 import VideoCallIcon from '@mui/icons-material/VideoCall'; 
 import PermPhoneMsgIcon from '@mui/icons-material/PermPhoneMsg';
+import AutoGraphIcon from '@mui/icons-material/AutoGraph';
 import dynamic from "next/dynamic";
 const AgoraUIKit = dynamic(() => import("agora-react-uikit"), { ssr: false });
 // import CallingSound from "@/assets/audio/callingAudio.mp3";
@@ -49,7 +50,12 @@ const sidebarList = [
         path: "/counsellorportal/phone-calls",
       },
     ]
-  }  
+  }  ,
+  {
+    name: "Assign Leads",
+    icon: <AutoGraphIcon />,
+    path: "/counsellorportal/assign-leads",
+  },
 ];
 export default class PortalLayout extends Component {
   constructor(props) {

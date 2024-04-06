@@ -7,6 +7,8 @@ import Allcollege from "/components/CRM/addcollege/Allcollege";
 import ApiIntegration from "/components/CRM/ApiIntegration";
 import TrashColleges from "/components/CRM/TrashCollege";
 import Imarticus from "/components/CRM/Imarticus";
+import VuPune from "/components/CRM/VuPune";
+
 import Swal from "sweetalert2";
 import Testeligibility from "/components/CRM/Testeligibility";
 import Studentappliedclg from "/components/CRM/Studentappliedclg";
@@ -52,6 +54,11 @@ const componentList = [
   {
     comp:<Imarticus/>,
     slug:"imarticus",
+    role:[4]
+  },
+  {
+    comp:<VuPune/>,
+    slug:"vu-pune",
     role:[4]
   },
   {

@@ -12,6 +12,7 @@ import WhyChoose from "@/components/WhyChoose";
 import axios from "axios";
 import Head from "next/head";
 import PopForm from "@/components/Comps/PopForm";
+import Testimonials from "@/components/Comps/Testimonials";
 
 const StructuredDataOrg = [
   {
@@ -129,6 +130,7 @@ export default function Home({
       <WhyChoose />
       <TopColleges colleges={colleges} />
       <TopCourses courses={courses} />
+      <Testimonials/>
       <CollegeRanking
         zones={testeligibility.zones}
         departments={testeligibility.departments}

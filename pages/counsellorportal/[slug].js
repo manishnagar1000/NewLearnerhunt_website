@@ -18,6 +18,7 @@ import IntrestedLeads from "/components/collegeDashboardCrm/IntrestedLeads";
 import MyProfile from "@/components/counsellorCrm/Myprofile";
 import InterstedStudent from "@/components/counsellorCrm/InterstedStudent";
 import PhoneCalls from "@/components/counsellorCrm/PhoneCalls";
+import AssignLeads from "@/components/counsellorCrm/AssignLeads";
 
 const componentList = [
   {
@@ -31,7 +32,12 @@ const componentList = [
   {
     comp:<PhoneCalls/>,
     slug:'phone-calls'
+  },
+  {
+    comp:<AssignLeads/>,
+    slug:'assign-leads'
   }
+ 
  
 ];
 export default function AdminPortalSlug() {

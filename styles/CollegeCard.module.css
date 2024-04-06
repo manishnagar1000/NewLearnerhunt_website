@@ -1,0 +1,24 @@
+.linkButton {
+    background-color: #0151c1;
+  }
+  .linkButton:hover {
+    border:1px solid #0151c1;
+    color: #0151c1;
+    background-color: transparent;
+  }
+
+  .CollegeCardOuterbox{
+    background-color: white;
+    /* padding: 0.8rem; */
+  }
+.CollegeCardInnerbox{
+    display: flex;
+    border-bottom: 1px solid rgb(200, 196, 196);
+    padding: 1rem 0;
+}
+
+@media screen and (max-width: 480px) {
+    .CollegeCardInnerbox{
+       flex-direction: column;
+    }
+}
