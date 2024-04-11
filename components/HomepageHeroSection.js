@@ -429,7 +429,7 @@ const HomepageHeroSection = ({ data }) => {
                   ) : activeBtn == "1" ? (
                     <div className={Classes["free-counselling"]}>
                       <p>Toll Free Number</p>
-                      <p>+91 1294631199</p>
+                      <p>+918383023265</p>
                     </div>
                   ) : (
                     activeBtn == "2" && (

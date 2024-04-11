@@ -90,15 +90,15 @@ export default function mbaleads() {
         <img
                       loading="lazy"
                       // src="/assets/images/Svglogo.svg"
-                      src="/assets/images/Learnerhunt-Logo.webp"
-                      alt="sagenext logo"
+                      src="/assets/images/learnerhunt-logo.webp"
+                      alt="learnerhunt logo"
                       width={176}
                       height={55}
                     />
         </div>
         <div>
         <p style={{margin:'0px',fontWeight:'700'}}>
-                      Sales/Support +91-8800756846
+                      Sales/Support +91-8383023265
                     </p>
         </div>
       </div>

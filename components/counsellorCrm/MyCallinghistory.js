@@ -8,14 +8,14 @@ import CallIcon from "@mui/icons-material/Call";
 import Tablenav from "../Comps/Tablenav";
 import LoopIcon from "@mui/icons-material/Loop";
 import DifferenceIcon from "@mui/icons-material/Difference";
-import Tooltip from "@mui/material/Tooltip";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
+import Tooltip from '@mui/material/Tooltip';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 var oldData = [];
 
-export default class PhoneCalls extends Component {
+export default class MyCallinghistory extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -34,7 +34,6 @@ export default class PhoneCalls extends Component {
       remarksHistory: [],
       showModal: false,
       leadid: "",
-      callerType: "",
       // selectedAsset: null,
     };
   }
@@ -56,18 +55,18 @@ export default class PhoneCalls extends Component {
 
     return `${formattedTime}, ${formattedDate}`;
   }
-  DatebasedOncolor = (dateString) => {
+ DatebasedOncolor = (dateString) => {
     const date = new Date(dateString);
     const today = new Date();
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
-
+  
     if (date.toDateString() === today.toDateString()) {
-      return "Green";
+      return 'Green';
     } else if (date.toDateString() === yesterday.toDateString()) {
-      return "Orange";
+      return 'Orange';
     } else {
-      return "Red";
+      return 'Red';
     }
   };
 
@@ -90,7 +89,7 @@ export default class PhoneCalls extends Component {
   getAssetList() {
     try {
       this.setState({ isApiHitComplete: false, isDataFound: false });
-      fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/counsellor/phonecalls`, {
+      fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/counsellor/my-calls`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("cst")}`,
         },
@@ -128,15 +127,13 @@ export default class PhoneCalls extends Component {
     if (e.target.value == "") {
       this.setState({ clgList: oldData });
       if (oldData.length > 0) {
-        this.setState({ isDataFound: true});
+        this.setState({ isDataFound: true });
       } else {
         this.setState({ isDataFound: false });
       }
     } else {
       const filteredData = oldData.filter(
-        (data) =>
-          searchKeyword.test(data.college_name.toLowerCase()) ||
-          searchKeyword.test(data.studEmail.toLowerCase())
+        (data) => searchKeyword.test(data.studEmail.toLowerCase())
       );
 
       if (filteredData.length > 0) {
@@ -149,7 +146,7 @@ export default class PhoneCalls extends Component {
 
   handleGetRemarks = () => {
     try {
-      this.setState({ isLoading: true });
+      this.setState({  isLoading: true });
       fetch(
         process.env.NEXT_PUBLIC_API_ENDPOINT +
           `/counsellor/remarks?lid=${this.state.leadid}&lt=5`,
@@ -163,7 +160,7 @@ export default class PhoneCalls extends Component {
           // console.log(res)
           let response = await res.json();
           // console.log(response.data);
-          this.setState({ remarksHistory: response.data.remarks });
+            this.setState({ remarksHistory: response.data.remarks });
           this.setState({ showModal: true });
         } else {
           let response = await res.json();
@@ -229,7 +226,7 @@ export default class PhoneCalls extends Component {
 
   handleAddRemark = () => {
     if (this.state.remark.trim() !== "") {
-      this.setState({ isLoading: true });
+      this.setState({isLoading: true });
       try {
         const fd = new FormData();
         fd.append("remarks", this.state.remark);
@@ -253,7 +250,7 @@ export default class PhoneCalls extends Component {
               confirmButtonText: "Ok",
             }).then(() => {
               this.handleGetRemarks();
-              this.setState({ isLoading: false, remark: "" });
+              this.setState({ isLoading: false,remark:'' });
             });
           } else {
             var res = await response.json();
@@ -262,7 +259,7 @@ export default class PhoneCalls extends Component {
               text: `${res.error}`,
               icon: "error",
               confirmButtonText: "Ok",
-            });
+            })
           }
         });
       } catch (error) {
@@ -275,33 +272,7 @@ export default class PhoneCalls extends Component {
     this.setState({ showModal: !this.state.showModal });
   };
 
-  // handleChange = (e) => {
-  //   this.setState({ callerType: e.target.value });
-  //   if (e.target.value == "all") {
-  //     this.setState({ clgList: oldData });
-  //     if (oldData.length > 0) {
-  //       this.setState({ isDataFound: true });
-  //     } else {
-  //       this.setState({ isDataFound: false });
-  //     }
-  //   } else if (e.target.value == "student") {
-  //     const filteredData = oldData.filter((data) => !data.reverse_call);
-
-  //     if (filteredData.length > 0) {
-  //       this.setState({ clgList: filteredData, isDataFound: true });
-  //     } else {
-  //       this.setState({ isDataFound: false });
-  //     }
-  //   } else if (e.target.value == "counsellor") {
-  //     const filteredData = oldData.filter((data) => data.reverse_call);
-
-  //     if (filteredData.length > 0) {
-  //       this.setState({ clgList: filteredData, isDataFound: true });
-  //     } else {
-  //       this.setState({ isDataFound: false });
-  //     }
-  //   }
-  // };
+ 
   render() {
     return (
       <>
@@ -323,21 +294,6 @@ export default class PhoneCalls extends Component {
               Actions={{
                 Actions: (
                   <div className="d-flex justify-content-between align-items-center">
-                    {/* <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }} fullWidth>
-        <InputLabel id="demo-simple-select-label">Select the Caller</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={this.state.callerType}
-          label="Select"
-          onChange={(e)=>this.handleChange(e)}
-        >
-          <MenuItem value='student'>Student</MenuItem>
-          <MenuItem value='counsellor'>Counsellor</MenuItem>
-          <MenuItem value='all'>All</MenuItem>
-
-        </Select>
-      </FormControl> */}
                     <input
                       type="text"
                       className="form-control"
@@ -345,13 +301,13 @@ export default class PhoneCalls extends Component {
                       placeholder="Search..."
                       onChange={this.handleSearchChange}
                     />
-                    <Tooltip title="Refresh">
-                      <IconButton
-                        aria-label="Refresh"
-                        onClick={() => this.getAssetList()}
-                      >
-                        <LoopIcon />
-                      </IconButton>
+                          <Tooltip title="Refresh">
+                    <IconButton
+                      aria-label="Refresh"
+                      onClick={() => this.getAssetList()}
+                    >
+                      <LoopIcon />
+                    </IconButton>
                     </Tooltip>
                   </div>
                 ),
@@ -362,84 +318,35 @@ export default class PhoneCalls extends Component {
                 <table className={`table table-hover custom-table`}>
                   <thead>
                     <tr>
-                      <th style={{ background: "var(--primary)" }}>
-                        College Name
-                      </th>
-                      <th style={{ background: "var(--primary)" }}>
-                        Click to Call
-                      </th>
-                      {/* <th style={{ background: "var(--primary)" }}>Caller</th> */}
+                     
                       <th style={{ background: "var(--primary)" }}>
                         Student Email
                       </th>
-                      <th style={{ background: "var(--primary)" }}>Remarks</th>
-
+                      <th style={{ background: "var(--primary)" }}>
+                        Call Status
+                      </th>  
+                      <th style={{ background: "var(--primary)" }}>
+                        Message
+                      </th>
                       <th style={{ background: "var(--primary)" }}>Date</th>
+                     
                     </tr>
                   </thead>
                   <tbody>
                     {this.state.clgList.map((clg, i) => {
                       return (
                         <tr key={i}>
-                          <td>{clg.college_name}</td>
-                          <td className="text-center">
-                            <Tooltip title="Call">
-                              <IconButton
-                                onClick={(e) => this.handleStudentCall(e, clg)}
-                              >
-                                <CallIcon color="primary" fontSize="small" />
-                              </IconButton>
-                            </Tooltip>
-                          </td>
-                          {/* <td style={{ fontWeight: "500" }}>
-                            {clg.reverse_call ? (
-                              <span
-                                style={{ color: clg.reverse_call && "#2e7d32" }}
-                              >
-                                Counsellor
-                              </span>
-                            ) : (
-                              <span
-                                style={{
-                                  color: !clg.reverse_call && "#1976d2",
-                                }}
-                              >
-                                Student
-                              </span>
-                            )}
-                          </td> */}
-
-                          {/* <td>{clg.customer_number}</td> */}
                           <td>
                             {/* {clg.studEmail.replace(
                               /(?<=.{3}).(?=[^@]*?@)/g,
                               "*"
                             )} */}
-                            {clg.studEmail}
+                             {clg.studEmail}
                           </td>
-                          <td className="text-center">
-                            <Tooltip title="Add Remark">
-                              <IconButton
-                                onClick={(e) =>
-                                  this.setState({ leadid: clg._id }, () =>
-                                    this.handleGetRemarks()
-                                  )
-                                }
-                              >
-                                <DifferenceIcon
-                                  color="success"
-                                  fontSize="small"
-                                />
-                              </IconButton>
-                            </Tooltip>
-                          </td>
-                          <td
-                            style={{
-                              color: this.DatebasedOncolor(clg.createdAt),
-                            }}
-                          >
-                            {this.formatTimestamp(clg.createdAt)}
-                          </td>
+                          <td style={{color:'green',fontWeight:'500'}}>{clg.status}</td>
+                          <td>{clg.message}</td>
+                          <td style={{color:this.DatebasedOncolor(clg.createdAt)}}>{this.formatTimestamp(clg.createdAt)}</td>
+                        
 
                           {/* <td>{this.Callend(clg.counsellorDisconnected,clg.studentDisconnected)}</td> */}
                         </tr>
@@ -515,45 +422,41 @@ export default class PhoneCalls extends Component {
               <Modal.Body>
                 <h5>Remarks History</h5>
 
-                {this.state.remarksHistory.length > 0 ? (
-                  <table className={`table table-hover custom-table`}>
-                    <thead>
-                      <tr>
-                        <th style={{ background: "var(--primary)" }}>
-                          Remarks
-                        </th>
-                        <th style={{ background: "var(--primary)" }}>Date</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {this.state.remarksHistory.map((obj, i) => {
-                        return (
-                          <tr key={i}>
-                            <td>{obj.remarks}</td>
-                            <td>{this.formatTimestamp(obj.createdAt)}</td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                ) : (
-                  <div
-                    style={{
-                      display: "flex",
-                      width: "100%",
-                      height: "inherit",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <div style={{ fontWeight: "500" }}>
-                      <span style={{ color: "#0d6efd", cursor: "pointer" }}>
-                        {" "}
-                        No Records{" "}
-                      </span>
-                    </div>
-                  </div>
-                )}
+                {this.state.remarksHistory.length>0 ?
+                <table className={`table table-hover custom-table`}>
+                  <thead>
+                    <tr>
+                    <th style={{ background: "var(--primary)" }}>Remarks</th>
+                      <th style={{ background: "var(--primary)" }}>Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {this.state.remarksHistory.map((obj, i) => {
+                      return (
+                        <tr key={i}>
+                          <td>{obj.remarks}</td>
+                          <td>{this.formatTimestamp(obj.createdAt)}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+                : <div
+                style={{
+                  display: "flex",
+                  width: "100%",
+                  height: "inherit",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <div style={{ fontWeight: "500" }}>
+                  <span style={{ color: "#0d6efd", cursor: "pointer" }}>
+                    {" "}
+                    No Records{" "}
+                  </span>
+                </div>
+              </div>}
                 {/* { 
                   this.state.remarksHistory.length>0 ? (
                     <ul>

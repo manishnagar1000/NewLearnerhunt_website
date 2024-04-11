@@ -122,7 +122,7 @@ export default class Studentappliedclg extends Component {
                 <tr>
                   <th style={{ background: "var(--primary)" }}>Full Name</th>
                   <th style={{ background: "var(--primary)" }}>Mobile Number</th>
-                  <th style={{ background: "var(--primary)" }}>Course Intrested</th>
+                  <th style={{ background: "var(--primary)" }}>Course Interested</th>
                   <th style={{ background: "var(--primary)" }}>State</th>
                   <th style={{ background: "var(--primary)" }}>Email</th>
                   <th style={{ background: "var(--primary)" }}>Date</th>

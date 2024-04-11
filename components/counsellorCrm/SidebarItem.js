@@ -1,19 +1,19 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Classes from  "/styles/portaldashboard.module.css";
+import Classes from "/styles/portaldashboard.module.css";
 export default function SidebarItem({ item, setSelectedItem, selected }) {
   const [open, setOpen] = useState(false);
-  const handleItemClick = (e,item) => {
-    e.stopPropagation()
-      // console.log(item);
-      if (!item.children) {
+
+  const handleItemClick = (e, item) => {
+    e.stopPropagation();
+    // console.log(item);
+    if (!item.children) {
       setSelectedItem(item.name);
       sessionStorage.setItem("selectedPage", item.name);
       sessionStorage.setItem("selectedPath", item.path);
-
       setOpen(false);
-    }else{
-      setOpen(!open);
+    } else {
+      setOpen((prevOpen) => !prevOpen);
     }
   };
 
@@ -28,7 +28,7 @@ export default function SidebarItem({ item, setSelectedItem, selected }) {
     return (
       <div
         className={`${Classes["sidebar-item"]} ${open ? Classes.open : ""}`}
-        onClick={(e) => handleItemClick(e,item)}
+        onClick={(e) => handleItemClick(e, item)}
       >
         <div className={Classes["sidebar-title"]}>
           <span>
@@ -52,8 +52,8 @@ export default function SidebarItem({ item, setSelectedItem, selected }) {
   } else {
     return (
       <Link
-      href={item.path || "#"}
-        onClick={(e) => handleItemClick(e,item)}
+        href={item.path || "#"}
+        onClick={(e) => handleItemClick(e, item)}
         className={`${Classes["sidebar-item"]} ${Classes.plain} ${
           selected === item.name ? Classes.selected : ""
         }`}

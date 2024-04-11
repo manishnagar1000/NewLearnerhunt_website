@@ -8,7 +8,7 @@ export default function Support() {
     marginBottom: "1rem" ,
     backgroundColor: "#fff"}}>
 
-        <h3>Contact Number : <Link href="tel:+918800756846">+918800756846</Link></h3>
+        <h3>Contact Number : <Link href="tel:+918383023265">+918383023265</Link></h3>
         <h3>Contact Email : <Link href="mailto:contact@learnerhunt.com">contact@learnerhunt.com</Link></h3>
 
         </div>

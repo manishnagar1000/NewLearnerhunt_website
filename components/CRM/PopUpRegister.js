@@ -21,8 +21,8 @@ import { Spinner } from "react-bootstrap";
 import SendTimeExtensionIcon from "@mui/icons-material/SendTimeExtension";
 import Avatar from "@mui/material/Avatar";
 import Classes from "/styles/Popup.module.css";
-
-
+import CallIcon from "@mui/icons-material/Call";
+import Link from "next/link";
 
 const headCells = [
   {
@@ -221,7 +221,7 @@ export default function PopUpRegister() {
   const [isLoading, setIsLoading] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
-  const [selectedCounsellor,setSelectedCounsellor]=useState('')
+  const [selectedCounsellor, setSelectedCounsellor] = useState("");
   useEffect(() => {
     getUserList();
   }, []);
@@ -373,43 +373,47 @@ export default function PopUpRegister() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-          setIsLoading(true);
-          // console.log(selected)
-        const fd = new FormData();
-        fd.append("lid", selected.join("&"));
-        fd.append("lt", 4);
-        fd.append("cid", selectedCounsellor);
-        fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/assign-leads-to-counsellor`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("pt")}`,
-          },
-          method: "POST",
-          body: fd,
-        }).then(async (response) => {
-          var res = await response.json();
-          console.log(res);
+    setIsLoading(true);
+    // console.log(selected)
+    const fd = new FormData();
+    fd.append("lid", selected.join("&"));
+    fd.append("lt", 4);
+    fd.append("cid", selectedCounsellor);
+    fetch(
+      process.env.NEXT_PUBLIC_API_ENDPOINT +
+        `/admin/assign-leads-to-counsellor`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("pt")}`,
+        },
+        method: "POST",
+        body: fd,
+      }
+    ).then(async (response) => {
+      var res = await response.json();
+      console.log(res);
+      setIsLoading(false);
+      if (response.ok) {
+        Swal.fire({
+          title: "Success",
+          text: `${res.message}`,
+          icon: "success",
+          confirmButtonText: "Ok",
+        }).then(() => {
           setIsLoading(false);
-          if (response.ok) {
-            Swal.fire({
-              title: "Success",
-              text: `${res.message}`,
-              icon: "success",
-              confirmButtonText: "Ok",
-            }).then(() => {
-              setIsLoading(false);
-              setIsModalOpen(false);
-              setSelectedCounsellor('')
-              getUserList();
-            });
-          } else {
-            Swal.fire({
-              title: "error",
-              text: `${res.error}`,
-              icon: "error",
-              confirmButtonText: "Ok",
-            });
-          }
+          setIsModalOpen(false);
+          setSelectedCounsellor("");
+          getUserList();
         });
+      } else {
+        Swal.fire({
+          title: "error",
+          text: `${res.error}`,
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
+      }
+    });
   };
   return (
     <>
@@ -461,7 +465,17 @@ export default function PopUpRegister() {
                         />
                       </TableCell>
                       <TableCell>{row.name}</TableCell>
-                      <TableCell>{row.mobile}</TableCell>
+                      <TableCell className="text-center">
+                        {localStorage.getItem("crmrole") == "0" ? (
+                          <Link style={{ display: 'flex', alignItems: 'center',textDecoration: 'none' }} href={`tel:${row.mobile}`}><CallIcon fontSize="small" style={{marginRight:'5px'}} /> {row.mobile}</Link>
+                        ) : (
+                          <Link href={`tel:${row.mobile}`}>
+                            <IconButton>
+                              <CallIcon fontSize="small" color="primary" />
+                            </IconButton>
+                          </Link>
+                        )}
+                      </TableCell>
                       <TableCell>{row.email}</TableCell>
                       <TableCell>{row.course}</TableCell>
                       <TableCell>{row.qualification}</TableCell>
@@ -478,7 +492,7 @@ export default function PopUpRegister() {
         centered
         show={isModalOpen}
         onHide={() => {
-          setIsModalOpen(false)
+          setIsModalOpen(false);
         }}
         backdrop="static"
         keyboard={false}
@@ -494,34 +508,42 @@ export default function PopUpRegister() {
             sx={{ mt: 1 }}
           >
             <div>
-              {counsellorList.map((s,i) => {
+              {counsellorList.map((s, i) => {
                 return (
-                  <div key={i} className={`${Classes.counsellorList} ${s._id == selectedCounsellor?Classes.selected:''}`} onClick={()=>setSelectedCounsellor(s._id)}>
-                    <Avatar>{s.name.substring(0,1)}</Avatar>
+                  <div
+                    key={i}
+                    className={`${Classes.counsellorList} ${
+                      s._id == selectedCounsellor ? Classes.selected : ""
+                    }`}
+                    onClick={() => setSelectedCounsellor(s._id)}
+                  >
+                    <Avatar>{s.name.substring(0, 1)}</Avatar>
                     <span className="ms-3">{s.name}</span>
-                    </div>
+                  </div>
                 );
               })}
             </div>
-{selectedCounsellor != "" ?
-            <Button
-              disabled={isLoading}
-              className="bg-blue-500"
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              {isLoading ? (
-                <>
-                  <span>Please Wait...</span>
-                  <Spinner animation="border" role="status" />
-                </>
-              ) : (
-                "Assign"
-              )}
-            </Button>
-            :''}
+            {selectedCounsellor != "" ? (
+              <Button
+                disabled={isLoading}
+                className="bg-blue-500"
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                {isLoading ? (
+                  <>
+                    <span>Please Wait...</span>
+                    <Spinner animation="border" role="status" />
+                  </>
+                ) : (
+                  "Assign"
+                )}
+              </Button>
+            ) : (
+              ""
+            )}
           </Box>
         </Modal.Body>
       </Modal>

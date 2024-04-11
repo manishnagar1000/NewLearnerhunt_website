@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import axios from "axios";
-import Swal from "sweetalert2";
 import Loading from "../Comps/Loading";
 import { Spinner } from "react-bootstrap";
+import IconButton from "@mui/material/IconButton";
 import Tablenav from "../Comps/Tablenav";
+import CallIcon from "@mui/icons-material/Call";
+import Link from "next/link";
 
 var oldData = []
 export default class StudentLeads extends Component {
@@ -138,7 +139,17 @@ export default class StudentLeads extends Component {
                     
                       <tr key={i}>
                         <td>{clg.name}</td>
-                        <td>{clg.mobile}</td>
+                        <td>
+                        {localStorage.getItem("crmrole") == "0" ? (
+                          <Link style={{ display: 'flex', alignItems: 'center',textDecoration: 'none' }} href={`tel:${clg.mobile}`}><CallIcon fontSize="small" style={{marginRight:'5px'}} /> {clg.mobile}</Link>
+                        ) : (
+                          <Link href={`tel:${clg.mobile}`}>
+                            <IconButton>
+                              <CallIcon fontSize="small" color="primary" />
+                            </IconButton>
+                          </Link>
+                        )}
+                         </td>
                         <td>{clg.fee}</td>
                         <td>{clg.qualification}</td>
                         <td>{clg.course}</td>

@@ -58,9 +58,9 @@ const sidebarList = [
     icon: <GroupIcon />,
     children: [
       {
-        name: "Intrested Leads",
+        name: "Interested Leads",
         icon: <TroubleshootIcon />,
-        path: "/collegeportal/intrested-leads",
+        path: "/collegeportal/interested-leads",
       },
       {
         name: "Campaign Leads",

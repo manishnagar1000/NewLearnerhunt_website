@@ -48,7 +48,7 @@ export default function App({ Component, pageProps }) {
         <meta property="og:url" content="https://www.learnerhunt.com/" />
         <meta
           property="og:image"
-          content="https://www.learnerhunt.com/assets/images/Learnerhunt-Logo.webp"
+          content="https://www.learnerhunt.com/assets/images/learnerhunt-logo.webp"
         /> */}
 
         {/* Twitter Tag */}
@@ -64,7 +64,7 @@ export default function App({ Component, pageProps }) {
         />
         <meta
           name="twitter:image"
-          content="https://www.learnerhunt.com/assets/images/Learnerhunt-Logo.webp"
+          content="https://www.learnerhunt.com/assets/images/learnerhunt-logo.webp"
         /> */}
 
         <script

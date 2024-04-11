@@ -8,7 +8,7 @@ import Tablenav from "../Comps/Tablenav";
 
 var oldData = []
 
-export default class IntrestedLeads extends Component {
+export default class InterestedLeads extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -132,7 +132,7 @@ export default class IntrestedLeads extends Component {
                 <tr>
                   <th style={{ background: "var(--primary)" }}>Full Name</th>
                   <th style={{ background: "var(--primary)" }}>Mobile Number</th>
-                  <th style={{ background: "var(--primary)" }}>Course Intrested</th>
+                  <th style={{ background: "var(--primary)" }}>Course Interested</th>
                   <th style={{ background: "var(--primary)" }}>State</th>
                   <th style={{ background: "var(--primary)" }}>Email</th>
                   <th style={{ background: "var(--primary)" }}>Date</th>

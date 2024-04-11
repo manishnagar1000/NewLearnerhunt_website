@@ -896,7 +896,7 @@ setLocation(e.target.value);
 
             <div className="col-md-6 col-lg-4">
               <div className={styles["box"]}>
-                <div className={styles.heading}>Intrested in Study Abroad </div>
+                <div className={styles.heading}>Interested in Study Abroad </div>
                 {preferencsShow ? (
         <TextField fullWidth size='small' margin="dense" 
         

@@ -1,16 +1,11 @@
 import React, { Component } from "react";
-import axios from "axios";
-import Swal from "sweetalert2";
 import Loading from "../Comps/Loading";
-import { Spinner } from "react-bootstrap";
-import styles from "/styles/clgdb.module.css";
 import Tablenav from "../Comps/Tablenav";
-
-import LoopIcon from '@mui/icons-material/Loop';
-import IconButton from '@mui/material/IconButton';
-import Box from '@mui/material/Box';
+import IconButton from "@mui/material/IconButton";
+import CallIcon from "@mui/icons-material/Call";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
+import Swal from "sweetalert2";
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 var oldData = []
@@ -51,7 +46,20 @@ export default class AssignLeads extends Component {
   
     return `${formattedTime}, ${formattedDate}`;
   }
-
+  DatebasedOncolor = (dateString) => {
+    const date = new Date(dateString);
+    const today = new Date();
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+  
+    if (date.toDateString() === today.toDateString()) {
+      return 'Green';
+    } else if (date.toDateString() === yesterday.toDateString()) {
+      return 'Orange';
+    } else {
+      return 'Red';
+    }
+  };
 
   handleSearchChange = (e) => {
     this.setState({searchInput:e.target.value})
@@ -67,7 +75,7 @@ export default class AssignLeads extends Component {
       }
   } else {
     const filteredData = oldData.filter(data =>
-      searchKeyword.test(data.leads.name.toLowerCase())
+      searchKeyword.test(data.name.toLowerCase())
   );
 
   if (filteredData.length > 0) {
@@ -111,6 +119,55 @@ export default class AssignLeads extends Component {
         console.error(error);
       }
   }
+
+  handleStudentCall = (e, counsellorInfo) => {
+    e.preventDefault();
+    console.log(counsellorInfo);
+
+    try {
+      this.setState({ isLoading: true });
+
+      const fd = new FormData();
+      fd.append("agentNum", counsellorInfo.agent_num); // agent number counsellor number
+      fd.append("customerNum", counsellorInfo.mobile); // student number
+      fd.append("slug", ''); // college slug
+      fd.append("counsEmail", localStorage.getItem("useremail")); // counsellor email
+      fd.append("studEmail", counsellorInfo.email); // student email
+
+      fetch(
+        process.env.NEXT_PUBLIC_API_ENDPOINT + "/counsellor/callback-student",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("cst")}`,
+          },
+          method: "POST",
+          body: fd,
+        }
+      ).then(async (response) => {
+        var res = await response.json();
+        // console.log(res.data);
+        if (res.error) {
+          Swal.fire({
+            title: "error",
+            text: `${res.error}`,
+            icon: "error",
+            confirmButtonText: "Ok",
+          });
+        } else {
+          Swal.fire({
+            title: "success",
+            text: `${res.data.success.message}`,
+            icon: "success",
+            confirmButtonText: "Ok",
+          });
+        }
+        this.setState({ isLoading: false });
+      });
+    } catch (error) {
+      console.error("Failed to fetch OTP:", error);
+    }
+  };
+
   render() {
     return (
       <>
@@ -145,13 +202,9 @@ export default class AssignLeads extends Component {
           onChange={(e)=>this.handleChange(e)}
         >
           <MenuItem value={1}>Test Eligibility</MenuItem>
-          <MenuItem value={2}>Student Applied Colleges</MenuItem>
+          <MenuItem value={2}>Student Applied In Colleges</MenuItem>
           <MenuItem value={3}>Registered Students</MenuItem>
-          <MenuItem value={4}>Popup Leads</MenuItem>
-          <MenuItem value={5}>Counsellor Phone Calls</MenuItem>
-          <MenuItem value={6}>Counsellor Video Calls</MenuItem>
-
-
+          <MenuItem value={4}>PopUp Leads</MenuItem>
         </Select>
       </FormControl>
               </div>
@@ -180,12 +233,18 @@ export default class AssignLeads extends Component {
                   return (
                     
                       <tr key={i}>
-                        <td>{clg.leads.name}</td>
-                        <td>{clg.leads.mobile}</td>
-                        <td>{clg.leads.email.replace(/(?<=.{3}).(?=[^@]*?@)/g, '*')}</td>
-                        <td>{clg.leads.course}</td>
-                        <td>{clg.leads.email}</td>
-                        <td>{this.formatTimestamp(clg.leads.createdAt)}</td>
+                        <td>{clg.name}</td>
+                        <td className="text-center">
+                          <IconButton
+                              onClick={(e) => this.handleStudentCall(e, clg)}
+                            >
+                              <CallIcon color="primary" fontSize="small" />
+                            </IconButton>
+                        </td>
+                        <td>{clg.email}</td>
+                        <td>{clg.course}</td>
+                        <td>{clg.qualification}</td>
+                        <td style={{color:this.DatebasedOncolor(clg.createdAt)}}>{this.formatTimestamp(clg.createdAt)}</td>
                       </tr>
                   );
                 })}

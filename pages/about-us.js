@@ -9,7 +9,7 @@ const StructuredDataOrg = [
     "@type": "Organization",
     name: "Decred Digital Services Pvt. Ltd.",
     url: "https://www.learnerhunt.com",
-    logo: "https://www.learnerhunt.com/assets/images/Learnerhunt-Logo.webp",
+    logo: "https://www.learnerhunt.com/assets/images/learnerhunt-logo.webp",
     contactPoint: [
       {
         "@type": "ContactPoint",
@@ -30,7 +30,7 @@ const StructuredDataOrg = [
       "@type": "Organization",
       name: "Decred Digital Services Pvt. Ltd.",
       url: "https://www.learnerhunt.com",
-      logo: "https://www.learnerhunt.com/assets/images/Learnerhunt-Logo.webp",
+      logo: "https://www.learnerhunt.com/assets/images/learnerhunt-logo.webp",
       contactPoint: {
         "@type": "ContactPoint",
         telephone: "+918800756846",
@@ -63,7 +63,7 @@ const AboutUsPage = () => {
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="About Us | Premier Educational Career Counseling Platform"/>
 <meta name="twitter:description" content="We leading digital platform providing comprehensive information on colleges, universities, courses & career counseling. Trusted by students & professional."/>
-<meta name="twitter:image" content="https://www.learnerhunt.com/assets/images/Learnerhunt-Logo.webp"/>
+<meta name="twitter:image" content="https://www.learnerhunt.com/assets/images/learnerhunt-logo.webp"/>
 <meta name="twitter:site" content="@learnerhunt"/>
 <meta name="twitter:creator" content="@learnerhunt"/>
 <script

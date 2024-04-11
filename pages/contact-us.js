@@ -10,11 +10,11 @@ const StructuredDataOrg = [
     "@type": "Organization",
     name: "Decred Digital Services Pvt. Ltd.",
     url: "https://www.learnerhunt.com",
-    logo: "https://www.learnerhunt.com/assets/images/Learnerhunt-Logo.webp",
+    logo: "https://www.learnerhunt.com/assets/images/learnerhunt-logo.webp",
     contactPoint: [
       {
         "@type": "ContactPoint",
-        telephone: "+918800756846",
+        telephone: "+918383023265",
         contactType: "customer service",
         email: "contact@learnerhunt.com"
       }
@@ -31,10 +31,10 @@ const StructuredDataOrg = [
       "@type": "Organization",
       name: "Decred Digital Services Pvt. Ltd.",
       url: "https://www.learnerhunt.com",
-      logo: "https://www.learnerhunt.com/assets/images/Learnerhunt-Logo.webp",
+      logo: "https://www.learnerhunt.com/assets/images/learnerhunt-logo.webp",
       contactPoint: {
         "@type": "ContactPoint",
-        telephone: "+918800756846",
+        telephone: "+918383023265",
         contactType: "customer service",
         email: "contact@learnerhunt.com"
       }
@@ -311,7 +311,7 @@ const [isLoading, setIsLoading] = useState(false);
                       <h5 className="text-white font-weight-light mb-3 mt-4">
                         CALL US
                       </h5>
-                      <p className="text-white op-7">918800756846</p>
+                      <p className="text-white op-7">918383023265</p>
                       <h5 className="text-white font-weight-light mb-3 mt-4">
                         EMAIL ID
                       </h5>

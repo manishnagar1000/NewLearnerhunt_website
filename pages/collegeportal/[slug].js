@@ -14,7 +14,7 @@ import Studentregistertbl from "/components/CRM/Studentregistertbl";
 import AddLeads from "@/components/CRM/AddLeads";
 import MyKyc from "/components/collegeDashboardCrm/MyKyc";
 import MyCollege from "/components/collegeDashboardCrm/MyCollege";
-import IntrestedLeads from "/components/collegeDashboardCrm/IntrestedLeads";
+import InterestedLeads from "/components/collegeDashboardCrm/InterestedLeads";
 import CampaignLeads from "/components/collegeDashboardCrm/CampaignLeads";
 import AssociatedCounsellor from "@/components/collegeDashboardCrm/AssociatedCounsellor";
 import Support from "@/components/collegeDashboardCrm/Support";
@@ -32,8 +32,8 @@ const componentList = [
     slug: "my-college",
   },
   {
-    comp: <IntrestedLeads />,
-    slug: "intrested-leads",
+    comp: <InterestedLeads />,
+    slug: "interested-leads",
   },
   {
     comp: <AssociatedCounsellor />,

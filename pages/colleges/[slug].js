@@ -273,6 +273,8 @@ export default function CollegeName({ collegedata }) {
       fd.append("studEmail", username);
       fd.append("counsEmail", counsellorInfo.email);
       fd.append("sid", uid);
+      fd.append("slug", slug); // college slug
+
       // fd.append("cid", cid);
       fd.append("channel", channel);
 
@@ -371,6 +373,7 @@ export default function CollegeName({ collegedata }) {
       fd.append("counsEmail", callingSession.counsEmail);
       fd.append("sid", callingSession.sid);
       fd.append("channel", callingSession.channel);
+      fd.append("slug", slug); // college slug
 
       fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/student/video-call", {
         headers: {

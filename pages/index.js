@@ -20,7 +20,7 @@ const StructuredDataOrg = [
     "@type": "Organization",
     name: "Decred Digital Services Pvt. Ltd.",
     url: "https://www.learnerhunt.com",
-    logo: "https://www.learnerhunt.com/assets/images/Learnerhunt-Logo.webp",
+    logo: "https://www.learnerhunt.com/assets/images/learnerhunt-logo.webp",
     contactPoint: [
       {
         "@type": "ContactPoint",
@@ -43,7 +43,7 @@ const StructuredDataOrg = [
       "@type": "Organization",
       name: "Decred Digital Services Pvt. Ltd.",
       url: "https://www.learnerhunt.com",
-      logo: "https://www.learnerhunt.com/assets/images/Learnerhunt-Logo.webp",
+      logo: "https://www.learnerhunt.com/assets/images/learnerhunt-logo.webp",
       contactPoint: {
         "@type": "ContactPoint",
         telephone: "+918800756846",
@@ -111,7 +111,7 @@ export default function Home({
         />
         <meta
           name="twitter:image"
-          content="https://www.learnerhunt.com/assets/images/Learnerhunt-Logo.webp"
+          content="https://www.learnerhunt.com/assets/images/learnerhunt-logo.webp"
         />
         <meta name="twitter:site" content="@learnerhunt" />
         <meta name="twitter:creator" content="@learnerhunt"></meta>

@@ -1,24 +1,12 @@
 import React, { useEffect } from "react";
 import PortalLayout from "/components/counsellorCrm//Portallayout";
-import { useRouter, notFound } from "next/router";
-import Dashboard from "/components/CRM/Dashboard";
-import Addcollege from "/components/CRM/addcollege/Addcollege";
-import Allcollege from "/components/CRM/addcollege/Allcollege";
-import ApiIntegration from "/components/CRM/ApiIntegration";
-import TrashColleges from "/components/CRM/TrashCollege";
-import Imarticus from "/components/CRM/Imarticus";
+import { useRouter} from "next/router";
 import Swal from "sweetalert2";
-import Testeligibility from "/components/CRM/Testeligibility";
-import Studentappliedclg from "/components/CRM/Studentappliedclg";
-import Studentregistertbl from "/components/CRM/Studentregistertbl";
-import AddLeads from "@/components/CRM/AddLeads";
-import MyKyc from "/components/collegeDashboardCrm/MyKyc";
-import MyCollege from "/components/collegeDashboardCrm/MyCollege";
-import IntrestedLeads from "/components/collegeDashboardCrm/IntrestedLeads";
 import MyProfile from "@/components/counsellorCrm/Myprofile";
-import InterstedStudent from "@/components/counsellorCrm/InterstedStudent";
 import PhoneCalls from "@/components/counsellorCrm/PhoneCalls";
 import AssignLeads from "@/components/counsellorCrm/AssignLeads";
+import VideoCalls from "@/components/counsellorCrm/VideoCalls";
+import MyCallinghistory from "@/components/counsellorCrm/MyCallinghistory";
 
 const componentList = [
   {
@@ -26,7 +14,7 @@ const componentList = [
     slug: "my-profile",
   },
   {
-    comp: <InterstedStudent />,
+    comp: <VideoCalls />,
     slug: "video-calls",
   },
   {
@@ -36,6 +24,10 @@ const componentList = [
   {
     comp:<AssignLeads/>,
     slug:'assign-leads'
+  },
+  {
+    comp:<MyCallinghistory/>,
+    slug:'my-calls'
   }
  
  

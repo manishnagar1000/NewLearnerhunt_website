@@ -1,4 +1,4 @@
-import React, { Component,createRef  } from "react";
+import React, { Component, createRef } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import IconButton from "@mui/material/IconButton";
 import Classes from "/styles/portaldashboard.module.css";
@@ -18,10 +18,10 @@ import ListItemText from "@mui/material/ListItemText";
 import { deepOrange } from "@mui/material/colors";
 import { Container, Row, Col, Modal, Form, Button } from "react-bootstrap";
 import DuoIcon from "@mui/icons-material/Duo";
-import ContactPhoneIcon from '@mui/icons-material/ContactPhone'; 
-import VideoCallIcon from '@mui/icons-material/VideoCall'; 
-import PermPhoneMsgIcon from '@mui/icons-material/PermPhoneMsg';
-import AutoGraphIcon from '@mui/icons-material/AutoGraph';
+import ContactPhoneIcon from "@mui/icons-material/ContactPhone";
+import VideoCallIcon from "@mui/icons-material/VideoCall";
+import PermPhoneMsgIcon from "@mui/icons-material/PermPhoneMsg";
+import AutoGraphIcon from "@mui/icons-material/AutoGraph";
 import dynamic from "next/dynamic";
 const AgoraUIKit = dynamic(() => import("agora-react-uikit"), { ssr: false });
 // import CallingSound from "@/assets/audio/callingAudio.mp3";
@@ -36,25 +36,24 @@ const sidebarList = [
     path: "/counsellorportal/my-profile",
   },
   {
-    name: "Calling History",
-    icon: <ContactPhoneIcon />,
-    children:[
-      {
-        name:'Video Calls',
-        icon:<VideoCallIcon/>,
-        path: "/counsellorportal/video-calls",
-      },
-      {
-        name: "Phone Calls",
-        icon: <PermPhoneMsgIcon />,
-        path: "/counsellorportal/phone-calls",
-      },
-    ]
-  }  ,
+    name: "Video Calls",
+    icon: <VideoCallIcon />,
+    path: "/counsellorportal/video-calls",
+  },
+  {
+    name: "Phone Calls",
+    icon: <PermPhoneMsgIcon />,
+    path: "/counsellorportal/phone-calls",
+  },
   {
     name: "Assign Leads",
     icon: <AutoGraphIcon />,
     path: "/counsellorportal/assign-leads",
+  },
+  {
+    name: "My Calling History",
+    icon: <ContactPhoneIcon />,
+    path: "/counsellorportal/my-calls",
   },
 ];
 export default class PortalLayout extends Component {
@@ -66,7 +65,7 @@ export default class PortalLayout extends Component {
       isSidebarOpen: true,
       // selectedLi: "",
       // selectedItem: "",
-      selectedPage: sidebarList[0].name,
+      selectedPage: "",
       anchorEl: null,
       anchorE2: null,
       notifications: [],
@@ -109,8 +108,7 @@ export default class PortalLayout extends Component {
             notifications: res.data,
             // callingModal: true,
             // isPlaying: true,
-          })
-          
+          });
         } else {
           var res = await response.json();
           // setError(res.error);
@@ -126,15 +124,20 @@ export default class PortalLayout extends Component {
   // componentDidMount() {
   //   if (sessionStorage.getItem("selectedPage")) {
   //     this.setState({ selectedPage: sessionStorage.getItem("selectedPage") });
+  //   } else {
+  //     this.setState({ selectedPage: sidebarList[0].name });
   //   }
   //   // console.log(this.props)
   // }
 
- 
-
   componentDidMount() {
     this.NotificationApi();
     this.interval = setInterval(this.NotificationApi, 30000);
+    if (sessionStorage.getItem("selectedPage")) {
+      this.setState({ selectedPage: sessionStorage.getItem("selectedPage") });
+    } else {
+      this.setState({ selectedPage: sidebarList[0].name });
+    }
   }
   componentWillUnmount() {
     // Clear interval when component unmounts
@@ -261,7 +264,6 @@ export default class PortalLayout extends Component {
     }
   };
 
-
   render() {
     return (
       <>
@@ -294,7 +296,11 @@ export default class PortalLayout extends Component {
             <div className={Classes["right-div"]}>
               <Tooltip title="Notification">
                 <IconButton
-                  onClick={(e) => this.setState({ anchorE2: e.currentTarget },()=> this.NotificationApi())}
+                  onClick={(e) =>
+                    this.setState({ anchorE2: e.currentTarget }, () =>
+                      this.NotificationApi()
+                    )
+                  }
                   size="small"
                   aria-controls={
                     Boolean(this.state.anchorE2) ? "account-menu" : undefined
@@ -473,19 +479,19 @@ export default class PortalLayout extends Component {
                     sx={{
                       width: "100%",
                       maxHeight: "80vh",
-                      overflowY:'auto',
+                      overflowY: "auto",
                       bgcolor: "background.paper",
                     }}
                   >
-                  <ListItem
-                            sx={{
-                              fontSize:'larger',
-                              fontWeight:'500',
-                              marginBottom: "0.1rem",
-                            }}
-                          >
-                            Notifications...
-                            </ListItem>
+                    <ListItem
+                      sx={{
+                        fontSize: "larger",
+                        fontWeight: "500",
+                        marginBottom: "0.1rem",
+                      }}
+                    >
+                      Notifications...
+                    </ListItem>
                     {this.state.notifications.map((notification, i) => {
                       return (
                         <>
@@ -497,11 +503,11 @@ export default class PortalLayout extends Component {
                             }}
                           >
                             <Avatar sx={{ bgcolor: deepOrange[500] }}>
-                              {notification.channel.charAt(0)}
+                              {notification.college_name.charAt(0)}
                             </Avatar>
                             {/* <Avatar src="/broken-image.jpg" /> */}
                             <ListItemText
-                              primary={notification.channel}
+                              primary={notification.college_name}
                               style={{ margin: "0rem 1rem" }}
                             />
                             {this.handlenotifyAction(notification)}
@@ -607,14 +613,13 @@ export default class PortalLayout extends Component {
             </div>
           </Modal.Body>
         </Modal> */}
-{/* {this.state.isPlaying && */}
-       {/* <audio autoPlay>
+        {/* {this.state.isPlaying && */}
+        {/* <audio autoPlay>
        <source src="/assets/audio/callingAudio.mp3" type="audio/mp3" />
        Your browser does not support the audio element.
      </audio> */}
-{/* } */}
+        {/* } */}
         {/* <audio ref={this.audioRef} src="/assets/audio/callingAudio.mp3" /> */}
-
       </>
     );
   }

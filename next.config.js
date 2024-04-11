@@ -178,6 +178,11 @@ const nextConfig = {
         source: '/colleges/Xavier-Institute-of-Management-Design',
         destination: '/',
         permanent: true,
+      },
+      {
+        source: '/assets/images/footer/footer-image.webp',
+        destination: '/',
+        permanent: true,
       }
     ]
   },

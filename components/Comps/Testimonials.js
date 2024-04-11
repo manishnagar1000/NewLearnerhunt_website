@@ -35,13 +35,13 @@ export default function Testimonials() {
                   <p>Exceptional service! Learner Hunt provided invaluable insights, helping me secure a spot in a top-tier MBA program. Their dedication to each student sets them apart. Highly recommended!</p>
                 </div>
               </div>
-              <div className="col-md">
+              {/* <div className="col-md">
                 <div className={Classes['Image-div']}>
                   <img className={Classes['mba-student']} src="/assets/Landing/studentImg/student4.webp" alt='studentname' width={100} height={100} maxWidth={100}/>
                   <p className={Classes['mba-studentname']}>Ishika Murarka</p>
                   <p>Learner Hunt exceeded my expectations! The team's knowledge of MBA admissions is unmatched. I owe my acceptance to their strategic guidance. Trust them with your aspirations!</p>
                 </div>
-              </div>
+              </div> */}
               <div className="col-md">
                 <div className={Classes['Image-div']}>
                   <img className={Classes['mba-student']} src="/assets/Landing/studentImg/student5.webp" alt='studentname' width={100} height={100} maxWidth={100}/>

@@ -254,7 +254,7 @@ export default function Topbar() {
                         <img
                           loading="lazy"
                           src="/assets/images/Svglogo.svg"
-                          alt="sagenext logo"
+                          alt="learnerhunt logo"
                           width={176}
                           height={50}
                         />
@@ -303,7 +303,7 @@ export default function Topbar() {
                         width={12}
                         height={14}
                       />
-                      Sales/Support +91-8800756846
+                      Sales/Support +91-8383023265
                     </p>
                   </div>
                   <div className="col-6">
@@ -404,7 +404,7 @@ export default function Topbar() {
                       <img
                         loading="lazy"
                         src="/assets/images/Svglogo.svg"
-                        alt="sagenext logo"
+                        alt="learnerhunt logo"
                         width={176}
                         height={50}
                       />
@@ -414,8 +414,8 @@ export default function Topbar() {
                     <img
                       loading="lazy"
                       // src="/assets/images/Svglogo.svg"
-                      src="/assets/images/Learnerhunt-Logo.webp"
-                      alt="sagenext logo"
+                      src="/assets/images/learnerhunt-logo.webp"
+                      alt="learnerhunt logo"
                       width={176}
                       height={55}
                     />
@@ -564,8 +564,8 @@ export default function Topbar() {
                       <img
                         loading="lazy"
                         // src="/assets/images/Svglogo.svg"
-                        src="/assets/images/Learnerhunt-Logo.webp"
-                        alt="sagenext logo"
+                        src="/assets/images/learnerhunt-logo.webp"
+                        alt="learnerhunt logo"
                         width={150}
                         height={50}
                       />
