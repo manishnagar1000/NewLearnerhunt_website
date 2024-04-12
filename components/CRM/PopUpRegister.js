@@ -21,8 +21,6 @@ import { Spinner } from "react-bootstrap";
 import SendTimeExtensionIcon from "@mui/icons-material/SendTimeExtension";
 import Avatar from "@mui/material/Avatar";
 import Classes from "/styles/Popup.module.css";
-import CallIcon from "@mui/icons-material/Call";
-import Link from "next/link";
 
 const headCells = [
   {
@@ -402,6 +400,7 @@ export default function PopUpRegister() {
         }).then(() => {
           setIsLoading(false);
           setIsModalOpen(false);
+          setSelected([])
           setSelectedCounsellor("");
           getUserList();
         });
@@ -465,8 +464,8 @@ export default function PopUpRegister() {
                         />
                       </TableCell>
                       <TableCell>{row.name}</TableCell>
-                      <TableCell className="text-center">
-                        {localStorage.getItem("crmrole") == "0" ? (
+                      <TableCell>
+                        {/* {localStorage.getItem("crmrole") == "0" ? (
                           <Link style={{ display: 'flex', alignItems: 'center',textDecoration: 'none' }} href={`tel:${row.mobile}`}><CallIcon fontSize="small" style={{marginRight:'5px'}} /> {row.mobile}</Link>
                         ) : (
                           <Link href={`tel:${row.mobile}`}>
@@ -474,7 +473,8 @@ export default function PopUpRegister() {
                               <CallIcon fontSize="small" color="primary" />
                             </IconButton>
                           </Link>
-                        )}
+                        )} */}
+                        {row.mobile}
                       </TableCell>
                       <TableCell>{row.email}</TableCell>
                       <TableCell>{row.course}</TableCell>

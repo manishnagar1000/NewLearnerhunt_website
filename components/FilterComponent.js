@@ -313,7 +313,7 @@ const FilterComponent = ({
   };
   const toggleDropdownMobile = (heading) => {
 
-    console.log(heading)
+    // console.log(heading)
     let btnz = document.getElementById(`filter-box-btn-zones`);
     let btnr = document.getElementById(`filter-box-btn-ratings`);
     let btnc = document.getElementById(`filter-box-btn-courses`);

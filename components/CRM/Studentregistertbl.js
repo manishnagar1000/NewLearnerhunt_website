@@ -1,184 +1,476 @@
-import React, { Component } from "react";
-import axios from "axios";
+// 
+
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import { alpha } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
+import Checkbox from "@mui/material/Checkbox";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import { Modal } from "react-bootstrap";
+import Button from "@mui/material/Button";
 import Swal from "sweetalert2";
-import Loading from "../Comps/Loading";
 import { Spinner } from "react-bootstrap";
-import Tablenav from "../Comps/Tablenav";
+import SendTimeExtensionIcon from "@mui/icons-material/SendTimeExtension";
+import Avatar from "@mui/material/Avatar";
+import Classes from "/styles/Popup.module.css";
 
-var oldData = []
-export default class Studentregistertbl extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoading: false,
-      clgList: [],
-      isDataFound: false,
-      isApiHitComplete: false,
-      selectedCategory: [],
-      username: localStorage.getItem("username"),
-      statusAnchorEl: null,
-      searchInput: "", // Search input
-      lastrecid:"-1",
-      TotalCountNumber:''
+const headCells = [
+  {
+    id: "studname",
+    label: "Student Name",
+  },
+  {
+    id: "mobnumber",
+    label: "Mobile Number",
+  },
+  {
+    id: "email",
+    label: "Email",
+  },
+  {
+    id: "level",
+    label: "Level",
+  },
+  {
+    id: "stream",
+    label: "Stream",
+  },
+  {
+    id: "date",
+    label: "Date",
+  },
+];
 
-      // selectedAsset: null,
-    };
-  }
+function EnhancedTableHead(props) {
+  // console.log(props);
+  const {
+    onSelectAllClick,
+    order,
+    orderBy,
+    numSelected,
+    rowCount,
+    onRequestSort,
+  } = props;
+  const createSortHandler = (property) => (event) => {
+    onRequestSort(event, property);
+  };
 
- formatTimestamp(timestamp) {
-    const dateObject = new Date(timestamp);
-  
-    const formattedTime = dateObject.toLocaleTimeString('en-US', {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true,
-    });
-  
-    const formattedDate = dateObject.toLocaleDateString('en-US', {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric',
-    });
-  
-    return `${formattedTime}, ${formattedDate}`;
-  }
+  return (
+    <TableHead>
+      <TableRow>
+        <TableCell padding="checkbox">
+          <Checkbox
+            color="primary"
+            indeterminate={numSelected > 0 && numSelected < rowCount}
+            checked={rowCount > 0 && numSelected === rowCount}
+            onChange={onSelectAllClick}
+            inputProps={{
+              "aria-label": "select all desserts",
+            }}
+          />
+        </TableCell>
+        {headCells.map((headCell) => (
+          <TableCell
+            key={headCell.id}
+            align={headCell.numeric ? "right" : "left"}
+            padding={headCell.disablePadding ? "none" : "normal"}
+          >
+            {headCell.label}
+          </TableCell>
+        ))}
+      </TableRow>
+    </TableHead>
+  );
+}
 
-  getAssetList() {
-    this.setState({ isApiHitComplete: false, isDataFound: false });
-    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/leads?lid=${this.state.lastrecid}&type=3`, {
+EnhancedTableHead.propTypes = {
+  numSelected: PropTypes.number.isRequired,
+  onRequestSort: PropTypes.func.isRequired,
+  onSelectAllClick: PropTypes.func.isRequired,
+  order: PropTypes.oneOf(["asc", "desc"]).isRequired,
+  orderBy: PropTypes.string.isRequired,
+  rowCount: PropTypes.number.isRequired,
+};
+
+function EnhancedTableToolbar(props) {
+  console.log(props);
+  // console.log(props.rowsList);
+  const [searchInput, setSearchInput] = useState("");
+  const { numSelected } = props;
+  const handleSearchChange = (e) => {
+    setSearchInput(e.target.value);
+    props.onSearchChange(e.target.value);
+    // setRows(filteredData);
+    // }
+  };
+
+  const handleOpen = (e) => {
+    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/counsellor-list`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("pt")}`,
       },
     }).then(async (res) => {
+      // console.log(res)
       let response = await res.json();
-      // console.log(response.data);
-      if (response.data.length > 0) {
-        this.setState({ clgList: response.data, isDataFound: true ,TotalCountNumber:response.data.length});
-      }
-      oldData=response.data
-      this.setState({ isApiHitComplete: true });
-    });
-  }
-
-  componentDidMount() {
-    this.getAssetList();
-  }
-  handleSearchChange = (e) => {
-    this.setState({searchInput:e.target.value})
-    const searchTerm = e.target.value.trim().replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-    const searchKeyword = new RegExp(`\\b${searchTerm}\\w*\\b`, 'i');
-
-    if (e.target.value == '') {
-      this.setState({ clgList: oldData })
-      if (oldData.length > 0) {
-          this.setState({ isDataFound: true })
+      console.log(response);
+      if (response.data) {
+        if (response.data.length > 0) {
+          props.counsellorList(response.data);
+          // props.setCounsellor(response.data);
+          props.OnModalOpen(true);
+        }
       } else {
-          this.setState({ isDataFound: false })
+        Swal.fire({
+          title: "error",
+          html: `${response.error}`,
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
       }
-  } else {
-    const filteredData = oldData.filter(data =>
-      searchKeyword.test(data.name.toLowerCase())||
-      searchKeyword.test(data.mobile.toLowerCase())||
-      searchKeyword.test(data.selected_level.toLowerCase())||
-      searchKeyword.test(data.email.toLowerCase())
-
-
-      
-
-  );
-
-  if (filteredData.length > 0) {
-      this.setState({ clgList: filteredData, isDataFound: true });
-  } else {
-      this.setState({ isDataFound: false });
-  }
-  }
+    });
   };
-  render() {
-    return (
-      <>
-      <Tablenav
-        TotalCount={{
-          Total:(
-              <h5>Total Count :{this.state.TotalCountNumber == ''?'0':this.state.TotalCountNumber}</h5>
-          )
-         }}
-          Actions={{
-            Actions: (
-              <input
-            type="text"
-            className="form-control"
-            value={this.state.searchInput}
-            placeholder="Search..."
-            onChange={this.handleSearchChange}
+
+  return (
+    <>
+      <Toolbar
+        sx={{
+          pl: { sm: 2 },
+          pr: { xs: 1, sm: 1 },
+          ...(numSelected > 0 && {
+            bgcolor: (theme) =>
+              alpha(
+                theme.palette.primary.main,
+                theme.palette.action.activatedOpacity
+              ),
+          }),
+        }}
+      >
+        {numSelected > 0 ? (
+          <Typography
+            sx={{ flex: "1 1 100%" }}
+            color="inherit"
+            variant="subtitle1"
+            component="div"
+          >
+            {numSelected} selected
+          </Typography>
+        ) : (
+          <Typography
+            sx={{ flex: "1 1 100%" }}
+            variant="p"
+            id="tableTitle"
+            component="div"
+          >
+            Total Users : {props.rowsList.length}
+          </Typography>
+        )}
+
+        {numSelected > 0 ? (
+          <Tooltip title="Assign Leads">
+            <IconButton>
+              <SendTimeExtensionIcon onClick={handleOpen} />
+            </IconButton>
+          </Tooltip>
+        ) : (
+          <>
+            <input
+              type="text"
+              className="form-control"
+              value={searchInput}
+              placeholder="Search..."
+              onChange={handleSearchChange}
+            />
+          </>
+        )}
+      </Toolbar>
+    </>
+  );
+}
+
+EnhancedTableToolbar.propTypes = {
+  numSelected: PropTypes.number.isRequired,
+};
+var oldData = [];
+export default function Studentappliedclg() {
+  const [selected, setSelected] = React.useState([]);
+  const [rows, setRows] = useState([]);
+  const [counsellorList, setCounsellorList] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedCounsellor, setSelectedCounsellor] = useState("");
+  useEffect(() => {
+    getUserList();
+  }, []);
+
+  const getUserList = () => {
+    fetch(
+      process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/leads?lid=${-1}&type=3`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("pt")}`,
+        },
+      }
+    ).then(async (res) => {
+      let response = await res.json();
+      if (response.data) {
+        if (response.data.length > 0) {
+          setRows(response.data);
+        }
+        oldData = response.data;
+      } else {
+        Swal.fire({
+          title: "error",
+          html: `${response.error}`,
+          icon: "error",
+          confirmButtonText: "Ok",
+        }).then(() => {
+          window.location.reload();
+        });
+      }
+    });
+  };
+  const formatTimestamp = (timestamp) => {
+    const dateObject = new Date(timestamp);
+
+    const formattedTime = dateObject.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+
+    const formattedDate = dateObject.toLocaleDateString("en-US", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+
+    return `${formattedTime}, ${formattedDate}`;
+  };
+
+  const handleSelectAllClick = (event) => {
+    if (event.target.checked) {
+      const newSelected = rows.map((n) => n._id);
+      setSelected(newSelected);
+      return;
+    }
+    setSelected([]);
+  };
+
+  const handleClick = (event, id) => {
+    const selectedIndex = selected.indexOf(id);
+    let newSelected = [];
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, id);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1)
+      );
+    }
+    setSelected(newSelected);
+  };
+
+  const isSelected = (id) => selected.indexOf(id) !== -1;
+
+  const handleSearchChange = (value) => {
+    const searchTerm = value.trim().replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
+    const searchKeyword = new RegExp(`\\b${searchTerm}\\w*\\b`, "i");
+
+    if (searchKeyword === "") {
+      setRows(oldData);
+    } else {
+      const filteredData = oldData.filter((data) =>
+        searchKeyword.test(data.email.toLowerCase())
+      );
+      setRows(filteredData);
+    }
+  };
+
+  const handleModalOpen = (value) => {
+    setIsModalOpen(value);
+    setIsLoading(false);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    const fd = new FormData();
+    fd.append("lid", selected.join("&"));
+    fd.append("lt", 3);
+    fd.append("cid", selectedCounsellor);
+    fetch(
+      process.env.NEXT_PUBLIC_API_ENDPOINT +
+        `/admin/assign-leads-to-counsellor`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("pt")}`,
+        },
+        method: "POST",
+        body: fd,
+      }
+    ).then(async (response) => {
+      var res = await response.json();
+      console.log(res);
+      setIsLoading(false);
+      if (response.ok) {
+        Swal.fire({
+          title: "Success",
+          text: `${res.message}`,
+          icon: "success",
+          confirmButtonText: "Ok",
+        }).then(() => {
+          setIsLoading(false);
+          setIsModalOpen(false);
+          setSelectedCounsellor("");
+          setSelected([])
+          getUserList();
+        });
+      } else {
+        Swal.fire({
+          title: "error",
+          text: `${res.error}`,
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
+      }
+    });
+  };
+  return (
+    <>
+      <Box sx={{ width: "100%" }}>
+        <Paper sx={{ width: "100%", mb: 2 }}>
+          <EnhancedTableToolbar
+            numSelected={selected.length}
+            userListData={getUserList}
+            rowsList={rows}
+            onSearchChange={(value) => handleSearchChange(value)}
+            OnModalOpen={(value) => handleModalOpen(value)}
+            counsellorList={(list) => setCounsellorList(list)}
           />
-            ),
-          }}
-        />
-        {this.state.isApiHitComplete ? (
-          this.state.isDataFound ? (
-            <table className={`table table-hover custom-table`}>
-              <thead>
-                <tr>
-                  <th style={{ background: "var(--primary)" }}>Student Name</th>
-                  <th style={{ background: "var(--primary)" }}>Mobile Number</th>
-                  <th style={{ background: "var(--primary)" }}>Email</th>
-                  <th style={{ background: "var(--primary)" }}>Preferred Stream</th>
-                  <th style={{ background: "var(--primary)" }}>Preferred Level</th>
-                  <th style={{ background: "var(--primary)" }}>Date</th>
+          <TableContainer sx={{ maxHeight: "70vh" }}>
+            <Table
+              stickyHeader
+              sx={{ minWidth: 750 }}
+              aria-labelledby="tableTitle"
+            >
+              <EnhancedTableHead
+                numSelected={selected.length}
+                onSelectAllClick={handleSelectAllClick}
+                rowCount={rows.length}
+                userListData={getUserList}
+              />
+              <TableBody>
+                {rows.map((row, index) => {
+                  const isItemSelected = isSelected(row._id);
+                  const labelId = `enhanced-table-checkbox-${index}`;
 
-
-
-                </tr>
-              </thead>
-              <tbody>
-                {this.state.clgList.map((clg, i) => {
                   return (
-                    
-                      <tr key={i}>
-                        <td>{clg.name}</td>
-                        <td>{clg.mobile}</td>
-                        <td>{clg.email}</td>
-                        <td>{clg.selected_stream}</td>
-                        <td>{clg.selected_level}</td>
-                        <td>{this.formatTimestamp(clg.createdAt)}</td>
-                  
-
-
-
-                      </tr>
-                    
+                    <TableRow
+                      hover
+                      role="checkbox"
+                      aria-checked={isItemSelected}
+                      tabIndex={-1}
+                      key={row._id}
+                      selected={isItemSelected}
+                      sx={{ cursor: "pointer" }}
+                    >
+                      <TableCell padding="checkbox">
+                        <Checkbox
+                          onClick={(event) => handleClick(event, row._id)}
+                          color="primary"
+                          checked={isItemSelected}
+                          inputProps={{
+                            "aria-labelledby": labelId,
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell>{row.name}</TableCell>
+                      <TableCell>{row.mobile}</TableCell>
+                      <TableCell>{row.email}</TableCell>
+                      <TableCell>{row.selected_level}</TableCell>
+                      <TableCell>{row.selected_stream}</TableCell>
+                      <TableCell>{formatTimestamp(row.createdAt)}</TableCell>
+                    </TableRow>
                   );
                 })}
-              </tbody>
-            </table>
-          ) : (
-            <div style={{ display: "flex", width: "100%", height: '80vh', justifyContent: "center", alignItems: 'center' }}>
-            <div style={{ fontWeight: "500" }}>
-              <span style={{ color: "#0d6efd", cursor: 'pointer' }}> No Records </span>
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Paper>
+      </Box>
+      <Modal
+        centered
+        show={isModalOpen}
+        onHide={() => {
+          setIsModalOpen(false);
+        }}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Assign Lead</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            noValidate
+            sx={{ mt: 1 }}
+          >
+            <div>
+              {counsellorList.map((s, i) => {
+                return (
+                  <div
+                    key={i}
+                    className={`${Classes.counsellorList} ${
+                      s._id == selectedCounsellor ? Classes.selected : ""
+                    }`}
+                    onClick={() => setSelectedCounsellor(s._id)}
+                  >
+                    <Avatar>{s.name.substring(0, 1)}</Avatar>
+                    <span className="ms-3">{s.name}</span>
+                  </div>
+                );
+              })}
             </div>
-          </div>
-          )
-        ) : (
-             <div style={{ display: "flex", width: "100%", height: '80vh', justifyContent: "center", alignItems: 'center' }}>
-              <Spinner animation="border" role="status" variant="info">
-                <span className="visually-hidden">Loading...</span>
-              </Spinner>
-            </div>
-        )}
-        <Loading
-          show={this.state.isLoading}
-          onHide={() => this.setState({ isLoading: false })}
-        />
-        {/* {this.state.openPreviewAsset && (
-          <Previewmodal
-            show={this.state.openPreviewAsset}
-            onHide={() => this.setState({ openPreviewAsset: false })}
-            data={this.state.selectedAsset}
-            baseurl={this.state.baseurl}
-          />
-        )} */}
-      </>
-    );
-  }
+            {selectedCounsellor != "" ? (
+              <Button
+                disabled={isLoading}
+                className="bg-blue-500"
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                {isLoading ? (
+                  <>
+                    <span>Please Wait...</span>
+                    <Spinner animation="border" role="status" />
+                  </>
+                ) : (
+                  "Assign"
+                )}
+              </Button>
+            ) : (
+              ""
+            )}
+          </Box>
+        </Modal.Body>
+      </Modal>
+    </>
+  );
 }
