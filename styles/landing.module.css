@@ -5,7 +5,7 @@
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
-    min-height: 85vh;
+    min-height: 90vh;
     padding: 2rem 0rem;
     position:relative;
     z-index: 1;
@@ -85,6 +85,8 @@
     font-style: normal;
     font-weight: 900;
     font-size: 48px;
+    margin-bottom: 2rem;
+
 }
 .txt-rotate{
     font-style: italic;
@@ -111,6 +113,7 @@
     display: inline-block !important;
     text-align: center;
     padding: 0 1rem;
+    margin-bottom: 2rem;
 }
 
 @media screen and (max-width:768px) {

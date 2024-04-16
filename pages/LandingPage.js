@@ -154,7 +154,8 @@ const LandingPage = ({ inputRef }) => {
         <div className={Styles["HomePageHero_overlay"]}></div>
         <div className="container">
           <div className="row">
-            <div className="col-md-7">
+            <div className="col-md-7" style={{margin:'auto'}}>
+              <div>
             <h1 className={Styles["custom-slider-title"]}>Learnerhunt<br />Your Road to 
             <span className={Styles["txt-rotate"]}><TextRotation words={[" Outstanding Learning", " Exceptional Education"]} period={100} /></span>
       </h1>
@@ -162,7 +163,9 @@ const LandingPage = ({ inputRef }) => {
           <a rel="noopener">Get your Free Trial now</a>
       </div>
       <div className="text-white">Get <strong>7</strong><b>&nbsp;Days</b> Free trial to our Exclusive Content.</div>
-    </div>
+   
+      </div>
+   </div>
             <div className="col-md-5">
               <div className={Styles["right-section-div"]}>
                 <p className="text-center text-white font-30">

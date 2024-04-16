@@ -98,7 +98,7 @@ export default function mbaleads() {
         </div>
         <div>
         <p style={{margin:'0px',fontWeight:'700'}}>
-                      Sales/Support +91-8383023265
+                      Sales/Support +91-8860077807
                     </p>
         </div>
       </div>

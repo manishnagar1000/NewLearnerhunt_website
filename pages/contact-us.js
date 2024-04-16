@@ -14,7 +14,7 @@ const StructuredDataOrg = [
     contactPoint: [
       {
         "@type": "ContactPoint",
-        telephone: "+918383023265",
+        telephone: "+918860077807",
         contactType: "customer service",
         email: "contact@learnerhunt.com"
       }
@@ -34,7 +34,7 @@ const StructuredDataOrg = [
       logo: "https://www.learnerhunt.com/assets/images/learnerhunt-logo.webp",
       contactPoint: {
         "@type": "ContactPoint",
-        telephone: "+918383023265",
+        telephone: "+918860077807",
         contactType: "customer service",
         email: "contact@learnerhunt.com"
       }
@@ -311,7 +311,7 @@ const [isLoading, setIsLoading] = useState(false);
                       <h5 className="text-white font-weight-light mb-3 mt-4">
                         CALL US
                       </h5>
-                      <p className="text-white op-7">918383023265</p>
+                      <p className="text-white op-7">918860077807</p>
                       <h5 className="text-white font-weight-light mb-3 mt-4">
                         EMAIL ID
                       </h5>
