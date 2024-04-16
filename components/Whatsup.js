@@ -9,7 +9,7 @@ const WhatsAppButton = () => {
 
   const openWhatsApp = () => {
     // Replace 'YOUR_WHATSAPP_URL' with the actual WhatsApp URL you want to open.
-    window.open('https://wa.me/+918800756846', '_blank');
+    window.open('https://wa.me/+918860077807', '_blank');
     setIsWhatsAppOpen(true);
   };
   
@@ -19,7 +19,7 @@ const WhatsAppButton = () => {
       className={`${styles['whatsapp-button']} ${isWhatsAppOpen ? styles.open : ''}`}
       onClick={openWhatsApp}
     >
-        <Link href='https://wa.me/+918800756846'><Image id="whatsapp-image" src='/assets/images/whatsapp.png' width={50} height={50} alt='whatsup'></Image></Link>
+        <Link href='https://wa.me/+918860077807'><Image id="whatsapp-image" src='/assets/images/whatsapp.png' width={50} height={50} alt='whatsup'></Image></Link>
       {/* <button>Open WhatsApp</button> */}
     </div>
   );

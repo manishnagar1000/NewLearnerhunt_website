@@ -303,7 +303,7 @@ export default function Topbar() {
                         width={12}
                         height={14}
                       />
-                      Sales/Support +91-8860077807
+                      Sales/Support +918860077807
                     </p>
                   </div>
                   <div className="col-6">
@@ -753,8 +753,8 @@ export default function Topbar() {
                     <div className="mt-2">
                       <span> Sales/Support </span>
                       <br /> <br />
-                      <a href="tel:+1-855-922-7243">
-                        <span> +91-8800756846</span>
+                      <a href="tel:+918860077807">
+                        <span> +918860077807</span>
                       </a>
                       <a href="https://play.google.com/store/apps/details?id=com.learnerhunt.app">
                         <span>Download App</span>

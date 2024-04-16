@@ -8,7 +8,7 @@ const structureddataOrg= {
   "logo": "https://www.learnerhunt.com/logo.png",
   "contactPoint": {
     "@type": "ContactPoint",
-    "telephone": "+918800756846",
+    "telephone": "+918860077807",
     "contactType": "reservations",
     "contactOption": "TollFree",
     "areaServed": "IN",

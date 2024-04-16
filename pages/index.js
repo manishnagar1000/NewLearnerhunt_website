@@ -24,7 +24,7 @@ const StructuredDataOrg = [
     contactPoint: [
       {
         "@type": "ContactPoint",
-        telephone: "+918800756846",
+        telephone: "+918860077807",
         contactType: "customer service",
         email: "contact@learnerhunt.com",
       },
@@ -46,7 +46,7 @@ const StructuredDataOrg = [
       logo: "https://www.learnerhunt.com/assets/images/learnerhunt-logo.webp",
       contactPoint: {
         "@type": "ContactPoint",
-        telephone: "+918800756846",
+        telephone: "+918860077807",
         contactType: "customer service",
         email: "contact@learnerhunt.com",
       },

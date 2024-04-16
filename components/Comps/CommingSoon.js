@@ -16,7 +16,7 @@ const ComingSoon = () => {
             <p>
             We are working on something amazing.
               <br /> Stay tuned for updates!
-        <h5>Contact Number : <Link href="tel:+918800756846">+91-8800756846</Link></h5>
+        <h5>Contact Number : <Link href="tel:+918860077807">+918860077807</Link></h5>
            
             </p>
             
