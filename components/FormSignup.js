@@ -1,43 +1,31 @@
-import { useState, useEffect } from "react";
+import React, { useState,useEffect } from "react";
+import Styles from "/styles/Loginform.module.css";
 import Swal from "sweetalert2";
 import { Form, Button, Modal, Row, Col, Spinner } from "react-bootstrap";
 import { CircularProgress } from "@mui/material";
-import Carousel, { CarouselItem } from "./CarouselItem";
 import { IndianStates } from "/components/Comps/StatesIndia";
-import Autocomplete from "@mui/material/Autocomplete";
-import TextField from "@mui/material/TextField";
-import Stack from "@mui/material/Stack";
 import { ExpinYear } from "@/components/Comps/type";
 import { CounsellorSpecilization } from "@/components/Comps/type";
 import { CounsellorLanguage } from "@/components/Comps/type";
 import { genderType } from "@/components/Comps/type";
 import { CounsellorQualification } from "@/components/Comps/type";
-
-
-
 import Classes from "/styles/searchmodal.module.css";
-import Link from "next/link";
 import { useRouter } from "next/router";
 
-export default function Loginuc({ isOpen, onClose, role }) {
-  const initialTimer = 120; // 120 seconds (2 minutes)
-  const [timer, setTimer] = useState(initialTimer);
-  const [resendDisabled, setResendDisabled] = useState(false);
-  const [email, setEmail] = useState("");
-  const [showotp, setShowotp] = useState(false);
-  const [loginpassword, setLoginPassword] = useState("");
-  const [loginwithpassword, setLoginwithPassword] = useState(false);
+const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+
+const FormSignUp = ({ closeModal ,role ,islogin }) => {
+
+
+
   const [signupshowotp, setSignShowotp] = useState(false);
-  const [userotp, setUserotp] = useState("");
-  const [signupuserotp, setSignupuserotp] = useState("");
   const [isloading, setIsloading] = useState(false);
-  const [showSignup, setShowSignup] = useState(false);
-  // modal of search for college
+  const [signupuserotp, setSignupuserotp] = useState("");
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [isApiHitComplete, setIsApiHitComplete] = useState(true);
   const [results, setResults] = useState([]);
-
+  
   // student signup
   const [signupemail, setSignupEmail] = useState("");
   const [name, setName] = useState(""); // Add state for name
@@ -67,29 +55,6 @@ export default function Loginuc({ isOpen, onClose, role }) {
   const [Counsellorspecilizationvalue, setCounsellorspecilizationvalue] = useState("");
   const [counsellorpreLang, setCounsellorpreLang] = useState("");
   const [CounsellorQualificationvalue, setCounsellorQualificationvalue] = useState("");
-
-
-
-
-
-
-  let countdown; // Define countdown outside of useEffect
-
-  // Function to start the timer
-  const startTimer = () => {
-    setResendDisabled(true);
-    countdown = setInterval(() => {
-      setTimer((prevTimer) => {
-        if (prevTimer === 1) {
-          clearInterval(countdown);
-          setShowotp(true);
-          setResendDisabled(false);
-          return initialTimer; // Reset the timer to its initial value
-        }
-        return prevTimer - 1;
-      });
-    }, 1000); // Update the timer every 1 second
-  };
 
   const router = useRouter();
 
@@ -126,393 +91,6 @@ export default function Loginuc({ isOpen, onClose, role }) {
     };
   }, [searchTerm]);
 
-  useEffect(() => {
-    // let countdown;
-    // Clean up the timer when the component unmounts
-    return () => {
-      clearInterval(countdown);
-      setShowotp(true);
-    };
-  }, [initialTimer]); // Add initialTimer as a dependency
-
-  const handleSignupLinkClick = () => {
-    setShowSignup(true);
-    setShowotp(false); // Close OTP form if open
-  };
-
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-  };
-
-  const Studentregister = () => {
-    if (loginwithpassword) {
-      try {
-        const fd = new FormData();
-        fd.append("email", email);
-        fd.append("password", loginpassword);
-        fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/user/login", {
-          method: "POST",
-          body: fd,
-        }).then(async (response) => {
-          // console.log(response)
-          if (response.ok) {
-            var res = await response.json();
-            // console.log(res)
-            // console.log(res.data)
-            // console.log(res.data.email)
-            var userstatus = res.data.status;
-            var userid = res.data.token;
-            var useremail = res.data.email;
-            var usermobile = res.data.mobile;
-
-
-            Swal.fire({
-              title: "Success",
-              text: `${res.message}`,
-              icon: "success",
-              confirmButtonText: "Ok",
-            }).then(() => {
-              setIsloading(false);
-              onClose();
-              localStorage.setItem("status", userstatus);
-              localStorage.setItem("userid", userid);
-              localStorage.setItem("useremail", useremail);
-              localStorage.setItem("usermobile", usermobile);
-
-              window.location.reload();
-            });
-          } else {
-            var res = await response.json();
-            Swal.fire({
-              title: "error",
-              text: `${res.error}`,
-              icon: "error",
-              confirmButtonText: "Ok",
-            }).then(() => {
-              setIsloading(false);
-              // onClose()
-            });
-          }
-        });
-      } catch (error) {
-        console.error("Failed to fetch OTP:", error);
-      }
-    } else {
-      try {
-        setIsloading(true);
-        const fd = new FormData();
-        fd.append("email", email);
-        // fd.append("otp", otp);
-        // fd.append("role", role);
-        fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/user/get-otp", {
-          method: "POST",
-          body: fd,
-        }).then(async (response) => {
-          var res = await response.json();
-          // console.log(res.message)
-          if (response.ok) {
-            // console.log("hello", response.data);
-            Swal.fire({
-              title: "Success",
-              text: `${res.message}`,
-              icon: "success",
-              confirmButtonText: "Ok",
-            }).then(() => {
-              setIsloading(false);
-              setShowotp(true);
-              startTimer();
-            });
-            // router.push('/thankyou')
-          } else {
-            Swal.fire({
-              title: "error",
-              text: `${res.error}`,
-              icon: "error",
-              confirmButtonText: "Ok",
-            }).then(() => {
-              setIsloading(false);
-            });
-          }
-        });
-      } catch (error) {
-        console.error("Failed to fetch OTP:", error);
-      }
-    }
-  };
-
-  const handleStudentSubmit = (event) => {
-    event.preventDefault();
-    if (showSignup) {
-      if (signupshowotp) {
-        try {
-          const fd = new FormData();
-          fd.append("email", signupemail);
-          fd.append("otp", signupuserotp);
-          fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/user/login", {
-            method: "POST",
-            body: fd,
-          }).then(async (response) => {
-            if (response.ok) {
-              var res = await response.json();
-              var userstatus = res.data.status;
-              var userid = res.data.token;
-              var useremail = res.data.email;
-              var usermobile = res.data.mobile;
-
-              var role = res.data.role;
-              Swal.fire({
-                title: "Success",
-                text: `${res.message}`,
-                icon: "success",
-                confirmButtonText: "Ok",
-              }).then(() => {
-                setIsloading(false);
-                onClose();
-                localStorage.setItem("status", userstatus);
-
-                localStorage.setItem("useremail", useremail);
-                localStorage.setItem("usermobile", usermobile);
-
-
-                if (role == 3) {
-                  localStorage.setItem("userid", userid);
-                  window.location.reload();
-                } else if (role == 1) {
-                  router.push("/collegeportal/my-kyc");
-                  localStorage.setItem("ct", userid);
-                }else{
-                  router.push("/counsellorportal/my-profile");
-                  localStorage.setItem("cst", userid);
-                }
-              });
-            } else {
-              var res = await response.json();
-              Swal.fire({
-                title: "error",
-                text: `${res.error}`,
-                icon: "error",
-                confirmButtonText: "Ok",
-              }).then(() => {
-                setIsloading(false);
-                // onClose()
-              });
-            }
-          });
-        } catch (error) {
-          console.error("Failed to fetch OTP:", error);
-        }
-      } else {
-        try {
-          const fd = new FormData();
-          if (role == 3) {
-            fd.append("email", signupemail);
-            fd.append("name", name); // Add name to form data
-            fd.append("mobile", mobile); // Add mobile to form data
-            fd.append("stream", stream); // Add stream to form data
-            fd.append("level", level); // Add level to form data
-            fd.append("password", password); // Add password to form data
-            fd.append("role", role);
-            fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/user/signup", {
-              method: "POST",
-              body: fd,
-            }).then(async (response) => {
-              var res = await response.json();
-              // console.log(res.message)
-              if (response.ok) {
-                // console.log("hello", response.data);
-                Swal.fire({
-                  title: "Success",
-                  text: `${res.message}`,
-                  icon: "success",
-                  confirmButtonText: "Ok",
-                }).then(() => {
-                  // console.log("done")
-                  setSignShowotp(true);
-                  // setIsloading(false);
-                  // setShowotp(true);
-                });
-              } else {
-                Swal.fire({
-                  title: "error",
-                  text: `${res.error}`,
-                  icon: "error",
-                  confirmButtonText: "Ok",
-                });
-              }
-            });
-          } else if (role == 1) {
-            fd.append("college_name", clgname); // Add name to form data
-            fd.append("name", adminname);
-            fd.append("email", signupemail); // Add mobile to form data
-            // fd.append("stream", clgLandline); // Add stream to form data
-            fd.append("mobile", clgmobile); // Add level to form data
-            fd.append("designation", designation);
-            fd.append("linked_in_link", linkedIn); // Add password to form data
-            fd.append("referrer", referrer);
-            fetch(
-              process.env.NEXT_PUBLIC_API_ENDPOINT + "/clg-admin/register",
-              {
-                method: "POST",
-                body: fd,
-              }
-            ).then(async (response) => {
-              var res = await response.json();
-              // console.log(res.message)
-              if (response.ok) {
-                // console.log("hello", response.data);
-                Swal.fire({
-                  title: "Success",
-                  text: `${res.message}`,
-                  icon: "success",
-                  confirmButtonText: "Ok",
-                }).then(() => {
-                  // console.log("done")
-                  setSignShowotp(true);
-                  // setIsloading(false);
-                  // setShowotp(true);
-                });
-              } else {
-                Swal.fire({
-                  title: "error",
-                  text: `${res.error}`,
-                  icon: "error",
-                  confirmButtonText: "Ok",
-                });
-              }
-            });
-          } else {
-            fd.append("college_name", clgname); // Add name to form data
-            fd.append("name", counsellorname);
-            fd.append("email", signupemail); // Add mobile to form data
-            // fd.append("stream", clgLandline); // Add stream to form data
-            fd.append("mobile", counsellormobile); // Add level to form data
-            fd.append("country", counsellorcountry);
-            fd.append("state", counsellorstate);
-            fd.append("city", counsellorcity); // Add password to form data
-            fd.append("experience", counsellorexp);
-            fd.append("specialization", Counsellorspecilizationvalue);
-            fd.append("gender", counsellorgender);
-            fd.append("qualification", CounsellorQualificationvalue);
-            fd.append("preferredlang", counsellorpreLang);
-
-            fetch(
-              process.env.NEXT_PUBLIC_API_ENDPOINT + "/counsellor/register",
-              {
-                method: "POST",
-                body: fd,
-              }
-            ).then(async (response) => {
-              var res = await response.json();
-              // console.log(res.message)
-              if (response.ok) {
-                // console.log("hello", response.data);
-                Swal.fire({
-                  title: "Success",
-                  text: `${res.message}`,
-                  icon: "success",
-                  confirmButtonText: "Ok",
-                }).then(() => {
-                  // console.log("done")
-                  setSignShowotp(true);
-                  // setIsloading(false);
-                  // setShowotp(true);
-                });
-              } else {
-                Swal.fire({
-                  title: "error",
-                  text: `${res.error}`,
-                  icon: "error",
-                  confirmButtonText: "Ok",
-                });
-              }
-            });
-          }
-        } catch (error) {
-          // Handle network or fetch error
-          console.error("Failed to fetch OTP:", error);
-        }
-      }
-    } else {
-      if (showotp) {
-        setIsloading(true);
-        try {
-          const fd = new FormData();
-          fd.append("email", email);
-          fd.append("otp", userotp);
-          fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/user/login", {
-            method: "POST",
-            body: fd,
-          }).then(async (response) => {
-            // console.log(response)
-            if (response.ok) {
-              var res = await response.json();
-              // console.log(res)
-              // console.log(res.data)
-              // console.log(res.data.email)
-              var userstatus = res.data.status;
-              var userid = res.data.token;
-              var useremail = res.data.email;
-              var usermobile = res.data.mobile;
-              var role = res.data.role;
-
-              Swal.fire({
-                title: "Success",
-                text: `${res.message}`,
-                icon: "success",
-                confirmButtonText: "Ok",
-              }).then(() => {
-                setIsloading(false);
-                onClose();
-                localStorage.setItem("status", userstatus);
-
-                localStorage.setItem("useremail", useremail);
-                localStorage.setItem("usermobile", usermobile);
-
-                if (role == 3) {
-                  localStorage.setItem("userid", userid);
-
-                  window.location.reload();
-                } else if (role == 1) {
-                  localStorage.setItem("ct", userid);
-                  router.push("/collegeportal/my-kyc");
-                }else{
-                  router.push("/counsellorportal/my-profile");
-                  localStorage.setItem("cst", userid);
-                }
-              });
-            } else {
-              var res = await response.json();
-              Swal.fire({
-                title: "error",
-                text: `${res.error}`,
-                icon: "error",
-                confirmButtonText: "Ok",
-              }).then(() => {
-                setIsloading(false);
-                // onClose()
-              });
-            }
-          });
-        } catch (error) {
-          console.error("Failed to fetch OTP:", error);
-        }
-      } else {
-        Studentregister();
-      }
-    }
-  };
-
-  const handleSignupOtpChange = (event) => {
-    setSignupuserotp(event.target.value);
-  };
-
-  const handleOtpChange = (event) => {
-    // console.log(event.target.value);
-    setUserotp(event.target.value);
-  };
-  const handleNameChange = (event) => {
-    setName(event.target.value);
-  };
   const handleSignupEmailChange = (event) => {
     setSignupEmail(event.target.value);
   };
@@ -539,18 +117,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
 
     setClgMobile(limitedInput);
   };
-  // const handleClgLandlineChange = (event) => {
-  //   const input = event.target.value;
-
-  //   // Remove any non-numeric characters
-  //   const numericInput = input.replace(/\D/g, "");
-
-  //   // Limit to 10 characters
-  //   const limitedInput = numericInput.slice(0, 10);
-
-  //   setClgLandline(limitedInput);
-  // };
-
+ 
   const handleStreamChange = (event) => {
     setStream(event.target.value);
   };
@@ -562,8 +129,9 @@ export default function Loginuc({ isOpen, onClose, role }) {
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
   };
-  const handleLoginPasswordChange = (event) => {
-    setLoginPassword(event.target.value);
+  
+  const handleSignupOtpChange = (event) => {
+    setSignupuserotp(event.target.value);
   };
 
   const Streamdata = [
@@ -613,197 +181,249 @@ export default function Loginuc({ isOpen, onClose, role }) {
     },
   ];
 
-  const handleResendOtp = () => {
-    setIsloading(true);
-    const fd = new FormData();
-    fd.append("email", email);
-    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/user/get-otp", {
-      method: "POST",
-      body: fd,
-    }).then(async (response) => {
-      var res = await response.json();
-      // console.log(res.message)
-      if (response.ok) {
-        // console.log("hello", response.data);
-        Swal.fire({
-          title: "Success",
-          text: `${res.message}`,
-          icon: "success",
-          confirmButtonText: "Ok",
-        }).then(() => {
-          setIsloading(false);
-          startTimer();
-        });
-        // router.push('/thankyou')
-      } else {
-        Swal.fire({
-          title: "error",
-          text: `${res.error}`,
-          icon: "error",
-          confirmButtonText: "Ok",
-        }).then(() => {
-          setIsloading(false);
-        });
-      }
-    });
-  };
-
   const onClgselect = (clg) => {
     if (clg.type == "-1") {
       setClgName(searchTerm);
     } else setClgName(clg.title);
     setIsSearchModalOpen(false);
   };
-  return (
-    <div>
-      <Modal
-        id="sloginmodal"
-        centered
-        size="lg"
-        animation={false}
-        style={{ backgroundColor: "rgba(0,0,0,0.4)" }}
-        show={isOpen}
-        onHide={onClose}
-      >
-        {/* <Modal.Header closeButton>
-        <Modal.Title>Login and Apply</Modal.Title>
-        </Modal.Header> */}
-        <Modal.Body>
-          <Row>
-            <Col
-              md={0}
-              lg={5}
-              className="d-none d-lg-block"
-              style={{
-                background:
-                  "linear-gradient(180deg, rgba(1,81,193,1) 22%, rgba(93,201,228,1) 100%)",
-              }}
-            >
-              <Carousel>
-                <CarouselItem>
-                  <h3 style={{ color: "white" }}>Education Library </h3>
-                  <p style={{ color: "white", whiteSpace: "break-spaces" }}>
-                    Get detailed information about Colleges, Careers, Courses,
-                    and Exams at LearnerHunt. Register now and make informed
-                    decisions about your career.
-                  </p>
-                </CarouselItem>
-                <CarouselItem>
-                  <h3 style={{ color: "white" }}>Guaranteed Admission </h3>
-                  <p style={{ color: "white", whiteSpace: "break-spaces" }}>
-                    Get detailed information about Colleges, Careers, Courses,
-                    and Exams at LearnerHunt. Register now and make informed
-                    decisions about your career.
-                  </p>
-                </CarouselItem>
-                <CarouselItem>
-                  <h3 style={{ color: "white" }}>Counselling </h3>
-                  <p style={{ color: "white", whiteSpace: "break-spaces" }}>
-                    Get detailed information about Colleges, Careers, Courses,
-                    and Exams at LearnerHunt. Register now and make informed
-                    decisions about your career.
-                  </p>
-                </CarouselItem>
-              </Carousel>
-            </Col>
-            <Col md={12} lg={7} style={{ padding: "1rem" }}>
-              <div className="text-center mb-3">
-                <img
-                  src="/assets/images/learnerhunt-logo.webp"
-                  width={200}
-                  height={60}
-                  alt="logo"
-                />
-                {/* <img src="/assets/images/Learnerhunt-Logo.png" width={200} height={60} /> */}
 
-                <h3>
-                  {" "}
-                  {showSignup
-                    ? "Welcome, Create your account"
-                    : "Welcome Back!"}
-                </h3>
-                <p style={{ color: "gray" }}>
-                  {(!showSignup && role == 3)&& "Sign in as student"}
-                  {(!showSignup && role == 2)&& "Sign in as counsellor"}
-                  {(!showSignup && role == 1)&& "Sign in as college"}
+    const handleSignUp =(e)=> {
+        e.preventDefault()
+        if (signupshowotp) {
+          try {
+            const fd = new FormData();
+            fd.append("email", signupemail);
+            fd.append("otp", signupuserotp);
+            fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/user/login", {
+              method: "POST",
+              body: fd,
+            }).then(async (response) => {
+              if (response.ok) {
+                var res = await response.json();
+                var userstatus = res.data.status;
+                var userid = res.data.token;
+                var useremail = res.data.email;
+                var usermobile = res.data.mobile;
+  
+                var role = res.data.role;
+                Swal.fire({
+                  title: "Success",
+                  text: `${res.message}`,
+                  icon: "success",
+                  confirmButtonText: "Ok",
+                }).then(() => {
+                  setIsloading(false);
+                  localStorage.setItem("status", userstatus);
+  
+                  localStorage.setItem("useremail", useremail);
+                  localStorage.setItem("usermobile", usermobile);
+  
+  
+                  if (role == 3) {
+                    localStorage.setItem("userid", userid);
+                    window.location.reload();
+                  } else if (role == 1) {
+                    router.push("/collegeportal/my-kyc");
+                    localStorage.setItem("ct", userid);
+                  }else{
+                    router.push("/counsellorportal/my-profile");
+                    localStorage.setItem("cst", userid);
+                  }
+                });
+              } else {
+                var res = await response.json();
+                Swal.fire({
+                  title: "error",
+                  text: `${res.error}`,
+                  icon: "error",
+                  confirmButtonText: "Ok",
+                }).then(() => {
+                  setIsloading(false);
+                  // onClose()
+                });
+              }
+            });
+          } catch (error) {
+            console.error("Failed to fetch OTP:", error);
+          }
+        } else {
+          try {
+            const fd = new FormData();
+            if (role == 3) {
+              fd.append("email", signupemail);
+              fd.append("name", name); // Add name to form data
+              fd.append("mobile", mobile); // Add mobile to form data
+              fd.append("stream", stream); // Add stream to form data
+              fd.append("level", level); // Add level to form data
+              fd.append("password", password); // Add password to form data
+              fd.append("role", role);
+              fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/user/signup", {
+                method: "POST",
+                body: fd,
+              }).then(async (response) => {
+                var res = await response.json();
+                // console.log(res.message)
+                if (response.ok) {
+                  // console.log("hello", response.data);
+                  Swal.fire({
+                    title: "Success",
+                    text: `${res.message}`,
+                    icon: "success",
+                    confirmButtonText: "Ok",
+                  }).then(() => {
+                    // console.log("done")
+                    setSignShowotp(true);
+                    // setIsloading(false);
+                    // setShowotp(true);
+                  });
+                } else {
+                  Swal.fire({
+                    title: "error",
+                    text: `${res.error}`,
+                    icon: "error",
+                    confirmButtonText: "Ok",
+                  });
+                }
+              });
+            } else if (role == 1) {
+              fd.append("college_name", clgname); // Add name to form data
+              fd.append("name", adminname);
+              fd.append("email", signupemail); // Add mobile to form data
+              // fd.append("stream", clgLandline); // Add stream to form data
+              fd.append("mobile", clgmobile); // Add level to form data
+              fd.append("designation", designation);
+              fd.append("linked_in_link", linkedIn); // Add password to form data
+              fd.append("referrer", referrer);
+              fetch(
+                process.env.NEXT_PUBLIC_API_ENDPOINT + "/clg-admin/register",
+                {
+                  method: "POST",
+                  body: fd,
+                }
+              ).then(async (response) => {
+                var res = await response.json();
+                // console.log(res.message)
+                if (response.ok) {
+                  // console.log("hello", response.data);
+                  Swal.fire({
+                    title: "Success",
+                    text: `${res.message}`,
+                    icon: "success",
+                    confirmButtonText: "Ok",
+                  }).then(() => {
+                    // console.log("done")
+                    setSignShowotp(true);
+                    // setIsloading(false);
+                    // setShowotp(true);
+                  });
+                } else {
+                  Swal.fire({
+                    title: "error",
+                    text: `${res.error}`,
+                    icon: "error",
+                    confirmButtonText: "Ok",
+                  });
+                }
+              });
+            } else {
+              fd.append("college_name", clgname); // Add name to form data
+              fd.append("name", counsellorname);
+              fd.append("email", signupemail); // Add mobile to form data
+              // fd.append("stream", clgLandline); // Add stream to form data
+              fd.append("mobile", counsellormobile); // Add level to form data
+              fd.append("country", counsellorcountry);
+              fd.append("state", counsellorstate);
+              fd.append("city", counsellorcity); // Add password to form data
+              fd.append("experience", counsellorexp);
+              fd.append("specialization", Counsellorspecilizationvalue);
+              fd.append("gender", counsellorgender);
+              fd.append("qualification", CounsellorQualificationvalue);
+              fd.append("preferredlang", counsellorpreLang);
+  
+              fetch(
+                process.env.NEXT_PUBLIC_API_ENDPOINT + "/counsellor/register",
+                {
+                  method: "POST",
+                  body: fd,
+                }
+              ).then(async (response) => {
+                var res = await response.json();
+                // console.log(res.message)
+                if (response.ok) {
+                  // console.log("hello", response.data);
+                  Swal.fire({
+                    title: "Success",
+                    text: `${res.message}`,
+                    icon: "success",
+                    confirmButtonText: "Ok",
+                  }).then(() => {
+                    // console.log("done")
+                    setSignShowotp(true);
+                    // setIsloading(false);
+                    // setShowotp(true);
+                  });
+                } else {
+                  Swal.fire({
+                    title: "error",
+                    text: `${res.error}`,
+                    icon: "error",
+                    confirmButtonText: "Ok",
+                  });
+                }
+              });
+            }
+          } catch (error) {
+            // Handle network or fetch error
+            console.error("Failed to fetch OTP:", error);
+          }
+        }
+    }
+ 
+  return (
+    <div className={Styles["login-outer-div"]}>
+      <span className={Styles["close-button"]} onClick={closeModal}>
+        &times;
+      </span>
+      <div className={Styles["top-section"]}>
+        <img
+          src="/assets/images/learnerhunt-logo.webp"
+          width={200}
+          height={60}
+          alt="logo"
+        />
+            <h5>Welcome, Create your account!</h5>
+            <p style={{ color: "gray" }}>
+                  {(role == 3)&& "Sign up as student"}
+                  {(role == 2)&& "Sign up as counsellor"}
+                  {(role == 1)&& "Sign up as college"}
 
                 </p>
-              </div>
+      </div>
 
-              <Form
-                style={{ maxHeight: "550px", overflowY: "auto" }}
-                onSubmit={handleStudentSubmit}
-              >
-                {!showSignup ? (
-                  <>
-                    <Form.Group controlId="email">
-                      <Form.Label style={{ fontWeight: "bold" }}>
-                        Email
-                      </Form.Label>
-                      <Form.Control
-                        type="email"
-                        placeholder="Enter your email"
-                        value={email}
-                        onChange={handleEmailChange}
-                        required
-                        style={{ marginBottom: "15px" }}
-                      />
-                    </Form.Group>
-                    {loginwithpassword && (
-                      <Form.Group controlId="password">
-                        <Form.Label style={{ fontWeight: "bold" }}>
-                          Password
-                        </Form.Label>
-                        <Form.Control
-                          type="password"
-                          placeholder="Enter your password"
-                          value={loginpassword}
-                          onChange={handleLoginPasswordChange}
-                          required
-                          autoComplete="new-password"
-                          style={{ marginBottom: "15px" }}
-                        />
-                      </Form.Group>
-                    )}
+ 
+          <Form onSubmit={handleSignUp}>
+      <div className={Styles["middle-section"]}>
 
-                    {showotp && (
-                      <Form.Group controlId="otp">
-                        <Form.Label style={{ fontWeight: "bold" }}>
-                          Enter OTP
-                        </Form.Label>
-                        <Form.Control
-                          type="text"
-                          placeholder="Enter the OTP"
-                          value={userotp}
-                          maxLength={6}
-                          minLength={6}
-                          onChange={handleOtpChange}
-                          required
-                          style={{ marginBottom: "15px" }}
-                        />
-                      </Form.Group>
-                    )}
-                  </>
-                ) : (
-                  <>
+          <>
                     {role == "3" ? (
                       <>
                         <Form.Group controlId="name">
-                          <Form.Label style={{ fontWeight: "bold" }}>
+                          <Form.Label>
                             Name
                           </Form.Label>
                           <Form.Control
                             type="text"
                             placeholder="Enter your name"
                             value={name}
-                            onChange={handleNameChange}
+                            onChange={(e)=> setName(e.target.value)}
                             required
                             style={{ marginBottom: "15px" }}
                           />
                         </Form.Group>
 
                         <Form.Group controlId="email">
-                          <Form.Label style={{ fontWeight: "bold" }}>
+                          <Form.Label>
                             Email
                           </Form.Label>
                           <Form.Control
@@ -816,7 +436,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
                           />
                         </Form.Group>
                         <Form.Group controlId="mobile">
-                          <Form.Label style={{ fontWeight: "bold" }}>
+                          <Form.Label>
                             Mobile
                           </Form.Label>
                           <Form.Control
@@ -831,7 +451,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
                         </Form.Group>
 
                         <Form.Group controlId="stream">
-                          <Form.Label style={{ fontWeight: "bold" }}>
+                          <Form.Label>
                             Preferred Stream
                           </Form.Label>
                           <Form.Control
@@ -853,7 +473,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
                         </Form.Group>
 
                         <Form.Group controlId="level">
-                          <Form.Label style={{ fontWeight: "bold" }}>
+                          <Form.Label>
                             Preferred Level
                           </Form.Label>
                           <Form.Control
@@ -876,7 +496,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
                         </Form.Group>
 
                         <Form.Group controlId="password">
-                          <Form.Label style={{ fontWeight: "bold" }}>
+                          <Form.Label>
                             Password
                           </Form.Label>
                           <Form.Control
@@ -892,7 +512,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
 
                         {signupshowotp && (
                           <Form.Group controlId="otp">
-                            <Form.Label style={{ fontWeight: "bold" }}>
+                            <Form.Label>
                               Enter OTP
                             </Form.Label>
                             <Form.Control
@@ -911,7 +531,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
                     ) : role == "2" ? (
                       <>
                        <Form.Group controlId="clgname">
-                          <Form.Label style={{ fontWeight: "bold" }}>
+                          <Form.Label>
                             College Name
                           </Form.Label>
                           <Form.Control
@@ -925,7 +545,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
                           />
                         </Form.Group>
                       <Form.Group controlId="counsellorname">
-                        <Form.Label style={{ fontWeight: "bold" }}>
+                        <Form.Label>
                           Counsellor Name
                         </Form.Label>
                         <Form.Control
@@ -938,7 +558,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
                         />
                       </Form.Group>
                       <Form.Group controlId="counselloremail">
-                      <Form.Label style={{ fontWeight: "bold" }}>
+                      <Form.Label>
                       Email
                       </Form.Label>
                       <Form.Control
@@ -951,7 +571,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
                       />
                     </Form.Group>
                     <Form.Group controlId="mobile">
-                          <Form.Label style={{ fontWeight: "bold" }}>
+                          <Form.Label>
                             Mobile
                           </Form.Label>
                           <Form.Control
@@ -965,7 +585,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
                           />
                         </Form.Group>
                     <Form.Group controlId="state">
-                          <Form.Label style={{ fontWeight: "bold" }}>
+                          <Form.Label>
                             Country
                           </Form.Label>
                           <Form.Control
@@ -991,7 +611,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
                           </Form.Control>
                         </Form.Group>
                          <Form.Group controlId="state">
-                          <Form.Label style={{ fontWeight: "bold" }}>
+                          <Form.Label>
                             State
                           </Form.Label>
                           <Form.Control
@@ -1015,7 +635,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
                           </Form.Control>
                         </Form.Group>
                         <Form.Group controlId="city">
-                          <Form.Label style={{ fontWeight: "bold" }}>
+                          <Form.Label>
                             City
                           </Form.Label>
                           <Form.Control
@@ -1040,7 +660,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
                           </Form.Control>
                         </Form.Group>
                         <Form.Group controlId="gender">
-                          <Form.Label style={{ fontWeight: "bold" }}>
+                          <Form.Label>
                           Gender
                           </Form.Label>
                           <Form.Control
@@ -1064,7 +684,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
                           </Form.Control>
                         </Form.Group>
                         <Form.Group controlId="qualification">
-                          <Form.Label style={{ fontWeight: "bold" }}>
+                          <Form.Label>
                           Qualification
                           </Form.Label>
                           <Form.Control
@@ -1088,7 +708,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
                           </Form.Control>
                         </Form.Group>
                         <Form.Group controlId="spe">
-                          <Form.Label style={{ fontWeight: "bold" }}>
+                          <Form.Label>
                           Specilization
                           </Form.Label>
                           <Form.Control
@@ -1112,7 +732,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
                           </Form.Control>
                         </Form.Group>
                         <Form.Group controlId="exp">
-                          <Form.Label style={{ fontWeight: "bold" }}>
+                          <Form.Label>
                           Preferred Language
                           </Form.Label>
                           <Form.Control
@@ -1136,7 +756,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
                           </Form.Control>
                         </Form.Group>
                         <Form.Group controlId="exp">
-                          <Form.Label style={{ fontWeight: "bold" }}>
+                          <Form.Label>
                           Experince in Year
                           </Form.Label>
                           <Form.Control
@@ -1161,7 +781,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
                         </Form.Group>
                         {signupshowotp && (
                           <Form.Group controlId="otp">
-                            <Form.Label style={{ fontWeight: "bold" }}>
+                            <Form.Label>
                               Enter OTP
                             </Form.Label>
                             <Form.Control
@@ -1180,7 +800,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
                     ) : (
                       <>
                         <Form.Group controlId="clgname">
-                          <Form.Label style={{ fontWeight: "bold" }}>
+                          <Form.Label>
                             College Name <span style={{color:'red'}}>*</span>
                           </Form.Label>
                           {/* <Autocomplete
@@ -1210,7 +830,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
                           />
                         </Form.Group>
                         <Form.Group controlId="adminname">
-                          <Form.Label style={{ fontWeight: "bold" }}>
+                          <Form.Label>
                             Admin Name <span style={{color:'red'}}>*</span>
                           </Form.Label>
                           <Form.Control
@@ -1223,7 +843,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
                           />
                         </Form.Group>
                         <Form.Group controlId="clgemail">
-                          <Form.Label style={{ fontWeight: "bold" }}>
+                          <Form.Label>
                             Email <span style={{color:'red'}}>*</span>
                           </Form.Label>
                           <Form.Control
@@ -1236,7 +856,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
                           />
                         </Form.Group>
                         <Form.Group controlId="mobile">
-                          <Form.Label style={{ fontWeight: "bold" }}>
+                          <Form.Label>
                             Mobile <span style={{color:'red'}}>*</span>
                           </Form.Label> 
                           <Form.Control
@@ -1250,7 +870,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
                           />
                         </Form.Group>
                         {/* <Form.Group controlId="Landline Number">
-                          <Form.Label style={{ fontWeight: "bold" }}>
+                          <Form.Label>
                             Landline Number
                           </Form.Label>
                           <Form.Control
@@ -1264,7 +884,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
                           />
                         </Form.Group> */}
                         <Form.Group controlId="designation">
-                          <Form.Label style={{ fontWeight: "bold" }}>
+                          <Form.Label>
                             Designation <span style={{color:'red'}}>*</span>
                           </Form.Label>
                           <Form.Control
@@ -1284,7 +904,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
                           </Form.Control>
                         </Form.Group>
                         <Form.Group controlId="referrer">
-                          <Form.Label style={{ fontWeight: "bold" }}>
+                          <Form.Label>
                             Referrer
                           </Form.Label>
                           <Form.Control
@@ -1296,7 +916,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
                           />
                         </Form.Group>
                         <Form.Group controlId="LinkedIn">
-                          <Form.Label style={{ fontWeight: "bold" }}>
+                          <Form.Label>
                             LinkedIn Link
                           </Form.Label>
                           <Form.Control
@@ -1308,7 +928,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
                           />
                         </Form.Group>
                         {/* <Form.Group controlId="state">
-                          <Form.Label style={{ fontWeight: "bold" }}>
+                          <Form.Label>
                             State
                           </Form.Label>
                           <Form.Control
@@ -1332,7 +952,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
                           </Form.Control>
                         </Form.Group>
                         <Form.Group controlId="city">
-                          <Form.Label style={{ fontWeight: "bold" }}>
+                          <Form.Label>
                             City
                           </Form.Label>
                           <Form.Control
@@ -1358,7 +978,7 @@ export default function Loginuc({ isOpen, onClose, role }) {
                         </Form.Group> */}
                         {signupshowotp && (
                           <Form.Group controlId="otp">
-                            <Form.Label style={{ fontWeight: "bold" }}>
+                            <Form.Label>
                               Enter OTP
                             </Form.Label>
                             <Form.Control
@@ -1376,131 +996,25 @@ export default function Loginuc({ isOpen, onClose, role }) {
                       </>
                     )}
                   </>
-                )}
+      </div>
 
-                {!showSignup ? (
-                  <>
-                    {timer === 120 ? (
-                      showotp ? (
-                        <span
-                          className="d-inline-flex my-2 text-primary "
-                          style={{ cursor: "pointer" }}
-                          onClick={handleResendOtp}
-                        >
-                          Resend Otp
-                        </span>
-                      ) : null
-                    ) : (
-                      <p>Resend OTP in {timer} seconds</p>
-                    )}
-
-                    <Button
-                      className="w-100"
-                      style={{ background: "#0151c1" }}
-                      type="submit"
-                      id="loginwithotp"
-                      disabled={isloading}
-                    >
-                      {isloading ? (
-                        <>
-                          Please Wait...
-                          <CircularProgress
-                            style={{ marginLeft: "1rem" }}
-                            color="inherit"
-                          />
-                        </>
-                      ) : showotp ? (
-                        "Verify OTP"
-                      ) : loginwithpassword ? (
-                        "Login"
-                      ) : (
-                        "Get OTP"
-                      )}
-                    </Button>
-                    {!loginwithpassword ? (
-                      <div
-                        onClick={() => setLoginwithPassword(true)}
-                        className="w-100 my-2"
-                        style={{
-                          background: "#0151c1",
-                          cursor: "pointer",
-                          display: "flex",
-                          borderRadius: "0.3rem",
-                          color: "white",
-                          height: "2.2rem",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          margin: "auto",
-                        }}
-                      >
-                        Login Via Password
-                      </div>
-                    ) : (
-                      <div
-                        onClick={() => setLoginwithPassword(false)}
-                        className="w-100 my-2"
-                        style={{
-                          background: "#0151c1",
-                          cursor: "pointer",
-                          display: "flex",
-                          borderRadius: "0.3rem",
-                          color: "white",
-                          height: "2.2rem",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          margin: "auto",
-                        }}
-                      >
-                        Login Via OTP
-                      </div>
-                    )}
-                  </>
-                ) : (
                   <Button
-                    className="w-100"
+                    className="w-100 mt-3"
                     style={{ background: "#0151c1" }}
                     type="submit"
                     disabled={isloading}
                   >
                     {signupshowotp ? "Enter OTP" : "Signup"}
                   </Button>
-                )}
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    padding: "1rem",
-                  }}
-                >
-                  {showSignup ? (
-                    <p>
-                      Already have an account?{" "}
-                      <span
-                        style={{ color: "blue" }}
-                        onClick={() => setShowSignup(false)}
-                      >
-                        Login
-                      </span>
-                    </p>
-                  ) : (
-                    <p>
-                      New to LearnerHunt?{" "}
-                      <span
-                        style={{ color: "blue" }}
-                        onClick={handleSignupLinkClick}
-                      >
-                        Signup
-                      </span>
-                    </p>
-                  )}
-                </div>
-              </Form>
-            </Col>
-          </Row>
-        </Modal.Body>
-      </Modal>
+          </Form>
+       
 
+      <hr />
+      <div className={Styles["botton-section"]}>
+        <p className="text-center">
+        Already have an account? <span onClick={islogin}>Login</span>
+        </p>
+      </div>
       <Modal
         className={Classes["custom-search-modal"]}
         size="md"
@@ -1559,5 +1073,10 @@ export default function Loginuc({ isOpen, onClose, role }) {
         </Modal.Body>
       </Modal>
     </div>
+
+
+
   );
-}
+};
+
+export default FormSignUp;

@@ -26,6 +26,7 @@ import TopCollegeSection from "@/components/CRM/TopCollegeSection";
 import SEOManage from "@/components/CRM/SeoManage";
 import CrmBlog from "@/components/CRM/CrmBlog";
 import CrmNews from "@/components/CRM/CrmNews";
+import CrmBlogCategory from "@/components/CRM/CrmBlogCategory";
 
 
 
@@ -131,16 +132,21 @@ const componentList = [
     slug:"seo-manager",
     role:[0,5]
   },
-  // {
-  //   comp:<CrmBlog/>,
-  //   slug:"blog-manager",
-  //   role:[0,5]
-  // },
-  // {
-  //   comp:<CrmNews/>,
-  //   slug:"news-manager",
-  //   role:[0,5]
-  // },
+  {
+    comp:<CrmBlog/>,
+    slug:"blogs",
+    role:[0,5]
+  },
+  {
+    comp:<CrmBlogCategory/>,
+    slug:"blog-category",
+    role:[0,5]
+  },
+  {
+    comp:<CrmNews/>,
+    slug:"news-manager",
+    role:[0,5]
+  },
   // {
   //   comp:<ImportExport/>,
   //   slug:"importexport"

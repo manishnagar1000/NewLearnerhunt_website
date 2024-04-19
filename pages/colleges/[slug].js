@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Classes from "/styles/colleges.module.css";
 import { useRouter } from "next/router";
-import LoginForm from "../../components/Loginuc";
+import LoginForm from "../../components/Loginuc-new";
 import { Container, Row, Col, Modal, Form, Button } from "react-bootstrap";
 import Swal from "sweetalert2";
 import Tab from "react-bootstrap/Tab";

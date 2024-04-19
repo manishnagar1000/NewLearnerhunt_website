@@ -107,8 +107,7 @@ const Footer = () => {
                 </li>
                 <li>
                   <address>
-                    SCF 1, 2nd Floor, Shopping Complex, Ashoka Enclave Part II,
-                    Sector 37, Faridabad, Haryana 121003
+                  307A, Dlf Centre Point, Sec 11 Faridabad, Haryana, India 121006
                   </address>
                 </li>
               </ul>

@@ -3,6 +3,7 @@ import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import Classes from "/styles/contant.module.css";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import Link from "next/link";
 
 const StructuredDataOrg = [
   {
@@ -304,14 +305,13 @@ const [isLoading, setIsLoading] = useState(false);
                         ADDRESS
                       </h5>
                       <p className="text-white op-7">
-                        {" "}
-                        SCF 1, 2nd Floor, Shopping Complex, Ashoka Enclave Part
-                        II, Sector 37, Faridabad, Haryana 121003
+                      307A, Dlf Centre Point, Sec 11 Faridabad, Haryana, India 121006
                       </p>
                       <h5 className="text-white font-weight-light mb-3 mt-4">
                         CALL US
                       </h5>
-                      <p className="text-white op-7">918860077807</p>
+                      <Link className="text-white op-7 text-decoration-none" href="tel:+918860077807">+918860077807</Link>
+                      {/* <p className="text-white op-7">+918860077807</p> */}
                       <h5 className="text-white font-weight-light mb-3 mt-4">
                         EMAIL ID
                       </h5>
