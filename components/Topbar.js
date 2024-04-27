@@ -5,7 +5,8 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import LoginForm from "./Loginuc";
+// import LoginForm from "./Loginuc";
+import LoginForm from "./Loginuc-new";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
@@ -439,6 +440,9 @@ export default function Topbar() {
                     <li className={`${Classes["sage-menu-list"]}`}>
                       <Link href="/comingsoon">Study Abroad</Link>
                     </li>
+                    {/* <li className={`${Classes["sage-menu-list"]}`}>
+                      <Link href="/blog">Blog</Link>
+                    </li> */}
                   </ul>
                 </div>
                 <div className={`${Classes["contact-cta"]}`}>
@@ -712,6 +716,12 @@ export default function Topbar() {
                       >
                         <Link href="/comingsoon">Study Abroad</Link>
                       </li>
+                      {/* <li
+                        onClick={() => setShowToggleMenu(!showToggleMenu)}
+                        className={`${Classes["sage-menu-list"]}`}
+                      >
+                        <Link href="/blog">Blog</Link>
+                      </li> */}
                     </ul>
                   </div>
                 </div>

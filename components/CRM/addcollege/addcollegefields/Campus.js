@@ -26,6 +26,43 @@ export default class Campus extends Component {
     };
   }
 
+  getDataCampus=()=>{
+    fetch(
+      process.env.NEXT_PUBLIC_API_ENDPOINT +
+        `/admin/get-college-info?tab=3&id=${this.props.edit_id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("pt")}`,
+        },
+      }
+    ).then(async (res) => {
+      let response = await res.json();
+     
+      console.log(response.data);
+      if (response.error) {
+        this.setState({ isError: true, errorMsg: response.error });
+      } else {
+        const {
+          campus_description,hostel_fees_structure
+        } = response.data;
+      this.setState(
+        {
+          campusdesc: campus_description,
+          hostalfee:hostel_fees_structure,
+         },
+      )
+      }
+    });
+  }
+  componentDidMount() {
+    this.setState({
+      selectedClg: this.props.edit_id,
+    });
+    if (this.props.edit_id) {
+     this.getDataCampus()
+    }
+  }
+
   handleCampus = (e) => {
     e.preventDefault();
     Swal.fire({
@@ -38,7 +75,48 @@ export default class Campus extends Component {
       confirmButtonText: 'Yes'
     }).then((result) => {
       if (result.isConfirmed) {
-
+        if (this.props.edit_id) {
+          this.setState({ isLoading: true });
+          var formData = new FormData();
+          formData.append("campus_description", this.state.campusdesc);
+          formData.append("hostel_fees_structure", this.state.hostalfee);
+          fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/edit-college-info?tab=3&id=${this.props.edit_id}`, {
+            method: "PUT",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("pt")}`,
+            },
+            body: formData,
+          })
+            .then(async (response) => {
+              // console.log(response);
+              this.setState({  isLoading: false})
+              if (response.ok) {
+                var res = await response.json();
+                Swal.fire({
+                  title: "Success",
+                  text: `${res.message}`,
+                  icon: "success",
+                  confirmButtonText: "Ok",
+                }).then(()=>{
+                  this.getDataCampus()
+                })
+              } else {
+                var res = await response.json();
+                Swal.fire({
+                  title: "error",
+                  text: `${res.error}`,
+                  icon: "error",
+                  confirmButtonText: "Ok",
+                }).then(() => {
+                  this.setState({ isLoading: false });
+                });
+              }
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+        }
+        else{
     this.setState({ isLoading: true });
     var formData = new FormData();
     formData.append("college_id", this.state.selectedClg);
@@ -87,6 +165,7 @@ export default class Campus extends Component {
         console.error("Error:", error);
       });
     }
+  }
     });
   };
 
@@ -96,6 +175,8 @@ export default class Campus extends Component {
       <div className={Classes["add-user"]}>
         <div className={Classes["form-div"]}>
         <form action="#" onSubmit={(e) => this.handleCampus(e)}>
+        {!this.props.edit_id && (
+            <>
         <AddClgTopbar
         selectedClg={this.state.selectedClg}
         onclgchange={(id) => this.setState({ selectedClg: id })}
@@ -104,6 +185,8 @@ export default class Campus extends Component {
               }
             />
             <hr />
+            </>
+)}
             {!this.state.iscollegeListEmpty ? (
               this.state.selectedClg != "" ? (
           <div className="row">
@@ -146,7 +229,7 @@ export default class Campus extends Component {
 
             <div className="row">
               <div className="col-md-12">
-                <CTA title="Create"  />
+                <CTA title={this.props.edit_id ? "Update" : "Create"} />
               </div>
             </div>
           </div>

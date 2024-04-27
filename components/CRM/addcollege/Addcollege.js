@@ -8,7 +8,7 @@ import Courses from "./addcollegefields/Courses";
 import Campus from "./addcollegefields/Campus";
 import Admission from "./addcollegefields/Admission";
 import Placement from "./addcollegefields/Placement";
-import Scholorship from "./addcollegefields/Scholorship";
+import Scholorship from "./addcollegefields/Scholarship";
 import Cutoff from "./addcollegefields/Cutoff";
 import { Spinner } from "react-bootstrap";
 import CollegeRanking from "./addcollegefields/CollegeRanking";
@@ -22,7 +22,8 @@ const Addcollege = (props) => {
   // console.log(e);
   var disabledTabs = [];
   if (e && e != undefined) {
-    disabledTabs = ['1','2','3','4','5','6','7','8','9'];
+    // disabledTabs = ['5','6','7','8','9'];
+    // disabledTabs = [];
   } else {
     disabledTabs = [];
   }
@@ -103,7 +104,7 @@ const Addcollege = (props) => {
           title="General Info"
           disabled={disabledTabs.includes("0")}
         >
-          {selectedTab == "0" && <Gernal edit_id={e}/>}
+          {selectedTab == "0" && <Gernal edit_id={e||""}/>}
         </Tab>
         <Tab
           eventKey="1"
@@ -113,7 +114,7 @@ const Addcollege = (props) => {
           {/* {isApiHitComplete ?
             isDataFound ? */}
           {selectedTab == "1" && (
-            <Overview onSuccess={onSuccess} collegeList={clgList} />
+            <Overview onSuccess={onSuccess} edit_id={e||""}/>
           )}
           {/* :
               <div style={{ display: "flex", width: "100%", height: '80vh', justifyContent: "center", alignItems: 'center' }}>
@@ -137,7 +138,9 @@ const Addcollege = (props) => {
           {/* {isApiHitComplete ?
             isDataFound ? */}
           {selectedTab == "2" && (
-            <Courses onSuccess={onSuccess} collegeList={clgList} />
+            <Courses onSuccess={onSuccess} 
+            // collegeList={clgList} 
+            edit_id={e||""} />
           )}
           {/* :
               <div style={{ display: "flex", width: "100%", height: '80vh', justifyContent: "center", alignItems: 'center' }}>
@@ -161,7 +164,9 @@ const Addcollege = (props) => {
           {/* {isApiHitComplete ?
             isDataFound ? */}
           {selectedTab == "3" && (
-            <Campus onSuccess={onSuccess} collegeList={clgList} />
+            <Campus onSuccess={onSuccess}
+            //  collegeList={clgList}
+            edit_id={e||""} />
           )}
           {/* :
               <div style={{ display: "flex", width: "100%", height: '80vh', justifyContent: "center", alignItems: 'center' }}>
@@ -185,7 +190,9 @@ const Addcollege = (props) => {
           {/* {isApiHitComplete ?
             isDataFound ? */}
           {selectedTab == "4" && (
-            <Admission onSuccess={onSuccess} collegeList={clgList} />
+            <Admission onSuccess={onSuccess} 
+            // collegeList={clgList} 
+            edit_id={e||""}/>
           )}
           {/* :
               <div style={{ display: "flex", width: "100%", height: '80vh', justifyContent: "center", alignItems: 'center' }}>
@@ -209,7 +216,9 @@ const Addcollege = (props) => {
           {/* {isApiHitComplete ?
             isDataFound ? */}
           {selectedTab == "5" && (
-            <Scholorship onSuccess={onSuccess} collegeList={clgList} />
+            <Scholorship onSuccess={onSuccess} 
+            // collegeList={clgList} 
+            edit_id={e||""}/>
           )}
           {/* :
               <div style={{ display: "flex", width: "100%", height: '80vh', justifyContent: "center", alignItems: 'center' }}>
@@ -233,7 +242,9 @@ const Addcollege = (props) => {
           {/* {isApiHitComplete ?
             isDataFound ? */}
           {selectedTab == "6" && (
-            <Placement onSuccess={onSuccess} collegeList={clgList} />
+            <Placement onSuccess={onSuccess} 
+            // collegeList={clgList} 
+            edit_id={e||""}/>
           )}
           {/* :
               <div style={{ display: "flex", width: "100%", height: '80vh', justifyContent: "center", alignItems: 'center' }}>
@@ -257,7 +268,9 @@ const Addcollege = (props) => {
           {/* {isApiHitComplete ?
             isDataFound ? */}
           {selectedTab == "7" && (
-            <Cutoff onSuccess={onSuccess} collegeList={clgList} />
+            <Cutoff onSuccess={onSuccess} 
+            // collegeList={clgList}
+            edit_id={e||""} />
           )}
           {/* :
               <div style={{ display: "flex", width: "100%", height: '80vh', justifyContent: "center", alignItems: 'center' }}>
@@ -281,7 +294,7 @@ const Addcollege = (props) => {
           {/* {isApiHitComplete ?
             isDataFound ? */}
           {selectedTab == "8" && (
-            <CollegeRanking onSuccess={onSuccess} collegeList={clgList} />
+            <CollegeRanking onSuccess={onSuccess}  edit_id={e||""}/>
           )}
           {/* :
               <div style={{ display: "flex", width: "100%", height: '80vh', justifyContent: "center", alignItems: 'center' }}>
@@ -305,7 +318,7 @@ const Addcollege = (props) => {
           {/* {isApiHitComplete ?
             isDataFound ? */}
           {selectedTab == "9" && (
-            <Gallary onSuccess={onSuccess} collegeList={clgList} />
+            <Gallary onSuccess={onSuccess} collegeList={clgList} edit_id={e||""}/>
           )}
           {/* :
               <div style={{ display: "flex", width: "100%", height: '80vh', justifyContent: "center", alignItems: 'center' }}>

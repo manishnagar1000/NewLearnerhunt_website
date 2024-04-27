@@ -8,7 +8,7 @@ import Courses from "./addcollegefields/Courses";
 import Campus from "./addcollegefields/Campus";
 import Admission from "./addcollegefields/Admission";
 import Placement from "./addcollegefields/Placement";
-import Scholorship from "./addcollegefields/Scholorship";
+import Scholarship from "./addcollegefields/Scholarship";
 import Cutoff from "./addcollegefields/Cutoff";
 import { Spinner } from "react-bootstrap";
 import CollegeRanking from "./addcollegefields/CollegeRanking";
@@ -118,7 +118,7 @@ const Addcollege = (props) => {
           disabled={disabledTabs.includes("5")}
         >
           {selectedTab == "5" && (
-            <Scholorship onSuccess={onSuccess}/>
+            <Scholarship onSuccess={onSuccess}/>
           )}
         </Tab>
         <Tab

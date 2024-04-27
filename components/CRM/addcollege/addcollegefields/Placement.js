@@ -30,6 +30,48 @@ export default class Gernal extends Component {
     };
   }
 
+  getDataPlacement=()=>{
+    fetch(
+      process.env.NEXT_PUBLIC_API_ENDPOINT +
+        `/admin/get-college-info?tab=6&id=${this.props.edit_id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("pt")}`,
+        },
+      }
+    ).then(async (res) => {
+      let response = await res.json();
+     
+      console.log(response.data);
+      if (response.error) {
+        this.setState({ isError: true, errorMsg: response.error });
+      } else {
+        const {
+          placement_description,placement_process,highest_package,avg_package,total_job_offers,total_companies_visited,placement_year
+        } = response.data;
+      this.setState(
+        {
+      placementdesc: placement_description,
+      placementpros:placement_process,
+      highestpack: highest_package,
+      averagepack: avg_package,
+      jobofferd: total_job_offers,
+      companyvisit: total_companies_visited,
+      placementsFields:placement_year,
+         },
+      )
+      }
+    });
+  }
+  componentDidMount() {
+    this.setState({
+      selectedClg: this.props.edit_id,
+    });
+    if (this.props.edit_id) {
+     this.getDataPlacement()
+    }
+  }
+
   onFieldChange(index, field, value, curFields, box) {
     const updatedFields = [...curFields];
     updatedFields[index][field] = value;
@@ -72,7 +114,56 @@ export default class Gernal extends Component {
       confirmButtonText: 'Yes'
     }).then((result) => {
       if (result.isConfirmed) {
+        if (this.props.edit_id) {
+          this.setState({isLoading:true})
+    var formData = new FormData();
+    formData.append("placement_description", this.state.placementdesc);
+    formData.append("highest_package", this.state.highestpack);
+    formData.append("avg_package", this.state.averagepack);
+    formData.append("total_job_offers", this.state.jobofferd);
+    formData.append("total_companies_visited", this.state.companyvisit);
+    formData.append("placement_year", JSON.stringify(this.state.placementsFields));
+    formData.append("placement_process", this.state.placementpros);
 
+    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/edit-college-info?tab=6&id=${this.props.edit_id}`, {
+method: 'PUT',
+headers: {
+  'Authorization': `Bearer ${localStorage.getItem("pt")}`
+},
+body: formData
+})
+.then (async response => {
+  // console.log(response)
+  this.setState({  isLoading: false})
+
+if (response.ok) {
+  var res = await response.json();
+  Swal.fire({
+    title: "Success",
+    text: `${res.message}`,
+    icon: "success",
+    confirmButtonText: "Ok",
+  }).then(() => {
+    this.getDataPlacement()
+
+  });
+} else {
+  var res = await response.json();
+  Swal.fire({
+    title: "error",
+    text: `${res.error}`,
+    icon: "error",
+    confirmButtonText: "Ok",
+  }).then(() => {
+    this.setState({isLoading:false})
+  });
+}
+})
+.catch(error => {
+console.error('Error:', error);
+});
+        }
+        else{
     this.setState({isLoading:true})
     var formData = new FormData();
     formData.append("college_id", this.state.selectedClg);
@@ -128,6 +219,7 @@ if (response.ok) {
 .catch(error => {
 console.error('Error:', error);
 });
+        }
       }
 })
   }
@@ -137,6 +229,8 @@ console.error('Error:', error);
       <div className={Classes["add-user"]}>
         <div className={Classes["form-div"]}>
         <form action="#" onSubmit={(e) => this.handlePlacement(e)}>
+        {!this.props.edit_id && (
+            <>
         <AddClgTopbar
         selectedClg={this.state.selectedClg}
         onclgchange={(id) => this.setState({ selectedClg: id })}
@@ -145,6 +239,8 @@ console.error('Error:', error);
               }
             />
             <hr />
+            </>
+  )}
             {!this.state.iscollegeListEmpty ? (
               this.state.selectedClg != "" ? (
           <div className="row">
@@ -363,7 +459,7 @@ console.error('Error:', error);
 
             <div className="row">
               <div className="col-md-12">
-                <CTA title="Create"  />
+                <CTA title={this.props.edit_id ? "Update" : "Create"} />
               </div>
             </div>
           </div>

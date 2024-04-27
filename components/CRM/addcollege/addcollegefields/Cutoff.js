@@ -25,6 +25,52 @@ export default class Cutoff extends Component {
     };
   }
 
+
+  getDataCutoff=()=>{
+    fetch(
+      process.env.NEXT_PUBLIC_API_ENDPOINT +
+        `/admin/get-college-info?tab=7&id=${this.props.edit_id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("pt")}`,
+        },
+      }
+    ).then(async (res) => {
+      let response = await res.json();
+     
+      console.log(response.data);
+      if (response.error) {
+        this.setState({ isError: true, errorMsg: response.error });
+      } else {
+        if(response.data == null || response.data== undefined){
+          this.setState(
+            {
+              cutoffFields: [],
+             },
+          )
+        }else{
+          const {
+            yearwise_description,
+          } = response.data;
+        this.setState(
+          {
+            cutoffFields: yearwise_description,
+           },
+        )
+        }
+       
+      }
+    });
+  }
+  componentDidMount() {
+    this.setState({
+      selectedClg: this.props.edit_id,
+    });
+    if (this.props.edit_id) {
+     this.getDataCutoff()
+    }
+  }
+
   onFieldChange(index, field, value, curFields, box) {
     const updatedFields = [...curFields];
     updatedFields[index][field] = value;
@@ -67,6 +113,50 @@ export default class Cutoff extends Component {
       confirmButtonText: 'Yes'
     }).then((result) => {
       if (result.isConfirmed) {
+        if (this.props.edit_id) {
+          this.setState({isLoading:true})
+          var formData = new FormData();
+          formData.append("yearwise_description", JSON.stringify(this.state.cutoffFields));
+       
+      
+          fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/edit-college-info?tab=7&id=${this.props.edit_id}`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem("pt")}`
+      },
+      body: formData
+      })
+      .then (async response => {
+        // console.log(response)
+        this.setState({  isLoading: false})
+      
+      if (response.ok) {
+        var res = await response.json();
+        Swal.fire({
+          title: "Success",
+          text: `${res.message}`,
+          icon: "success",
+          confirmButtonText: "Ok",
+        }).then(() => {
+this.getDataCutoff()      
+        });
+      } else {
+        var res = await response.json();
+        Swal.fire({
+          title: "error",
+          text: `${res.error}`,
+          icon: "error",
+          confirmButtonText: "Ok",
+        }).then(() => {
+          this.setState({isLoading:false})
+        });
+      }
+      })
+      .catch(error => {
+      console.error('Error:', error);
+      });
+        }
+        else{
     this.setState({isLoading:true})
     var formData = new FormData();
     formData.append("college_id", this.state.selectedClg);
@@ -110,6 +200,7 @@ if (response.ok) {
 .catch(error => {
 console.error('Error:', error);
 });
+        }
       }
 })
   }
@@ -121,6 +212,8 @@ console.error('Error:', error);
       <div className={Classes["add-user"]}>
         <div className={Classes["form-div"]}>
         <form action="#" onSubmit={(e) => this.handleCutoff(e)}>
+        {!this.props.edit_id && (
+            <>
         <AddClgTopbar
         selectedClg={this.state.selectedClg}
               onclgchange={(id) => this.setState({ selectedClg: id })}
@@ -129,6 +222,7 @@ console.error('Error:', error);
               }
             />
             <hr />
+            </>)}
             {!this.state.iscollegeListEmpty ? (
               this.state.selectedClg != "" ? (
                 <div>
@@ -218,7 +312,7 @@ console.error('Error:', error);
           </div>
           <div className="row">
               <div className="col-md-12">
-                <CTA title="Create"/>
+                <CTA title={this.props.edit_id ? "Update" : "Create"} />
               </div>
             </div>
             </div>

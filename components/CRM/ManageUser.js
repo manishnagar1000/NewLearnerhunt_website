@@ -39,7 +39,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
 import InputLabel from "@mui/material/InputLabel";
 import { Spinner } from "react-bootstrap";
-import ScreenSearchDesktopOutlinedIcon from '@mui/icons-material/ScreenSearchDesktopOutlined';
+import ScreenSearchDesktopOutlinedIcon from "@mui/icons-material/ScreenSearchDesktopOutlined";
 const headCells = [
   {
     id: "userrole",
@@ -48,6 +48,10 @@ const headCells = [
   {
     id: "status",
     label: "Login Status",
+  },
+  {
+    id: "name",
+    label: "Name",
   },
   {
     id: "email",
@@ -218,7 +222,7 @@ var oldData = [];
 export default function EnhancedTable() {
   const [selected, setSelected] = React.useState([]);
   const [rows, setRows] = useState([]);
-
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [cpassword, setCpassword] = useState("");
@@ -370,6 +374,7 @@ export default function EnhancedTable() {
   const handleModalOpen = (value) => {
     setEditModal(false);
     setIsModalOpen(value);
+    setName("");
     setEmail("");
     setRole("4");
     setIsLoading(false);
@@ -433,8 +438,17 @@ export default function EnhancedTable() {
     if (!editModal) {
       // console.log(email);
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-      if (email == "") {
+      if (name == "") {
+        Swal.fire({
+          title: "error",
+          text: `Please enter name`,
+          icon: "error",
+          confirmButtonText: "Ok",
+        }).then(() => {
+          setIsLoading(false);
+        });
+      }
+      else if (email == "") {
         Swal.fire({
           title: "error",
           text: `Please enter email`,
@@ -483,10 +497,11 @@ export default function EnhancedTable() {
         try {
           setIsLoading(true);
           const fd = new FormData();
-          fd.append("email", email);
-          fd.append("password", password);
-          fd.append("cpass", cpassword);
-          fd.append("r", role);
+          fd.append("name",name);
+          fd.append("email",email);
+          fd.append("password",password);
+          fd.append("cpass",cpassword);
+          fd.append("r",role);
 
           fetch(
             process.env.NEXT_PUBLIC_API_ENDPOINT + "/admin/crm-users-list",
@@ -512,6 +527,8 @@ export default function EnhancedTable() {
                 // props.onLogin(res.data.token,res.data.role,formData.name);
                 setIsLoading(false);
                 setIsModalOpen(false);
+                setName("");
+
                 setEmail("");
                 setPassword("");
                 setCpassword("");
@@ -535,8 +552,17 @@ export default function EnhancedTable() {
     } else {
       // console.log(email);
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-      if (email == "") {
+      if (name == "") {
+        Swal.fire({
+          title: "error",
+          text: `Please enter name`,
+          icon: "error",
+          confirmButtonText: "Ok",
+        }).then(() => {
+          setIsLoading(false);
+        });
+      }
+      else if (email == "") {
         Swal.fire({
           title: "error",
           text: `Please enter email`,
@@ -558,7 +584,8 @@ export default function EnhancedTable() {
         const fd = new FormData();
         fd.append("r", role);
         fd.append("id", selectedId);
-        fd.append("email", email);
+          fd.append("name",name);
+          fd.append("email", email);
         fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/crm-users-list`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("pt")}`,
@@ -580,6 +607,7 @@ export default function EnhancedTable() {
             }).then(() => {
               setIsLoading(false);
               setIsModalOpen(false);
+              setName("");
               setEmail("");
               getUserList();
             });
@@ -599,6 +627,7 @@ export default function EnhancedTable() {
   const handleEditModal = (e, row) => {
     // console.log(row);
     setIsModalOpen(true);
+    setName(row.name);
     setEmail(row.email);
     setRole(row.role);
     setSelectedId(row._id);
@@ -619,8 +648,12 @@ export default function EnhancedTable() {
             OnModalOpen={(value) => handleModalOpen(value)}
             OnhandleDelete={(value) => handleDeleteData(value)}
           />
-          <TableContainer sx={{maxHeight:"70vh"}}>
-            <Table stickyHeader sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
+          <TableContainer sx={{ maxHeight: "70vh" }}>
+            <Table
+              stickyHeader
+              sx={{ minWidth: 750 }}
+              aria-labelledby="tableTitle"
+            >
               <EnhancedTableHead
                 numSelected={selected.length}
                 onSelectAllClick={handleSelectAllClick}
@@ -675,6 +708,8 @@ export default function EnhancedTable() {
                           </span>
                         )}
                       </TableCell>
+                      <TableCell>{row.name || 'N/A'}</TableCell>
+
                       <TableCell>{row.email}</TableCell>
                       <TableCell>{formatTimestamp(row.createdAt)}</TableCell>
                       {/* <TableCell>
@@ -704,10 +739,9 @@ export default function EnhancedTable() {
         centered
         show={isModalOpen}
         onHide={() => {
-          setIsModalOpen(false),
-            setEmail(""),
-            setPassword(""),
-            setCpassword("");
+          setIsModalOpen(false), setName("");
+
+          setEmail(""), setPassword(""), setCpassword("");
         }}
         backdrop="static"
         keyboard={false}
@@ -723,6 +757,17 @@ export default function EnhancedTable() {
             sx={{ mt: 1 }}
           >
             <TextField
+              id="name"
+              name="name"
+              type="text"
+              fullWidth
+              variant="outlined"
+              label="Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+            <TextField
               id="email"
               name="name"
               type="email"
@@ -731,6 +776,7 @@ export default function EnhancedTable() {
               label="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              sx={{ mt: 2 }}
               required
             />
             {!editModal && (
@@ -759,7 +805,7 @@ export default function EnhancedTable() {
                           onClick={() => setShowPassword(!showPassword)}
                           edge="end"
                         >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                          {showPassword ?  <Visibility/> :<VisibilityOff />}
                         </IconButton>
                       </InputAdornment>
                     }
@@ -790,7 +836,7 @@ export default function EnhancedTable() {
                           onClick={() => setCshowPassword(!cshowPassword)}
                           edge="end"
                         >
-                          {cshowPassword ? <VisibilityOff /> : <Visibility />}
+                          {cshowPassword ?  <Visibility/> :<VisibilityOff />}
                         </IconButton>
                       </InputAdornment>
                     }
@@ -810,15 +856,17 @@ export default function EnhancedTable() {
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
               >
-
                 {/* <FormControlLabel value="0"  control={<Radio />} label="Admin" /> */}
                 <FormControlLabel
                   value="4"
                   control={<Radio />}
                   label="Support"
                 />
-                <FormControlLabel value="5"  control={<Radio />} label="Digital Marketer" />
-
+                <FormControlLabel
+                  value="5"
+                  control={<Radio />}
+                  label="Digital Marketer"
+                />
               </RadioGroup>
             </FormControl>
             <Button

@@ -18,7 +18,7 @@ export default function Testimonials() {
                 <div className={Classes['Image-div']}>
                   <img className={Classes['mba-student']} src="/assets/Landing/studentImg/student1.webp" alt='studentname' width={100} height={100} maxWidth={100}/>
                   <p className={Classes['mba-studentname']}>Vishwas Verma </p>
-                  <p>Learner Hunt is a game-changer! Their expert guidance made my MBA admission process seamless. I am grateful for their personalized approach and commitment to student success.</p>
+                  <p>Learner Hunt exceeded my expectations! The team's knowledge of MBA admissions is unmatched. I owe my acceptance to their strategic guidance. Trust them with your aspirations!</p>
                 </div>
               </div>
               <div className="col-md">

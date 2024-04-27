@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^41.3.1",
+    "@ckeditor/ckeditor5-react": "^6.2.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.11.16",
@@ -19,6 +21,7 @@
     "apexcharts": "^3.45.2",
     "axios": "^1.4.0",
     "bootstrap": "^5.3.3",
+    "ckeditor5-custom-build": "^0.0.6",
     "jquery": "^3.7.1",
     "jsonexport": "^3.2.0",
     "marked": "^12.0.1",

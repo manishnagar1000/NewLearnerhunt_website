@@ -176,6 +176,14 @@
     position: static !important;
 
 }
+
+.pagination-blog{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem 0;
+}
+
 @media screen and (max-width: 767px){
  .welcome-box .welcome-box-content {
         width: 100%;

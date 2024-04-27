@@ -30,6 +30,43 @@ export default class Gallary extends Component {
       
     };
   }
+  getDataGallary=()=>{
+    fetch(
+      process.env.NEXT_PUBLIC_API_ENDPOINT +
+        `/admin/get-college-info?tab=9&id=${this.props.edit_id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("pt")}`,
+        },
+      }
+    ).then(async (res) => {
+      let response = await res.json();
+     
+      console.log(response.data);
+      if (response.error) {
+        this.setState({ isError: true, errorMsg: response.error });
+      } else {
+        const {
+          banner_img_path,square_img_path,logo_img_path
+        } = response.data;
+      this.setState(
+        {
+          imageLogo: `https://learnerhunt-assets.s3.us-east-1.amazonaws.com/${logo_img_path}`,
+          imageSquare: `https://learnerhunt-assets.s3.us-east-1.amazonaws.com/${square_img_path}`,
+          imageBanner: `https://learnerhunt-assets.s3.us-east-1.amazonaws.com/${banner_img_path}`,
+         },
+      )
+      }
+    });
+  }
+  componentDidMount() {
+    this.setState({
+      selectedClg: this.props.edit_id,
+    });
+    if (this.props.edit_id) {
+     this.getDataGallary()
+    }
+  }
 
   handleFileUpload = (event, imageType) => {
     const file = event.target.files[0];
@@ -58,6 +95,55 @@ export default class Gallary extends Component {
       confirmButtonText: 'Yes'
     }).then((result) => {
       if (result.isConfirmed) {
+        if (this.props.edit_id) {
+          this.setState({isLoading:true})
+          try {
+            const fd = new FormData();
+            fd.append("logo_img_path", this.state.imgLogo);
+            fd.append("square_img_path", this.state.imgSquare);
+            fd.append("banner_img_path", this.state.imgBanner);
+            fetch(process.env.NEXT_PUBLIC_API_ENDPOINT +`/admin/edit-college-info?tab=9&id=${this.props.edit_id}`, {
+              headers: {
+                'Authorization': `Bearer ${localStorage.getItem("pt")}`
+              },
+              method: "PUT",
+              body: fd,
+            }).then(async (response) => {
+              var res = await response.json()
+              // console.log(res)
+              // console.log(res.message)
+              // console.log(res.error)
+              this.setState({isLoading:false})
+              
+           
+              if (response.ok) {
+                 
+                  Swal.fire({
+                    title: "Success",
+                    text: `${res.message}`,
+                    icon: "success",
+                    confirmButtonText: "Ok",
+                  }).then(() => {
+                    this.getDataGallary()
+                  });
+                } else {
+                 
+                  Swal.fire({
+                    title: "error",
+                    text: `${res.error}`,
+                    icon: "error",
+                    confirmButtonText: "Ok",
+                  }).then(() => {
+                    this.setState({isLoading:false})
+                  });
+                }
+            });
+      
+          } catch (error) {
+            // Handle network or fetch error
+            console.error(error);
+          }
+        }else{
         this.setState({isLoading:true})
     try {
       const fd = new FormData();
@@ -112,6 +198,7 @@ export default class Gallary extends Component {
       console.error(error);
     }
   }
+  }
 })
 
   };
@@ -123,6 +210,8 @@ export default class Gallary extends Component {
       <div className={Classes["add-user"]}>
         <div className={Classes["form-div"]}>
           <form action="#" onSubmit={(e) => this.handleGallaryoff(e)}>
+          {!this.props.edit_id && (
+            <>
           <AddClgTopbar
               onclgchange={(id) => this.setState({ selectedClg: id })}
         selectedClg={this.state.selectedClg}
@@ -131,6 +220,8 @@ export default class Gallary extends Component {
               }
             />
             <hr />
+            </>
+          )}
             {!this.state.iscollegeListEmpty ? (
               this.state.selectedClg != "" ? (
       <div>
@@ -234,7 +325,7 @@ export default class Gallary extends Component {
 
             <div className="row">
               <div className="col-md-12">
-                <CTA title="Create" />
+                <CTA title={this.props.edit_id ? "Update" : "Create"} />
               </div>
             </div>
             </div>

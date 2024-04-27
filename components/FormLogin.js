@@ -1,12 +1,16 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Styles from "/styles/Loginform.module.css";
 import Form from "react-bootstrap/Form";
 import Swal from "sweetalert2";
 import { Spinner } from "react-bootstrap";
+import { useRouter } from "next/router";
 
 const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-
 const FormLogin = ({ closeModal,islogin }) => {
+  const initialTimer = 120; // 120 seconds (2 minutes)
+  const [timer, setTimer] = useState(initialTimer);
+  const [showotp, setShowotp] = useState(false);
+
   const [email, setEmail] = useState("");
   const [isloading, setIsloading] = useState(false);
   const [password, setPassword] = useState("");
@@ -15,6 +19,68 @@ const FormLogin = ({ closeModal,islogin }) => {
   const [isShowPass, setIsShowPass] = useState(false);
   const [showOTPInput, setShowOTPInput] = useState(false);
   const [isOTPSending, setIsOTPSending] = useState(false);
+  const router = useRouter();
+
+
+
+  let countdown; // Define countdown outside of useEffect
+
+  // Function to start the timer
+  const startTimer = () => {
+    countdown = setInterval(() => {
+      setTimer((prevTimer) => {
+        if (prevTimer === 1) {
+          clearInterval(countdown);
+          setShowotp(true);
+          return initialTimer; // Reset the timer to its initial value
+        }
+        return prevTimer - 1;
+      });
+    }, 1000); // Update the timer every 1 second
+  };
+  useEffect(() => {
+    // let countdown;
+    // Clean up the timer when the component unmounts
+    return () => {
+      clearInterval(countdown);
+      setShowotp(true);
+    };
+  }, [initialTimer]);
+  const handleResendOtp = () => {
+    setIsloading(true);
+    const fd = new FormData();
+    fd.append("email", email);
+    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/user/get-otp", {
+      method: "POST",
+      body: fd,
+    }).then(async (response) => {
+      var res = await response.json();
+      // console.log(res.message)
+      if (response.ok) {
+        // console.log("hello", response.data);
+        Swal.fire({
+          title: "Success",
+          text: `${res.message}`,
+          icon: "success",
+          confirmButtonText: "Ok",
+        }).then(() => {
+          setIsloading(false);
+          startTimer();
+        });
+        // router.push('/thankyou')
+      } else {
+        Swal.fire({
+          title: "error",
+          text: `${res.error}`,
+          icon: "error",
+          confirmButtonText: "Ok",
+        }).then(() => {
+          setIsloading(false);
+        });
+      }
+    });
+  };
+
   const handlePassLogin = (e) => {
     e.preventDefault();
     try {
@@ -99,7 +165,6 @@ const FormLogin = ({ closeModal,islogin }) => {
                   icon: "success",
                   confirmButtonText: "Ok",
                 }).then(() => {
-                  setIsloading(false);
                   localStorage.setItem("status", userstatus);
                   localStorage.setItem("useremail", useremail);
                   localStorage.setItem("usermobile", usermobile);
@@ -155,6 +220,7 @@ const FormLogin = ({ closeModal,islogin }) => {
             }).then(() => {
               setShowOTPInput(true);
               setIsOTPSending(false);
+                startTimer()
             });
           } else {
             Swal.fire({
@@ -236,6 +302,20 @@ const FormLogin = ({ closeModal,islogin }) => {
                   />
                 </div>
                 
+                {timer === 120 ? (
+                      showotp ? (
+                        <span
+                          className="d-inline-flex my-2 text-primary "
+                          style={{ cursor: "pointer" }}
+                          onClick={handleResendOtp}
+                        >
+                          Resend Otp
+                        </span>
+                      ) : null
+                    ) : (
+                      <p>Resend OTP in {timer} seconds</p>
+                    )}
+                
                 <button  type="submit" className="btn btn-primary w-100 mb-2" disabled={isloading}>
                   Login
                 </button>
@@ -262,7 +342,7 @@ const FormLogin = ({ closeModal,islogin }) => {
               type="button"
               className="btn btn-outline-primary w-100"
               onClick={() => {
-                setIsLoginWithOTP(false), setEmail(""), setPassword("");
+                setIsLoginWithOTP(false), setEmail(""), setPassword("") ,setOTP(""), setShowotp(false) ,setShowOTPInput(false);
               }}
             >
               Login via password?

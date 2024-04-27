@@ -57,6 +57,123 @@ export default class Overview extends Component {
       iscollegeListEmpty: false,
     };
   }
+  formatDateForInput(dateString) {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      return ''; // Invalid date
+    }
+    const year = date.getFullYear();
+    let month = (date.getMonth() + 1).toString().padStart(2, '0');
+    let day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+  
+  getDataOverview=()=>{
+    fetch(
+      process.env.NEXT_PUBLIC_API_ENDPOINT +
+        `/admin/get-college-info?tab=1&id=${this.props.edit_id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("pt")}`,
+        },
+      }
+    ).then(async (res) => {
+      let response = await res.json();
+     
+      console.log(response.data);
+      if (response.error) {
+        this.setState({ isError: true, errorMsg: response.error });
+      } else {
+        const {
+          establishment_year,
+          recognised_by,
+          foreign_collaboration,
+          where_to_apply,
+          campus_size,
+          course_offered_count,
+          total_faculty,
+          total_intake,
+          avg_package,
+          highest_annual_package,
+          top_recruiter,
+          campus_facilities,
+          exams_accepted,
+          application_process,
+          college_collaborations,
+          description,
+          college_faqs,
+          college_faculty,
+          offered_courses,
+          top_course,
+          admission_dates,
+        } = response.data;
+        const year = new Date(establishment_year).getFullYear();
+        this.setState({
+          selectedYear: year,
+          recognisedValues: recognised_by ? recognised_by.split(",") : [],
+          foreignCollaborations: foreign_collaboration
+            ? foreign_collaboration.split(",")
+            : [],
+          whereToApply: where_to_apply,
+          campusSize: campus_size,
+          offeredCourseCount: course_offered_count,
+          totalFaculty: total_faculty,
+          totalIntake: total_intake,
+          avgPackage: avg_package,
+          highestPackage: highest_annual_package,
+          topRecruiters: top_recruiter? top_recruiter.split(",") : [],
+          campusFacilities: campus_facilities? campus_facilities.split(",") : [],
+          acceptedExams: exams_accepted? exams_accepted.split(",") : [],
+          offeredCourses: offered_courses ? offered_courses : [],
+          applicationProcess: application_process,
+          collegeCollaborations: college_collaborations? college_collaborations.split(",") : [],
+          collegeDescription: description,
+          topCourseAndFees: top_course,
+          Faqs: college_faqs,
+          faculty: college_faculty,
+          admissionDates: admission_dates,
+        });
+      }
+    });
+  }
+
+  componentDidMount() {
+    this.setState({
+      selectedClg: this.props.edit_id,
+    });
+    if (this.props.edit_id) {
+     this.getDataOverview()
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.edit_id != this.props.edit_id) {
+      this.setState({
+        selectedYear: "",
+        selectedInstituteType: "",
+        collegeDescription: "",
+        recognisedValues: [],
+        foreignCollaborations: [],
+        whereToApply: "",
+        campusSize: "",
+        offeredCourseCount: "",
+        totalFaculty: "",
+        totalIntake: "",
+        avgPackage: "",
+        highestPackage: "",
+        topRecruiters: [],
+        campusFacilities: [],
+        acceptedExams: [],
+        offeredCourses: [],
+        applicationProcess: "",
+        collegeCollaborations: [],
+        topCourseAndFees: [],
+        Faqs: [],
+        faculty: [],
+        admissionDates: [],
+      });
+    }
+  }
 
   onFieldChange(index, field, value, curFields, box) {
     const updatedFields = [...curFields];
@@ -154,6 +271,87 @@ export default class Overview extends Component {
       confirmButtonText: "Yes",
     }).then((result) => {
       if (result.isConfirmed) {
+        if (this.props.edit_id) {
+            this.setState({ isLoading: true });
+            var formData = new FormData();
+            formData.append("description", this.state.collegeDescription);
+            formData.append(
+              "admission_dates",
+              JSON.stringify(this.state.admissionDates)
+            );
+            formData.append("establishment_year", this.state.selectedYear);
+            formData.append("recognised_by", this.state.recognisedValues);
+            formData.append(
+              "foreign_collaboration",
+              this.state.foreignCollaborations
+            );
+            formData.append("where_to_apply", this.state.whereToApply);
+            formData.append("campus_size", this.state.campusSize);
+            formData.append("course_offered_count", this.state.offeredCourseCount);
+            formData.append("total_faculty", this.state.totalFaculty);
+            formData.append("total_intake", this.state.totalIntake);
+            formData.append("avg_package", this.state.avgPackage);
+            formData.append("highest_annual_package", this.state.highestPackage);
+            formData.append("top_recruiter", this.state.topRecruiters);
+            formData.append("campus_facilities", this.state.campusFacilities);
+            formData.append("exams_accepted", this.state.acceptedExams);
+            formData.append(
+              "offered_courses",
+              JSON.stringify(this.state.offeredCourses)
+            );
+            formData.append("application_process", this.state.applicationProcess);
+            formData.append(
+              "college_collaborations",
+              this.state.collegeCollaborations
+            );
+            formData.append(
+              "top_course",
+              JSON.stringify(this.state.topCourseAndFees)
+            );
+            formData.append("college_faqs", JSON.stringify(this.state.Faqs));
+            formData.append("college_faculty", JSON.stringify(this.state.faculty));
+    
+            fetch(
+              process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/edit-college-info?tab=1&id=${this.props.edit_id}`,
+              {
+                method: "PUT",
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem("pt")}`,
+                },
+                body: formData,
+              }
+            )
+              .then(async (response) => {
+                // console.log(response)
+                this.setState({ isLoading: false });
+    
+                if (response.ok) {
+                  var res = await response.json();
+                  Swal.fire({
+                    title: "Success",
+                    text: `${res.message}`,
+                    icon: "success",
+                    confirmButtonText: "Ok",
+                  }).then(()=>{
+                    this.getDataOverview()
+                  })
+                } else {
+                  var res = await response.json();
+                  Swal.fire({
+                    title: "error",
+                    text: `${res.error}`,
+                    icon: "error",
+                    confirmButtonText: "Ok",
+                  }).then(() => {
+                    this.setState({ isLoading: false });
+                  });
+                }
+              })
+              .catch((error) => {
+                console.error("Error:", error);
+              });
+        }
+        else{
         this.setState({ isLoading: true });
         var formData = new FormData();
         formData.append("college_id", this.state.selectedClg);
@@ -218,7 +416,7 @@ export default class Overview extends Component {
               }).then(() => {
                 this.setState(
                   {
-                    selectedClg:"",
+                    selectedClg: "",
                     selectedYear: "",
                     selectedInstituteType: "",
                     collegeDescription: "",
@@ -260,26 +458,32 @@ export default class Overview extends Component {
           .catch((error) => {
             console.error("Error:", error);
           });
+        }
+
       }
     });
   };
 
   render() {
     // const { collegeList } = this.props
+    console.log(this.state.recognisedValues);
     return (
       <div className={Classes["add-user"]}>
         <div className={Classes["form-div"]}>
           <form action="#" onSubmit={(e) => this.handleSubmit(e)}>
-            <AddClgTopbar
-              onclgchange={(id) => this.setState({ selectedClg: id })}
-        selectedClg={this.state.selectedClg}
-        iscollegeListEmpty={(x) =>
-                this.setState({ iscollegeListEmpty: x })
-              }
-            />
+            {!this.props.edit_id && (
+              <>
+                <AddClgTopbar
+                  onclgchange={(id) => this.setState({ selectedClg: id })}
+                  selectedClg={this.state.selectedClg}
+                  iscollegeListEmpty={(x) =>
+                    this.setState({ iscollegeListEmpty: x })
+                  }
+                />
 
-            <hr />
-
+                <hr />
+              </>
+            )}
             {!this.state.iscollegeListEmpty ? (
               this.state.selectedClg != "" ? (
                 <div className="row">
@@ -297,7 +501,7 @@ export default class Overview extends Component {
                         Recognised By (Tags)
                       </label>
                       <MultipleTagsInput
-                        placeholder="Add recognised by"
+                        placeholder="Enter Search Recognised"
                         value={this.state.recognisedValues}
                         onChange={(values) =>
                           this.setState({ recognisedValues: values })
@@ -487,7 +691,7 @@ export default class Overview extends Component {
                         <span className={Classes["error"]}>*</span>
                       </label>
                       <MultipleTagsInput
-                      required
+                        required
                         placeholder="Add accepted exams"
                         value={this.state.acceptedExams}
                         onChange={(values) =>
@@ -611,7 +815,8 @@ export default class Overview extends Component {
                               <input
                                 type="date"
                                 className="form-control"
-                                value={d.date}
+                                // value={'2023-07-30'}
+                                value={d.date?new Date(d.date).toISOString().split('T')[0].replace(/-/g, '-'):''}
                                 onChange={(e) =>
                                   this.onFieldChange(
                                     i,
@@ -723,14 +928,22 @@ export default class Overview extends Component {
                               >
                                 Course duration
                               </label>
-                              {/* <input
-                              type="text"
-                              className="form-control"
-                              placeholder="ex: 4 years"
-                              value={course.course_duration}
-                              onChange={(e) => this.onFieldChange(i, 'course_duration', e.target.value, this.state.offeredCourses, '1')}
-                            /> */}
-                              <Autocomplete
+                              <input
+                                type="text"
+                                className="form-control"
+                                placeholder="ex: 4 years"
+                                value={course.course_duration}
+                                onChange={(e) =>
+                                  this.onFieldChange(
+                                    i,
+                                    "course_duration",
+                                    e.target.value,
+                                    this.state.offeredCourses,
+                                    "1"
+                                  )
+                                }
+                              />
+                              {/* <Autocomplete
                                 disablePortal
                                 id="combo-box-demo"
                                 options={durationLabels}
@@ -751,7 +964,7 @@ export default class Overview extends Component {
                                     placeholder="Enter Course Duration"
                                   />
                                 )}
-                              />
+                              /> */}
                             </div>
                           </div>
                           <div className="col-md-3">
@@ -1109,7 +1322,7 @@ export default class Overview extends Component {
                     </span>
                   </div>
                   <div className="col-md-12">
-                    <CTA title="Create" />
+                    <CTA title={this.props.edit_id ? "Update" : "Create"} />
                   </div>
                 </div>
               ) : (

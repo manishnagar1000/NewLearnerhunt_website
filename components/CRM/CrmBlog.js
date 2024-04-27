@@ -1,10 +1,11 @@
-import React from 'react'
-import SummernoteWithBootstrap from '../CRM/CrmBlog';
-export default function CrmBlog() {
-  return (
-    <div>
-    <h1>Blogs</h1>
-    {/* <SummernoteWithBootstrap /> */}
-  </div>
-  )
-}
+import React from "react";
+import dynamic from "next/dynamic";
+
+const Index = () => {
+  const Summernote = dynamic(() => import("../Comps/CreateBlog"),{
+    ssr: false,
+  });
+  return <Summernote/>;
+};
+
+export default Index;

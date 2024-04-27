@@ -12,6 +12,14 @@ class MultipleTagsInput extends Component {
     };
   }
 
+  componentDidMount(){
+    // console.log(this.props)
+    // if(this.props.index){
+      this.setState({selectedValues:this.props.value})
+    // }
+    // 
+  }
+
   handleTagDelete = (index) => {
     const newSelectedValues = [...this.state.selectedValues];
     newSelectedValues.splice(index, 1);
@@ -37,6 +45,7 @@ class MultipleTagsInput extends Component {
   };
 
   componentDidUpdate(prevProps){
+    console.log(this.props)
     if(prevProps.value != this.props.value){
         this.setState({selectedValues:this.props.value})
     }
@@ -57,6 +66,7 @@ class MultipleTagsInput extends Component {
 
 
   render() {
+    // console.log(this.props,this.state)
     return (
       <Autocomplete
         clearIcon={false}

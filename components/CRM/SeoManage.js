@@ -172,7 +172,9 @@ const SEOManage = () => {
         setOgDetails({
           ...ogDetails,
           ["ogUrl"]: `https://www.learnerhunt.com/colleges/${selectedObj.slug}`,
+          ["ogImage"]:`https://learnerhunt-assets.s3.us-east-1.amazonaws.com/${selectedObj.square_img_path}`
         });
+
       } else if (type == "title") {
         setFormData({ ...formData, [name]: value });
         setTwitterDetails({ ...twitterDetails, ["twittertitle"]: value });
@@ -602,7 +604,7 @@ const SEOManage = () => {
   const handleEdit = (e, id) => {
     setCollegId(id);
     // setIsApiHitComplete(false);
-    setIsloading(false);
+    setIsloading(true);
     fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/admin/seomanager/" + id, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("pt")}`,
@@ -611,10 +613,7 @@ const SEOManage = () => {
       .then(async (response) => {
         var res = await response.json();
         // console.log(res.data);
-        // console.log(res.data[0].title);
         setShowModal(true);
-        // setIsApiHitComplete(true);
-        setIsloading(true);
 
         setFormData({
           collegename: {
@@ -649,6 +648,7 @@ const SEOManage = () => {
           structuredData: res.data[0].structured_data,
           faqStructuredData: res.data[0].faq_structured_data,
         });
+        setIsloading(false);
 
         // setCollegeApi(res.data.college_list)
       })

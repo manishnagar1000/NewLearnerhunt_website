@@ -9,8 +9,10 @@ import { Spinner } from "react-bootstrap";
 import Swal from "sweetalert2";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import DifferenceIcon from "@mui/icons-material/Difference";
 import Tooltip from '@mui/material/Tooltip';
 import LoopIcon from "@mui/icons-material/Loop";
+import { Modal, Button, Form } from "react-bootstrap";
 
 var oldData = [];
 
@@ -29,6 +31,10 @@ export default class AssignLeads extends Component {
       searchInput: "", // Search input
       error: "",
       TotalCountNumber: "",
+      remark: "",
+      remarksHistory: [],
+      showModal: false,
+      leadid: "",
       counsellorType: "",
     };
   }
@@ -188,6 +194,91 @@ export default class AssignLeads extends Component {
     }
   };
 
+  handleGetRemarks = (type) => {
+    console.log(type)
+    // this.setState({callerType:type}),(()=>{
+    //   console.log('hello')
+    // })
+    try {
+      this.setState({ isLoading: true,counsellorType:type }),(()=>{
+        console.log("hello1")
+      });
+      fetch(
+        process.env.NEXT_PUBLIC_API_ENDPOINT +
+          `/counsellor/remarks?lid=${this.state.leadid}&lt=${this.state.counsellorType}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("cst")}`,
+          },
+        }
+      ).then(async (res) => {
+        if (res.ok) {
+          let response = await res.json();
+          this.setState({ remarksHistory: response.data.remarks });
+          this.setState({ showModal: true });
+        } else {
+          let response = await res.json();
+          this.setState({ error: response.error });
+        }
+        this.setState({ isLoading: false });
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  handleRemarkChange = (e) => {
+    this.setState({ remark: e.target.value });
+  };
+
+  handleAddRemark = () => {
+    if (this.state.remark.trim() !== "") {
+      this.setState({ isLoading: true });
+      try {
+        const fd = new FormData();
+        fd.append("remarks", this.state.remark);
+        fd.append("leadType", this.state.counsellorType);
+        fd.append("leadId", this.state.leadid);
+        fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/counsellor/remarks", {
+          method: "POST",
+          body: fd,
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("cst")}`,
+          },
+        }).then(async (response) => {
+          if (response.ok) {
+            var res = await response.json();
+            // console.log(res);
+            // console.log(res.data);
+            Swal.fire({
+              title: "Success",
+              text: `${res.message}`,
+              icon: "success",
+              confirmButtonText: "Ok",
+            }).then(() => {
+              this.handleGetRemarks();
+              this.setState({ isLoading: false, remark: "", counsellorType:this.state.counsellorType });
+            });
+          } else {
+            var res = await response.json();
+            Swal.fire({
+              title: "error",
+              text: `${res.error}`,
+              icon: "error",
+              confirmButtonText: "Ok",
+            });
+          }
+        });
+      } catch (error) {
+        console.error("Failed to fetch OTP:", error);
+      }
+    }
+  };
+
+  toggleModal = () => {
+    this.setState({ showModal: !this.state.showModal });
+  };
+
   render() {
     return (
       <>
@@ -263,6 +354,9 @@ export default class AssignLeads extends Component {
                             Student Mobile
                           </th>
                           <th style={{ background: "var(--primary)" }}>
+                            Remarks
+                          </th>
+                          <th style={{ background: "var(--primary)" }}>
                             Student Email
                           </th>
                           <th style={{ background: "var(--primary)" }}>
@@ -288,6 +382,22 @@ export default class AssignLeads extends Component {
                                   <CallIcon color="primary" fontSize="small" />
                                 </IconButton>
                               </td>
+                              <td className="text-center">
+                            <Tooltip title="Add Remark">
+                              <IconButton
+                                onClick={(e) =>
+                                  this.setState({ leadid: clg._id }, () =>
+                                    this.handleGetRemarks(4)
+                                  )
+                                }
+                              >
+                                <DifferenceIcon
+                                  color="success"
+                                  fontSize="small"
+                                />
+                              </IconButton>
+                            </Tooltip>
+                          </td>
                               <td>{clg.email}</td>
                               <td>{clg.course}</td>
                               <td>{clg.qualification}</td>
@@ -312,6 +422,9 @@ export default class AssignLeads extends Component {
                           </th>
                           <th style={{ background: "var(--primary)" }}>
                             Student Mobile
+                          </th>
+                          <th style={{ background: "var(--primary)" }}>
+                            Remarks
                           </th>
                           <th style={{ background: "var(--primary)" }}>Fees</th>
                           <th style={{ background: "var(--primary)" }}>Zone</th>
@@ -338,6 +451,22 @@ export default class AssignLeads extends Component {
                                   <CallIcon color="primary" fontSize="small" />
                                 </IconButton>
                               </td>
+                              <td className="text-center">
+                            <Tooltip title="Add Remark">
+                              <IconButton
+                                onClick={(e) =>
+                                  this.setState({ leadid: clg._id }, () =>
+                                    this.handleGetRemarks(1)
+                                  )
+                                }
+                              >
+                                <DifferenceIcon
+                                  color="success"
+                                  fontSize="small"
+                                />
+                              </IconButton>
+                            </Tooltip>
+                          </td>
                               <td>{clg.fee}</td>
                               <td>{clg.zone}</td>
                               <td>{clg.course}</td>
@@ -363,6 +492,9 @@ export default class AssignLeads extends Component {
                           </th>
                           <th style={{ background: "var(--primary)" }}>
                             Student Mobile
+                          </th>
+                          <th style={{ background: "var(--primary)" }}>
+                            Remarks
                           </th>
                           <th style={{ background: "var(--primary)" }}>
                             Email
@@ -393,6 +525,22 @@ export default class AssignLeads extends Component {
                                   <CallIcon color="primary" fontSize="small" />
                                 </IconButton>
                               </td>
+                              <td className="text-center">
+                            <Tooltip title="Add Remark">
+                              <IconButton
+                                onClick={(e) =>
+                                  this.setState({ leadid: clg._id }, () =>
+                                    this.handleGetRemarks(2)
+                                  )
+                                }
+                              >
+                                <DifferenceIcon
+                                  color="success"
+                                  fontSize="small"
+                                />
+                              </IconButton>
+                            </Tooltip>
+                          </td>
                               <td>{clg.email}</td>
                               <td>{clg.gender}</td>
                               <td>{clg.course_interested}</td>
@@ -420,6 +568,9 @@ export default class AssignLeads extends Component {
                             Student Mobile
                           </th>
                           <th style={{ background: "var(--primary)" }}>
+                            Remarks
+                          </th>
+                          <th style={{ background: "var(--primary)" }}>
                             Email
                           </th>
                           <th style={{ background: "var(--primary)" }}>
@@ -445,6 +596,22 @@ export default class AssignLeads extends Component {
                                   <CallIcon color="primary" fontSize="small" />
                                 </IconButton>
                               </td>
+                              <td className="text-center">
+                            <Tooltip title="Add Remark">
+                              <IconButton
+                                onClick={(e) =>
+                                  this.setState({ leadid: clg._id }, () =>
+                                    this.handleGetRemarks(3)
+                                  )
+                                }
+                              >
+                                <DifferenceIcon
+                                  color="success"
+                                  fontSize="small"
+                                />
+                              </IconButton>
+                            </Tooltip>
+                          </td>
                               <td>{clg.email}</td>
                               <td>{clg.selected_stream}</td>
                               <td>{clg.selected_level}</td>
@@ -515,7 +682,78 @@ export default class AssignLeads extends Component {
                 </div>
               </div>
             )}
+    <Modal
+              show={this.state.showModal}
+              onHide={this.toggleModal}
+              backdrop="static"
+              keyboard={false}
+              size="lg"
+            >
+              <Modal.Header closeButton>
+                <Modal.Title>Add Remark</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Form.Group controlId="remarkForm">
+                  <Form.Label>Remark</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter remark"
+                    value={this.state.remark}
+                    onChange={this.handleRemarkChange}
+                  />
+                </Form.Group>
+                <div className="text-center mt-2">
+                  <Button variant="primary" onClick={this.handleAddRemark}>
+                    Add
+                  </Button>
+                </div>
+              </Modal.Body>
+              <Modal.Footer></Modal.Footer>
+              <Modal.Body>
+                <h5>Remarks History</h5>
 
+                {this.state.remarksHistory.length > 0 ? (
+                  <table className={`table table-hover custom-table`}>
+                    <thead>
+                      <tr>
+                        <th style={{ background: "var(--primary)" }}>
+                          Remarks
+                        </th>
+                        <th style={{ background: "var(--primary)" }}>Date</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {this.state.remarksHistory.map((obj, i) => {
+                        return (
+                          <tr key={i}>
+                            <td>{obj.remarks}</td>
+                            <td>{this.formatTimestamp(obj.createdAt)}</td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                ) : (
+                  <div
+                    style={{
+                      display: "flex",
+                      width: "100%",
+                      height: "inherit",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div style={{ fontWeight: "500" }}>
+                      <span style={{ color: "#0d6efd", cursor: "pointer" }}>
+                        {" "}
+                        No Records{" "}
+                      </span>
+                    </div>
+                  </div>
+                )}
+              
+              </Modal.Body>
+            </Modal>
             <Loading
               show={this.state.isLoading}
               onHide={() => this.setState({ isLoading: false })}

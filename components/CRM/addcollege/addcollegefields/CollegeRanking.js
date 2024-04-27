@@ -26,6 +26,50 @@ export default class CollegeRankings extends Component {
     };
   }
 
+  getDataClgRank=()=>{
+    fetch(
+      process.env.NEXT_PUBLIC_API_ENDPOINT +
+        `/admin/get-college-info?tab=8&id=${this.props.edit_id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("pt")}`,
+        },
+      }
+    ).then(async (res) => {
+      let response = await res.json();
+     
+      console.log(response.data);
+      if (response.error) {
+        this.setState({ isError: true, errorMsg: response.error });
+      } else {
+        if(response.data == null || response.data== undefined){
+          this.setState(
+            {
+              rankingFields: [],
+             },
+          )
+        }else{
+          const {ranking} = response.data;
+
+          this.setState(
+            {
+              rankingFields: ranking,
+             },
+          )
+        }
+        
+      }
+    });
+  }
+  componentDidMount() {
+    this.setState({
+      selectedClg: this.props.edit_id,
+    });
+    if (this.props.edit_id) {
+     this.getDataClgRank()
+    }
+  }
+
   onFieldChange(index, field, value, curFields, box) {
     const updatedFields = [...curFields];
     if(numberKeys.includes(field)){
@@ -62,6 +106,59 @@ export default class CollegeRankings extends Component {
 
   handleRanking =(e)=>{
     e.preventDefault()
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You want to save the data!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (this.props.edit_id) {
+          this.setState({isLoading:true})
+    var formData = new FormData();
+    formData.append("ranking", JSON.stringify(this.state.rankingFields));
+    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/edit-college-info?tab=8&id=${this.props.edit_id}`, {
+method: 'PUT',
+headers: {
+  'Authorization': `Bearer ${localStorage.getItem("pt")}`
+},
+body: formData
+})
+.then (async response => {
+  // console.log(response)
+  this.setState({  isLoading: false})
+
+if (response.ok) {
+  var res = await response.json();
+  Swal.fire({
+    title: "Success",
+    text: `${res.message}`,
+    icon: "success",
+    confirmButtonText: "Ok",
+  }).then(() => {
+   this.getDataClgRank()
+
+  });
+} else {
+  var res = await response.json();
+  Swal.fire({
+    title: "error",
+    text: `${res.error}`,
+    icon: "error",
+    confirmButtonText: "Ok",
+  }).then(() => {
+    this.setState({isLoading:false})
+  });
+}
+})
+.catch(error => {
+console.error('Error:', error);
+});
+        }
+        else{
     this.setState({isLoading:true})
     var formData = new FormData();
     formData.append("college_id", this.state.selectedClg);
@@ -105,6 +202,9 @@ if (response.ok) {
 .catch(error => {
 console.error('Error:', error);
 });
+        }
+      }
+    })
   }
 
   render() {
@@ -114,6 +214,8 @@ console.error('Error:', error);
       <div className={Classes["add-user"]}>
         <div className={Classes["form-div"]}>
         <form action="#" onSubmit={(e) => this.handleRanking(e)}>
+        {!this.props.edit_id && (
+            <>
         <AddClgTopbar
               onclgchange={(id) => this.setState({ selectedClg: id })}
         selectedClg={this.state.selectedClg}
@@ -122,6 +224,7 @@ console.error('Error:', error);
               }
             />
             <hr />
+            </>)}
             {!this.state.iscollegeListEmpty ? (
               this.state.selectedClg != "" ? (
             <div>
@@ -232,7 +335,7 @@ console.error('Error:', error);
           </div>
           <div className="row">
               <div className="col-md-12">
-                <CTA title="Create"/>
+                <CTA title={this.props.edit_id ? "Update" : "Create"} />
               </div>
             </div>
             </div>

@@ -17,7 +17,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import AddClgTopbar from "@/components/Comps/AddClgTopbar";
 
 const courseFullname = coursenameList.map(course => course.fullName);
-const eligibilityLabels = coursefulleligibiltyCriteria.map(course => course.label);
+// const eligibilityLabels = coursefulleligibiltyCriteria.map(course => course.label);
 export default class Admission extends Component {
   constructor(props) {
     super(props);
@@ -28,6 +28,43 @@ export default class Admission extends Component {
       iscollegeListEmpty: false,
       admissionFields: [],
     };
+  }
+
+  getDataAddmission=()=>{
+    fetch(
+      process.env.NEXT_PUBLIC_API_ENDPOINT +
+        `/admin/get-college-info?tab=4&id=${this.props.edit_id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("pt")}`,
+        },
+      }
+    ).then(async (res) => {
+      let response = await res.json();
+     
+      console.log(response.data);
+      if (response.error) {
+        this.setState({ isError: true, errorMsg: response.error });
+      } else {
+        const {
+          admission_process,admission_eligibility_criteria
+        } = response.data;
+      this.setState(
+        {
+          admissiondesc: admission_process,
+          admissionFields: admission_eligibility_criteria,
+         },
+      )
+      }
+    });
+  }
+  componentDidMount() {
+    this.setState({
+      selectedClg: this.props.edit_id,
+    });
+    if (this.props.edit_id) {
+     this.getDataAddmission()
+    }
   }
 
   onFieldChange(index, field, value, curFields, box) {
@@ -73,7 +110,49 @@ export default class Admission extends Component {
       confirmButtonText: 'Yes'
     }).then((result) => {
       if (result.isConfirmed) {
+        if (this.props.edit_id) {
+          this.setState({isLoading:true})
+    var formData = new FormData();
+    formData.append("admission_process", this.state.admissiondesc);
+    formData.append("admission_eligibility_criteria", JSON.stringify(this.state.admissionFields));
+    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT +`/admin/edit-college-info?tab=4&id=${this.props.edit_id}`, {
+method: 'PUT',
+headers: {
+  'Authorization': `Bearer ${localStorage.getItem("pt")}`
+},
+body: formData
+})
+.then (async response => {
+  // console.log(response)
+  this.setState({  isLoading: false})
 
+if (response.ok) {
+  var res = await response.json();
+  Swal.fire({
+    title: "Success",
+    text: `${res.message}`,
+    icon: "success",
+    confirmButtonText: "Ok",
+  }).then(() => {
+     this.getDataAddmission()
+  });
+} else {
+  var res = await response.json();
+  Swal.fire({
+    title: "error",
+    text: `${res.error}`,
+    icon: "error",
+    confirmButtonText: "Ok",
+  }).then(() => {
+    this.setState({isLoading:false})
+  });
+}
+})
+.catch(error => {
+console.error('Error:', error);
+});
+        }
+        else{
     this.setState({isLoading:true})
     var formData = new FormData();
     formData.append("college_id", this.state.selectedClg);
@@ -119,14 +198,18 @@ if (response.ok) {
 console.error('Error:', error);
 });
       }
+    }
     });
   }
   render() {
+    console.log(this.state.admissionFields)
     // const { collegeList } = this.props
     return (
       <div className={Classes["add-user"]}>
         <div className={Classes["form-div"]}>
         <form action="#" onSubmit={(e) => this.handleAdmission(e)}>
+        {!this.props.edit_id && (
+            <>
         <AddClgTopbar
         selectedClg={this.state.selectedClg}
 
@@ -136,6 +219,8 @@ console.error('Error:', error);
               }
             />
             <hr />
+            </>
+)}
             {!this.state.iscollegeListEmpty ? (
               this.state.selectedClg != "" ? (
           <div className="row">
@@ -194,28 +279,7 @@ console.error('Error:', error);
                             )
                           }
                         />
-                                                {/* <Autocomplete
-  disablePortal
-  id="combo-box-demo"
-  options={courseFullname}
-  size="small"
-  onChange={(event, newValue) =>
-    this.onFieldChange(
-      i,
-      "course_name",
-      newValue,
-      this.state.admissionFields,
-      "1"
-    )
-  }
-  style={{ background: "white" }}
-  renderInput={(params) => (
-    <TextField
-      {...params}
-      placeholder="Enter Course Full Name"
-    />
-  )}
-/> */}
+                                            
                       </div>
                     </div>
 
@@ -240,7 +304,34 @@ console.error('Error:', error);
                             )
                           }
                         /> */}
-                                   <Autocomplete
+                        <select
+                    name="eligibility"
+                    id="eligibility"
+                    className="form-select"
+                    required
+                    value={field.eligibility}
+                    onChange={(e) =>
+                      this.onFieldChange(
+                        i,
+                        "eligibility",
+                        e.target.value,
+                        this.state.admissionFields,
+                        "1"
+                      )
+                    }
+                 
+                  >
+                    <option disabled value="">Select a Category Type</option>
+                    {coursefulleligibiltyCriteria.map((d, i) => {
+                      return (
+                        <option key={i} value={d.label}
+                       >
+                          {d.label}
+                        </option>
+                      );
+                    })}
+                  </select>
+                                   {/* <Autocomplete
   disablePortal
   id="combo-box-demo"
   options={eligibilityLabels}
@@ -261,7 +352,7 @@ console.error('Error:', error);
       placeholder="Enter Eligibility Criteria"
     />
   )}
-/>
+/> */}
                       </div>
                     </div>
                     <div className="col-md-2">
@@ -295,7 +386,7 @@ console.error('Error:', error);
 
             <div className="row">
               <div className="col-md-12">
-                <CTA title="Create"  />
+                <CTA title={this.props.edit_id ? "Update" : "Create"} />
               </div>
             </div>
           </div>

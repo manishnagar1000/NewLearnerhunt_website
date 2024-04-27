@@ -14,7 +14,7 @@ const CounterComponent = () => {
                 setCoursesCount(prevCount => prevCount + 2);
             }
             if (collegesCount < 1000) {
-                setCollegesCount(prevCount => prevCount + 15);
+                setCollegesCount(prevCount => prevCount + 10);
             }
             if (counsellorsCount < 50) {
                 setCounsellorsCount(prevCount => prevCount + 1);
