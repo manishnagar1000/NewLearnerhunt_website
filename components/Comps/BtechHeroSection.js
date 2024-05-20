@@ -281,7 +281,7 @@ const BtechHeroSection = ({ inputRef }) => {
                         }}
                       >
                         <option value="" disabled>
-                          budget *
+                          Budget *
                         </option>
                         {budgetdata.map((c, i) => {
                           return (

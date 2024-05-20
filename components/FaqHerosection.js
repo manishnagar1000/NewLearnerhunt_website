@@ -1,5 +1,4 @@
 import React from 'react';
-import Styles from '@/styles/FAQ.module.css'
 import Accordion from 'react-bootstrap/Accordion';
 import {Homepagefaq} from "../components/Comps/type";
 
