@@ -171,7 +171,10 @@ const FormLogin = ({ closeModal,islogin }) => {
                   if (role == 3) {
                     localStorage.setItem("userid", userid);
                     window.location.reload();
-                  } else if (role == 1) {
+                  } else if (role == 6) {
+                    router.push("/tutorportal/my-profile");
+                    localStorage.setItem("tp", userid);
+                  }else if (role == 1) {
                     router.push("/collegeportal/my-kyc");
                     localStorage.setItem("ct", userid);
                   } else {
@@ -253,7 +256,7 @@ const FormLogin = ({ closeModal,islogin }) => {
       </span>
       <div className={Styles["top-section"]}>
         <img
-          src="/assets/images/learnerhunt-logo.webp"
+          src="/assets/images/Logo.webp"
           width={200}
           height={60}
           alt="logo"

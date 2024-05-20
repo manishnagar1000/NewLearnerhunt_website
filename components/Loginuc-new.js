@@ -8,6 +8,7 @@ import FormSignUp from "./FormSignup";
 
 
 export default function Loginuc({ isOpen, onClose, role }) {
+  // console.log(role)
   const [isLogin,setIsLogin] =useState(true)
 
   return (

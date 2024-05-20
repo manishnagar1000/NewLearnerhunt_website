@@ -101,9 +101,16 @@
     color: #b3bccc;
     font-size: 18px;
 }
-.blog-list .card {
+.card {
     margin-top: 5px;
     margin-bottom: 5px;
+}
+
+.card_link{
+    text-decoration: none;
+}
+.card_text{
+    margin: 0.5rem 0;
 }
 .card-body {
     flex: 1 1 auto;
@@ -116,7 +123,7 @@
     font-weight: 600;
     line-height: 23px;
     color: #2d4370;
-    margin: 0;
+    margin: 0.5rem 0;
 }
 .card-body p {
     font-size: 18px;
@@ -182,6 +189,38 @@
     justify-content: center;
     align-items: center;
     margin: 2rem 0;
+}
+
+
+.image-box {
+    position: relative;
+    margin: auto;
+    overflow: hidden;
+}
+.image-box img {
+    object-fit: fill;
+    transition: 0.3s;
+    transform: scale(1);
+}
+
+.image-box:hover img {
+    transform: scale(1.1);
+}
+
+.card:hover{
+border: 1px solid gray;
+}
+/* .card img{
+    object-fit: fill;
+    transition: 0.3s;
+}
+.card img:hover{
+transform: scale(1.1);
+} */
+
+.blog-category-list {
+    background: #2d4370;
+    height: 230px;
 }
 
 @media screen and (max-width: 767px){

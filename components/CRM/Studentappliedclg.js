@@ -21,11 +21,18 @@ import { Spinner } from "react-bootstrap";
 import SendTimeExtensionIcon from "@mui/icons-material/SendTimeExtension";
 import Avatar from "@mui/material/Avatar";
 import Classes from "/styles/Popup.module.css";
+import Chip from "@mui/material/Chip";
+import LoopIcon from "@mui/icons-material/Loop";
+import Loading from "@/components/Comps/Loading";
 
 const headCells = [
   {
     id: "studname",
     label: "Student Name",
+  },
+  {
+    id: "counsellorname",
+    label: "Counsellor name",
   },
   {
     id: "mobnumber",
@@ -188,6 +195,14 @@ function EnhancedTableToolbar(props) {
               placeholder="Search..."
               onChange={handleSearchChange}
             />
+            <Tooltip title="Refresh">
+                      <IconButton
+                        aria-label="Refresh"
+                        onClick={() =>props.userListData()}
+                      >
+                        <LoopIcon />
+                      </IconButton>
+                    </Tooltip>
           </>
         )}
       </Toolbar>
@@ -206,11 +221,15 @@ export default function Studentappliedclg() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedCounsellor, setSelectedCounsellor] = useState("");
+  const [isremarkLoading,setIsRemarkLoading] = useState(false)
+  const [remarkshowModal, setRemarkshowModal] = useState(false);
+  const [remarksHistory, setRemarksHistory] = useState([]);
   useEffect(() => {
     getUserList();
   }, []);
 
   const getUserList = () => {
+    setIsLoading(true)
     fetch(
       process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/leads?lid=${-1}&type=2`,
       {
@@ -235,6 +254,8 @@ export default function Studentappliedclg() {
           window.location.reload();
         });
       }
+    setIsLoading(false)
+
     });
   };
   const formatTimestamp = (timestamp) => {
@@ -347,6 +368,36 @@ export default function Studentappliedclg() {
       }
     });
   };
+  const handleGetRemarks = (e, c, id) => {
+    e.preventDefault();
+
+    try {
+      setIsRemarkLoading(true);
+      setRemarkshowModal(true);
+      fetch(
+        process.env.NEXT_PUBLIC_API_ENDPOINT +
+          `/admin/counsellor-remarks?lid=${id}&lt=2&cid=${c._id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("pt")}`,
+          },
+        }
+      ).then(async (res) => {
+        if (res.ok) {
+          // console.log(res)
+          let response = await res.json();
+          console.log(response.data);
+          setRemarksHistory(response.data.remarks);
+        } else {
+          let response = await res.json();
+        }
+        setIsRemarkLoading(false);
+
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <>
       <Box sx={{ width: "100%" }}>
@@ -397,6 +448,32 @@ export default function Studentappliedclg() {
                         />
                       </TableCell>
                       <TableCell>{row.full_name}</TableCell>
+                      <TableCell>
+                        {row.counsellors.length > 0 ? (
+                          row.counsellors.map((c, i) => {
+                            return (
+                              <Chip
+                                onClick={(e) => handleGetRemarks(e, c, row._id)}
+                                key={i}
+                                label={c.name}
+                                variant="outlined"
+                                color="primary"
+                                style={{
+                                  marginRight: "5px",
+                                  marginBottom: "5px",
+                                }}
+                              />
+                            );
+                          })
+                        ) : (
+                          <Chip
+                            label={"Not Assigned"}
+                            variant="outlined"
+                            color="error"
+                            style={{ marginRight: "5px", marginBottom: "5px" }}
+                          />
+                        )}
+                      </TableCell>
                       <TableCell>{row.contact_no}</TableCell>
                       <TableCell>{row.email}</TableCell>
                       <TableCell>{row.course_interested}</TableCell>
@@ -469,6 +546,73 @@ export default function Studentappliedclg() {
           </Box>
         </Modal.Body>
       </Modal>
+
+      <Modal
+        show={remarkshowModal}
+        onHide={() => setRemarkshowModal(false)}
+        backdrop="static"
+        keyboard={false}
+        size="lg"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Counsellor Remark History</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          {!isremarkLoading ? (
+            remarksHistory.length > 0 ? (
+              <table className={`table table-hover custom-table`}>
+                <thead>
+                  <tr>
+                    <th style={{ background: "var(--primary)" }}>Remarks</th>
+                    <th style={{ background: "var(--primary)" }}>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {remarksHistory.map((obj, i) => {
+                    return (
+                      <tr key={i}>
+                        <td>{obj.remarks}</td>
+                        <td>{formatTimestamp(obj.createdAt)}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            ) : (
+              <div
+                style={{
+                  display: "flex",
+                  width: "100%",
+                  height: "inherit",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <div style={{ fontWeight: "500" }}>
+                  <span style={{ color: "#0d6efd", cursor: "pointer" }}>
+                    {" "}
+                    No Records{" "}
+                  </span>
+                </div>
+              </div>
+            )
+          ) : (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100%",
+              }}
+            >
+              <Spinner animation="border" variant="dark" />
+            </div>
+          )}
+        </Modal.Body>
+      </Modal>
+      <Loading show={isLoading} onHide={() => setIsLoading(false)} />
+
     </>
   );
 }

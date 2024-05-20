@@ -119,7 +119,7 @@ const componentList = [
   },
   {
     comp:<LandingPageLeads/>,
-    slug:"landingpageleads",
+    slug:"mbaleads",
     role:[0,4]
   },
   {
@@ -149,8 +149,8 @@ const componentList = [
   },
   // {
   //   comp:<ImportExport/>,
-  //   slug:"importexport"
-  //   role:[0,4]
+  //   slug:"importexport",
+  //   role:[0]
   // }
 ];
 export default function AdminPortalSlug() {

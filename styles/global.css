@@ -16,7 +16,7 @@ p {
 .custom_footer {
      /* background-color: #013d8e; */
     background-color: #f9f9f9;
-    padding: 2rem 0rem;
+    /* padding: 2rem 0rem; */
     margin-bottom: 3rem;
 }
 
@@ -179,7 +179,7 @@ color: red;
 }
 /* custom-table end */
 ::-webkit-scrollbar {
-    width: 5px;
+    width: 10px;
   }
   
   /* Track */

@@ -29,7 +29,7 @@ const agoraAppid = process.env.NEXT_PUBLIC_AGORA_APP_ID,
   agoraTokenurl = process.env.NEXT_PUBLIC_AGORA_TOKEN_URL;
 
 export default function CollegeName({ collegedata }) {
-  // console.log(collegedata);
+  console.log(collegedata);
   // console.log(collegedata.seodata)
   const collegeid = collegedata.generalinfo._id;
   const [userStatus, setUserStatus] = useState(false);
@@ -1241,7 +1241,7 @@ export default function CollegeName({ collegedata }) {
                     </div>
                   )}
                   <div className={Classes["description-section"]}>
-                    <h3>Meet Our Counselors</h3>
+                    <h3>Meet Our Counsellors</h3>
                     <div>
                       <Carousel
                         responsive={responsive}

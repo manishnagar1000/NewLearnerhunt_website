@@ -369,9 +369,9 @@ export default class PhoneCalls extends Component {
                         Click to Call
                       </th>
                       {/* <th style={{ background: "var(--primary)" }}>Caller</th> */}
-                      <th style={{ background: "var(--primary)" }}>
+                      {/* <th style={{ background: "var(--primary)" }}>
                         Student Email
-                      </th>
+                      </th> */}
                       <th style={{ background: "var(--primary)" }}>Remarks</th>
 
                       <th style={{ background: "var(--primary)" }}>Date</th>
@@ -410,13 +410,10 @@ export default class PhoneCalls extends Component {
                           </td> */}
 
                           {/* <td>{clg.customer_number}</td> */}
-                          <td>
-                            {/* {clg.studEmail.replace(
-                              /(?<=.{3}).(?=[^@]*?@)/g,
-                              "*"
-                            )} */}
+                          {/* <td>
+                           
                             {clg.studEmail}
-                          </td>
+                          </td> */}
                           <td className="text-center">
                             <Tooltip title="Add Remark">
                               <IconButton

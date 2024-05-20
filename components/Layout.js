@@ -8,6 +8,8 @@ import PopForm from "./Comps/PopForm";
 // const pagesnothaveheader = ["/dashboard"]
 // const pagesnothavefooter = ["/dashboard"]
 const Layout = ({ children }) => {
+
+  // console.log(children.props.testeligibility)
   const router = useRouter();
   const { pathname } = router;
 
@@ -21,16 +23,27 @@ const Layout = ({ children }) => {
         !pathname.startsWith("/counsellorportal") &&
         !pathname.startsWith("/collegeportal") && 
         !pathname.startsWith("/ads/mbaleads") && 
+        !pathname.startsWith("/tutorportal") && 
+        !pathname.startsWith("/ads/btech-bca-bba-college-admission") && 
+
 
      <Topbar />}
      {!pathname.startsWith("/adminportal") &&
      !pathname.startsWith("/collegeportal") &&
      !pathname.startsWith("/counsellorportal") &&
      !pathname.startsWith("/ads/mbaleads") && 
+     !pathname.startsWith("/tutorportal") && 
+     !pathname.startsWith("/ads/btech-bca-bba-college-admission") && 
 
      <PopForm/>}
+ {!pathname.startsWith("/adminportal") &&
+     !pathname.startsWith("/collegeportal") &&
+     !pathname.startsWith("/counsellorportal") &&
+     !pathname.startsWith("/ads/mbaleads") && 
+     !pathname.startsWith("/tutorportal") && 
+     !pathname.startsWith("/ads/btech-bca-bba-college-admission") && 
 
-      <WhatsAppButton />
+     <WhatsAppButton/>}
 
       {children}
       {!pathname.startsWith("/dashboard") &&
@@ -41,7 +54,11 @@ const Layout = ({ children }) => {
         !pathname.startsWith("/collegeportal") &&
         !pathname.startsWith("/counsellorportal") &&
         !pathname.startsWith("/ads/mbaleads") && 
-        <Footer />}
+        !pathname.startsWith("/ads/btech-bca-bba-college-admission") && 
+
+        !pathname.startsWith("/tutorportal") && 
+
+        <Footer data={children.props.testeligibility}/>}
     </>
   );
 };

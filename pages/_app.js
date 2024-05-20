@@ -128,14 +128,28 @@ export default function App({ Component, pageProps }) {
         />
 
         {/* zoho chatbot code my number */}
-        <script
+        {/* <script
           defer
           dangerouslySetInnerHTML={{
             __html: `var $zoho=$zoho || {};$zoho.salesiq = $zoho.salesiq || {widgetcode: "siqe16fa7414d6dcdfb80e1bb99062822b5844fde693774110e98a5fe3c02f9f5cf", values:{},ready:function(){}};var d=document;s=d.createElement("script");s.type="text/javascript";s.id="zsiqscript";s.defer=true;s.src="https://salesiq.zohopublic.in/widget";t=d.getElementsByTagName("script")[0];t.parentNode.insertBefore(s,t);`,
           }}
           type="text/javascript"
           id="zsiqchat"
-        ></script>
+        ></script> */}
+        {/* talk.to chatbot */}
+        <script defer type="text/javascript" dangerouslySetInnerHTML={{
+          __html: `
+        var Tawk_API=Tawk_API||{ }, Tawk_LoadStart=new Date();
+        (function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+        s1.async=true;
+        s1.src='https://embed.tawk.to/6631ec9ca0c6737bd1332c4a/1hspg8hsh';
+        s1.charset='UTF-8';
+        s1.setAttribute('crossorigin','*');
+        s0.parentNode.insertBefore(s1,s0);
+})();
+`}}>
+        </script>
       </Head>
       <Layout>
         <Component {...pageProps} />

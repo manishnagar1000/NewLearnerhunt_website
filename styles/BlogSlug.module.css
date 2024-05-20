@@ -1,0 +1,155 @@
+/* .container {
+    display: flex;
+    max-width: none;
+    width: 80%; 
+    margin: 0 auto;
+    padding: 20px;
+    gap: 10px
+  } */
+
+  .main_box {
+    flex: 1;
+  }
+
+  .popular-posts,
+   .newsletter {
+    margin-bottom: 30px;
+  }
+
+  
+
+  aside.sidebar {
+    flex: 0 0 100px;
+    position: sticky;
+    top: 30px;
+}
+
+.note {
+  background-color: #f3f4f6;
+  border-left: 5px solid #2D4370;
+}
+
+.note1{
+  margin-left: 10px;
+}
+
+.author_detail{
+  width: 100%;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  background-color: #f3f4f6;
+}
+.author{
+  padding: 20px;
+  display: flex;
+}
+
+.box3{
+  display: flex;
+}
+
+.popular_posts,
+.newsletter {
+  margin-bottom: 30px;
+
+}
+
+.sidebar {
+  width: 280px;
+  flex: 0 0 100px;
+  position: sticky;
+  top: 100px;
+
+}
+
+.sidebar_content {
+  display: flex;
+  margin: 0.5rem;
+  cursor: pointer;
+  align-items: center;
+}
+
+.content {
+  background-color: #f4f4f4;
+}
+
+.star {
+  color: #000080;
+}
+
+.input{
+    width: 93%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.button[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  background-color: #31416c;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
+.img{
+  border-radius: 10px;
+  height: 40vh;
+  object-fit: cover;
+}
+
+.heading{
+  color: #2D4370;
+
+}
+
+.paragraph{
+  font-size: 20px;
+}
+
+
+
+
+
+
+
+@media only screen and (max-width: 500px) {
+  .container {
+      width: 100%;
+  }
+  .box3{
+      display: flex;
+      flex-direction: row;
+  }
+
+  .sidebar{
+      width: 100%;
+  }
+}
+
+@media only screen and (max-width: 980px) {
+  .container {
+      width: 100%;
+  }
+
+  .sidebar{
+      width: 100%;
+  }
+  
+}
+
+
+@media (min-width: 768px) and (max-width: 1024px) {
+
+  .container{
+    width: 100%;
+  }
+  .button[type="submit"] {
+      width: 96%; /* Adjust the width as per your requirement */
+  }
+}
+

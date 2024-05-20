@@ -63,7 +63,7 @@ const Myprofile = () => {
           oldData = res.data;
           setname(res.data.name);
         setGender(res.data.gender);
-        setDate(res.data.createdAt.split('T')[0]);
+        setDate(res.data.dob.split('T')[0]);
           setMobile(res.data.mobile);
           setQualification(res.data.qualification)
           setSpecialization(res.data.specialization)
@@ -160,7 +160,7 @@ const Myprofile = () => {
   const handleKycclose = () => {
     // console.log(oldData);
     setname(oldData.name);
-    setDate(oldData.createdAt.split('T')[0]);
+    setDate(oldData.dob.split('T')[0]);
     setGender(oldData.gender);
     setMobile(oldData.mobile);
     if(oldData.country){

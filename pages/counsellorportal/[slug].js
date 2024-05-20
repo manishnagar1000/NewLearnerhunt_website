@@ -7,6 +7,7 @@ import PhoneCalls from "@/components/counsellorCrm/PhoneCalls";
 import AssignLeads from "@/components/counsellorCrm/AssignLeads";
 import VideoCalls from "@/components/counsellorCrm/VideoCalls";
 import MyCallinghistory from "@/components/counsellorCrm/MyCallinghistory";
+import CollegePercent from "@/components/counsellorCrm/CollegePercent";
 
 const componentList = [
   {
@@ -28,6 +29,10 @@ const componentList = [
   {
     comp:<MyCallinghistory/>,
     slug:'my-calls'
+  },
+  {
+    comp:<CollegePercent/>,
+    slug:'college-slab'
   }
  
  

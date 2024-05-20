@@ -513,3 +513,606 @@ export const options = [
   { value: 'strawberry', label: 'Strawberry' },
   { value: 'vanilla', label: 'Vanilla' }
 ]
+
+// College percentage excle sheet
+export const collegeperexcle = [
+  { College: "Centurian University Odisa", remarks1to10: "16,000", remarks10: "17,600", remarks20: "19,200" },
+  { College: "Dev Bhoomi University, Dehradun", remarks1to10: "14,000", remarks10: "15,400", remarks20: "16,800" },
+  { College: "Iilm Grt Noida", remarks1to10: "16,000", remarks10: "17000", remarks20: "19,200" },
+  { College: "NDIT Delhi", remarks1to10: "16000", remarks10: "17000", remarks20: "19,200" },
+  { College: "ADYPU", remarks1to10: "28,000", remarks10: "30,800", remarks20: "33,600" },
+  { College: "AIMS, Pune", remarks1to10: "20,000", remarks10: "22,000", remarks20: "24,000" },
+  { College: "ATLAS/UPGRADE", remarks1to10: "28,000", remarks10: "30,800", remarks20: "33,600" },
+  { College: "Bennet", remarks1to10: "28,000", remarks10: "30,800", remarks20: "33,600" },
+  { College: "Dev bhoomi", remarks1to10: "14,000", remarks10: "15,400", remarks20: "16,800" },
+  { College: "Doon Bus school", remarks1to10: "16,000", remarks10: "17,600", remarks20: "19,200" },
+  { College: "FIIB", remarks1to10: "34,000", remarks10: "37,400", remarks20: "40,800" },
+  { College: "GBSRC, Pune", remarks1to10: "20,000", remarks10: "22,000", remarks20: "24,000" },
+  { College: "GD GOENKA", remarks1to10: "24,000", remarks10: "26,400", remarks20: "28,800" },
+  { College: "GNIOT", remarks1to10: "16,000", remarks10: "17,600", remarks20: "19,200" },
+  { College: "IASMS", remarks1to10: "40,000", remarks10: "44,000", remarks20: "48,000" },
+  { College: "IILM NOIDA", remarks1to10: "24,000", remarks10: "26,400", remarks20: "28,800" },
+  { College: "imarticus", remarks1to10: "26,400", remarks10: "29,040", remarks20: "31,680" },
+  { College: "IMM ind inst mkt mgt", remarks1to10: "28,000", remarks10: "30,800", remarks20: "33,600" },
+  { College: "Indus (data)", remarks1to10: "-", remarks10: "-", remarks20: "-" },
+  { College: "ISBS pune", remarks1to10: "20,000", remarks10: "22,000", remarks20: "24,000" },
+  { College: "itm navi", remarks1to10: "28,000", remarks10: "30,800", remarks20: "33,600" },
+  { College: "JKBS", remarks1to10: "28,000", remarks10: "30,800", remarks20: "33,600" },
+  { College: "krmang", remarks1to10: "16,000", remarks10: "17,600", remarks20: "19,200" },
+  { College: "MABS", remarks1to10: "28,000", remarks10: "30,800", remarks20: "33,600" },
+  { College: "Mangal may, Grt Noida", remarks1to10: "16,000", remarks10: "17,600", remarks20: "19,200" },
+  { College: "NDIIT,Delhi", remarks1to10: "28,000", remarks10: "30,800", remarks20: "33,600" },
+  { College: "NDIM", remarks1to10: "20,000", remarks10: "22,000", remarks20: "24,000" },
+  { College: "NIU", remarks1to10: "32,000", remarks10: "35,200", remarks20: "38,400" },
+  { College: "PIBM", remarks1to10: "28,000", remarks10: "30,800", remarks20: "33,600" },
+  { College: "RIIM, Pune", remarks1to10: "40,000", remarks10: "44,000", remarks20: "48,000" },
+  { College: "seekify tech", remarks1to10: "-", remarks10: "-", remarks20: "-" },
+  { College: "soil/grow talent", remarks1to10: "32,000", remarks10: "35,200", remarks20: "38,400" },
+  { College: "Strive India/UBS", remarks1to10: "20,000", remarks10: "22,000", remarks20: "24,000" },
+  { College: "Surya datta", remarks1to10: "28,000", remarks10: "30,800", remarks20: "33,600" },
+  { College: "True wings/ISBR", remarks1to10: "26,000", remarks10: "28,600", remarks20: "31,200" },
+  { College: "UPES,Dehradun", remarks1to10: "20,000", remarks10: "22,000", remarks20: "24,000" },
+  { College: "vinayka selum", remarks1to10: "12,000", remarks10: "13,200", remarks20: "14,400" },
+  { College: "Woxon(pinacan)", remarks1to10: "28,000", remarks10: "30,800", remarks20: "33,600" },
+
+  // Add more data as needed
+];
+
+
+export const Homepagefaq = [
+  {
+    question: "What is educational counseling, and how can it help me?",
+    answer: "Academic advising is a service offered to help students make informed decisions about their academic and career goals. Counselors guide course selection, college admissions, career planning, and other educational matters. They help students explore their interests, strengths, and aspirations to develop a personalized instructional plan that meets their goals."
+},
+{
+    question: "Is educational advising only for high school students?",
+    answer: "No.  Academic advising is available for students of all ages and educational levels. Although often associated with high school counseling in college preparation, academic and career planning has provided academic counseling services to support students in college and university and adult education settings for individuals pursuing higher education or career advancement."
+},
+{
+    question: "I am considering transferring to another college. Can an educational consultant help with this process?",
+    answer: "Yes, educational counselors can help you explore options for another college or university. They can provide information on transfer requirements, help assess transfer fees, and provide assistance throughout the application process. In addition, they can help you assess whether transferring is the right decision for your academic and career goals."
+},
+{
+    question: "Is there a fee for counseling sessions?",
+    answer: "Absolutely! Learner Hunt is designed to cater to learners of all levels, from beginners to advanced. The platform offers a diverse range of hunts and quests covering various subjects and topics, allowing participants to choose activities that match their interests and skill levels.For beginners, Learner Hunt provides introductory hunts that offer a gentle introduction to key concepts and subjects. These hunts may include informative content, simple puzzles, and guided challenges to help beginners grasp fundamental knowledge and build a strong foundation in the subject matter.Advanced learners, on the other hand, can engage with more complex hunts that delve deeper into topics, offer challenging puzzles, and encourage critical thinking and problem-solving skills. These hunts may involve advanced concepts, in-depth analyses, and opportunities for participants to apply their knowledge in creative and innovative ways.Additionally, Learner Hunt allows participants to customize their learning experience by selecting hunts and quests that align with their current level of expertise and learning goals. Whether you're just starting out or looking to expand your knowledge and skills, Learner Hunt offers something for everyone, making it suitable for learners of all levels."
+},
+{
+    question: "How does the pricing structure work for courses on Learner Hunt?",
+    answer: "There is no charge. The counseling service is free and provided by Learnerhunt."
+}
+];
+
+
+export const partners =
+
+
+[
+    [
+      {
+            "image": "https://eduloans.org/images/counselors/dronacharyagroup.png"  }
+    ],
+    [
+        {
+            
+            "image": "https://eduloans.org/images/partners/sbi.png"
+          }
+  ],
+
+  [
+    {
+           "image": "https://eduloans.org/images/partners/hdfc-credila.png"
+      }
+],
+[
+    {
+        "image": "https://eduloans.org/images/counselors/bluesky_immigration.png"   }
+],
+[
+    {
+      "image": "https://eduloans.org/images/partners/prodigy.png"
+       }
+],
+[
+    {
+          "image": "https://eduloans.org/images/partners/hdfc-credila.png"
+        }
+      ],
+      [
+          {
+          
+            "image": "https://eduloans.org/images/partners/bob_new.png"
+          }
+]
+
+
+ ]
+
+ export const Reasondata = [
+    {
+      "title": "Easy Loan Approvals",
+      "description": "Our simple application process ensures quick approval with minimal documentation, making it stress-free for students and parents alike."
+    },
+    {
+      "title": "Fast and FREE",
+      "description": "We prioritize speed and transparency, processing your application swiftly and without any hidden fees, so you can pursue your education without delay or financial burden."
+    },
+    {
+      "title": "Hassle free",
+      "description": "Navigate educational financing effortlessly with our streamlined services. From application to disbursement, we handle every step with care, providing support along the way."
+    },
+    {
+      "title": "100% Safe and Secure",
+      "description": "Your privacy is our priority. With top-notch data protection measures, your personal information is always secure, giving you peace of mind as you focus on your education."
+    }
+  ]
+  
+  export const indiaData = [
+    {
+      "image": "https://eduloans.org/images/offers/Eduloans__%20Nova%20image.png",
+      "heading": "Get premium U.S. credit card",
+      "description": "with Nova Credit",
+      "buttonText": "REGISTER",
+      "Link": "https://www.novacredit.com/affiliate/eduloans",
+      "linkText": "NOVA CREDIT"
+    },
+    {
+      "image": "https://eduloans.org/images/offer-page-4stay.png",
+      "heading": "Secure an Accommodation",
+      "description": "Secure an Accommodation",
+      "buttonText": "REGISTER",
+      "Link": "https://eduloanshousing.4stay.com/",
+      "linkText": "EDULOANSHOUSING.4STAY"
+    },
+    {
+      "image": "https://eduloans.org/images/offer-page-flights.jpg",
+      "heading": "Exciting Cashback",
+      "description": "Flat Rs500 Cashback | On Travel Bookings",
+      "buttonText": "REGISTER",
+      "Link": "https://eduloans.org/flight-tickets",
+      "linkText": "KNOW MORE "
+    },
+    {
+      "image": "https://eduloans.org/images/offer-exams.jpg",
+      "heading": "Get 700 OFF on TOEFL Exam",
+      "description": "On Registering Exams",
+      "buttonText": "REGISTER",
+      "Link": "https://eduloans.org/exam-fees",
+      "linkText": "KNOW MORE"
+    },
+    {
+      "image": "https://eduloans.org/images/offer-page-medical.jpg",
+      "heading": "Card 2 Heading",
+      "description": "On Medical Insurance",
+      "buttonText": "REGISTER",
+      "Link": "https://eduloans.org/medical-insurance",
+      "linkText": "KNOW MORE"
+    },
+    {
+      "image": "https://eduloans.org/images/offer-courier-dhl.jpg",
+      "heading": "GBG makes it easy to find",
+      "description": "@ Discounted price Rs.999",
+      "buttonText": "REGISTER",
+      "Link": "https://eduloans.org/courier-dhl",
+      "linkText": "KNOW MORE"
+    },
+    {
+      "image": "https://eduloans.org/images/offers/gbgImg.jpeg",
+      "heading": "GBG makes it easy to find",
+      "description": "With GBG Medical Insurance",
+      "buttonText": "REGISTER",
+      "Link": "https://students.uschipsolutions.com/210778086#/home",
+      "linkText": "GBG MEDICAL INSURANCE"
+    }
+  ];
+
+  export const ukData = [
+    {
+      "image": "https://eduloans.org/images/offers/gbgImg.jpeg",
+      "heading": "GBG makes it easy to find",
+      "description": "With GBG Medical Insurance",
+      "buttonText": "REGISTER",
+      "Link": "https://students.uschipsolutions.com/210778086#/home",
+      "linkText": "GBG MEDICAL INSURANCE"
+    },
+    {
+      "image": "https://eduloans.org/images/offers/Eduloans__%20Nova%20image.png",
+      "heading": "Get premium U.S. credit card",
+      "description": "with Nova Credit",
+      "buttonText": "REGISTER",
+      "Link": "https://www.novacredit.com/affiliate/eduloans",
+      "linkText": "NOVA CREDIT"
+    },
+    {
+      "image": "https://eduloans.org/images/offer-page-4stay.png",
+      "heading": "Secure an Accommodation",
+      "description": "Secure an Accommodation",
+      "buttonText": "REGISTER",
+      "Link": "https://eduloanshousing.4stay.com/",
+      "linkText": "EDULOANSHOUSING.4STAY"
+    },
+    {
+      "image": "https://eduloans.org/images/offer-page-flights.jpg",
+      "heading": "Exciting Cashback",
+      "description": "Flat Rs500 Cashback | On Travel Bookings",
+      "buttonText": "REGISTER",
+      "Link": "https://eduloans.org/flight-tickets",
+      "linkText": "KNOW MORE "
+    },
+    {
+      "image": "https://eduloans.org/images/offer-exams.jpg",
+      "heading": "Get 700 OFF on TOEFL Exam",
+      "description": "On Registering Exams",
+      "buttonText": "REGISTER",
+      "Link": "https://eduloans.org/exam-fees",
+      "linkText": "KNOW MORE"
+    },
+    {
+      "image": "https://eduloans.org/images/offer-page-medical.jpg",
+      "heading": "Card 2 Heading",
+      "description": "On Medical Insurance",
+      "buttonText": "REGISTER",
+      "Link": "https://eduloans.org/medical-insurance",
+      "linkText": "KNOW MORE"
+    },
+    {
+      "image": "https://eduloans.org/images/offer-courier-dhl.jpg",
+      "heading": "GBG makes it easy to find",
+      "description": "@ Discounted price Rs.999",
+      "buttonText": "REGISTER",
+      "Link": "https://eduloans.org/courier-dhl",
+      "linkText": "KNOW MORE"
+    },
+  
+  ];
+  
+
+  export const countryData ={
+  "countries": [
+    {
+      "name": "India",
+      "currency":"₹",
+      "states": [
+        {
+          "name": "Andhra Pradesh",
+          "cities": [ "Adoni",
+          "Anantapuram",
+          "Bhimavaram",
+          "Chilakaluripet",
+          "Chittoor",
+          "Dharmavaram",
+          "Eluru",
+          "Guntakal",
+          "Guntur",
+          "Gudivada",
+          "Hindupur",
+          "Kadiri",
+          "Kadapa",
+          "Kakinada",
+          "Kurnool",
+          "Machilipatnam",
+          "Madanapalle",
+          "Mangalagiri-Tadepalli",
+          "Nandyal",
+          "Narasaraopet",
+          "Nellore",
+          "Ongole",
+          "Proddatur",
+          "Rajamahendravaram",
+          "Srikakulam",
+          "Tadepalligudem",
+          "Tadipatri",
+          "Tenali",
+          "Tirupati",
+          "Vijayawada",
+          "Visakhapatnam",
+          "Vizianagaram"]
+        },
+        {
+          "name": "Arunachal Pradesh",
+          "cities": ["Itanagar", "Naharlagun", "Pasighat", "Roing", "Tawang"]
+        },
+        {
+          "name": "Assam",
+          "cities": ["Guwahati", "Dibrugarh", "Silchar", "Jorhat", "Nagaon"]
+        },
+        {
+          "name": "Bihar",
+          "cities": ["Patna", "Gaya", "Bhagalpur", "Muzaffarpur", "Purnia"]
+        },
+        {
+          "name": "Chhattisgarh",
+          "cities": ["Raipur", "Bhilai", "Bilaspur", "Korba", "Raigarh"]
+        },
+        {
+          "name": "Goa",
+          "cities": ["Panaji", "Vasco da Gama", "Margao", "Mapusa", "Ponda"]
+        },
+        {
+          "name": "Gujarat",
+          "cities": ["Ahmedabad", "Surat", "Vadodara", "Rajkot", "Bhavnagar"]
+        },
+        {
+          "name": "Haryana",
+          "cities": ["Faridabad", "Gurgaon", "Panipat", "Ambala", "Yamunanagar"]
+        },
+        {
+          "name": "Himachal Pradesh",
+          "cities": ["Shimla", "Mandi", "Solan", "Dharamshala", "Kullu"]
+        },
+        {
+          "name": "Jharkhand",
+          "cities": ["Ranchi", "Jamshedpur", "Dhanbad", "Bokaro", "Deoghar"]
+        },
+        {
+          "name": "Karnataka",
+          "cities": ["Bangalore", "Mysore", "Hubli", "Mangalore", "Belgaum"]
+        },
+        {
+          "name": "Kerala",
+          "cities": ["Thiruvananthapuram", "Kochi", "Kozhikode", "Thrissur", "Kollam"]
+        },
+        {
+          "name": "Madhya Pradesh",
+          "cities": ["Bhopal", "Indore", "Jabalpur", "Gwalior", "Ujjain"]
+        },
+        {
+          "name": "Maharashtra",
+          "cities": ["Mumbai", "Pune", "Nagpur", "Nashik", "Aurangabad"]
+        },
+        {
+          "name": "Manipur",
+          "cities": ["Imphal", "Thoubal", "Kakching", "Churachandpur", "Bishnupur"]
+        },
+        {
+          "name": "Meghalaya",
+          "cities": ["Shillong", "Tura", "Nongstoin", "Jowai", "Williamnagar"]
+        },
+        {
+          "name": "Mizoram",
+          "cities": ["Aizawl", "Lunglei", "Saiha", "Champhai", "Kolasib"]
+        },
+        {
+          "name": "Nagaland",
+          "cities": ["Kohima", "Dimapur", "Mokokchung", "Tuensang", "Wokha"]
+        },
+        {
+          "name": "Odisha",
+          "cities": ["Bhubaneswar", "Cuttack", "Rourkela", "Berhampur", "Sambalpur"]
+        },
+        {
+          "name": "Punjab",
+          "cities": ["Ludhiana", "Amritsar", "Jalandhar", "Patiala", "Bathinda"]
+        },
+        {
+          "name": "Rajasthan",
+          "cities": ["Jaipur", "Jodhpur", "Udaipur", "Kota", "Ajmer"]
+        },
+        {
+          "name": "Sikkim",
+          "cities": ["Gangtok", "Namchi", "Mangan", "Jorethang", "Singtam"]
+        },
+        {
+          "name": "Tamil Nadu",
+          "cities": ["Chennai", "Coimbatore", "Madurai", "Tiruchirappalli", "Salem"]
+        },
+        {
+          "name": "Telangana",
+          "cities": ["Hyderabad", "Warangal", "Nizamabad", "Karimnagar", "Ramagundam"]
+        },
+        {
+          "name": "Tripura",
+          "cities": ["Agartala", "Dharmanagar", "Udaipur", "Belonia", "Ambassa"]
+        },
+        {
+          "name": "Uttar Pradesh",
+          "cities": ["Agra",
+            "Akbarpur",
+            "Aligarh",
+            "Amroha",
+            "Ayodhya",
+            "Awagarh",
+            "Azamgarh",
+            "Bahraich",
+            "Ballia",
+            "Banda",
+            "Bareilly",
+            "Barabanki",
+            "Basti",
+            "Bijnor",
+            "Budaun",
+            "Chandausi",
+            "Deoria",
+            "Etah",
+            "Etawah",
+            "Farrukhabad-Fatehgarh",
+            "Fatehpur",
+            "Firozabad",
+            "Ghaziabad",
+            "Ghazipur",
+            "Gonda",
+            "Gorakhpur",
+            "Greater Noida",
+            "Hapur",
+            "Hardoi",
+            "Hathras",
+            "Jaunpur",
+            "Jhansi",
+            "Kanpur",
+            "Kasganj",
+            "Khurja",
+            "Lakhimpur",
+            "Lalitpur",
+            "Lucknow",
+            "Mainpuri",
+            "Maunath Bhanjan",
+            "Meerut",
+            "Mirzapur-Vindhyachal",
+            "Modinagar",
+            "Moradabad",
+            "Muzaffarnagar",
+            "Noida",
+            "Orai",
+            "Pilibhit",
+            "Prayagraj",
+            "Raebareli",
+            "Rampur",
+            "Sahaswan",
+            "Saharanpur",
+            "Sambhal",
+            "Shahjahanpur",
+            "Shamli",
+            "Shikohabad",
+            "Sitapur",
+            "Sultanpur",
+            "Tanda",
+            "Unnao",
+            "Varanasi"]
+        },
+        {
+          "name": "Uttarakhand",
+          "cities": ["Dehradun", "Haridwar", "Rishikesh", "Nainital", "Mussoorie"]
+        },
+        {
+          "name": "West Bengal",
+          "cities": ["Kolkata", "Howrah", "Durgapur", "Asansol", "Siliguri"]
+        },
+        {
+          "name": "Andaman and Nicobar Islands",
+          "cities": ["Port Blair", "Car Nicobar", "Hut Bay", "Diglipur", "Mayabunder"]
+        },
+        {
+          "name": "Chandigarh",
+          "cities": ["Chandigarh"]
+        },
+        {
+          "name": "Dadra and Nagar Haveli and Daman and Diu",
+          "cities": ["Daman", "Diu", "Silvassa", "Nani Daman", "Nani Diu"]
+        },
+        {
+          "name": "Delhi",
+          "cities": ["Delhi", "New Delhi"]
+        },
+        {
+          "name": "Ladakh",
+          "cities": ["Leh", "Kargil"]
+        },
+        {
+          "name": "Lakshadweep",
+          "cities": ["Kavaratti", "Agatti", "Andrott", "Minicoy", "Kalpeni"]
+        },
+        {
+          "name": "Puducherry",
+          "cities": ["Puducherry", "Karaikal", "Mahe", "Yanam"]
+        }
+      ]
+    },
+    {
+      "name": "UK",
+      "currency":"₹",
+      "states": [
+        {
+          "name": "England",
+          "cities": ["London", "Manchester", "Birmingham", "Liverpool", "Leeds"]
+        },
+        {
+          "name": "Scotland",
+          "cities": ["Edinburgh", "Glasgow", "Aberdeen", "Dundee", "Inverness"]
+        },
+        {
+          "name": "Wales",
+          "cities": ["Cardiff", "Swansea", "Newport", "Wrexham", "Bangor"]
+        },
+        {
+          "name": "Northern Ireland",
+          "cities": ["Belfast", "Derry", "Lisburn", "Newry", "Armagh"]
+        }
+      ]
+    }
+  ]
+}
+
+  export const FAQData = [{
+    question: "What is Learner Hunt?",
+    answer: "Learner Hunt is a digital platform for educational career counselling, providing detailed information related to educational institutions & universities offering Undergraduate Programs, Post Graduate Programs, MBBS, and other Professional Courses."
+
+},
+{
+    question: "What does it offers?",
+    answer: "We are rapidly increasing educational portal who will provide you valueable information,counselling and guidance to help your career path wisely."
+},
+{
+    question: "Can you tell me about the types of courses available on Learner Hunt?",
+    answer: "Our services provide accurate guidance for selecting the right courses and offer assistance in admissions and placements. We offer a wide range of courses including PGDM, MBA, B.Tech, BBA, BCA, and more, with college locations spanning across Delhi NCR, Pune, Mumbai, Bangalore, Hyderabad, and many more cities. Additionally, we facilitate scholarship opportunities for eligible candidates."
+},
+// {
+//     question: " How educational loans available in Learner Hunt?",
+//     answer: ""
+// },
+// {
+//     question: "How education loans repayment works?",
+//     answer: ""
+// }
+]
+
+export const ugbtechleads = 
+  {
+    "BBA": [
+      "Business Analytics",
+      "Travel and Tourism Management",
+      "International Business",
+      "Computer Application/ Information Technology",
+      "Banking and Finance Management",
+      "Entrepreneurship and Family Businesses",
+      "Hospitality and Hotel Management",
+      "Human Resource Management"
+    ],
+    "B.Tech": [
+      "Mechanical Engineering",
+      "Civil Engineering",
+      "Electrical Engineering",
+      "Computer Science and Engineering",
+      "Automobile Engineering",
+      "Aerospace Engineering",
+      "Biotechnology",
+      "Chemical Engineering",
+      "Artificial Intelligence",
+      "Information Technology",
+      "Agricultural Engineering",
+      "Data Science",
+      "Computer Science",
+      "Marine Engineering",
+      "Petroleum Engineering",
+      "Robotics",
+      "Software Engineering",
+      "BTech Biotechnology",
+      "BTech Chemical Engineering",
+      "Electronics and Communication Engineering",
+      "BTech ECE",
+      "Metallurgical Engineering",
+      "Biomedical Engineering",
+      "Construction Engineering"
+    ],
+    "BCA": [
+      "BCA in Blockchain in Cryptocurrency",
+      "BCA in Data Science",
+      "BCA in Artificial Intelligence",
+      "BCA in Cloud Technology & Information Security",
+      "BCA in AR and VR",
+      "BCA in Cyber Security",
+      "BCA in Digital Marketing",
+      "BCA in Data Analytics",
+      "BCA in Information Technology"
+    ]
+  }
+  export const budgetdata = [
+    "4 Lakh - 7 Lakh",
+    "8 Lakh - 10 Lakh",
+    "More then 10 Lakh",
+  ]
+
+
+
+
+
+  
+  

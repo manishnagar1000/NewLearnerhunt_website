@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import Classes from "/styles/mbaleads.module.css";
 import Link from "next/link";
-import HeroSection from "@/components/Comps/HeroSection";
+import MbaHeroSection from "@/components/Comps/MbaHeroSection";
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import Head from 'next/head';
@@ -90,7 +90,7 @@ export default function mbaleads() {
         <img
                       loading="lazy"
                       // src="/assets/images/Svglogo.svg"
-                      src="/assets/images/learnerhunt-logo.webp"
+                      src="/assets/images/Logo.webp"
                       alt="learnerhunt logo"
                       width={176}
                       height={55}
@@ -102,7 +102,7 @@ export default function mbaleads() {
                     </p>
         </div>
       </div>
-      <HeroSection inputRef={inputRef}/>
+      <MbaHeroSection inputRef={inputRef}/>
       {/* about us */}
       
       <div className={Classes['mba-Testimonials']}>

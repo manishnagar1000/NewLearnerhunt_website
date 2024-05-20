@@ -23,6 +23,10 @@ background-color: #fff;
     margin-right: 10px;
 }
 
+.basic span{
+    cursor: pointer;
+}
+
 .box{
     margin: 0.5rem 0;
 }

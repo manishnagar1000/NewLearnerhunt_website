@@ -9,7 +9,7 @@ const StructuredDataOrg = [
     "@type": "Organization",
     name: "Decred Digital Services Pvt. Ltd.",
     url: "https://www.learnerhunt.com",
-    logo: "https://www.learnerhunt.com/assets/images/learnerhunt-logo.webp",
+    logo: "https://www.learnerhunt.com/assets/images/Logo.webp",
     contactPoint: [
       {
         "@type": "ContactPoint",
@@ -30,7 +30,7 @@ const StructuredDataOrg = [
       "@type": "Organization",
       name: "Decred Digital Services Pvt. Ltd.",
       url: "https://www.learnerhunt.com",
-      logo: "https://www.learnerhunt.com/assets/images/learnerhunt-logo.webp",
+      logo: "https://www.learnerhunt.com/assets/images/Logo.webp",
       contactPoint: {
         "@type": "ContactPoint",
         telephone: "+918860077807",
@@ -63,7 +63,7 @@ const AboutUsPage = () => {
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="About Us | Premier Educational Career Counseling Platform"/>
 <meta name="twitter:description" content="We leading digital platform providing comprehensive information on colleges, universities, courses & career counseling. Trusted by students & professional."/>
-<meta name="twitter:image" content="https://www.learnerhunt.com/assets/images/learnerhunt-logo.webp"/>
+<meta name="twitter:image" content="https://www.learnerhunt.com/assets/images/Logo.webp"/>
 <meta name="twitter:site" content="@learnerhunt"/>
 <meta name="twitter:creator" content="@learnerhunt"/>
 <script
@@ -78,25 +78,14 @@ const AboutUsPage = () => {
         <div className="col-lg-8 col-sm-12">
           <h1>About Us</h1>
           <p>
-            Learner Hunt is a digital platform for educational career
-            counselling, providing detailed information related to educational
-            institutions & universities offering Undergraduate Programs, Post
-            Graduate Programs, MBBS, and other Professional Courses.
+          Learner Hunt is a digital platform for educational career counseling, providing detailed information related to educational institutions & universities offering Undergraduate Programs, Postgraduate Programs, MBBS, and other Professional Courses. We are a team of friendly professionals dedicated to helping students like you succeed in their educational journey. Our mission is to make learning easy and enjoyable by providing guidance and support every step of the way. We believe in the power of education to change lives, and we are here to unleash your full potential.
           </p>
-          <p> It started
-            its journey in September 2017 and presently housed at two locations
-            in Faridabad (Sector 37 & Mathura road, Sector 11). Over 300+
-            Business Schools and universities are registered with us.</p>
+          <p> We started our journey in September 2017 and are presently housed at (307A, DLF Centre Point, Sec. 11 Faridabad, Mathura Road). </p>
           <p>
-            It is a Division of Decred Digital Services Pvt Ltd. Presently
-            mastered to be a storehouse of detailed information to enable the
-            selection of the right college & career decision. It holds a wide
-            coverage of over 1000 colleges & universities, 150+ courses & more
-            than 25 entrance exams.
+          We are part of Decred Digital Services Pvt. Ltd. Right now, we have mastered detailed information to help you pick the best college and career decisions. With over 1000 colleges and universities, 150+ courses, and advice on 25+ entrance exams, we offer full support for your educational journey.
           </p>
           <p>
-            It has an endless list of offers to electrify the aspiring students
-            and help them make a reliable decision for the future to follow.
+          We understand that every student is unique, and we take the time to listen to your individual needs, tailoring our support accordingly. There are endless offers available to electrify prospective students and help them pursue the future and make informed decisions.
           </p>
           <h2>Our Exceptional services:</h2>
           <ul>
@@ -107,7 +96,7 @@ const AboutUsPage = () => {
               College Locations covered - Delhi NCR, Pune, Mumbai, Bangalore,
               Hyderabad, & many more
             </li>
-            <li>Form scholarship</li>
+            <li>Scholarship form</li>
           </ul>
         </div>
         <div className="col-lg-4 ">
@@ -137,9 +126,7 @@ const AboutUsPage = () => {
               className="text-center mx-auto mt-2"
               style={{ maxWidth: "500px" }}
             >
-              We are rapidly increasing educational portal who will provide you
-              valueable information,counselling and guidance to help your career
-              path wisely
+             As a rapidly expanding education platform, we are dedicated to providing you with the information you need in education, Counseling, and career guidance to make informed decisions about your future.
             </p>
           </div>
         </div>
@@ -157,7 +144,7 @@ const AboutUsPage = () => {
               <div className="card-body">
                 <h3 className="card-title">150+ Courses</h3>
                 <p className="card-text">
-                  Discover the year’s top best course and select the best
+                We invite you to explore our 150+ courses and take the first steps to unlock your full potential.
                 </p>
               </div>
             </div>
@@ -173,9 +160,9 @@ const AboutUsPage = () => {
               />
               </div>
               <div className="card-body">
-                <h3 className="card-title">1000+ Colleges</h3>
+                <h3 className="card-title">1000+ Colleges And Universities</h3>
                 <p className="card-text">
-                Discover the best college with vivid choices
+                We invite you to explore our broad database of 1000+ colleges, and we will be finding the best institution that will help you achieve your academic and career aspirations.
                 </p>
               </div>
             </div>
@@ -191,9 +178,9 @@ const AboutUsPage = () => {
               />
               </div>
               <div className="card-body">
-                <h3 className="card-title">25 Counsellors</h3>
+                <h3 className="card-title">50+ Counsellors</h3>
                 <p className="card-text">
-                Get counselling from the best counsellors 
+                Our consultation site is your trusted partner every step of the way. Let us walk you through finding and applying to the perfect college for you.
                 </p>
               </div>
             </div>

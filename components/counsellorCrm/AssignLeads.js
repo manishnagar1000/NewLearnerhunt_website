@@ -179,6 +179,13 @@ export default class AssignLeads extends Component {
             icon: "error",
             confirmButtonText: "Ok",
           });
+        }else if(res.data.error){
+          Swal.fire({
+            title: "error",
+            text: `${res.data.error.message}`,
+            icon: "error",
+            confirmButtonText: "Ok",
+          });
         } else {
           Swal.fire({
             title: "success",
@@ -190,6 +197,8 @@ export default class AssignLeads extends Component {
         this.setState({ isLoading: false });
       });
     } catch (error) {
+      this.setState({ isLoading: false });
+
       console.error("Failed to fetch OTP:", error);
     }
   };
@@ -326,6 +335,8 @@ export default class AssignLeads extends Component {
                         </MenuItem>
                         <MenuItem value={3}>Registered Students</MenuItem>
                         <MenuItem value={4}>PopUp Leads</MenuItem>
+                        <MenuItem value={7}>Mba Leads</MenuItem>
+
                       </Select>
                     </FormControl>
                     <Tooltip title="Refresh">
@@ -343,6 +354,81 @@ export default class AssignLeads extends Component {
             {this.state.counsellorType != "" ? (
               this.state.isApiHitComplete ? (
                 this.state.isDataFound ? (
+                  this.state.counsellorType == 7 ? (
+                    <table className={`table table-hover custom-table`}>
+                      <thead>
+                        <tr>
+                          <th style={{ background: "var(--primary)" }}>
+                            Student Name
+                          </th>
+                          <th style={{ background: "var(--primary)" }}>
+                            Student Mobile
+                          </th>
+                          <th style={{ background: "var(--primary)" }}>
+                            Remarks
+                          </th>
+                          {/* <th style={{ background: "var(--primary)" }}>
+                            Student Email
+                          </th> */}
+                          <th style={{ background: "var(--primary)" }}>
+                            Course
+                          </th>
+                          <th style={{ background: "var(--primary)" }}>
+                            City
+                          </th>
+                          <th style={{ background: "var(--primary)" }}>
+                            Budget
+                          </th>
+                          <th style={{ background: "var(--primary)" }}>Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {this.state.clgList.map((clg, i) => {
+                          return (
+                            <tr key={i}>
+                              <td>{clg.name || 'NA'}</td>
+                              <td className="text-center">
+                                <IconButton
+                                  onClick={(e) =>
+                                    this.handleStudentCall(e, clg)
+                                  }
+                                >
+                                  <CallIcon color="primary" fontSize="small" />
+                                </IconButton>
+                              </td>
+                              <td className="text-center">
+                            <Tooltip title="Add Remark">
+                              <IconButton
+                                onClick={(e) =>
+                                  this.setState({ leadid: clg._id }, () =>
+                                    this.handleGetRemarks(7)
+                                  )
+                                }
+                              >
+                                <DifferenceIcon
+                                  color="success"
+                                  fontSize="small"
+                                />
+                              </IconButton>
+                            </Tooltip>
+                          </td>
+                              {/* <td>{clg.email || 'NA'}</td> */}
+                              <td>{clg.course || 'NA'}</td>
+                              <td>{clg.city || 'NA'}</td>
+                              <td>{clg.budget || 'NA'}</td>
+                              <td
+                                style={{
+                                  color: this.DatebasedOncolor(clg.createdAt),
+                                }}
+                              >
+                                {this.formatTimestamp(clg.createdAt)}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  ) :
                   this.state.counsellorType == 4 ? (
                     <table className={`table table-hover custom-table`}>
                       <thead>
@@ -356,9 +442,9 @@ export default class AssignLeads extends Component {
                           <th style={{ background: "var(--primary)" }}>
                             Remarks
                           </th>
-                          <th style={{ background: "var(--primary)" }}>
+                          {/* <th style={{ background: "var(--primary)" }}>
                             Student Email
-                          </th>
+                          </th> */}
                           <th style={{ background: "var(--primary)" }}>
                             Course
                           </th>
@@ -398,7 +484,7 @@ export default class AssignLeads extends Component {
                               </IconButton>
                             </Tooltip>
                           </td>
-                              <td>{clg.email}</td>
+                              {/* <td>{clg.email}</td> */}
                               <td>{clg.course}</td>
                               <td>{clg.qualification}</td>
                               <td
@@ -496,9 +582,9 @@ export default class AssignLeads extends Component {
                           <th style={{ background: "var(--primary)" }}>
                             Remarks
                           </th>
-                          <th style={{ background: "var(--primary)" }}>
+                          {/* <th style={{ background: "var(--primary)" }}>
                             Email
-                          </th>
+                          </th> */}
                           <th style={{ background: "var(--primary)" }}>
                             Gender
                           </th>
@@ -541,7 +627,7 @@ export default class AssignLeads extends Component {
                               </IconButton>
                             </Tooltip>
                           </td>
-                              <td>{clg.email}</td>
+                              {/* <td>{clg.email}</td> */}
                               <td>{clg.gender}</td>
                               <td>{clg.course_interested}</td>
                               <td>{clg.state}</td>
@@ -570,9 +656,9 @@ export default class AssignLeads extends Component {
                           <th style={{ background: "var(--primary)" }}>
                             Remarks
                           </th>
-                          <th style={{ background: "var(--primary)" }}>
+                          {/* <th style={{ background: "var(--primary)" }}>
                             Email
-                          </th>
+                          </th> */}
                           <th style={{ background: "var(--primary)" }}>
                             Stream
                           </th>
@@ -612,7 +698,7 @@ export default class AssignLeads extends Component {
                               </IconButton>
                             </Tooltip>
                           </td>
-                              <td>{clg.email}</td>
+                              {/* <td>{clg.email}</td> */}
                               <td>{clg.selected_stream}</td>
                               <td>{clg.selected_level}</td>
                               <td

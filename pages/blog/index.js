@@ -3,31 +3,32 @@ import Classes from "../../styles/blogs.module.css";
 import Carousel from "react-multi-carousel";
 import Chip from "@mui/material/Chip";
 import "react-multi-carousel/lib/styles.css";
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
-
-
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
+import Link from "next/link";
+import PaginationItem from "@mui/material/PaginationItem";
 
 export default function index(blogs) {
-  console.log(blogs)
-  const collegeType = [
-    {
-      name: "All Categories",
-      type: "All Categories",
-    },
-    {
-      name: "Accounting",
-      type: "Accounting",
-    },
-    {
-      name: "Cloud Computing",
-      type: "cloud",
-    },
-  
-   
+  // console.log(blogs);
+  const [page, setPage] = useState(1);
+  const [Post, setPost] = useState(blogs);
+  // console.log(blogs.data.categories)
 
-    
-  ];
+  // const collegeType = [
+  //   {
+  //     name: "All Categories",
+  //     type: "All Categories",
+  //   },
+  //   {
+  //     name: "Accounting",
+  //     type: "Accounting",
+  //   },
+  //   {
+  //     name: "Cloud Computing",
+  //     type: "cloud",
+  //   },
+
+  // ];
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
@@ -48,7 +49,40 @@ export default function index(blogs) {
       slidestoSlide: 1,
     },
   };
+  // const handlePage=(event, newPage)=>{
+  //   event.preventDefault()
+  //   // setpage()
+  //   setPage(newPage);
+  //   console.log(newPage);
+  //   fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/blog/${newPage}`, {
+  //     headers: {
+  //       Authorization: `Bearer ${localStorage.getItem("userid")}`,
+  //     },
+  //   }).then(async (response) => {
+  //     var res = await response.json();
+  //     console.log(res)
+  //     setPost(res)
 
+  //   });
+  // }
+  // const [filteredPosts, setFilteredPosts] = useState([]);
+  // useEffect(() => {
+  //   if (blogs.data.posts && blogs.data.categories) {
+  //     const filtered = blogs.data.posts.filter(post =>
+  //       blogs.data.categories.some(category => console.log(category._id))
+
+  //       // blogs.data.categories.some(category => category._id === post.categories)
+  //     );
+  //     console.log(filtered)
+  //     // setFilteredPosts(filtered);
+  //   }
+  // }, [blogs.data]);
+
+  // const handleTabChange = (type, name) => {
+  //   setActive(type);
+  //   setNameActive(name);
+  //   setSelectedBlogType(type);
+  // };
 
   return (
     <div className="container">
@@ -64,7 +98,7 @@ export default function index(blogs) {
               it!
             </p>
           </div>
-          <div className={Classes["welcome-box-form"]}>
+          {/* <div className={Classes["welcome-box-form"]}>
             <form
               role="search"
               method="get"
@@ -83,275 +117,132 @@ export default function index(blogs) {
           </div>
           <div className="d-flex justify-content-center">
             <span>Subscribe to our Newsletter*</span>
-          </div>
+          </div> */}
         </div>
         <div className="pt-2">
-        <div className={Classes["blogs_main"]}><h2>Categories</h2></div>
-        <div className="postion-relative">
-
-        <Carousel
-        className={Classes['react-multi-carousel-list']}
-         responsive={responsive}
-         partialVisbile={false}
-          >
-            {collegeType.map((college) => {
+          <div className={Classes["blogs_main"]}>
+            <h2>Categories</h2>
+          </div>
+          <div className="postion-relative">
+            <Carousel
+              className={Classes["react-multi-carousel-list"]}
+              responsive={responsive}
+              partialVisbile={false}
+            >
+              {Post.data.categories.map((s, i) => {
                 return (
-                  <Chip
-                    key={college.type}
-                    // onClick={(e) => handleTabChange(college.type, college.name)}
-                    label={college.name}
-                    color="primary"
-                  />
+                  <Link key={i} href={s.link}>
+                    <Chip label={s.name} color="primary" />
+                  </Link>
                 );
               })}
-          </Carousel>
-
-       
-        </div>
+            </Carousel>
+          </div>
         </div>
         <div className={Classes["allCategories"]}>
           <h2 className={Classes["Allh2"]}>
-            All Blogs:<span className={Classes["articlesCount"]}>275</span>
+            All Blogs:
+            <span className={Classes["articlesCount"]}>
+              {Post.data.totalRecords}
+            </span>
           </h2>
         </div>
       </div>
       <div className=" container py-5">
         <div className={`${Classes["bloglist"]} row`}>
-          <div className="col-lg-4 col-md-6 col-md-12">
-            <div className={`${Classes["card"]} p-0 rounded-0 overlay-img`}>
-              <a
-                className="text-decoration-none text-reset"
-                href="/blog/1099-vs-w2-tax-form"
-              >
-                <img
-                  src="https://snb.thesagenext.com/blog/wp-content/uploads/2024/04/1099-vs-W2.webp"
-                  className="card-img-top"
-                  alt="1099-vs-w2-tax-form"
-                />
-              </a>
-              <div className={`${Classes["card-body"]} pb-0`}>
-                <a className={Classes["card_link"]} href="/blog/1099-vs-w2-tax-form">
-                  <h2 className={Classes["card-title"]}>
-                    1099 vs W2 (Tax Form): Which is Right for You and ...
-                  </h2>
-                </a>
-                <div className={Classes["card-text"]}>
-                  <p>
-                    When it comes to employment in the United States, there are
-                    two primary classifications: 1099 vs W2. As a freelancer,...
-                  </p>
+          {Post.data.posts.map((s,i) => (
+            <div key={i} className="col-lg-4 col-md-6 col-md-12">
+              <div className={`${Classes["card"]} p-0 rounded-0 overlay-img`}>
+                <div className={Classes["image-box"]}>
+                  <Link
+                  key={i}
+                    className="text-decoration-none text-reset"
+                    href={`/blog/${s.slug}`}
+                  >
+                    <img
+                      height={250}
+                      width={100}
+                      src={`${
+                        s.banner_image
+                          ? "https://learnerhunt-assets.s3.us-east-1.amazonaws.com/" +
+                            s.banner_image
+                          : "/assets/images/blog/DummyBlogSquare.webp"
+                      }`}
+                      className="card-img-top"
+                      alt={s._id}
+                    />
+                  </Link>
                 </div>
-                <div className="card-footer bg-transparent text-muted pb-3 small border-0">
-                12 / 04 / 2024|
-                <a className="text-muted" href="/blog/category/accounting">
-                  Accounting
-                </a>
-                <a className="text-muted" href="/blog/category/tax-preparation">
-                  , Tax Preparation
-                </a>
-              </div>
-              </div>
-              
-            </div>
-          </div>
-          <div className="col-lg-4 col-md-6 col-md-12">
-            <div className={`${Classes["card"]} p-0 rounded-0 overlay-img`}>
-              <a
-                className="text-decoration-none text-reset"
-                href="/blog/1099-vs-w2-tax-form"
-              >
-                <img
-                  src="https://snb.thesagenext.com/blog/wp-content/uploads/2024/04/1099-vs-W2.webp"
-                  className="card-img-top"
-                  alt="1099-vs-w2-tax-form"
-                />
-              </a>
-              <div className={`${Classes["card-body"]} pb-0`}>
-                <a className={Classes["card_link"]} href="/blog/1099-vs-w2-tax-form">
-                  <h2 className={Classes["card-title"]}>
-                    1099 vs W2 (Tax Form): Which is Right for You and ...
-                  </h2>
-                </a>
-                <div className={Classes["card-text"]}>
-                  <p>
-                    When it comes to employment in the United States, there are
-                    two primary classifications: 1099 vs W2. As a freelancer,...
-                  </p>
+                <div className={`${Classes["card-body"]} pb-0`}>
+                  <a className={Classes["card_link"]} href={`/blog/${s.slug}`}>
+                    <h2 className={Classes["card-title"]}>
+                      {s.title.charAt(0).toUpperCase() + s.title.slice(1)}
+                    </h2>
+                  </a>
+                  <div
+                    className="my-1"
+                    dangerouslySetInnerHTML={{
+                      __html:
+                        s.content.replace(/<[^>]*>/g, "").slice(0, 100) +
+                        (s.content.replace(/<[^>]*>/g, "").length > 100
+                          ? "..."
+                          : ""),
+                    }}
+                  >
+                    {/* { dangerouslySetInnerHTML={{__html: s.content.split(' ').slice(100).join(' ')}}} */}
+                  </div>
+                  <div className="card-footer bg-transparent text-muted pb-3 small border-0">
+                    {new Date(s.updatedAt)
+                      .toLocaleDateString("en-GB")
+                      .split("/")
+                      .reverse()
+                      .join(" / ")}
+
+                    {s.categories.map((c, i) => {
+                      let data = blogs.data.categories.find(
+                          (bc) => bc._id == c
+                        ),
+                        name = data?.name,
+                        link = data?.link;
+                      if (i < s.categories.length - 1) {
+                        name = " " + name + ", ";
+                      }
+                      return (
+                        <a key={i} className="text-muted" href={link}>
+                          {name}
+                        </a>
+                      );
+                    })}
+                    {/* <a className="text-muted" href="/blog/category/tax-preparation">
+        , Tax Preparation
+      </a> */}
+                  </div>
                 </div>
-                <div className="card-footer bg-transparent text-muted pb-3 small border-0">
-                12 / 04 / 2024|
-                <a className="text-muted" href="/blog/category/accounting">
-                  Accounting
-                </a>
-                <a className="text-muted" href="/blog/category/tax-preparation">
-                  , Tax Preparation
-                </a>
               </div>
-              </div>
-              
             </div>
-          </div>
-          <div className="col-lg-4 col-md-6 col-md-12">
-            <div className={`${Classes["card"]} p-0 rounded-0 overlay-img`}>
-              <a
-                className="text-decoration-none text-reset"
-                href="/blog/1099-vs-w2-tax-form"
-              >
-                <img
-                  src="https://snb.thesagenext.com/blog/wp-content/uploads/2024/04/1099-vs-W2.webp"
-                  className="card-img-top"
-                  alt="1099-vs-w2-tax-form"
-                />
-              </a>
-              <div className={`${Classes["card-body"]} pb-0`}>
-                <a className={Classes["card_link"]} href="/blog/1099-vs-w2-tax-form">
-                  <h2 className={Classes["card-title"]}>
-                    1099 vs W2 (Tax Form): Which is Right for You and ...
-                  </h2>
-                </a>
-                <div className={Classes["card-text"]}>
-                  <p>
-                    When it comes to employment in the United States, there are
-                    two primary classifications: 1099 vs W2. As a freelancer,...
-                  </p>
-                </div>
-                <div className="card-footer bg-transparent text-muted pb-3 small border-0">
-                12 / 04 / 2024|
-                <a className="text-muted" href="/blog/category/accounting">
-                  Accounting
-                </a>
-                <a className="text-muted" href="/blog/category/tax-preparation">
-                  , Tax Preparation
-                </a>
-              </div>
-              </div>
-              
-            </div>
-          </div>
-          <div className="col-lg-4 col-md-6 col-md-12">
-            <div className={`${Classes["card"]} p-0 rounded-0 overlay-img`}>
-              <a
-                className="text-decoration-none text-reset"
-                href="/blog/1099-vs-w2-tax-form"
-              >
-                <img
-                  src="https://snb.thesagenext.com/blog/wp-content/uploads/2024/04/1099-vs-W2.webp"
-                  className="card-img-top"
-                  alt="1099-vs-w2-tax-form"
-                />
-              </a>
-              <div className={`${Classes["card-body"]} pb-0`}>
-                <a className={Classes["card_link"]} href="/blog/1099-vs-w2-tax-form">
-                  <h2 className={Classes["card-title"]}>
-                    1099 vs W2 (Tax Form): Which is Right for You and ...
-                  </h2>
-                </a>
-                <div className={Classes["card-text"]}>
-                  <p>
-                    When it comes to employment in the United States, there are
-                    two primary classifications: 1099 vs W2. As a freelancer,...
-                  </p>
-                </div>
-                <div className="card-footer bg-transparent text-muted pb-3 small border-0">
-                12 / 04 / 2024|
-                <a className="text-muted" href="/blog/category/accounting">
-                  Accounting
-                </a>
-                <a className="text-muted" href="/blog/category/tax-preparation">
-                  , Tax Preparation
-                </a>
-              </div>
-              </div>
-              
-            </div>
-          </div>
-          <div className="col-lg-4 col-md-6 col-md-12">
-            <div className={`${Classes["card"]} p-0 rounded-0 overlay-img`}>
-              <a
-                className="text-decoration-none text-reset"
-                href="/blog/1099-vs-w2-tax-form"
-              >
-                <img
-                  src="https://snb.thesagenext.com/blog/wp-content/uploads/2024/04/1099-vs-W2.webp"
-                  className="card-img-top"
-                  alt="1099-vs-w2-tax-form"
-                />
-              </a>
-              <div className={`${Classes["card-body"]} pb-0`}>
-                <a className={Classes["card_link"]} href="/blog/1099-vs-w2-tax-form">
-                  <h2 className={Classes["card-title"]}>
-                    1099 vs W2 (Tax Form): Which is Right for You and ...
-                  </h2>
-                </a>
-                <div className={Classes["card-text"]}>
-                  <p>
-                    When it comes to employment in the United States, there are
-                    two primary classifications: 1099 vs W2. As a freelancer,...
-                  </p>
-                </div>
-                <div className="card-footer bg-transparent text-muted pb-3 small border-0">
-                12 / 04 / 2024|
-                <a className="text-muted" href="/blog/category/accounting">
-                  Accounting
-                </a>
-                <a className="text-muted" href="/blog/category/tax-preparation">
-                  , Tax Preparation
-                </a>
-              </div>
-              </div>
-              
-            </div>
-          </div>
-          <div className="col-lg-4 col-md-6 col-md-12">
-            <div className={`${Classes["card"]} p-0 rounded-0 overlay-img`}>
-              <a
-                className="text-decoration-none text-reset"
-                href="/blog/1099-vs-w2-tax-form"
-              >
-                <img
-                  src="https://snb.thesagenext.com/blog/wp-content/uploads/2024/04/1099-vs-W2.webp"
-                  className="card-img-top"
-                  alt="1099-vs-w2-tax-form"
-                />
-              </a>
-              <div className={`${Classes["card-body"]} pb-0`}>
-                <a className={Classes["card_link"]} href="/blog/1099-vs-w2-tax-form">
-                  <h2 className={Classes["card-title"]}>
-                    1099 vs W2 (Tax Form): Which is Right for You and ...
-                  </h2>
-                </a>
-                <div className={Classes["card-text"]}>
-                  <p>
-                    When it comes to employment in the United States, there are
-                    two primary classifications: 1099 vs W2. As a freelancer,...
-                  </p>
-                </div>
-                <div className="card-footer bg-transparent text-muted pb-3 small border-0">
-                12 / 04 / 2024|
-                <a className="text-muted" href="/blog/category/accounting">
-                  Accounting
-                </a>
-                <a className="text-muted" href="/blog/category/tax-preparation">
-                  , Tax Preparation
-                </a>
-              </div>
-              </div>
-              
-            </div>
-          </div>
+          ))}
         </div>
-        <div className={`${Classes['pagination-blog']}`}>
-        <Stack spacing={2}>
-      <Pagination count={10} color="primary" />
-    </Stack>
+        <div className={`${Classes["pagination-blog"]}`}>
+          <Stack spacing={2}>
+            <Pagination
+              page={page}
+              count={Post.data.totalPages}
+              color="primary"
+              renderItem={(item) => {
+                // console.log(item);
+                return (
+                  <Link href={`/blog/page/${item.page}`}>
+                    <PaginationItem {...item} />
+                  </Link>
+                );
+              }}
+            />
+          </Stack>
         </div>
-      
-        
       </div>
     </div>
   );
 }
-
 
 export async function getServerSideProps() {
   try {
@@ -359,6 +250,7 @@ export async function getServerSideProps() {
       process.env.NEXT_PUBLIC_API_ENDPOINT + "/blog/1"
     );
     const blogs = await blogs_res.json();
+    console.log(blogs);
     return { props: blogs };
   } catch (error) {
     throw error;

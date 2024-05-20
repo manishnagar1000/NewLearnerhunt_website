@@ -3,8 +3,10 @@ import Link from "next/link";
 // import Head from "next/head";
 import Image from "next/image";
 import QrCodeSection from "@/components/QrCodeSection";
+import OurCounsellor from "./OurCounsellor";
 
-const Footer = () => {
+const Footer = ({data}) => {
+  // console.log(data)
   return (
     <>
       {/* <Head>
@@ -15,6 +17,7 @@ const Footer = () => {
         ></script>
    
       </Head> */}
+      {data && <OurCounsellor data={data}/>}
       <QrCodeSection />
 
       <div className="custom_footer">
@@ -113,7 +116,7 @@ const Footer = () => {
               </ul>
             </div>
           </div>
-          <div className="row flex-column-reverse flex-sm-row">
+          <div className="row flex-column-reverse flex-sm-row" style={{paddingTop:"2rem"}}>
             <div className="col-lg-4 col-md-4">
               <p className="cmp-name">
                 © 2024 Decred Digital Services Pvt. Ltd.
@@ -294,3 +297,5 @@ const Footer = () => {
 };
 
 export default Footer;
+
+

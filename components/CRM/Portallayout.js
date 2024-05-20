@@ -435,6 +435,7 @@ export default class PortalLayout extends Component {
               id="email"
               name="name"
               type="email"
+              disabled
               fullWidth
               variant="outlined"
               label="Email"

@@ -183,6 +183,21 @@ const nextConfig = {
         source: '/assets/images/footer/footer-image.webp',
         destination: '/',
         permanent: true,
+      },
+      // {
+      //   source: '/assets/images/Learnerhunt-Logo.webp',
+      //   destination: '/',
+      //   permanent: true,
+      // },
+      {
+        source: '/ndim',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/soil-institute-of-management',
+        destination: '/',
+        permanent: true,
       }
     ]
   },

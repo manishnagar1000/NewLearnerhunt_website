@@ -316,7 +316,7 @@ export default class VideoCalls extends Component {
                 <th style={{ background: "var(--primary)" }}>Click to Call</th>
                 <th style={{ background: "var(--primary)" }}>Call End By</th>
                   <th style={{ background: "var(--primary)" }}>Remarks</th>
-                  <th style={{ background: "var(--primary)" }}>Student Email</th>
+                  {/* <th style={{ background: "var(--primary)" }}>Student Email</th> */}
                   <th style={{ background: "var(--primary)" }}>Date</th>
 
 
@@ -353,7 +353,7 @@ export default class VideoCalls extends Component {
                             </IconButton>
                           </td>
                         {/* <td>{clg.email.replace(/(?<=.{3}).(?=[^@]*?@)/g, '*')}</td> */}
-                        <td>{clg.stud_email}</td>
+                        {/* <td>{clg.stud_email}</td> */}
                         <td style={{color:this.DatebasedOncolor(clg.createdAt)}}>{this.formatTimestamp(clg.createdAt)}</td>
                       
 

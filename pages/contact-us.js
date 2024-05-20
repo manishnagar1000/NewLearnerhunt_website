@@ -11,7 +11,7 @@ const StructuredDataOrg = [
     "@type": "Organization",
     name: "Decred Digital Services Pvt. Ltd.",
     url: "https://www.learnerhunt.com",
-    logo: "https://www.learnerhunt.com/assets/images/learnerhunt-logo.webp",
+    logo: "https://www.learnerhunt.com/assets/images/Logo.webp",
     contactPoint: [
       {
         "@type": "ContactPoint",
@@ -32,7 +32,7 @@ const StructuredDataOrg = [
       "@type": "Organization",
       name: "Decred Digital Services Pvt. Ltd.",
       url: "https://www.learnerhunt.com",
-      logo: "https://www.learnerhunt.com/assets/images/learnerhunt-logo.webp",
+      logo: "https://www.learnerhunt.com/assets/images/Logo.webp",
       contactPoint: {
         "@type": "ContactPoint",
         telephone: "+918860077807",

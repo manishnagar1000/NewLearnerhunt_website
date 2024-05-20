@@ -77,7 +77,7 @@ export default function fest() {
       <nav className={styles.navbar}>
         <div className={styles.logo}>
           {/* Your logo */}
-          <img src="/assets/images/learnerhunt-logo.webp" alt="Logo" />
+          <img src="/assets/images/Logo.webp" alt="Logo" />
         </div>
         {/* <div style={{display:"flex",alignItems:"center"}}> */}
         <div className={`${styles.registerButton} ${styles.blink}`}>

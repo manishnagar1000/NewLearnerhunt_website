@@ -415,7 +415,7 @@ export default function Topbar() {
                     <img
                       loading="lazy"
                       // src="/assets/images/Svglogo.svg"
-                      src="/assets/images/learnerhunt-logo.webp"
+                      src="/assets/images/Logo.webp"
                       alt="learnerhunt logo"
                       width={176}
                       height={55}
@@ -440,9 +440,12 @@ export default function Topbar() {
                     <li className={`${Classes["sage-menu-list"]}`}>
                       <Link href="/comingsoon">Study Abroad</Link>
                     </li>
-                    {/* <li className={`${Classes["sage-menu-list"]}`}>
+                    <li className={`${Classes["sage-menu-list"]}`}>
                       <Link href="/blog">Blog</Link>
-                    </li> */}
+                    </li>
+                    <li className={`${Classes["sage-menu-list"]}`}>
+                      <Link href="/Loan">Loan</Link>
+                    </li>
                   </ul>
                 </div>
                 <div className={`${Classes["contact-cta"]}`}>
@@ -485,6 +488,9 @@ export default function Topbar() {
                         </MenuItem>
                         <MenuItem onClick={() => handlelogin(1)}>
                           College
+                        </MenuItem>
+                        <MenuItem onClick={() => handlelogin(6)}>
+                          Tutor
                         </MenuItem>
                       </Menu>
                     </>
@@ -568,7 +574,7 @@ export default function Topbar() {
                       <img
                         loading="lazy"
                         // src="/assets/images/Svglogo.svg"
-                        src="/assets/images/learnerhunt-logo.webp"
+                        src="/assets/images/Logo.webp"
                         alt="learnerhunt logo"
                         width={150}
                         height={50}
@@ -649,6 +655,9 @@ export default function Topbar() {
                               <MenuItem onClick={() => handlelogin(1)}>
                                 College
                               </MenuItem>
+                              <MenuItem onClick={() => handlelogin(6)}>
+                                Tutor
+                              </MenuItem>
                             </Menu>
                           </>
                         ) : (
@@ -716,12 +725,18 @@ export default function Topbar() {
                       >
                         <Link href="/comingsoon">Study Abroad</Link>
                       </li>
-                      {/* <li
+                      <li
                         onClick={() => setShowToggleMenu(!showToggleMenu)}
                         className={`${Classes["sage-menu-list"]}`}
                       >
                         <Link href="/blog">Blog</Link>
-                      </li> */}
+                      </li>
+                      <li
+                        onClick={() => setShowToggleMenu(!showToggleMenu)}
+                        className={`${Classes["sage-menu-list"]}`}
+                      >
+                        <Link href="/Loan">Loan</Link>
+                      </li>
                     </ul>
                   </div>
                 </div>

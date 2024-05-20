@@ -14,18 +14,25 @@ import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-import { Modal } from "react-bootstrap";
+import { Modal, Spinner } from "react-bootstrap";
 import Button from "@mui/material/Button";
 import Swal from "sweetalert2";
-import { Spinner } from "react-bootstrap";
 import SendTimeExtensionIcon from "@mui/icons-material/SendTimeExtension";
 import Avatar from "@mui/material/Avatar";
 import Classes from "/styles/Popup.module.css";
+import Chip from "@mui/material/Chip";
+import Loading from "@/components/Comps/Loading";
+import LoopIcon from "@mui/icons-material/Loop";
+
 
 const headCells = [
   {
     id: "studname",
     label: "Student Name",
+  },
+  {
+    id: "counsellorname",
+    label: "Counsellor name",
   },
   {
     id: "mobnumber",
@@ -51,6 +58,7 @@ const headCells = [
     id: "specialization",
     label: "Specialization",
   },
+
   {
     id: "date",
     label: "Date",
@@ -196,6 +204,14 @@ function EnhancedTableToolbar(props) {
               placeholder="Search..."
               onChange={handleSearchChange}
             />
+               <Tooltip title="Refresh">
+                      <IconButton
+                        aria-label="Refresh"
+                        onClick={() =>props.userListData()}
+                      >
+                        <LoopIcon />
+                      </IconButton>
+                    </Tooltip>
           </>
         )}
       </Toolbar>
@@ -213,12 +229,16 @@ export default function Testeligibility() {
   const [counsellorList, setCounsellorList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isremarkLoading,setIsRemarkLoading] = useState(false)
   const [selectedCounsellor, setSelectedCounsellor] = useState("");
+  const [remarkshowModal, setRemarkshowModal] = useState(false);
+  const [remarksHistory, setRemarksHistory] = useState([]);
   useEffect(() => {
     getUserList();
   }, []);
 
   const getUserList = () => {
+    setIsLoading(true)
     fetch(
       process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/leads?lid=${-1}&type=1`,
       {
@@ -243,6 +263,8 @@ export default function Testeligibility() {
           window.location.reload();
         });
       }
+    setIsLoading(false)
+
     });
   };
   const formatTimestamp = (timestamp) => {
@@ -341,7 +363,7 @@ export default function Testeligibility() {
         }).then(() => {
           setIsLoading(false);
           setIsModalOpen(false);
-          setSelected([])
+          setSelected([]);
           setSelectedCounsellor("");
           getUserList();
         });
@@ -355,6 +377,36 @@ export default function Testeligibility() {
       }
     });
   };
+
+  const handleGetRemarks = (e, c, id) => {
+    e.preventDefault();
+    try {
+      setIsRemarkLoading(true);
+      setRemarkshowModal(true);
+      fetch(
+        process.env.NEXT_PUBLIC_API_ENDPOINT +
+          `/admin/counsellor-remarks?lid=${id}&lt=1&cid=${c._id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("pt")}`,
+          },
+        }
+      ).then(async (res) => {
+        if (res.ok) {
+          // console.log(res)
+          let response = await res.json();
+          console.log(response.data);
+          setRemarksHistory(response.data.remarks);
+        } else {
+          let response = await res.json();
+        }
+        setIsRemarkLoading(false);
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <Box sx={{ width: "100%" }}>
@@ -383,6 +435,12 @@ export default function Testeligibility() {
                 {rows.map((row, index) => {
                   const isItemSelected = isSelected(row._id);
                   const labelId = `enhanced-table-checkbox-${index}`;
+                  // console.log(row)
+                  // const CounsellorID = {row.counsellors.map((counselor, index) => (
+                  //   <TableRow key={index}>
+                  //     <TableCell>{counselor.name}</TableCell>
+                  //   </TableRow>
+                  // ))}
 
                   return (
                     <TableRow
@@ -405,12 +463,39 @@ export default function Testeligibility() {
                         />
                       </TableCell>
                       <TableCell>{row.name}</TableCell>
+                      <TableCell>
+                        {row.counsellors.length > 0 ? (
+                          row.counsellors.map((c, i) => {
+                            return (
+                              <Chip
+                                onClick={(e) => handleGetRemarks(e, c, row._id)}
+                                key={i}
+                                label={c.name}
+                                variant="outlined"
+                                color="primary"
+                                style={{
+                                  marginRight: "5px",
+                                  marginBottom: "5px",
+                                }}
+                              />
+                            );
+                          })
+                        ) : (
+                          <Chip
+                            label={"Not Assigned"}
+                            variant="outlined"
+                            color="error"
+                            style={{ marginRight: "5px", marginBottom: "5px" }}
+                          />
+                        )}
+                      </TableCell>
                       <TableCell>{row.mobile}</TableCell>
                       <TableCell>{row.fee}</TableCell>
                       <TableCell>{row.course}</TableCell>
                       <TableCell>{row.zone}</TableCell>
                       <TableCell>{row.qualification}</TableCell>
                       <TableCell>{row.specialization}</TableCell>
+
                       <TableCell>{formatTimestamp(row.createdAt)}</TableCell>
                     </TableRow>
                   );
@@ -479,6 +564,72 @@ export default function Testeligibility() {
           </Box>
         </Modal.Body>
       </Modal>
+
+      <Modal
+        show={remarkshowModal}
+        onHide={() => setRemarkshowModal(false)}
+        backdrop="static"
+        keyboard={false}
+        size="lg"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Counsellor Remark History</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          {!isremarkLoading ? (
+            remarksHistory.length > 0 ? (
+              <table className={`table table-hover custom-table`}>
+                <thead>
+                  <tr>
+                    <th style={{ background: "var(--primary)" }}>Remarks</th>
+                    <th style={{ background: "var(--primary)" }}>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {remarksHistory.map((obj, i) => {
+                    return (
+                      <tr key={i}>
+                        <td>{obj.remarks}</td>
+                        <td>{formatTimestamp(obj.createdAt)}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            ) : (
+              <div
+                style={{
+                  display: "flex",
+                  width: "100%",
+                  height: "inherit",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <div style={{ fontWeight: "500" }}>
+                  <span style={{ color: "#0d6efd", cursor: "pointer" }}>
+                    {" "}
+                    No Records{" "}
+                  </span>
+                </div>
+              </div>
+            )
+          ) : (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100%",
+              }}
+            >
+              <Spinner animation="border" variant="dark" />
+            </div>
+          )}
+        </Modal.Body>
+      </Modal>
+      <Loading show={isLoading} onHide={() => setIsLoading(false)} />
     </>
   );
 }

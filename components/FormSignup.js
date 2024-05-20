@@ -15,9 +15,6 @@ import { useRouter } from "next/router";
 const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
 const FormSignUp = ({ closeModal ,role ,islogin }) => {
-
-
-
   const [signupshowotp, setSignShowotp] = useState(false);
   const [isloading, setIsloading] = useState(false);
   const [signupuserotp, setSignupuserotp] = useState("");
@@ -55,6 +52,18 @@ const FormSignUp = ({ closeModal ,role ,islogin }) => {
   const [Counsellorspecilizationvalue, setCounsellorspecilizationvalue] = useState("");
   const [counsellorpreLang, setCounsellorpreLang] = useState("");
   const [CounsellorQualificationvalue, setCounsellorQualificationvalue] = useState("");
+
+  // tutor signup
+  const [tutorname, setTutorname] = useState("");
+  const [tutormobile, setTutormobile] = useState("");
+  const [tutoremail, setTutorEmail] = useState("");
+  const [tutorstate, setTutorstate] = useState(""); 
+  const [tutorcity, setTutorcity] = useState(""); 
+  const [tutorexp, setTutorexp] = useState(""); 
+  const [tutorcountry, setTutorcountry] = useState("");
+  const [tutorgender, setTutorgender] = useState("");
+  const [TutorQualificationvalue, setTutorQualificationvalue] = useState("");
+
 
   const router = useRouter();
 
@@ -117,7 +126,28 @@ const FormSignUp = ({ closeModal ,role ,islogin }) => {
 
     setClgMobile(limitedInput);
   };
- 
+  const handleCounsellorMobileChange = (event) => {
+    const input = event.target.value;
+
+    // Remove any non-numeric characters
+    const numericInput = input.replace(/\D/g, "");
+
+    // Limit to 10 characters
+    const limitedInput = numericInput.slice(0, 10);
+
+    setCounsellormobile(limitedInput);
+  };
+  const handleTutorMobileChange = (event) => {
+    const input = event.target.value;
+
+    // Remove any non-numeric characters
+    const numericInput = input.replace(/\D/g, "");
+
+    // Limit to 10 characters
+    const limitedInput = numericInput.slice(0, 10);
+
+    setTutormobile(limitedInput);
+  };
   const handleStreamChange = (event) => {
     setStream(event.target.value);
   };
@@ -226,6 +256,9 @@ const FormSignUp = ({ closeModal ,role ,islogin }) => {
                   } else if (role == 1) {
                     router.push("/collegeportal/my-kyc");
                     localStorage.setItem("ct", userid);
+                  }else if (role == 6) {
+                    router.push("/tutorportal/my-profile");
+                    localStorage.setItem("tp", userid);
                   }else{
                     router.push("/counsellorportal/my-profile");
                     localStorage.setItem("cst", userid);
@@ -250,6 +283,7 @@ const FormSignUp = ({ closeModal ,role ,islogin }) => {
         } else {
           try {
             const fd = new FormData();
+            
             if (role == 3) {
               fd.append("email", signupemail);
               fd.append("name", name); // Add name to form data
@@ -297,6 +331,48 @@ const FormSignUp = ({ closeModal ,role ,islogin }) => {
               fd.append("referrer", referrer);
               fetch(
                 process.env.NEXT_PUBLIC_API_ENDPOINT + "/clg-admin/register",
+                {
+                  method: "POST",
+                  body: fd,
+                }
+              ).then(async (response) => {
+                var res = await response.json();
+                // console.log(res.message)
+                if (response.ok) {
+                  // console.log("hello", response.data);
+                  Swal.fire({
+                    title: "Success",
+                    text: `${res.message}`,
+                    icon: "success",
+                    confirmButtonText: "Ok",
+                  }).then(() => {
+                    // console.log("done")
+                    setSignShowotp(true);
+                    // setIsloading(false);
+                    // setShowotp(true);
+                  });
+                } else {
+                  Swal.fire({
+                    title: "error",
+                    text: `${res.error}`,
+                    icon: "error",
+                    confirmButtonText: "Ok",
+                  });
+                }
+              });
+            } else if (role == 6) {
+              fd.append("name", tutorname);
+              fd.append("email", signupemail); // Add mobile to form data
+              fd.append("mobile", tutormobile); // Add level to form data
+              fd.append("country", tutorcountry);
+              fd.append("state", tutorstate);
+              fd.append("city", tutorcity); // Add password to form data
+              fd.append("experience", tutorexp);
+              fd.append("gender", tutorgender);
+              fd.append("qualification", TutorQualificationvalue);
+  
+              fetch(
+                process.env.NEXT_PUBLIC_API_ENDPOINT + "/tutor/register",
                 {
                   method: "POST",
                   body: fd,
@@ -387,7 +463,7 @@ const FormSignUp = ({ closeModal ,role ,islogin }) => {
       </span>
       <div className={Styles["top-section"]}>
         <img
-          src="/assets/images/learnerhunt-logo.webp"
+          src="/assets/images/Logo.webp"
           width={200}
           height={60}
           alt="logo"
@@ -578,7 +654,7 @@ const FormSignUp = ({ closeModal ,role ,islogin }) => {
                             type="number"
                             placeholder="Enter your mobile number"
                             value={counsellormobile}
-                            onChange={(e) => setCounsellormobile(e.target.value)}
+                            onChange={(e) => handleCounsellorMobileChange(e)}
                             required
                             style={{ marginBottom: "15px" }}
                             min="0"
@@ -797,7 +873,215 @@ const FormSignUp = ({ closeModal ,role ,islogin }) => {
                           </Form.Group>
                         )}
                     </>
-                    ) : (
+                    ) : 
+                    role == "6" ? (
+                      <>
+                      <Form.Group controlId="tutorname">
+                        <Form.Label>
+                          Tutor Name
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          placeholder="Enter your name"
+                          value={tutorname}
+                          onChange={(e) => setTutorname(e.target.value)}
+                          required
+                          style={{ marginBottom: "15px" }}
+                        />
+                      </Form.Group>
+                      <Form.Group controlId="tutoremail">
+                      <Form.Label>
+                      Email
+                      </Form.Label>
+                      <Form.Control
+                        type="email"
+                        placeholder="Enter your email"
+                        value={signupemail}
+                        onChange={(e) => setSignupEmail(e.target.value)}
+                        required
+                        style={{ marginBottom: "15px" }}
+                      />
+                    </Form.Group>
+                    <Form.Group controlId="tutormobile">
+                          <Form.Label>
+                            Mobile
+                          </Form.Label>
+                          <Form.Control
+                            type="number"
+                            placeholder="Enter your mobile number"
+                            value={tutormobile}
+                            onChange={(e) => handleTutorMobileChange(e)}
+                            required
+                            style={{ marginBottom: "15px" }}
+                            min="0"
+                          />
+                        </Form.Group>
+                        <Form.Group controlId="gender">
+                          <Form.Label>
+                          Gender
+                          </Form.Label>
+                          <Form.Control
+                            as="select"
+                            value={tutorgender}
+                            style={{ marginBottom: "15px" }}
+                            onChange={(e) => setTutorgender(e.target.value)}
+                            required
+                          >
+                            <option disabled value="">
+                              Select..
+                            </option>
+                            {genderType.map((c, i) => {
+                                return (
+                                  <option key={i} value={c.value}>
+                                    {c.gendername}
+                                  </option>
+                                );
+                              })}
+
+                          </Form.Control>
+                        </Form.Group>
+                        <Form.Group controlId="qualification">
+                          <Form.Label>
+                          Qualification
+                          </Form.Label>
+                          <Form.Control
+                            as="select"
+                            value={TutorQualificationvalue}
+                            style={{ marginBottom: "15px" }}
+                            onChange={(e) => setTutorQualificationvalue(e.target.value)}
+                            required
+                          >
+                            <option disabled value="">
+                              Select..
+                            </option>
+                            {CounsellorQualification.map((c, i) => {
+                                return (
+                                  <option key={i} value={c}>
+                                    {c}
+                                  </option>
+                                );
+                              })}
+
+                          </Form.Control>
+                        </Form.Group>
+                        <Form.Group controlId="exp">
+                          <Form.Label>
+                          Experince in Year
+                          </Form.Label>
+                          <Form.Control
+                            as="select"
+                            value={tutorexp}
+                            style={{ marginBottom: "15px" }}
+                            onChange={(e) => setTutorexp(e.target.value)}
+                            required
+                          >
+                            <option disabled value="">
+                              Experince in Year
+                            </option>
+                            {ExpinYear.map((c, i) => {
+                                return (
+                                  <option key={i} value={c}>
+                                    {c}
+                                  </option>
+                                );
+                              })}
+
+                          </Form.Control>
+                        </Form.Group>
+                      <Form.Group controlId="state">
+                          <Form.Label>
+                            Country
+                          </Form.Label>
+                          <Form.Control
+                            as="select"
+                            style={{ marginBottom: "15px" }}
+                            value={tutorcountry}
+                            onChange={(e) => {
+                              setTutorcountry(e.target.value), setTutorstate(""), setTutorcity("");
+                            }}
+                            required
+                          >
+                            <option disabled value="">
+                              Select Country
+                            </option>
+                            {Object.keys(IndianStates).map((country, i) => {
+                              return (
+                                <option key={i} value={country}>
+                                  {country}
+                                </option>
+                              );
+                            })}
+
+                          </Form.Control>
+                        </Form.Group>
+                         <Form.Group controlId="state">
+                          <Form.Label>
+                            State
+                          </Form.Label>
+                          <Form.Control
+                            as="select"
+                            value={tutorstate}
+                            style={{ marginBottom: "15px" }}
+                            onChange={(e) => setTutorstate(e.target.value)}
+                            required
+                          >
+                            <option disabled value="">
+                              Select State
+                            </option>
+                            {tutorcountry != "" && Object.keys(IndianStates[tutorcountry]).map((c, i) => {
+                              return (
+                                <option key={i} value={c}>
+                                  {c}
+                                </option>
+                              );
+                            })}
+
+                          </Form.Control>
+                        </Form.Group>
+                        <Form.Group controlId="city">
+                          <Form.Label>
+                            City
+                          </Form.Label>
+                          <Form.Control
+                            as="select"
+                            value={tutorcity}
+                            style={{ marginBottom: "15px" }}
+                            onChange={(e) => setTutorcity(e.target.value)}
+                            required
+                          >
+                            <option disabled value="">
+                              Select city
+                            </option>
+                            {tutorstate != "" &&
+                              IndianStates[tutorcountry][tutorstate].map((c, i) => {
+                                return (
+                                  <option key={i} value={c}>
+                                    {c}
+                                  </option>
+                                );
+                              })}
+
+                          </Form.Control>
+                        </Form.Group>
+                        {signupshowotp && (
+                          <Form.Group controlId="otp">
+                            <Form.Label>
+                              Enter OTP
+                            </Form.Label>
+                            <Form.Control
+                              type="text"
+                              placeholder="Enter the OTP"
+                              value={signupuserotp}
+                              maxLength={6}
+                              minLength={6}
+                              onChange={handleSignupOtpChange}
+                              required
+                              style={{ marginBottom: "15px" }}
+                            />
+                          </Form.Group>
+                        )}
+                    </>
+                    ) :(
                       <>
                         <Form.Group controlId="clgname">
                           <Form.Label>
