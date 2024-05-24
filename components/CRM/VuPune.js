@@ -37,7 +37,7 @@ export default class Vupune extends Component {
       ).then(async (res) => {
         if (res.ok) {
           let response = await res.json();
-          console.log(response.data.locations);
+          // console.log(response.data.locations);
           //   if (response.data.length > 0) {
           this.setState({ locationList: response.data.locations });
           //   }
@@ -81,7 +81,7 @@ export default class Vupune extends Component {
         }
       ).then(async (response) => {
         var res = await response.json();
-        console.log(res);
+        // console.log(res);
         this.setState({ isLoading: false });
 
         if (res.data == "Success") {

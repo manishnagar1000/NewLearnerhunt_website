@@ -13,9 +13,18 @@ import DifferenceIcon from "@mui/icons-material/Difference";
 import Tooltip from '@mui/material/Tooltip';
 import LoopIcon from "@mui/icons-material/Loop";
 import { Modal, Button, Form } from "react-bootstrap";
+import Stack from "@mui/material/Stack";
+import Stepper from "@mui/material/Stepper";
+import Step from "@mui/material/Step";
+import StepLabel from "@mui/material/StepLabel";
+
 
 var oldData = [];
-
+var steps = [
+    "First Followup Complete",
+    "Bit-link Registration Complete",
+    "Fee Payment Success",
+  ];
 export default class AssignLeads extends Component {
   constructor(props) {
     super(props);
@@ -36,6 +45,7 @@ export default class AssignLeads extends Component {
       showModal: false,
       leadid: "",
       counsellorType: "",
+      pipeline:null
     };
   }
 
@@ -143,7 +153,7 @@ export default class AssignLeads extends Component {
 
   handleStudentCall = (e, counsellorInfo) => {
     e.preventDefault();
-    console.log(counsellorInfo);
+    // console.log(counsellorInfo);
 
     try {
       this.setState({ isLoading: true });
@@ -204,7 +214,7 @@ export default class AssignLeads extends Component {
   };
 
   handleGetRemarks = (type) => {
-    console.log(type)
+    // console.log(type)
     // this.setState({callerType:type}),(()=>{
     //   console.log('hello')
     // })
@@ -214,7 +224,7 @@ export default class AssignLeads extends Component {
       });
       fetch(
         process.env.NEXT_PUBLIC_API_ENDPOINT +
-          `/counsellor/remarks?lid=${this.state.leadid}&lt=${this.state.counsellorType}`,
+          `/counsellor/lead-status?lid=${this.state.leadid}&lt=${this.state.counsellorType}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("cst")}`,
@@ -223,7 +233,7 @@ export default class AssignLeads extends Component {
       ).then(async (res) => {
         if (res.ok) {
           let response = await res.json();
-          this.setState({ remarksHistory: response.data.remarks });
+          this.setState({ remarksHistory: response.data.remarks,pipeline:response.data.pipeline });
           this.setState({ showModal: true });
         } else {
           let response = await res.json();
@@ -248,7 +258,7 @@ export default class AssignLeads extends Component {
         fd.append("remarks", this.state.remark);
         fd.append("leadType", this.state.counsellorType);
         fd.append("leadId", this.state.leadid);
-        fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/counsellor/remarks", {
+        fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/counsellor/lead-status", {
           method: "POST",
           body: fd,
           headers: {
@@ -288,6 +298,17 @@ export default class AssignLeads extends Component {
     this.setState({ showModal: !this.state.showModal });
   };
 
+  
+   getMaxCount = (p) => {
+    console.log(p)
+    if (p.stage3) {
+      return 3;
+    } else if (p.stage2) {
+      return 2;
+    } else if (p.stage1) {
+      return 1;
+    }
+  };
   render() {
     return (
       <>
@@ -336,6 +357,10 @@ export default class AssignLeads extends Component {
                         <MenuItem value={3}>Registered Students</MenuItem>
                         <MenuItem value={4}>PopUp Leads</MenuItem>
                         <MenuItem value={7}>Mba Leads</MenuItem>
+                        <MenuItem value={8}>Ug Leads</MenuItem>
+                        <MenuItem value={9}>LLB Leads</MenuItem>
+
+
 
                       </Select>
                     </FormControl>
@@ -354,6 +379,149 @@ export default class AssignLeads extends Component {
             {this.state.counsellorType != "" ? (
               this.state.isApiHitComplete ? (
                 this.state.isDataFound ? (
+                  this.state.counsellorType == 9 ? (
+                    <table className={`table table-hover custom-table`}>
+                      <thead>
+                        <tr>
+                          <th style={{ background: "var(--primary)" }}>
+                            Student Name
+                          </th>
+                          <th style={{ background: "var(--primary)" }}>
+                            Student Mobile
+                          </th>
+                          <th style={{ background: "var(--primary)" }}>
+                            Remarks
+                          </th>
+                          {/* <th style={{ background: "var(--primary)" }}>
+                            Student Email
+                          </th> */}
+                          <th style={{ background: "var(--primary)" }}>
+                            Course
+                          </th>
+                        
+                          <th style={{ background: "var(--primary)" }}>Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {this.state.clgList.map((clg, i) => {
+                          return (
+                            <tr key={i}>
+                              <td>{clg.name || 'NA'}</td>
+                              <td className="text-center">
+                                <IconButton
+                                  onClick={(e) =>
+                                    this.handleStudentCall(e, clg)
+                                  }
+                                >
+                                  <CallIcon color="primary" fontSize="small" />
+                                </IconButton>
+                              </td>
+                              <td className="text-center">
+                            <Tooltip title="Add Remark">
+                              <IconButton
+                                onClick={(e) =>
+                                  this.setState({ leadid: clg._id }, () =>
+                                    this.handleGetRemarks(9)
+                                  )
+                                }
+                              >
+                                <DifferenceIcon
+                                  color="success"
+                                  fontSize="small"
+                                />
+                              </IconButton>
+                            </Tooltip>
+                          </td>
+                              {/* <td>{clg.email || 'NA'}</td> */}
+                              <td>{clg.course || 'NA'}</td>
+                              <td
+                                style={{
+                                  color: this.DatebasedOncolor(clg.createdAt),
+                                }}
+                              >
+                                {this.formatTimestamp(clg.createdAt)}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  ):
+                  this.state.counsellorType == 8 ? (
+                    <table className={`table table-hover custom-table`}>
+                      <thead>
+                        <tr>
+                          <th style={{ background: "var(--primary)" }}>
+                            Student Name
+                          </th>
+                          <th style={{ background: "var(--primary)" }}>
+                            Student Mobile
+                          </th>
+                          <th style={{ background: "var(--primary)" }}>
+                            Remarks
+                          </th>
+                          {/* <th style={{ background: "var(--primary)" }}>
+                            Student Email
+                          </th> */}
+                          <th style={{ background: "var(--primary)" }}>
+                            Course
+                          </th>
+                          <th style={{ background: "var(--primary)" }}>
+                            City
+                          </th>
+                          <th style={{ background: "var(--primary)" }}>
+                            Budget
+                          </th>
+                          <th style={{ background: "var(--primary)" }}>Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {this.state.clgList.map((clg, i) => {
+                          return (
+                            <tr key={i}>
+                              <td>{clg.name || 'NA'}</td>
+                              <td className="text-center">
+                                <IconButton
+                                  onClick={(e) =>
+                                    this.handleStudentCall(e, clg)
+                                  }
+                                >
+                                  <CallIcon color="primary" fontSize="small" />
+                                </IconButton>
+                              </td>
+                              <td className="text-center">
+                            <Tooltip title="Add Remark">
+                              <IconButton
+                                onClick={(e) =>
+                                  this.setState({ leadid: clg._id }, () =>
+                                    this.handleGetRemarks(8)
+                                  )
+                                }
+                              >
+                                <DifferenceIcon
+                                  color="success"
+                                  fontSize="small"
+                                />
+                              </IconButton>
+                            </Tooltip>
+                          </td>
+                              {/* <td>{clg.email || 'NA'}</td> */}
+                              <td>{clg.course || 'NA'}</td>
+                              <td>{clg.city || 'NA'}</td>
+                              <td>{clg.budget || 'NA'}</td>
+                              <td
+                                style={{
+                                  color: this.DatebasedOncolor(clg.createdAt),
+                                }}
+                              >
+                                {this.formatTimestamp(clg.createdAt)}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  ):
                   this.state.counsellorType == 7 ? (
                     <table className={`table table-hover custom-table`}>
                       <thead>
@@ -799,6 +967,7 @@ export default class AssignLeads extends Component {
                 <h5>Remarks History</h5>
 
                 {this.state.remarksHistory.length > 0 ? (
+                  <>
                   <table className={`table table-hover custom-table`}>
                     <thead>
                       <tr>
@@ -819,7 +988,22 @@ export default class AssignLeads extends Component {
                       })}
                     </tbody>
                   </table>
+                  <hr/>
+                      <Stack sx={{ width: "100%" }} spacing={4}>
+                      <Stepper
+                        alternativeLabel
+                        activeStep={this.state.pipeline ? this.getMaxCount(this.state.pipeline) : -1}
+                      >
+                        {steps.map((label) => (
+                          <Step key={label}>
+                            <StepLabel>{label}</StepLabel>
+                          </Step>
+                        ))}
+                      </Stepper>
+                    </Stack>
+                  </>
                 ) : (
+                  <>
                   <div
                     style={{
                       display: "flex",
@@ -836,6 +1020,20 @@ export default class AssignLeads extends Component {
                       </span>
                     </div>
                   </div>
+                      <hr/>
+                      <Stack sx={{ width: "100%" }} spacing={4}>
+                      <Stepper
+                        alternativeLabel
+                        activeStep={this.state.pipeline ? this.getMaxCount(this.state.pipeline) : -1}
+                      >
+                        {steps.map((label) => (
+                          <Step key={label}>
+                            <StepLabel>{label}</StepLabel>
+                          </Step>
+                        ))}
+                      </Stepper>
+                    </Stack>
+                    </>
                 )}
               
               </Modal.Body>

@@ -42,7 +42,7 @@ export default class Admission extends Component {
     ).then(async (res) => {
       let response = await res.json();
      
-      console.log(response.data);
+      // console.log(response.data);
       if (response.error) {
         this.setState({ isError: true, errorMsg: response.error });
       } else {
@@ -202,7 +202,7 @@ console.error('Error:', error);
     });
   }
   render() {
-    console.log(this.state.admissionFields)
+    // console.log(this.state.admissionFields)
     // const { collegeList } = this.props
     return (
       <div className={Classes["add-user"]}>

@@ -38,7 +38,7 @@ export default class Scholorship extends Component {
     ).then(async (res) => {
       let response = await res.json();
      
-      console.log(response.data);
+      // console.log(response.data);
       if (response.error) {
         this.setState({ isError: true, errorMsg: response.error });
       } else {

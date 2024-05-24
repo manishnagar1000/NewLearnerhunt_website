@@ -24,11 +24,14 @@ import Classes from "/styles/Popup.module.css";
 import Chip from "@mui/material/Chip";
 import LoopIcon from "@mui/icons-material/Loop";
 import Loading from "@/components/Comps/Loading";
+import * as XLSX from 'xlsx';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
+import { useDropzone } from 'react-dropzone';
 import Stack from "@mui/material/Stack";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
-
 
 const headCells = [
   {
@@ -37,7 +40,7 @@ const headCells = [
   },
   {
     id: "counsellorname",
-    label: "Counsellor name",
+    label: "Assigned to Counsellor",
   },
   {
     id: "mobnumber",
@@ -48,12 +51,16 @@ const headCells = [
     label: "Email",
   },
   {
-    id: "course",
-    label: "Interested Course",
+    id: "city",
+    label: "City",
   },
   {
-    id: "state",
-    label: "State",
+    id: "budget",
+    label: "Budget",
+  },
+  {
+    id: "course",
+    label: "Course",
   },
   {
     id: "date",
@@ -150,6 +157,71 @@ function EnhancedTableToolbar(props) {
     });
   };
 
+
+  const onDrop = (acceptedFiles) => {
+    const file = acceptedFiles[0];
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, { type: 'array' });
+      const sheetName = workbook.SheetNames[0];
+      const sheet = workbook.Sheets[sheetName];
+      const json = XLSX.utils.sheet_to_json(sheet);
+
+      // setJsonData(json);
+      // console.log(json)
+      // console.log(JSON.stringify(json))
+      props.loader(true)
+      const fd = new FormData();
+      fd.append("data", JSON.stringify(json));
+      fetch(
+        process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/ugleads-template-upload`,
+        {
+          method: "POST",
+          body: fd,
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("pt")}`,
+          },
+        }
+      ).then(async (res) => {
+        let response = await res.json();
+        if (response.data) {
+            Swal.fire({
+              title: "Success",
+              html: `${response.message}`,
+              icon: "success",
+              confirmButtonText: "Ok",
+            }).then((s)=>{
+              props.userListData()
+            })
+        } else {
+          Swal.fire({
+            title: "Error",
+            html: `${response.error}`,
+            icon: "error",
+            confirmButtonText: "Ok",
+          })
+        }
+      props.loader(false)
+
+      // setIsLoading(false)
+  
+      });
+      
+
+    };
+
+    reader.readAsArrayBuffer(file);
+  };
+
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: '.xlsx',
+    onDrop,
+  });
+
+
+
   return (
     <>
       <Toolbar
@@ -186,7 +258,7 @@ function EnhancedTableToolbar(props) {
         )}
 
         {numSelected > 0 ? (
-          <Tooltip title="Assign Leads">
+          <Tooltip title="Assigned Leads">
             <IconButton>
               <SendTimeExtensionIcon onClick={handleOpen} />
             </IconButton>
@@ -200,7 +272,27 @@ function EnhancedTableToolbar(props) {
               placeholder="Search..."
               onChange={handleSearchChange}
             />
-            <Tooltip title="Refresh">
+              <div className='d-flex justify-content-end'>
+              <Tooltip title="Upload UgLeads Form Excel" arrow>
+        <Button className='m-4' variant="primary" {...getRootProps()} >
+          <input {...getInputProps()} />
+          <FileUploadIcon />
+          Upload
+        </Button>
+        </Tooltip>
+
+        {/* <a href=`process.env.NEXT_PUBLIC_API_ENDPOINT + 'download_excel'` target='blank'> <Button className='m-4' variant="success" > */}
+        <a href={`${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/ugleads-template-download`} target='blank'>
+        <Tooltip title="Download UgLeads Excel Template" arrow>
+
+        <Button className='m-4' variant="success" >
+          <FileDownloadIcon />
+          Download
+        </Button>
+        </Tooltip>
+        </a>
+      </div>
+              <Tooltip title="Refresh">
                       <IconButton
                         aria-label="Refresh"
                         onClick={() =>props.userListData()}
@@ -225,8 +317,8 @@ export default function Studentappliedclg() {
   const [counsellorList, setCounsellorList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedCounsellor, setSelectedCounsellor] = useState("");
   const [isremarkLoading,setIsRemarkLoading] = useState(false)
+  const [selectedCounsellor, setSelectedCounsellor] = useState("");
   const [remarkshowModal, setRemarkshowModal] = useState(false);
   const [remarksHistory, setRemarksHistory] = useState([]);
   const [pipeline, setPipeLine] = useState(null);
@@ -238,7 +330,7 @@ export default function Studentappliedclg() {
   const getUserList = () => {
     setIsLoading(true)
     fetch(
-      process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/leads?lid=${-1}&type=2`,
+      process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/learnerhunt-landing-page-leads?lt=8`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("pt")}`,
@@ -336,7 +428,7 @@ export default function Studentappliedclg() {
     setIsLoading(true);
     const fd = new FormData();
     fd.append("lid", selected.join("&"));
-    fd.append("lt", 2);
+    fd.append("lt", 8);
     fd.append("cid", selectedCounsellor);
     fetch(
       process.env.NEXT_PUBLIC_API_ENDPOINT +
@@ -377,13 +469,13 @@ export default function Studentappliedclg() {
   };
   const handleGetRemarks = (e, c, id) => {
     e.preventDefault();
-
     try {
       setIsRemarkLoading(true);
+     
       setRemarkshowModal(true);
       fetch(
         process.env.NEXT_PUBLIC_API_ENDPOINT +
-          `/admin/counsellor-lead-status?lid=${id}&lt=2&cid=${c._id}`,
+          `/admin/counsellor-lead-status?lid=${id}&lt=8&cid=${c._id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("pt")}`,
@@ -393,7 +485,7 @@ export default function Studentappliedclg() {
         if (res.ok) {
           // console.log(res)
           let response = await res.json();
-          console.log(response.data);
+          // console.log(response.data);
           setRemarksHistory(response.data.remarks);
           setPipeLine(response.data.pipeline);
 
@@ -401,19 +493,19 @@ export default function Studentappliedclg() {
           let response = await res.json();
         }
         setIsRemarkLoading(false);
-
+      
       });
     } catch (error) {
       console.error(error);
     }
   };
-
   const steps = [
     "First Followup Complete",
     "Bit-link Registration Complete",
     "Fee Payment Success",
   ];
   const getMaxCount = (p) => {
+    // console.log(p)
     if (p.stage3) {
       return 3;
     } else if (p.stage2) {
@@ -433,6 +525,7 @@ export default function Studentappliedclg() {
             onSearchChange={(value) => handleSearchChange(value)}
             OnModalOpen={(value) => handleModalOpen(value)}
             counsellorList={(list) => setCounsellorList(list)}
+            loader={setIsLoading}
           />
           <TableContainer sx={{ maxHeight: "70vh" }}>
             <Table
@@ -471,7 +564,7 @@ export default function Studentappliedclg() {
                           }}
                         />
                       </TableCell>
-                      <TableCell>{row.full_name}</TableCell>
+                      <TableCell>{row.name}</TableCell>
                       <TableCell>
                         {row.counsellors.length > 0 ? (
                           row.counsellors.map((c, i) => {
@@ -498,10 +591,11 @@ export default function Studentappliedclg() {
                           />
                         )}
                       </TableCell>
-                      <TableCell>{row.contact_no}</TableCell>
-                      <TableCell>{row.email}</TableCell>
-                      <TableCell>{row.course_interested}</TableCell>
-                      <TableCell>{row.state}</TableCell>
+                      <TableCell>{row.mobile || 'NA'}</TableCell>
+                      <TableCell>{row.email || 'NA'}</TableCell>
+                      <TableCell>{row.city || 'NA'}</TableCell>
+                      <TableCell>{row.budget || 'NA'}</TableCell>
+                      <TableCell>{row.course || 'NA'}</TableCell>
                       <TableCell>{formatTimestamp(row.createdAt)}</TableCell>
                     </TableRow>
                   );
@@ -521,7 +615,7 @@ export default function Studentappliedclg() {
         keyboard={false}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Assign Lead</Modal.Title>
+          <Modal.Title>Assign Leads to Counsellor</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Box
@@ -570,7 +664,6 @@ export default function Studentappliedclg() {
           </Box>
         </Modal.Body>
       </Modal>
-
       <Modal
         show={remarkshowModal}
         onHide={() => setRemarkshowModal(false)}
@@ -605,18 +698,18 @@ export default function Studentappliedclg() {
                 </tbody>
               </table>
               <hr/>
-               <Stack sx={{ width: "100%" }} spacing={4}>
-               <Stepper
-                 alternativeLabel
-                 activeStep={pipeline ? getMaxCount(pipeline) : -1}
-               >
-                 {steps.map((label) => (
-                   <Step key={label}>
-                     <StepLabel>{label}</StepLabel>
-                   </Step>
-                 ))}
-               </Stepper>
-             </Stack>
+                <Stack sx={{ width: "100%" }} spacing={4}>
+                <Stepper
+                  alternativeLabel
+                  activeStep={pipeline ? getMaxCount(pipeline) : -1}
+                >
+                  {steps.map((label) => (
+                    <Step key={label}>
+                      <StepLabel>{label}</StepLabel>
+                    </Step>
+                  ))}
+                </Stepper>
+              </Stack>
               </>
             ) : (
               <>
@@ -636,20 +729,20 @@ export default function Studentappliedclg() {
                   </span>
                 </div>
               </div>
-               <hr/>
-               <Stack sx={{ width: "100%" }} spacing={4}>
-               <Stepper
-                 alternativeLabel
-                 activeStep={pipeline ? getMaxCount(pipeline) : -1}
-               >
-                 {steps.map((label) => (
-                   <Step key={label}>
-                     <StepLabel>{label}</StepLabel>
-                   </Step>
-                 ))}
-               </Stepper>
-             </Stack>
-             </>
+                  <hr/>
+                  <Stack sx={{ width: "100%" }} spacing={4}>
+                  <Stepper
+                    alternativeLabel
+                    activeStep={pipeline ? getMaxCount(pipeline) : -1}
+                  >
+                    {steps.map((label) => (
+                      <Step key={label}>
+                        <StepLabel>{label}</StepLabel>
+                      </Step>
+                    ))}
+                  </Stepper>
+                </Stack>
+                </>
             )
           ) : (
             <div
@@ -666,7 +759,6 @@ export default function Studentappliedclg() {
         </Modal.Body>
       </Modal>
       <Loading show={isLoading} onHide={() => setIsLoading(false)} />
-
     </>
   );
 }

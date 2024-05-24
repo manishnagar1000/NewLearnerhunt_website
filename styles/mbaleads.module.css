@@ -33,7 +33,11 @@
     padding: 1rem 0;
     margin-bottom: 1rem;
 }
-
+.pillouter{
+    /* background-color: red; */
+    display: flex;
+    justify-content: center;
+}
 .pill {
     background: #f7f2f2;
     display: inline-flex;
@@ -60,8 +64,21 @@
     background-color: transparent;
     margin: 0,1rem;
 }
+.pillouter .pill{
+    width: 100px;
+    height: 100px;
+    border-radius: 0 20px 0 20px;
+    border:2px solid #950304;
+    background-color: #f8f8f8;
+    margin: 0px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.2s;
+}
 
-
+.pillouter .pill:hover{
+    transform: scale(1.1);
+}
 
 
 @media only screen and (max-width: 600px) {
@@ -75,6 +92,14 @@
     }
     .mba-nav p{
         display: none;
+    }
+    .pillouter{
+        /* background-color: red; */
+        display: block;
+        justify-content: center;
+    }
+    .pillouter .pill{
+        margin: 1rem;
     }
   }
 

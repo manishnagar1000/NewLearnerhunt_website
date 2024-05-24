@@ -25,6 +25,7 @@ const Layout = ({ children }) => {
         !pathname.startsWith("/ads/mbaleads") && 
         !pathname.startsWith("/tutorportal") && 
         !pathname.startsWith("/ads/btech-bca-bba-college-admission") && 
+        !pathname.startsWith("/ads/llb-college-admission") && 
 
 
      <Topbar />}
@@ -34,6 +35,7 @@ const Layout = ({ children }) => {
      !pathname.startsWith("/ads/mbaleads") && 
      !pathname.startsWith("/tutorportal") && 
      !pathname.startsWith("/ads/btech-bca-bba-college-admission") && 
+     !pathname.startsWith("/ads/llb-college-admission") && 
 
      <PopForm/>}
  {!pathname.startsWith("/adminportal") &&
@@ -42,6 +44,7 @@ const Layout = ({ children }) => {
      !pathname.startsWith("/ads/mbaleads") && 
      !pathname.startsWith("/tutorportal") && 
      !pathname.startsWith("/ads/btech-bca-bba-college-admission") && 
+     !pathname.startsWith("/ads/llb-college-admission") && 
 
      <WhatsAppButton/>}
 
@@ -55,7 +58,7 @@ const Layout = ({ children }) => {
         !pathname.startsWith("/counsellorportal") &&
         !pathname.startsWith("/ads/mbaleads") && 
         !pathname.startsWith("/ads/btech-bca-bba-college-admission") && 
-
+        !pathname.startsWith("/ads/llb-college-admission") && 
         !pathname.startsWith("/tutorportal") && 
 
         <Footer data={children.props.testeligibility}/>}

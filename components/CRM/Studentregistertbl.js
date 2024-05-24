@@ -26,6 +26,11 @@ import Classes from "/styles/Popup.module.css";
 import Chip from "@mui/material/Chip";
 import LoopIcon from "@mui/icons-material/Loop";
 import Loading from "@/components/Comps/Loading";
+import Stack from "@mui/material/Stack";
+import Stepper from "@mui/material/Stepper";
+import Step from "@mui/material/Step";
+import StepLabel from "@mui/material/StepLabel";
+
 const headCells = [
   {
     id: "studname",
@@ -225,6 +230,8 @@ export default function Studentappliedclg() {
   const [selectedCounsellor, setSelectedCounsellor] = useState("");
   const [remarkshowModal, setRemarkshowModal] = useState(false);
   const [remarksHistory, setRemarksHistory] = useState([]);
+  const [pipeline, setPipeLine] = useState(null);
+
   useEffect(() => {
     getUserList();
   }, []);
@@ -377,7 +384,7 @@ export default function Studentappliedclg() {
       setRemarkshowModal(true);
       fetch(
         process.env.NEXT_PUBLIC_API_ENDPOINT +
-          `/admin/counsellor-remarks?lid=${id}&lt=3&cid=${c._id}`,
+          `/admin/counsellor-lead-status?lid=${id}&lt=3&cid=${c._id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("pt")}`,
@@ -389,6 +396,8 @@ export default function Studentappliedclg() {
           let response = await res.json();
           console.log(response.data);
           setRemarksHistory(response.data.remarks);
+          setPipeLine(response.data.pipeline);
+
         } else {
           let response = await res.json();
         }
@@ -397,6 +406,21 @@ export default function Studentappliedclg() {
       });
     } catch (error) {
       console.error(error);
+    }
+  };
+  const steps = [
+    "First Followup Complete",
+    "Bit-link Registration Complete",
+    "Fee Payment Success",
+  ];
+  const getMaxCount = (p) => {
+    console.log(p)
+    if (p.stage3) {
+      return 3;
+    } else if (p.stage2) {
+      return 2;
+    } else if (p.stage1) {
+      return 1;
     }
   };
   return (
@@ -561,6 +585,7 @@ export default function Studentappliedclg() {
         <Modal.Body>
           {!isremarkLoading ? (
             remarksHistory.length > 0 ? (
+              <>
               <table className={`table table-hover custom-table`}>
                 <thead>
                   <tr>
@@ -579,7 +604,22 @@ export default function Studentappliedclg() {
                   })}
                 </tbody>
               </table>
+                <hr/>
+                <Stack sx={{ width: "100%" }} spacing={4}>
+                <Stepper
+                  alternativeLabel
+                  activeStep={pipeline ? getMaxCount(pipeline) : -1}
+                >
+                  {steps.map((label) => (
+                    <Step key={label}>
+                      <StepLabel>{label}</StepLabel>
+                    </Step>
+                  ))}
+                </Stepper>
+              </Stack>
+              </>
             ) : (
+              <>
               <div
                 style={{
                   display: "flex",
@@ -596,6 +636,20 @@ export default function Studentappliedclg() {
                   </span>
                 </div>
               </div>
+              <hr/>
+                <Stack sx={{ width: "100%" }} spacing={4}>
+                <Stepper
+                  alternativeLabel
+                  activeStep={pipeline ? getMaxCount(pipeline) : -1}
+                >
+                  {steps.map((label) => (
+                    <Step key={label}>
+                      <StepLabel>{label}</StepLabel>
+                    </Step>
+                  ))}
+                </Stepper>
+              </Stack>
+              </>
             )
           ) : (
             <div

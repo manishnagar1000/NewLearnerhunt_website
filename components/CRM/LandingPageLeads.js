@@ -212,6 +212,10 @@ import * as XLSX from 'xlsx';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import { useDropzone } from 'react-dropzone';
+import Stack from "@mui/material/Stack";
+import Stepper from "@mui/material/Stepper";
+import Step from "@mui/material/Step";
+import StepLabel from "@mui/material/StepLabel";
 
 const headCells = [
   {
@@ -327,7 +331,7 @@ function EnhancedTableToolbar(props) {
     }).then(async (res) => {
       // console.log(res)
       let response = await res.json();
-      console.log(response);
+      // console.log(response);
       if (response.data) {
         if (response.data.length > 0) {
           props.counsellorList(response.data);
@@ -358,8 +362,8 @@ function EnhancedTableToolbar(props) {
       const json = XLSX.utils.sheet_to_json(sheet);
 
       // setJsonData(json);
-      console.log(json)
-      console.log(JSON.stringify(json))
+      // console.log(json)
+      // console.log(JSON.stringify(json))
       props.loader(true)
       const fd = new FormData();
       fd.append("data", JSON.stringify(json));
@@ -461,18 +465,23 @@ function EnhancedTableToolbar(props) {
               onChange={handleSearchChange}
             />
               <div className='d-flex justify-content-end'>
+              <Tooltip title="Upload UgLeads Form Excel" arrow>
         <Button className='m-4' variant="primary" {...getRootProps()} >
           <input {...getInputProps()} />
           <FileUploadIcon />
-          Import
+          Upload
         </Button>
+        </Tooltip>
 
         {/* <a href=`process.env.NEXT_PUBLIC_API_ENDPOINT + 'download_excel'` target='blank'> <Button className='m-4' variant="success" > */}
-        <a href={`${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/mbaleads-template-download`} target='blank'> <Button className='m-4' variant="success" >
-         
-          <FileDownloadIcon />
-          Export
-        </Button></a>
+        <a href={`${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/mbaleads-template-download`} target='blank'> 
+        <Tooltip title="Download UgLeads Excel Template" arrow>
+
+<Button className='m-4' variant="success" >
+  <FileDownloadIcon />
+  Download
+</Button>
+</Tooltip></a>
       </div>
               <Tooltip title="Refresh">
                       <IconButton
@@ -503,6 +512,8 @@ export default function Studentappliedclg() {
   const [selectedCounsellor, setSelectedCounsellor] = useState("");
   const [remarkshowModal, setRemarkshowModal] = useState(false);
   const [remarksHistory, setRemarksHistory] = useState([]);
+  const [pipeline, setPipeLine] = useState(null);
+
   useEffect(() => {
     getUserList();
   }, []);
@@ -622,7 +633,7 @@ export default function Studentappliedclg() {
       }
     ).then(async (response) => {
       var res = await response.json();
-      console.log(res);
+      // console.log(res);
       setIsLoading(false);
       if (response.ok) {
         Swal.fire({
@@ -655,7 +666,7 @@ export default function Studentappliedclg() {
       setRemarkshowModal(true);
       fetch(
         process.env.NEXT_PUBLIC_API_ENDPOINT +
-          `/admin/counsellor-remarks?lid=${id}&lt=7&cid=${c._id}`,
+          `/admin/counsellor-lead-status?lid=${id}&lt=7&cid=${c._id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("pt")}`,
@@ -665,8 +676,10 @@ export default function Studentappliedclg() {
         if (res.ok) {
           // console.log(res)
           let response = await res.json();
-          console.log(response.data);
+          // console.log(response.data);
           setRemarksHistory(response.data.remarks);
+          setPipeLine(response.data.pipeline);
+
         } else {
           let response = await res.json();
         }
@@ -675,6 +688,21 @@ export default function Studentappliedclg() {
       });
     } catch (error) {
       console.error(error);
+    }
+  };
+  const steps = [
+    "First Followup Complete",
+    "Bit-link Registration Complete",
+    "Fee Payment Success",
+  ];
+  const getMaxCount = (p) => {
+    // console.log(p)
+    if (p.stage3) {
+      return 3;
+    } else if (p.stage2) {
+      return 2;
+    } else if (p.stage1) {
+      return 1;
     }
   };
   return (
@@ -844,6 +872,7 @@ export default function Studentappliedclg() {
         <Modal.Body>
           {!isremarkLoading ? (
             remarksHistory.length > 0 ? (
+              <>
               <table className={`table table-hover custom-table`}>
                 <thead>
                   <tr>
@@ -862,7 +891,22 @@ export default function Studentappliedclg() {
                   })}
                 </tbody>
               </table>
+              <hr/>
+                <Stack sx={{ width: "100%" }} spacing={4}>
+                <Stepper
+                  alternativeLabel
+                  activeStep={pipeline ? getMaxCount(pipeline) : -1}
+                >
+                  {steps.map((label) => (
+                    <Step key={label}>
+                      <StepLabel>{label}</StepLabel>
+                    </Step>
+                  ))}
+                </Stepper>
+              </Stack>
+              </>
             ) : (
+              <>
               <div
                 style={{
                   display: "flex",
@@ -879,6 +923,20 @@ export default function Studentappliedclg() {
                   </span>
                 </div>
               </div>
+                  <hr/>
+                  <Stack sx={{ width: "100%" }} spacing={4}>
+                  <Stepper
+                    alternativeLabel
+                    activeStep={pipeline ? getMaxCount(pipeline) : -1}
+                  >
+                    {steps.map((label) => (
+                      <Step key={label}>
+                        <StepLabel>{label}</StepLabel>
+                      </Step>
+                    ))}
+                  </Stepper>
+                </Stack>
+                </>
             )
           ) : (
             <div

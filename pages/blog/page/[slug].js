@@ -12,8 +12,8 @@ import { useRouter } from "next/router";
 export default function Page(blogs) {
     const router = useRouter();
   const {slug} = router.query;
-  console.log(slug)
-  console.log(blogs);
+  // console.log(slug)
+  // console.log(blogs);
   const [page, setPage] = useState(slug);
   const [Post, setPost] = useState(blogs);
   const responsive = {
@@ -203,7 +203,7 @@ export async function getServerSideProps(context) {
       process.env.NEXT_PUBLIC_API_ENDPOINT + `/blog/${slug}`
     );
     const blogs = await blogs_res.json();
-    console.log(blogs);
+    // console.log(blogs);
     return { props: blogs };
   } catch (error) {
     throw error;

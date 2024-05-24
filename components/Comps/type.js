@@ -1058,7 +1058,6 @@ export const ugbtechleads =
   {
     "BBA": [
       "Business Analytics",
-      "Travel and Tourism Management",
       "International Business",
       "Computer Application/ Information Technology",
       "Banking and Finance Management",
@@ -1079,29 +1078,29 @@ export const ugbtechleads =
       "Information Technology",
       "Agricultural Engineering",
       "Data Science",
-      "Computer Science",
-      "Marine Engineering",
-      "Petroleum Engineering",
-      "Robotics",
-      "Software Engineering",
       "BTech Biotechnology",
       "BTech Chemical Engineering",
       "Electronics and Communication Engineering",
-      "BTech ECE",
-      "Metallurgical Engineering",
-      "Biomedical Engineering",
-      "Construction Engineering"
     ],
     "BCA": [
-      "BCA in Blockchain in Cryptocurrency",
       "BCA in Data Science",
       "BCA in Artificial Intelligence",
-      "BCA in Cloud Technology & Information Security",
       "BCA in AR and VR",
       "BCA in Cyber Security",
       "BCA in Digital Marketing",
       "BCA in Data Analytics",
       "BCA in Information Technology"
+    ],
+    
+  }
+
+  export const ugllbleads = {
+    "LLB": [
+      "LLB",
+      "BA LLB",
+      "BBA LLB",
+      "B.Com LLB",
+      "B.Sc LLB",
     ]
   }
   export const budgetdata = [

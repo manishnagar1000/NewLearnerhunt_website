@@ -21,6 +21,7 @@ import Swal from "sweetalert2";
 import SearchIcon from "@mui/icons-material/Search";
 import SearchModal from "./SearchModal";
 import Image from "next/image";
+import { Badge } from "react-bootstrap";
 
 export default function Topbar() {
   const [isWindowScroll, setIsWindowScroll] = useState(false);
@@ -443,9 +444,16 @@ export default function Topbar() {
                     <li className={`${Classes["sage-menu-list"]}`}>
                       <Link href="/blog">Blog</Link>
                     </li>
-                    <li className={`${Classes["sage-menu-list"]}`}>
-                      <Link href="/Loan">Loan</Link>
-                    </li>
+                    {/* <li className={`${Classes["sage-menu-list"]}`}>
+                      <Link href="/loan">Apply Loan</Link>
+                    </li> */}
+                    <li className={`${Classes["sage-menu-list"]} `}>
+  <Link href="/loan">Apply Loan
+  <Badge pill bg="warning" text="dark">New</Badge>
+
+  </Link>
+
+</li>
                   </ul>
                 </div>
                 <div className={`${Classes["contact-cta"]}`}>
@@ -735,7 +743,7 @@ export default function Topbar() {
                         onClick={() => setShowToggleMenu(!showToggleMenu)}
                         className={`${Classes["sage-menu-list"]}`}
                       >
-                        <Link href="/Loan">Loan</Link>
+                        <Link href="/loan">Apply Loan <Badge pill bg="warning" text="dark">New</Badge></Link>
                       </li>
                     </ul>
                   </div>

@@ -25,7 +25,7 @@ export default function OurCounsellor(Counsellor){
         },
       }).then(async (response) => {
         var res = await response.json();
-        console.log(res)
+        // console.log(res)
         if (res.status) {
           setUserStatus(newstatus);
           setUseremail(localStorage.getItem("useremail"));
@@ -48,7 +48,7 @@ export default function OurCounsellor(Counsellor){
     // console.log(Counsellor)
     const handleStudentCall = (e, counsellorInfo) => {
         e.preventDefault();
-        console.log(counsellorInfo)
+        // console.log(counsellorInfo)
     
         try {
           setIsloading(true);
@@ -97,7 +97,7 @@ export default function OurCounsellor(Counsellor){
         }
       };
     const LearnerhuntCounsellor =Counsellor.data
-    console.log(LearnerhuntCounsellor)
+    // console.log(LearnerhuntCounsellor)
     const responsive = {
         desktop: {
           breakpoint: { max: 3000, min: 1024 },

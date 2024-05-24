@@ -22,7 +22,18 @@
     position:relative;
     z-index: 1;
 }
-
+.hero-outer-section-llb {
+    background-image: url('/assets/BtechLanding/llb.webp');
+    /* background-image: url('/assets/Landing/bg-img.webp'); */
+    width: 100%;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    min-height: 90vh;
+    padding: 2rem 0rem;
+    position:relative;
+    z-index: 1;
+}
  .HomePageHero_overlay {
     position: absolute;
     top: 0;

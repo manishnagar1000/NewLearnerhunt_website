@@ -13,8 +13,17 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-var oldData = [];
+import Stack from "@mui/material/Stack";
+import Stepper from "@mui/material/Stepper";
+import Step from "@mui/material/Step";
+import StepLabel from "@mui/material/StepLabel";
 
+var oldData = [];
+var steps = [
+  "First Followup Complete",
+  "Bit-link Registration Complete",
+  "Fee Payment Success",
+];
 export default class PhoneCalls extends Component {
   constructor(props) {
     super(props);
@@ -35,6 +44,8 @@ export default class PhoneCalls extends Component {
       showModal: false,
       leadid: "",
       callerType: "",
+      pipeline:null
+
       // selectedAsset: null,
     };
   }
@@ -98,7 +109,7 @@ export default class PhoneCalls extends Component {
         if (res.ok) {
           // console.log(res)
           let response = await res.json();
-          console.log(response.data);
+          // console.log(response.data);
           if (response.data.length > 0) {
             this.setState({ clgList: response.data, isDataFound: true });
           }
@@ -152,7 +163,7 @@ export default class PhoneCalls extends Component {
       this.setState({ isLoading: true });
       fetch(
         process.env.NEXT_PUBLIC_API_ENDPOINT +
-          `/counsellor/remarks?lid=${this.state.leadid}&lt=5`,
+          `/counsellor/lead-status?lid=${this.state.leadid}&lt=5`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("cst")}`,
@@ -163,7 +174,7 @@ export default class PhoneCalls extends Component {
           // console.log(res)
           let response = await res.json();
           // console.log(response.data);
-          this.setState({ remarksHistory: response.data.remarks });
+          this.setState({ remarksHistory: response.data.remarks ,pipeline:response.data.pipeline});
           this.setState({ showModal: true });
         } else {
           let response = await res.json();
@@ -235,7 +246,7 @@ export default class PhoneCalls extends Component {
         fd.append("remarks", this.state.remark);
         fd.append("leadType", 5);
         fd.append("leadId", this.state.leadid);
-        fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/counsellor/remarks", {
+        fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/counsellor/lead-status", {
           method: "POST",
           body: fd,
           headers: {
@@ -273,6 +284,16 @@ export default class PhoneCalls extends Component {
 
   toggleModal = () => {
     this.setState({ showModal: !this.state.showModal });
+  };
+  getMaxCount = (p) => {
+    // console.log(p)
+    if (p.stage3) {
+      return 3;
+    } else if (p.stage2) {
+      return 2;
+    } else if (p.stage1) {
+      return 1;
+    }
   };
 
   // handleChange = (e) => {
@@ -513,6 +534,7 @@ export default class PhoneCalls extends Component {
                 <h5>Remarks History</h5>
 
                 {this.state.remarksHistory.length > 0 ? (
+                  <>
                   <table className={`table table-hover custom-table`}>
                     <thead>
                       <tr>
@@ -533,7 +555,22 @@ export default class PhoneCalls extends Component {
                       })}
                     </tbody>
                   </table>
+                   <hr/>
+                   <Stack sx={{ width: "100%" }} spacing={4}>
+                   <Stepper
+                     alternativeLabel
+                     activeStep={this.state.pipeline ? this.getMaxCount(this.state.pipeline) : -1}
+                   >
+                     {steps.map((label) => (
+                       <Step key={label}>
+                         <StepLabel>{label}</StepLabel>
+                       </Step>
+                     ))}
+                   </Stepper>
+                 </Stack>
+                 </>
                 ) : (
+                  <>
                   <div
                     style={{
                       display: "flex",
@@ -550,33 +587,22 @@ export default class PhoneCalls extends Component {
                       </span>
                     </div>
                   </div>
-                )}
-                {/* { 
-                  this.state.remarksHistory.length>0 ? (
-                    <ul>
-                      {this.state.remarksHistory.map((obj, index) => (
-                        <li key={index}>{obj.remarks}</li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <div
-                      style={{
-                        display: "flex",
-                        width: "100%",
-                        height: "inherit",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
+                    <hr/>
+                    <Stack sx={{ width: "100%" }} spacing={4}>
+                    <Stepper
+                      alternativeLabel
+                      activeStep={this.state.pipeline ? this.getMaxCount(this.state.pipeline) : -1}
                     >
-                      <div style={{ fontWeight: "500" }}>
-                        <span style={{ color: "#0d6efd", cursor: "pointer" }}>
-                          {" "}
-                          No Records{" "}
-                        </span>
-                      </div>
-                    </div>
-                  )
-                    } */}
+                      {steps.map((label) => (
+                        <Step key={label}>
+                          <StepLabel>{label}</StepLabel>
+                        </Step>
+                      ))}
+                    </Stepper>
+                  </Stack>
+                  </>
+                )}
+            
               </Modal.Body>
             </Modal>
           </>

@@ -361,7 +361,7 @@
     margin: auto;
     padding: 30px 0;
     perspective: 1000px;
-    background: url("https://www.visualsstock.com/details_watermark.php?filename=32044") center center/cover fixed;
+    background: url('/assets/LoanPage/loanimg.jpg')  center/cover fixed;
     position: relative;
     z-index: 1;
   }

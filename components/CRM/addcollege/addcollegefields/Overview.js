@@ -80,7 +80,7 @@ export default class Overview extends Component {
     ).then(async (res) => {
       let response = await res.json();
      
-      console.log(response.data);
+      // console.log(response.data);
       if (response.error) {
         this.setState({ isError: true, errorMsg: response.error });
       } else {
@@ -466,7 +466,7 @@ export default class Overview extends Component {
 
   render() {
     // const { collegeList } = this.props
-    console.log(this.state.recognisedValues);
+    // console.log(this.state.recognisedValues);
     return (
       <div className={Classes["add-user"]}>
         <div className={Classes["form-div"]}>

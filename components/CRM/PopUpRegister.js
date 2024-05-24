@@ -24,6 +24,11 @@ import Classes from "/styles/Popup.module.css";
 import Chip from "@mui/material/Chip";
 import LoopIcon from "@mui/icons-material/Loop";
 import Loading from "@/components/Comps/Loading";
+import Stack from "@mui/material/Stack";
+import Stepper from "@mui/material/Stepper";
+import Step from "@mui/material/Step";
+import StepLabel from "@mui/material/StepLabel";
+
 const headCells = [
   {
     id: "studname",
@@ -107,7 +112,7 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  console.log(props);
+  // console.log(props);
   // console.log(props.rowsList);
   const [searchInput, setSearchInput] = useState("");
   const { numSelected } = props;
@@ -126,7 +131,7 @@ function EnhancedTableToolbar(props) {
     }).then(async (res) => {
       // console.log(res)
       let response = await res.json();
-      console.log(response);
+      // console.log(response);
       if (response.data) {
         if (response.data.length > 0) {
           props.counsellorList(response.data);
@@ -222,7 +227,6 @@ export default function PopUpRegister() {
   const [selected, setSelected] = React.useState([]);
   const [rows, setRows] = useState([]);
   const [counsellorList, setCounsellorList] = useState([]);
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [cpassword, setCpassword] = useState("");
@@ -237,6 +241,7 @@ export default function PopUpRegister() {
   const [selectedCounsellor, setSelectedCounsellor] = useState("");
   const [remarkshowModal, setRemarkshowModal] = useState(false);
   const [remarksHistory, setRemarksHistory] = useState([]);
+  const [pipeline, setPipeLine] = useState(null);
 
   useEffect(() => {
     getUserList();
@@ -411,7 +416,7 @@ export default function PopUpRegister() {
       }
     ).then(async (response) => {
       var res = await response.json();
-      console.log(res);
+      // console.log(res);
       setIsLoading(false);
       if (response.ok) {
         Swal.fire({
@@ -444,7 +449,7 @@ export default function PopUpRegister() {
       setRemarkshowModal(true);
       fetch(
         process.env.NEXT_PUBLIC_API_ENDPOINT +
-          `/admin/counsellor-remarks?lid=${id}&lt=4&cid=${c._id}`,
+          `/admin/counsellor-lead-status?lid=${id}&lt=4&cid=${c._id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("pt")}`,
@@ -454,8 +459,10 @@ export default function PopUpRegister() {
         if (res.ok) {
           // console.log(res)
           let response = await res.json();
-          console.log(response.data);
+          // console.log(response.data);
           setRemarksHistory(response.data.remarks);
+          setPipeLine(response.data.pipeline);
+
         } else {
           let response = await res.json();
         }
@@ -463,6 +470,21 @@ export default function PopUpRegister() {
       });
     } catch (error) {
       console.error(error);
+    }
+  };
+  const steps = [
+    "First Followup Complete",
+    "Bit-link Registration Complete",
+    "Fee Payment Success",
+  ];
+  const getMaxCount = (p) => {
+    // console.log(p)
+    if (p.stage3) {
+      return 3;
+    } else if (p.stage2) {
+      return 2;
+    } else if (p.stage1) {
+      return 1;
     }
   };
   return (
@@ -638,6 +660,7 @@ export default function PopUpRegister() {
         <Modal.Body>
           {!isremarkLoading ? (
             remarksHistory.length > 0 ? (
+              <>
               <table className={`table table-hover custom-table`}>
                 <thead>
                   <tr>
@@ -656,7 +679,22 @@ export default function PopUpRegister() {
                   })}
                 </tbody>
               </table>
+              <hr/>
+                <Stack sx={{ width: "100%" }} spacing={4}>
+                <Stepper
+                  alternativeLabel
+                  activeStep={pipeline ? getMaxCount(pipeline) : -1}
+                >
+                  {steps.map((label) => (
+                    <Step key={label}>
+                      <StepLabel>{label}</StepLabel>
+                    </Step>
+                  ))}
+                </Stepper>
+              </Stack>
+              </>
             ) : (
+              <>
               <div
                 style={{
                   display: "flex",
@@ -673,6 +711,20 @@ export default function PopUpRegister() {
                   </span>
                 </div>
               </div>
+              <hr/>
+                <Stack sx={{ width: "100%" }} spacing={4}>
+                <Stepper
+                  alternativeLabel
+                  activeStep={pipeline ? getMaxCount(pipeline) : -1}
+                >
+                  {steps.map((label) => (
+                    <Step key={label}>
+                      <StepLabel>{label}</StepLabel>
+                    </Step>
+                  ))}
+                </Stepper>
+              </Stack>
+              </>
             )
           ) : (
             <div

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Styles from "/styles/PopForm.module.css";
 import {
   Modal,
   Box,
@@ -12,7 +13,7 @@ import {
 } from "@mui/material";
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-// import axios from "axios";
+import { Badge } from "react-bootstrap";
 const PopForm = () => {
   const [data, setData] = useState([]);
 
@@ -33,9 +34,6 @@ const PopForm = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    // const  resp = await axios.get(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/miscellaneous/testeligibility`)
-    // const data = await resp.json()
-    // console.log(data)
     fetch(
       `${process.env.NEXT_PUBLIC_API_ENDPOINT}/miscellaneous/testeligibility`
     ).then(async (res) => {
@@ -145,7 +143,7 @@ const PopForm = () => {
       }
     }
   };
-  
+ 
   const checkValue = (value) => {
     return value != undefined && value != null && value != "";
   };
@@ -157,8 +155,6 @@ const PopForm = () => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
         centered ='true'
-        
-        
       >
         <Box
           sx={{
@@ -184,12 +180,19 @@ const PopForm = () => {
           <CloseIcon />
         </IconButton>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Scholarship upto 75%*
+            Scholarship upto  <Badge pill bg="danger" >75%</Badge> *
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             Get Admission in Your Dream College/University
           </Typography>
-          <Typography variant="body2" sx={{ mt: 2 }}>
+          <Typography
+      variant="body1"
+      sx={{
+        mt: 2,
+      }}
+      className={Styles["zoom-blink"]} 
+
+    >
             Check Your Eligibility
           </Typography>
           <form onSubmit={handleSubmit}>

@@ -71,7 +71,7 @@ const [blogid,setBlogId] = useState('');
       },
     })
       .then(async (res) => {
-        console.log(res);
+        // console.log(res);
         let response = await res.json();
         // console.log(response);
         if (response.data) {

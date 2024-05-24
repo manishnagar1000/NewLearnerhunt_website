@@ -22,11 +22,15 @@ import ActiveDeactiveclg from "@/components/CRM/ActiveDeactiveclg";
 import ManageUser from "@/components/CRM/ManageUser";
 import AssociatedCounsellorCrm from "@/components/CRM/AssociatedCounselorCrm";
 import LandingPageLeads from "@/components/CRM/LandingPageLeads";
+import UgPageLeads from "@/components/CRM/UgPageLeads";
+
 import TopCollegeSection from "@/components/CRM/TopCollegeSection";
 import SEOManage from "@/components/CRM/SeoManage";
 import CrmBlog from "@/components/CRM/CrmBlog";
 import CrmNews from "@/components/CRM/CrmNews";
 import CrmBlogCategory from "@/components/CRM/CrmBlogCategory";
+import BlogManager from "@/components/CRM/BlogManager";
+import LLBPageLeads from "@/components/CRM/LLBPageLeads";
 
 
 
@@ -123,6 +127,16 @@ const componentList = [
     role:[0,4]
   },
   {
+    comp:<UgPageLeads/>,
+    slug:"ugleads",
+    role:[0,4]
+  },
+  {
+    comp:<LLBPageLeads/>,
+    slug:"llbleads",
+    role:[0,4]
+  },
+  {
     comp:<TopCollegeSection/>,
     slug:"web-top-colleges",
     role:[4]
@@ -130,6 +144,11 @@ const componentList = [
   {
     comp:<SEOManage/>,
     slug:"seo-manager",
+    role:[0,5]
+  },
+  {
+    comp:<BlogManager/>,
+    slug:"blog-manager",
     role:[0,5]
   },
   {

@@ -1,14 +1,15 @@
 import React, { useRef, useState } from "react";
 import Styles from "/styles/landing.module.css";
 import { IndianStates } from "/components/Comps/StatesIndia";
-import { ugbtechleads } from "/components/Comps/type";
+import { ugllbleads } from "/components/Comps/type";
 import { budgetdata } from "/components/Comps/type";
+import { Typewriter } from "react-simple-typewriter";
 
 import { useRouter } from "next/router";
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-const BtechHeroSection = ({ inputRef }) => {
+const LlbHeroSection = ({ inputRef }) => {
 
   const [name, setName] = useState("");
   const [isNameValid, setIsNameValid] = useState(true);
@@ -16,14 +17,12 @@ const BtechHeroSection = ({ inputRef }) => {
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [mobile, setMobile] = useState("");
   const [isMobileValid, setIsMobileValid] = useState(true);
-  const [city, setCity] = useState("");
-  const [isCityValid, setIsCityValid] = useState(true);
-  // const [state, setState] = useState("");
-  // const [isStateValid, setIsStateValid] = useState(true);
+  // const [city, setCity] = useState("");
+  // const [isCityValid, setIsCityValid] = useState(true);
   const [course, setCourse] = useState("");
   const [isCourseValid, setIsCourseValid] = useState(true);
-  const [budget, setbudget] = useState("");
-  const [isbudgetValid, setIsbudgetValid] = useState(true);
+//   const [budget, setbudget] = useState("");
+//   const [isbudgetValid, setIsbudgetValid] = useState(true);
 
   const [isLoading,setIsLoading]= useState(false)
 
@@ -52,25 +51,23 @@ const BtechHeroSection = ({ inputRef }) => {
       setIsEmailValid(false);
     } else if (mobile == "" || mobile.length < 10) {
       setIsMobileValid(false);
-    } else if (city == "") {
-      setIsCityValid(false);
-    } else if (course == "") {
+    }  else if (course == "") {
       setIsCourseValid(false);
-    } else if (budget == ""){
-    setIsbudgetValid(false)
-    }else {
-      // console.log("api hit");
+    }
+    //  else if (budget == ""){
+    // setIsbudgetValid(false)
+    // }
+    else {
       const hitApi = () => {
           const fd = new FormData();
           fd.append("name",name);
           fd.append("email",email);
           fd.append("mobile",mobile);
-          fd.append("city",city);
           fd.append("course",course);
-          fd.append("budget",budget);
+        //   fd.append("budget",budget);
           fd.append("slug",pathname);
           fetch(
-            process.env.NEXT_PUBLIC_API_ENDPOINT + "/student/btech-bca-bba-college-admission",
+            process.env.NEXT_PUBLIC_API_ENDPOINT + "/student/llb-college-admission",
             {
               method: "POST",
               body: fd,
@@ -93,40 +90,41 @@ const BtechHeroSection = ({ inputRef }) => {
         };
 
         setIsLoading(true);
-        // try{
-        //   const ipData = await fetch("https://geolocation-db.com/json/");
-        //   const ipJsonData = await ipData.json();
-        //   hitApi(ipJsonData.IPv4 ? ipJsonData.IPv4 : "")
-        // }catch(e){
+   
           hitApi("")
-        // }
     }
   };
   return (
     <>
-      <div className={Styles["hero-outer-section-btech"]}>
+      <div className={Styles["hero-outer-section-llb"]}>
         <div className={Styles["HomePageHero_overlay"]}></div>
         <div className="container">
           <div className="row">
             <div className="col-md-7 d-flex align-items flex-column justify-content-evenly">
               <div className={Styles["content-section-top"]}>
                 <h1 className="text-center text-md-start">
-                Welcome to Learnerhunt - Your gateway to premier career counseling for B.Tech, BBA, and BCA path
+             ENROLL FOR LLB
                 </h1>
                 <hr />
                 <h3 className="text-center text-md-start">
-                Empowering you to excel in the dynamic fields of business and technology education.
+                Your Gateway To Premier
+                <Typewriter
+            words={[' Legal Career Guidance']}
+            loop={false}
+            cursor
+            cursorStyle='_'
+            typeSpeed={70}
+            deleteSpeed={50}
+            delaySpeed={1000}
+          /> 
+                </h3>
+                <h3 className="text-center text-md-start">
+                Empowering you to advocate for justice and skillfully follow the law.
                 </h3>
                 <hr className="d-block d-md-none" />
               </div>
               <div className={Styles["content-section-bottom"]}>
-                {/* <p className="text-center text-md-start">
-                  Join 16,000+ Successful Alumni
-                </p>
-                <hr className="d-block d-md-none" />
-                <p className="text-center text-md-start">
-                  30+ Years of Management Excellence!
-                </p> */}
+           
                 <div className={Styles["img-section"]}>
                   <img
                     src="/assets/Landing/clg-logos.webp"
@@ -197,7 +195,7 @@ const BtechHeroSection = ({ inputRef }) => {
                         </div>
                       )}
                     </div>
-                    <div className="mb-3">
+                    {/* <div className="mb-3">
                       <input
                         type="text"
                         className={`form-control ${
@@ -213,48 +211,22 @@ const BtechHeroSection = ({ inputRef }) => {
                       {!isCityValid && (
                         <div className="invalid-feedback">Invalid city</div>
                       )}
-                    </div>
-                    {/* <div className="mb-3">
-                      <select
-                        className={`form-select ${
-                          !isStateValid ? "is-invalid" : ""
-                        }`}
-                        // className="form-select is-invalid"
-                        value={state}
-                        onChange={(e) => {
-                          setState(e.target.value), setIsStateValid(true);
-                        }}
-                      >
-                        <option value="" disabled>
-                          Select state *
-                        </option>
-                        {Object.keys(IndianStates["India"]).map((c, i) => {
-                          return (
-                            <option key={i} value={c}>
-                              {c}
-                            </option>
-                          );
-                        })}
-                      </select>
-                      {!isStateValid && (
-                        <div className="invalid-feedback">Please select state</div>
-                      )}
                     </div> */}
+                  
                     <div className="mb-3">
                       <select
                         className={`form-select ${
                           !isCourseValid ? "is-invalid" : ""
                         }`}
-                        // className="form-select is-invalid"
                         value={course}
                         onChange={(e) => {
-                          setCourse(e.target.value), setIsCourseValid(true) , setbudget('');
+                          setCourse(e.target.value), setIsCourseValid(true) ;
                         }}
                       >
                         <option value="" disabled>
                           Courses *
                         </option>
-                        {Object.keys(ugbtechleads).map((c, i) => {
+                        {ugllbleads["LLB"].map((c, i) => {
                           return (
                             <option key={i} value={c}>
                               {c}
@@ -268,12 +240,11 @@ const BtechHeroSection = ({ inputRef }) => {
                         </div>
                       )}
                     </div>
-                    <div className="mb-3">
+                    {/* <div className="mb-3">
                       <select
                         className={`form-select ${
                           !isbudgetValid ? "is-invalid" : ""
                         }`}
-                        // className="form-select is-invalid"
                         value={budget}
                         onChange={(e) => {
                           setbudget(e.target.value), setIsbudgetValid(true);
@@ -295,7 +266,7 @@ const BtechHeroSection = ({ inputRef }) => {
                           Please select budget
                         </div>
                       )}
-                    </div>
+                    </div> */}
                     <button type="submit" disabled={isLoading?true:false} className="btn btn-primary w-100">
                   {isLoading ? "Wait..." : "Submit"}
                     </button>
@@ -310,4 +281,4 @@ const BtechHeroSection = ({ inputRef }) => {
   );
 };
 
-export default BtechHeroSection;
+export default LlbHeroSection;

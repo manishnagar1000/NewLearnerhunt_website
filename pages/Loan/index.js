@@ -361,8 +361,8 @@ const Loanpage = () => {
                   Education Loans - Bad Credit, Good Credit, or No Credit!
                 </h2>
                 <p className={Styles.headingp}>
-                  Getting a Home loan with bad credit has never been easier! At
-                  EasyLoan, we want to help you get into the Home you deserve.
+                  Getting a Educational loan with bad credit has never been easier! At
+                  EasyLoan, we want to help you get into the Education you deserve.
                 </p>
               </div>
             </div>
@@ -658,7 +658,7 @@ const Loanpage = () => {
           </Container>
         </div>
       </div>
-      <div className="container">
+      {/* <div className="container">
         <div className={Styles.loanCard2}>
           <h1 className={Styles.loanCard2}>
             Offers & privileges for students applying for an Education Loan
@@ -709,7 +709,7 @@ const Loanpage = () => {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
       <div className={Styles.headingMore}>More About Eduloans</div>
       <div className="container my-2">
         <Accordion>

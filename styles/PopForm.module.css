@@ -1,0 +1,21 @@
+@keyframes zoomBlink {
+    0% {
+      opacity: 1;
+      color: #000;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.8;
+      color: #ff0000;
+      transform: scale(0.9);
+    }
+    100% {
+      opacity: 1;
+      color: #000;
+      transform: scale(1);
+    }
+  }
+  
+  .zoom-blink {
+    animation: zoomBlink 3s infinite;
+  }

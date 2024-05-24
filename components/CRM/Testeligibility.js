@@ -14,8 +14,8 @@ import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-import { Modal, Spinner } from "react-bootstrap";
-import Button from "@mui/material/Button";
+import { Modal, Spinner,Button } from "react-bootstrap";
+// import Button from "@mui/material/Button";
 import Swal from "sweetalert2";
 import SendTimeExtensionIcon from "@mui/icons-material/SendTimeExtension";
 import Avatar from "@mui/material/Avatar";
@@ -23,7 +23,10 @@ import Classes from "/styles/Popup.module.css";
 import Chip from "@mui/material/Chip";
 import Loading from "@/components/Comps/Loading";
 import LoopIcon from "@mui/icons-material/Loop";
-
+import Stack from "@mui/material/Stack";
+import Stepper from "@mui/material/Stepper";
+import Step from "@mui/material/Step";
+import StepLabel from "@mui/material/StepLabel";
 
 const headCells = [
   {
@@ -117,7 +120,7 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  console.log(props);
+  // console.log(props);
   // console.log(props.rowsList);
   const [searchInput, setSearchInput] = useState("");
   const { numSelected } = props;
@@ -204,14 +207,14 @@ function EnhancedTableToolbar(props) {
               placeholder="Search..."
               onChange={handleSearchChange}
             />
-               <Tooltip title="Refresh">
-                      <IconButton
-                        aria-label="Refresh"
-                        onClick={() =>props.userListData()}
-                      >
-                        <LoopIcon />
-                      </IconButton>
-                    </Tooltip>
+            <Tooltip title="Refresh">
+              <IconButton
+                aria-label="Refresh"
+                onClick={() => props.userListData()}
+              >
+                <LoopIcon />
+              </IconButton>
+            </Tooltip>
           </>
         )}
       </Toolbar>
@@ -222,23 +225,36 @@ function EnhancedTableToolbar(props) {
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
+
 var oldData = [];
+
 export default function Testeligibility() {
   const [selected, setSelected] = React.useState([]);
   const [rows, setRows] = useState([]);
   const [counsellorList, setCounsellorList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isremarkLoading,setIsRemarkLoading] = useState(false)
+  const [isremarkLoading, setIsRemarkLoading] = useState(false);
   const [selectedCounsellor, setSelectedCounsellor] = useState("");
   const [remarkshowModal, setRemarkshowModal] = useState(false);
+  const [bitlinkModal, setBitlinkModal] = useState(false);
+
   const [remarksHistory, setRemarksHistory] = useState([]);
+  const [pipeline, setPipeLine] = useState(null);
+
+  const [collegebitlink,setCollegebitlink] =useState([])
+  const [iframeModal,setIframeModal] =useState(false)
+  const [applyLink,setApplyLink] =useState('')
+  const [leadId,setLeadId] =useState('')
+  const [counsellorid,setCounsellorId] =useState('')
+  const [collegeid,setCollegeId] =useState('')
+
   useEffect(() => {
     getUserList();
   }, []);
 
   const getUserList = () => {
-    setIsLoading(true)
+    setIsLoading(true);
     fetch(
       process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/leads?lid=${-1}&type=1`,
       {
@@ -263,8 +279,7 @@ export default function Testeligibility() {
           window.location.reload();
         });
       }
-    setIsLoading(false)
-
+      setIsLoading(false);
     });
   };
   const formatTimestamp = (timestamp) => {
@@ -380,12 +395,15 @@ export default function Testeligibility() {
 
   const handleGetRemarks = (e, c, id) => {
     e.preventDefault();
+    console.log(c,id)
+    setCounsellorId(c._id)
+    setLeadId(id)
     try {
       setIsRemarkLoading(true);
       setRemarkshowModal(true);
       fetch(
         process.env.NEXT_PUBLIC_API_ENDPOINT +
-          `/admin/counsellor-remarks?lid=${id}&lt=1&cid=${c._id}`,
+          `/admin/counsellor-lead-status?lid=${id}&lt=1&cid=${c._id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("pt")}`,
@@ -397,6 +415,7 @@ export default function Testeligibility() {
           let response = await res.json();
           console.log(response.data);
           setRemarksHistory(response.data.remarks);
+          setPipeLine(response.data.pipeline);
         } else {
           let response = await res.json();
         }
@@ -406,6 +425,117 @@ export default function Testeligibility() {
       console.error(error);
     }
   };
+  const steps = [
+    "First Followup Complete",
+    "Bit-link Registration Complete",
+    "Fee Payment Success",
+  ];
+  const getMaxCount = (p) => {
+    if (p.stage3) {
+      return 3;
+    } else if (p.stage2) {
+      return 2;
+    } else if (p.stage1) {
+      return 1;
+    }
+  };
+
+  const handleGetBitlink = (e) => {
+    e.preventDefault();
+    setBitlinkModal(true)
+    try {
+      // setIsRemarkLoading(true);
+      setBitlinkModal(true);
+      fetch(
+        process.env.NEXT_PUBLIC_API_ENDPOINT +
+          `/admin/collegebitlinks`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("pt")}`,
+          },
+        }
+      ).then(async (res) => {
+        if (res.ok) {
+          // console.log(res)
+          let response = await res.json();
+          console.log(response.data);
+
+          console.log(response.data.registered);
+          setCollegebitlink(response.data);
+          // setIsCollegeRegistered(response.data.registered)
+
+        } else {
+          let response = await res.json();
+        }
+        setIsRemarkLoading(false);
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleOpeniframe = (e,link) =>{
+    e.preventDefault()
+    console.log(link)
+      setIframeModal(true)
+      setApplyLink(link.where_to_apply)
+      setCollegeId(link.college_id)
+      // console.log(applyLink)
+  }
+ const handleSubmitIframe = (e)=>{
+  e.preventDefault()
+  Swal.fire({
+    title: "Are you sure you registered the lead?",
+    text:"If yes, You will not be able to re-apply this lead for this college bitlink!",
+    showDenyButton: true,
+    confirmButtonText: "Yes",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      setIsRemarkLoading(true);
+    const fd = new FormData();
+    fd.append("leadType",1);
+    fd.append("leadId", leadId);
+    fd.append("cid", counsellorid);
+    fd.append("collegeId",collegeid)
+    fetch(
+      process.env.NEXT_PUBLIC_API_ENDPOINT +
+        `/admin/bitlink-registration`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("pt")}`,
+        },
+        method: "POST",
+        body: fd,
+      }
+    ).then(async (response) => {
+      var res = await response.json();
+      // console.log(res);
+    
+      if (response.ok) {
+        Swal.fire({
+          title: "Success",
+          text: `${res.message}`,
+          icon: "success",
+          confirmButtonText: "Ok",
+        }).then(() => {
+          setIframeModal(false)
+          setIsRemarkLoading(false);
+          handleGetBitlink(e)
+
+        });
+      } else {
+        Swal.fire({
+          title: "error",
+          text: `${res.error}`,
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
+      }
+    });
+      // setIframeModal(false)
+    }
+  });
+ }
 
   return (
     <>
@@ -462,7 +592,11 @@ export default function Testeligibility() {
                           }}
                         />
                       </TableCell>
-                      <TableCell>{row.name}</TableCell>
+                      <TableCell>
+                        {row.name.length > 20
+                          ? row.name.substring(0, 20) + "..."
+                          : row.name}
+                      </TableCell>
                       <TableCell>
                         {row.counsellors.length > 0 ? (
                           row.counsellors.map((c, i) => {
@@ -579,6 +713,7 @@ export default function Testeligibility() {
         <Modal.Body>
           {!isremarkLoading ? (
             remarksHistory.length > 0 ? (
+              <>
               <table className={`table table-hover custom-table`}>
                 <thead>
                   <tr>
@@ -597,7 +732,28 @@ export default function Testeligibility() {
                   })}
                 </tbody>
               </table>
+              <hr/>
+              <Stack sx={{ width: "100%" }} spacing={4}>
+              <Stepper
+                alternativeLabel
+                activeStep={pipeline ? getMaxCount(pipeline) : -1}
+              >
+                {steps.map((label) => (
+                  <Step key={label}>
+                    <StepLabel>
+                    {label === "Bit-link Registration Complete" ? (
+                <Button onClick={(e)=>handleGetBitlink(e)}>{label}</Button>
+              ) : (
+                label
+              )}
+                    </StepLabel>
+                  </Step>
+                ))}
+              </Stepper>
+            </Stack>
+            </>
             ) : (
+              <>
               <div
                 style={{
                   display: "flex",
@@ -614,6 +770,20 @@ export default function Testeligibility() {
                   </span>
                 </div>
               </div>
+               <hr/>
+               <Stack sx={{ width: "100%" }} spacing={4}>
+               <Stepper
+                 alternativeLabel
+                 activeStep={pipeline ? getMaxCount(pipeline) : -1}
+               >
+                 {steps.map((label) => (
+                   <Step key={label}>
+                     <StepLabel>{label}</StepLabel>
+                   </Step>
+                 ))}
+               </Stepper>
+             </Stack>
+             </>
             )
           ) : (
             <div
@@ -628,6 +798,87 @@ export default function Testeligibility() {
             </div>
           )}
         </Modal.Body>
+      </Modal>
+
+      <Modal
+        show={bitlinkModal}
+        onHide={() => setBitlinkModal(false)}
+        scrollable
+        backdrop="static"
+        keyboard={false}
+       size="xl"
+        >
+        <Modal.Header closeButton>
+          <Modal.Title>College BitLink</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+        <table className={`table table-hover`}>
+                  <thead>
+                    <tr>
+                      <th style={{ background: "var(--primary)" }}>
+                        College Name
+                      </th>
+                      <th style={{ background: "var(--primary)" }}>
+                       Application Link
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {collegebitlink.map((clg, i) => {
+                      return (
+                        <tr key={i}>
+                          <td>{clg.college_name}</td>
+                          <td >
+                            <Chip  label={clg.registered?"Application sent":"Apply Now"} color={clg.registered ? "success" : 'primary'} variant={clg.registered ? "filled" : 'outlined'} onClick={(e)=>!clg.registered && handleOpeniframe(e,clg)} />
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+        </Modal.Body>
+      </Modal>
+ 
+      <Modal
+        show={iframeModal}
+        onHide={() => setIframeModal(false)}
+        backdrop="static"
+        keyboard={false}
+        fullscreen={true} 
+      >
+     <Modal.Body className="p-0">
+          <iframe
+            src={applyLink}
+            title="Where to Apply"
+            width="100%"
+            height="99%"
+            style={{ border: 'none' }}
+          ></iframe>
+        </Modal.Body>
+        <Modal.Footer className="d-flex justify-content-center">
+            <Button variant="primary" onClick={(e) => handleSubmitIframe(e)}>
+            BitLink Registration Success?
+          </Button>
+          <Button variant="danger" onClick={() => {
+            Swal.fire({
+              title: "Do you want to close the application form?",
+              showDenyButton: true,
+              confirmButtonText: "Yes",
+              // denyButtonText: `Don't Close`
+            }).then((result) => {
+              /* Read more about isConfirmed, isDenied below */
+              if (result.isConfirmed) {
+                setIframeModal(false)
+              }
+            });
+          }
+            
+            }>
+            Close Application Form
+          </Button>
+        
+        </Modal.Footer>
       </Modal>
       <Loading show={isLoading} onHide={() => setIsLoading(false)} />
     </>
