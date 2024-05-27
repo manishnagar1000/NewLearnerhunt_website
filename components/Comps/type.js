@@ -1103,6 +1103,20 @@ export const ugbtechleads =
       "B.Sc LLB",
     ]
   }
+  export const psychologyleads = {
+    "Psychology": [
+      "BA Psychology",
+"BSc Cognitive Science",
+"BSc Health Behaviour Science",
+"BSc Psychology",
+"BSc Business Psychology",
+"BSc Forensic Psychology",
+"BSc Criminology and Psychology",
+"BSc Social Psychology",
+"BA Developmental Studies",
+
+    ]
+  }
   export const budgetdata = [
     "4 Lakh - 7 Lakh",
     "8 Lakh - 10 Lakh",

@@ -24,14 +24,15 @@ import Classes from "/styles/Popup.module.css";
 import Chip from "@mui/material/Chip";
 import LoopIcon from "@mui/icons-material/Loop";
 import Loading from "@/components/Comps/Loading";
-import * as XLSX from 'xlsx';
-import FileDownloadIcon from '@mui/icons-material/FileDownload';
-import FileUploadIcon from '@mui/icons-material/FileUpload';
-import { useDropzone } from 'react-dropzone';
+import * as XLSX from "xlsx";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import FileUploadIcon from "@mui/icons-material/FileUpload";
+import { useDropzone } from "react-dropzone";
 import Stack from "@mui/material/Stack";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
+import Pagination from "@mui/material/Pagination";
 
 const headCells = [
   {
@@ -131,7 +132,7 @@ function EnhancedTableToolbar(props) {
     }).then(async (res) => {
       // console.log(res)
       let response = await res.json();
-    //   console.log(response);
+      //   console.log(response);
       if (response.data) {
         if (response.data.length > 0) {
           props.counsellorList(response.data);
@@ -149,26 +150,26 @@ function EnhancedTableToolbar(props) {
     });
   };
 
-
   const onDrop = (acceptedFiles) => {
     const file = acceptedFiles[0];
     const reader = new FileReader();
 
     reader.onload = (e) => {
       const data = new Uint8Array(e.target.result);
-      const workbook = XLSX.read(data, { type: 'array' });
+      const workbook = XLSX.read(data, { type: "array" });
       const sheetName = workbook.SheetNames[0];
       const sheet = workbook.Sheets[sheetName];
       const json = XLSX.utils.sheet_to_json(sheet);
 
       // setJsonData(json);
-    //   console.log(json)
-    //   console.log(JSON.stringify(json))
-      props.loader(true)
+      //   console.log(json)
+      //   console.log(JSON.stringify(json))
+      props.loader(true);
       const fd = new FormData();
       fd.append("data", JSON.stringify(json));
       fetch(
-        process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/llbleads-template-upload`,
+        process.env.NEXT_PUBLIC_API_ENDPOINT +
+          `/admin/llbleads-template-upload`,
         {
           method: "POST",
           body: fd,
@@ -179,40 +180,35 @@ function EnhancedTableToolbar(props) {
       ).then(async (res) => {
         let response = await res.json();
         if (response.data) {
-            Swal.fire({
-              title: "Success",
-              html: `${response.message}`,
-              icon: "success",
-              confirmButtonText: "Ok",
-            }).then((s)=>{
-              props.userListData()
-            })
+          Swal.fire({
+            title: "Success",
+            html: `${response.message}`,
+            icon: "success",
+            confirmButtonText: "Ok",
+          }).then((s) => {
+            props.userListData();
+          });
         } else {
           Swal.fire({
             title: "Error",
             html: `${response.error}`,
             icon: "error",
             confirmButtonText: "Ok",
-          })
+          });
         }
-      props.loader(false)
+        props.loader(false);
 
-      // setIsLoading(false)
-  
+        // setIsLoading(false)
       });
-      
-
     };
 
     reader.readAsArrayBuffer(file);
   };
 
   const { getRootProps, getInputProps } = useDropzone({
-    accept: '.xlsx',
+    accept: ".xlsx",
     onDrop,
   });
-
-
 
   return (
     <>
@@ -245,7 +241,7 @@ function EnhancedTableToolbar(props) {
             id="tableTitle"
             component="div"
           >
-            Total Users : {props.rowsList.length}
+            Total Rows : {props.rowsList.length} , Total Records :{props.totalrecord}
           </Typography>
         )}
 
@@ -264,34 +260,36 @@ function EnhancedTableToolbar(props) {
               placeholder="Search..."
               onChange={handleSearchChange}
             />
-              <div className='d-flex justify-content-end'>
+            <div className="d-flex justify-content-end">
               <Tooltip title="Upload UgLeads Form Excel" arrow>
-        <Button className='m-4' variant="primary" {...getRootProps()} >
-          <input {...getInputProps()} />
-          <FileUploadIcon />
-          Upload
-        </Button>
-        </Tooltip>
+                <Button className="m-4" variant="primary" {...getRootProps()}>
+                  <input {...getInputProps()} />
+                  <FileUploadIcon />
+                  Upload
+                </Button>
+              </Tooltip>
 
-        {/* <a href=`process.env.NEXT_PUBLIC_API_ENDPOINT + 'download_excel'` target='blank'> <Button className='m-4' variant="success" > */}
-        <a href={`${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/llbleads-template-download`} target='blank'>
-        <Tooltip title="Download UgLeads Excel Template" arrow>
-
-        <Button className='m-4' variant="success" >
-          <FileDownloadIcon />
-          Download
-        </Button>
-        </Tooltip>
-        </a>
-      </div>
-              <Tooltip title="Refresh">
-                      <IconButton
-                        aria-label="Refresh"
-                        onClick={() =>props.userListData()}
-                      >
-                        <LoopIcon />
-                      </IconButton>
-                    </Tooltip>
+              {/* <a href=`process.env.NEXT_PUBLIC_API_ENDPOINT + 'download_excel'` target='blank'> <Button className='m-4' variant="success" > */}
+              <a
+                href={`${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/llbleads-template-download`}
+                target="blank"
+              >
+                <Tooltip title="Download UgLeads Excel Template" arrow>
+                  <Button className="m-4" variant="success">
+                    <FileDownloadIcon />
+                    Download
+                  </Button>
+                </Tooltip>
+              </a>
+            </div>
+            <Tooltip title="Refresh">
+              <IconButton
+                aria-label="Refresh"
+                onClick={() => props.userListData()}
+              >
+                <LoopIcon />
+              </IconButton>
+            </Tooltip>
           </>
         )}
       </Toolbar>
@@ -310,20 +308,24 @@ export default function LLBPageLeads() {
   const [counsellorList, setCounsellorList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isremarkLoading,setIsRemarkLoading] = useState(false)
+  const [isremarkLoading, setIsRemarkLoading] = useState(false);
   const [selectedCounsellor, setSelectedCounsellor] = useState("");
   const [remarkshowModal, setRemarkshowModal] = useState(false);
   const [remarksHistory, setRemarksHistory] = useState([]);
   const [pipeline, setPipeLine] = useState(null);
-
+  const [page, setPage] = React.useState(1);
+  const [totalrecord, setTotalrecord] = React.useState(0);
+  const [count, setCount] = React.useState(0);
+  const rowsPerPage = 50;
   useEffect(() => {
     getUserList();
   }, []);
 
   const getUserList = () => {
-    setIsLoading(true)
+    setIsLoading(true);
     fetch(
-      process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/learnerhunt-landing-page-leads?lt=9`,
+      process.env.NEXT_PUBLIC_API_ENDPOINT +
+        `/admin/learnerhunt-landing-page-leads?lt=9&page=${page}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("pt")}`,
@@ -334,7 +336,9 @@ export default function LLBPageLeads() {
       if (response.data) {
         if (response.data.length > 0) {
           setRows(response.data);
+          setCount(Math.ceil(response.totalRecords / rowsPerPage));
         }
+        setTotalrecord(response.totalRecords);
         oldData = response.data;
       } else {
         Swal.fire({
@@ -346,8 +350,7 @@ export default function LLBPageLeads() {
           window.location.reload();
         });
       }
-    setIsLoading(false)
-
+      setIsLoading(false);
     });
   };
   const formatTimestamp = (timestamp) => {
@@ -435,7 +438,7 @@ export default function LLBPageLeads() {
       }
     ).then(async (response) => {
       var res = await response.json();
-    //   console.log(res);
+      //   console.log(res);
       setIsLoading(false);
       if (response.ok) {
         Swal.fire({
@@ -447,7 +450,7 @@ export default function LLBPageLeads() {
           setIsLoading(false);
           setIsModalOpen(false);
           setSelectedCounsellor("");
-          setSelected([])
+          setSelected([]);
           getUserList();
         });
       } else {
@@ -464,7 +467,7 @@ export default function LLBPageLeads() {
     e.preventDefault();
     try {
       setIsRemarkLoading(true);
-     
+
       setRemarkshowModal(true);
       fetch(
         process.env.NEXT_PUBLIC_API_ENDPOINT +
@@ -478,15 +481,13 @@ export default function LLBPageLeads() {
         if (res.ok) {
           // console.log(res)
           let response = await res.json();
-        //   console.log(response.data);
+          //   console.log(response.data);
           setRemarksHistory(response.data.remarks);
           setPipeLine(response.data.pipeline);
-
         } else {
           let response = await res.json();
         }
         setIsRemarkLoading(false);
-      
       });
     } catch (error) {
       console.error(error);
@@ -507,6 +508,18 @@ export default function LLBPageLeads() {
       return 1;
     }
   };
+
+  useEffect(()=>{
+    getUserList();
+  },[page])
+ 
+  const handlePage=(event, newPage)=>{
+    event.preventDefault()
+    setPage(newPage);
+    // console.log(newPage)
+    
+
+  }
   return (
     <>
       <Box sx={{ width: "100%" }}>
@@ -515,12 +528,13 @@ export default function LLBPageLeads() {
             numSelected={selected.length}
             userListData={getUserList}
             rowsList={rows}
+            totalrecord={totalrecord}
             onSearchChange={(value) => handleSearchChange(value)}
             OnModalOpen={(value) => handleModalOpen(value)}
             counsellorList={(list) => setCounsellorList(list)}
             loader={setIsLoading}
           />
-          <TableContainer sx={{ maxHeight: "70vh" }}>
+          <TableContainer sx={{ maxHeight: "calc(70vh - 28px)" }}>
             <Table
               stickyHeader
               sx={{ minWidth: 750 }}
@@ -584,9 +598,9 @@ export default function LLBPageLeads() {
                           />
                         )}
                       </TableCell>
-                      <TableCell>{row.mobile || 'NA'}</TableCell>
-                      <TableCell>{row.email || 'NA'}</TableCell>
-                      <TableCell>{row.course || 'NA'}</TableCell>
+                      <TableCell>{row.mobile || "NA"}</TableCell>
+                      <TableCell>{row.email || "NA"}</TableCell>
+                      <TableCell>{row.course || "NA"}</TableCell>
                       <TableCell>{formatTimestamp(row.createdAt)}</TableCell>
                     </TableRow>
                   );
@@ -594,7 +608,8 @@ export default function LLBPageLeads() {
               </TableBody>
             </Table>
           </TableContainer>
-        </Paper>
+          <Pagination className="p-2 d-flex justify-content-center" count={count} page={page} color="primary" onChange={handlePage}/>
+        </Paper> 
       </Box>
       <Modal
         centered
@@ -670,58 +685,26 @@ export default function LLBPageLeads() {
           {!isremarkLoading ? (
             remarksHistory.length > 0 ? (
               <>
-              <table className={`table table-hover custom-table`}>
-                <thead>
-                  <tr>
-                    <th style={{ background: "var(--primary)" }}>Remarks</th>
-                    <th style={{ background: "var(--primary)" }}>Date</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {remarksHistory.map((obj, i) => {
-                    return (
-                      <tr key={i}>
-                        <td>{obj.remarks}</td>
-                        <td>{formatTimestamp(obj.createdAt)}</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-              <hr/>
+                <table className={`table table-hover custom-table`}>
+                  <thead>
+                    <tr>
+                      <th style={{ background: "var(--primary)" }}>Remarks</th>
+                      <th style={{ background: "var(--primary)" }}>Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {remarksHistory.map((obj, i) => {
+                      return (
+                        <tr key={i}>
+                          <td>{obj.remarks}</td>
+                          <td>{formatTimestamp(obj.createdAt)}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+                <hr />
                 <Stack sx={{ width: "100%" }} spacing={4}>
-                <Stepper
-                  alternativeLabel
-                  activeStep={pipeline ? getMaxCount(pipeline) : -1}
-                >
-                  {steps.map((label) => (
-                    <Step key={label}>
-                      <StepLabel>{label}</StepLabel>
-                    </Step>
-                  ))}
-                </Stepper>
-              </Stack>
-              </>
-            ) : (
-              <>
-              <div
-                style={{
-                  display: "flex",
-                  width: "100%",
-                  height: "inherit",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <div style={{ fontWeight: "500" }}>
-                  <span style={{ color: "#0d6efd", cursor: "pointer" }}>
-                    {" "}
-                    No Records{" "}
-                  </span>
-                </div>
-              </div>
-                  <hr/>
-                  <Stack sx={{ width: "100%" }} spacing={4}>
                   <Stepper
                     alternativeLabel
                     activeStep={pipeline ? getMaxCount(pipeline) : -1}
@@ -733,7 +716,39 @@ export default function LLBPageLeads() {
                     ))}
                   </Stepper>
                 </Stack>
-                </>
+              </>
+            ) : (
+              <>
+                <div
+                  style={{
+                    display: "flex",
+                    width: "100%",
+                    height: "inherit",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <div style={{ fontWeight: "500" }}>
+                    <span style={{ color: "#0d6efd", cursor: "pointer" }}>
+                      {" "}
+                      No Records{" "}
+                    </span>
+                  </div>
+                </div>
+                <hr />
+                <Stack sx={{ width: "100%" }} spacing={4}>
+                  <Stepper
+                    alternativeLabel
+                    activeStep={pipeline ? getMaxCount(pipeline) : -1}
+                  >
+                    {steps.map((label) => (
+                      <Step key={label}>
+                        <StepLabel>{label}</StepLabel>
+                      </Step>
+                    ))}
+                  </Stepper>
+                </Stack>
+              </>
             )
           ) : (
             <div

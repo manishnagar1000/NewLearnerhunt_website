@@ -216,6 +216,7 @@ import Stack from "@mui/material/Stack";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
+import Pagination from "@mui/material/Pagination";
 
 const headCells = [
   {
@@ -445,7 +446,7 @@ function EnhancedTableToolbar(props) {
             id="tableTitle"
             component="div"
           >
-            Total Users : {props.rowsList.length}
+                   Total Rows : {props.rowsList.length} , Total Records :{props.totalrecord}
           </Typography>
         )}
 
@@ -513,7 +514,10 @@ export default function Studentappliedclg() {
   const [remarkshowModal, setRemarkshowModal] = useState(false);
   const [remarksHistory, setRemarksHistory] = useState([]);
   const [pipeline, setPipeLine] = useState(null);
-
+  const [page, setPage] = React.useState(1);
+  const [totalrecord, setTotalrecord] = React.useState(0);
+  const [count, setCount] = React.useState(0);
+  const rowsPerPage = 50;
   useEffect(() => {
     getUserList();
   }, []);
@@ -521,7 +525,7 @@ export default function Studentappliedclg() {
   const getUserList = () => {
     setIsLoading(true)
     fetch(
-      process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/learnerhunt-landing-page-leads?lt=7`,
+      process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/learnerhunt-landing-page-leads?lt=7&page=${page}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("pt")}`,
@@ -532,7 +536,10 @@ export default function Studentappliedclg() {
       if (response.data) {
         if (response.data.length > 0) {
           setRows(response.data);
+
+          setCount(Math.ceil(response.totalRecords / rowsPerPage));
         }
+        setTotalrecord(response.totalRecords);
         oldData = response.data;
       } else {
         Swal.fire({
@@ -548,6 +555,9 @@ export default function Studentappliedclg() {
 
     });
   };
+  useEffect(()=>{
+    getUserList();
+  },[page])
   const formatTimestamp = (timestamp) => {
     const dateObject = new Date(timestamp);
 
@@ -690,6 +700,10 @@ export default function Studentappliedclg() {
       console.error(error);
     }
   };
+  const handlePage=(event, newPage)=>{
+    event.preventDefault()
+    setPage(newPage);
+  }
   const steps = [
     "First Followup Complete",
     "Bit-link Registration Complete",
@@ -712,6 +726,7 @@ export default function Studentappliedclg() {
           <EnhancedTableToolbar
             numSelected={selected.length}
             userListData={getUserList}
+            totalrecord={totalrecord}
             rowsList={rows}
             onSearchChange={(value) => handleSearchChange(value)}
             OnModalOpen={(value) => handleModalOpen(value)}
@@ -797,6 +812,7 @@ export default function Studentappliedclg() {
               </TableBody>
             </Table>
           </TableContainer>
+          <Pagination className="p-2 d-flex justify-content-center" count={count} page={page} color="primary" onChange={handlePage}/>
         </Paper>
       </Box>
       <Modal

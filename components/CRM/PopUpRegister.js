@@ -14,8 +14,8 @@ import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-import { Modal } from "react-bootstrap";
-import Button from "@mui/material/Button";
+import { Modal ,Button } from "react-bootstrap";
+// import Button from "@mui/material/Button";
 import Swal from "sweetalert2";
 import { Spinner } from "react-bootstrap";
 import SendTimeExtensionIcon from "@mui/icons-material/SendTimeExtension";
@@ -623,13 +623,11 @@ export default function PopUpRegister() {
               })}
             </div>
             {selectedCounsellor != "" ? (
+              <div className="d-flex justify-content-center align-items-center m-2">
               <Button
                 disabled={isLoading}
-                className="bg-blue-500"
                 type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
+                variant="primary" size="md"
               >
                 {isLoading ? (
                   <>
@@ -640,6 +638,7 @@ export default function PopUpRegister() {
                   "Assign"
                 )}
               </Button>
+              </div>
             ) : (
               ""
             )}

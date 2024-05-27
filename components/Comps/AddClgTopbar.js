@@ -144,7 +144,7 @@ export default class AddClgTopbar extends Component {
   options={this.state.collegeList.map(s=>s.college_name)}
   size="small"
   onChange={(e,newValue) =>{
-    console.log(e.target.value,newValue)
+    // console.log(e.target.value,newValue)
     this.props.onclgchange(newValue)
   }}
   value={this.props.selectedClg}

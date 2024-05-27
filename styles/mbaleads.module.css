@@ -65,7 +65,7 @@
     margin: 0,1rem;
 }
 .pillouter .pill{
-    width: 100px;
+    min-width: 100px;
     height: 100px;
     border-radius: 0 20px 0 20px;
     border:2px solid #950304;

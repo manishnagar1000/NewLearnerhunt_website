@@ -5,11 +5,9 @@ import { useRouter } from "next/router";
 import WhatsAppButton from "@/components/Whatsup";
 import PopForm from "./Comps/PopForm";
 
-// const pagesnothaveheader = ["/dashboard"]
-// const pagesnothavefooter = ["/dashboard"]
+
 const Layout = ({ children }) => {
 
-  // console.log(children.props.testeligibility)
   const router = useRouter();
   const { pathname } = router;
 
@@ -26,6 +24,8 @@ const Layout = ({ children }) => {
         !pathname.startsWith("/tutorportal") && 
         !pathname.startsWith("/ads/btech-bca-bba-college-admission") && 
         !pathname.startsWith("/ads/llb-college-admission") && 
+        !pathname.startsWith("/ads/psychology-college-admission") && 
+
 
 
      <Topbar />}
@@ -35,7 +35,8 @@ const Layout = ({ children }) => {
      !pathname.startsWith("/ads/mbaleads") && 
      !pathname.startsWith("/tutorportal") && 
      !pathname.startsWith("/ads/btech-bca-bba-college-admission") && 
-     !pathname.startsWith("/ads/llb-college-admission") && 
+        !pathname.startsWith("/ads/llb-college-admission") && 
+        !pathname.startsWith("/ads/psychology-college-admission") && 
 
      <PopForm/>}
  {!pathname.startsWith("/adminportal") &&
@@ -44,7 +45,8 @@ const Layout = ({ children }) => {
      !pathname.startsWith("/ads/mbaleads") && 
      !pathname.startsWith("/tutorportal") && 
      !pathname.startsWith("/ads/btech-bca-bba-college-admission") && 
-     !pathname.startsWith("/ads/llb-college-admission") && 
+        !pathname.startsWith("/ads/llb-college-admission") && 
+        !pathname.startsWith("/ads/psychology-college-admission") && 
 
      <WhatsAppButton/>}
 
@@ -59,6 +61,7 @@ const Layout = ({ children }) => {
         !pathname.startsWith("/ads/mbaleads") && 
         !pathname.startsWith("/ads/btech-bca-bba-college-admission") && 
         !pathname.startsWith("/ads/llb-college-admission") && 
+        !pathname.startsWith("/ads/psychology-college-admission") && 
         !pathname.startsWith("/tutorportal") && 
 
         <Footer data={children.props.testeligibility}/>}
