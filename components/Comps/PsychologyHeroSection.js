@@ -46,7 +46,7 @@ const PsychologyHeroSection = ({ inputRef }) => {
         fd.append("slug", pathname);
         fetch(
           process.env.NEXT_PUBLIC_API_ENDPOINT +
-            "/student/llb-college-admission",
+            "/student/psychology-college-admission",
           {
             method: "POST",
             body: fd,

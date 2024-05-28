@@ -320,7 +320,7 @@ export default class MyCallinghistory extends Component {
                     <tr>
                      
                       <th style={{ background: "var(--primary)" }}>
-                        Student Email
+                        Student Name
                       </th>
                       <th style={{ background: "var(--primary)" }}>
                         Call Status
@@ -341,7 +341,7 @@ export default class MyCallinghistory extends Component {
                               /(?<=.{3}).(?=[^@]*?@)/g,
                               "*"
                             )} */}
-                             {clg.studEmail}
+                             {clg.studName}
                           </td>
                           <td style={{color:'green',fontWeight:'500'}}>{clg.status}</td>
                           <td>{clg.message}</td>

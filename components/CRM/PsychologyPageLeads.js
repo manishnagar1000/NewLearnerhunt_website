@@ -14,19 +14,25 @@ import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-import { Modal, Spinner,Button } from "react-bootstrap";
-// import Button from "@mui/material/Button";
+import { Modal } from "react-bootstrap";
+import Button from "@mui/material/Button";
 import Swal from "sweetalert2";
+import { Spinner } from "react-bootstrap";
 import SendTimeExtensionIcon from "@mui/icons-material/SendTimeExtension";
 import Avatar from "@mui/material/Avatar";
 import Classes from "/styles/Popup.module.css";
 import Chip from "@mui/material/Chip";
-import Loading from "@/components/Comps/Loading";
 import LoopIcon from "@mui/icons-material/Loop";
+import Loading from "@/components/Comps/Loading";
+import * as XLSX from "xlsx";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import FileUploadIcon from "@mui/icons-material/FileUpload";
+import { useDropzone } from "react-dropzone";
 import Stack from "@mui/material/Stack";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
+import Pagination from "@mui/material/Pagination";
 
 const headCells = [
   {
@@ -35,33 +41,20 @@ const headCells = [
   },
   {
     id: "counsellorname",
-    label: "Counsellor name",
+    label: "Assigned to Counsellor",
   },
   {
     id: "mobnumber",
     label: "Mobile Number",
   },
   {
-    id: "fee",
-    label: "Fees",
+    id: "email",
+    label: "Email",
   },
   {
     id: "course",
-    label: "Interested Course",
+    label: "Course",
   },
-  {
-    id: "zone",
-    label: "Zone",
-  },
-  {
-    id: "qualification",
-    label: "Qualification",
-  },
-  {
-    id: "specialization",
-    label: "Specialization",
-  },
-
   {
     id: "date",
     label: "Date",
@@ -120,7 +113,7 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  // console.log(props);
+  console.log(props);
   // console.log(props.rowsList);
   const [searchInput, setSearchInput] = useState("");
   const { numSelected } = props;
@@ -139,7 +132,7 @@ function EnhancedTableToolbar(props) {
     }).then(async (res) => {
       // console.log(res)
       let response = await res.json();
-      console.log(response);
+      //   console.log(response);
       if (response.data) {
         if (response.data.length > 0) {
           props.counsellorList(response.data);
@@ -156,6 +149,66 @@ function EnhancedTableToolbar(props) {
       }
     });
   };
+
+  const onDrop = (acceptedFiles) => {
+    const file = acceptedFiles[0];
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, { type: "array" });
+      const sheetName = workbook.SheetNames[0];
+      const sheet = workbook.Sheets[sheetName];
+      const json = XLSX.utils.sheet_to_json(sheet);
+
+      // setJsonData(json);
+      //   console.log(json)
+      //   console.log(JSON.stringify(json))
+      props.loader(true);
+      const fd = new FormData();
+      fd.append("data", JSON.stringify(json));
+      fetch(
+        process.env.NEXT_PUBLIC_API_ENDPOINT +
+          `/admin/llbleads-template-upload`,
+        {
+          method: "POST",
+          body: fd,
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("pt")}`,
+          },
+        }
+      ).then(async (res) => {
+        let response = await res.json();
+        if (response.data) {
+          Swal.fire({
+            title: "Success",
+            html: `${response.message}`,
+            icon: "success",
+            confirmButtonText: "Ok",
+          }).then((s) => {
+            props.userListData();
+          });
+        } else {
+          Swal.fire({
+            title: "Error",
+            html: `${response.error}`,
+            icon: "error",
+            confirmButtonText: "Ok",
+          });
+        }
+        props.loader(false);
+
+        // setIsLoading(false)
+      });
+    };
+
+    reader.readAsArrayBuffer(file);
+  };
+
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: ".xlsx",
+    onDrop,
+  });
 
   return (
     <>
@@ -188,12 +241,12 @@ function EnhancedTableToolbar(props) {
             id="tableTitle"
             component="div"
           >
-            Total Users : {props.rowsList.length}
+            Total Rows : {props.rowsList.length} , Total Records :{props.totalrecord}
           </Typography>
         )}
 
         {numSelected > 0 ? (
-          <Tooltip title="Assign Leads">
+          <Tooltip title="Assigned Leads">
             <IconButton>
               <SendTimeExtensionIcon onClick={handleOpen} />
             </IconButton>
@@ -207,6 +260,28 @@ function EnhancedTableToolbar(props) {
               placeholder="Search..."
               onChange={handleSearchChange}
             />
+            <div className="d-flex justify-content-end">
+              <Tooltip title="Upload UgLeads Form Excel" arrow>
+                <Button className="m-4" variant="primary" {...getRootProps()}>
+                  <input {...getInputProps()} />
+                  <FileUploadIcon />
+                  Upload
+                </Button>
+              </Tooltip>
+
+              {/* <a href=`process.env.NEXT_PUBLIC_API_ENDPOINT + 'download_excel'` target='blank'> <Button className='m-4' variant="success" > */}
+              <a
+                href={`${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/llbleads-template-download`}
+                target="blank"
+              >
+                <Tooltip title="Download UgLeads Excel Template" arrow>
+                  <Button className="m-4" variant="success">
+                    <FileDownloadIcon />
+                    Download
+                  </Button>
+                </Tooltip>
+              </a>
+            </div>
             <Tooltip title="Refresh">
               <IconButton
                 aria-label="Refresh"
@@ -228,7 +303,7 @@ EnhancedTableToolbar.propTypes = {
 
 var oldData = [];
 
-export default function Testeligibility() {
+export default function PsychologyPageLeads() {
   const [selected, setSelected] = React.useState([]);
   const [rows, setRows] = useState([]);
   const [counsellorList, setCounsellorList] = useState([]);
@@ -237,17 +312,12 @@ export default function Testeligibility() {
   const [isremarkLoading, setIsRemarkLoading] = useState(false);
   const [selectedCounsellor, setSelectedCounsellor] = useState("");
   const [remarkshowModal, setRemarkshowModal] = useState(false);
-  const [bitlinkModal, setBitlinkModal] = useState(false);
-
   const [remarksHistory, setRemarksHistory] = useState([]);
   const [pipeline, setPipeLine] = useState(null);
-
-  const [collegebitlink,setCollegebitlink] =useState([])
-  const [iframeModal,setIframeModal] =useState(false)
-  const [applyLink,setApplyLink] =useState('')
-  const [leadId,setLeadId] =useState('')
-  const [counsellorid,setCounsellorId] =useState('')
-  const [collegeid,setCollegeId] =useState('')
+  const [page, setPage] = React.useState(1);
+  const [totalrecord, setTotalrecord] = React.useState(0);
+  const [count, setCount] = React.useState(0);
+  const rowsPerPage = 50;
 
   useEffect(() => {
     getUserList();
@@ -256,7 +326,8 @@ export default function Testeligibility() {
   const getUserList = () => {
     setIsLoading(true);
     fetch(
-      process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/leads?lid=${-1}&type=1`,
+      process.env.NEXT_PUBLIC_API_ENDPOINT +
+        `/admin/learnerhunt-landing-page-leads?lt=10&page=${page}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("pt")}`,
@@ -267,7 +338,9 @@ export default function Testeligibility() {
       if (response.data) {
         if (response.data.length > 0) {
           setRows(response.data);
+          setCount(Math.ceil(response.totalRecords / rowsPerPage));
         }
+        setTotalrecord(response.totalRecords);
         oldData = response.data;
       } else {
         Swal.fire({
@@ -337,7 +410,7 @@ export default function Testeligibility() {
       setRows(oldData);
     } else {
       const filteredData = oldData.filter((data) =>
-        searchKeyword.test(data.name.toLowerCase())
+        searchKeyword.test(data.email.toLowerCase())
       );
       setRows(filteredData);
     }
@@ -353,7 +426,7 @@ export default function Testeligibility() {
     setIsLoading(true);
     const fd = new FormData();
     fd.append("lid", selected.join("&"));
-    fd.append("lt", 1);
+    fd.append("lt", 10);
     fd.append("cid", selectedCounsellor);
     fetch(
       process.env.NEXT_PUBLIC_API_ENDPOINT +
@@ -367,7 +440,7 @@ export default function Testeligibility() {
       }
     ).then(async (response) => {
       var res = await response.json();
-      console.log(res);
+      //   console.log(res);
       setIsLoading(false);
       if (response.ok) {
         Swal.fire({
@@ -378,8 +451,8 @@ export default function Testeligibility() {
         }).then(() => {
           setIsLoading(false);
           setIsModalOpen(false);
-          setSelected([]);
           setSelectedCounsellor("");
+          setSelected([]);
           getUserList();
         });
       } else {
@@ -392,18 +465,15 @@ export default function Testeligibility() {
       }
     });
   };
-
   const handleGetRemarks = (e, c, id) => {
     e.preventDefault();
-    console.log(c,id)
-    setCounsellorId(c._id)
-    setLeadId(id)
     try {
       setIsRemarkLoading(true);
+
       setRemarkshowModal(true);
       fetch(
         process.env.NEXT_PUBLIC_API_ENDPOINT +
-          `/admin/counsellor-lead-status?lid=${id}&lt=1&cid=${c._id}`,
+          `/admin/counsellor-lead-status?lid=${id}&lt=10&cid=${c._id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("pt")}`,
@@ -413,7 +483,7 @@ export default function Testeligibility() {
         if (res.ok) {
           // console.log(res)
           let response = await res.json();
-          console.log(response.data);
+          //   console.log(response.data);
           setRemarksHistory(response.data.remarks);
           setPipeLine(response.data.pipeline);
         } else {
@@ -431,6 +501,7 @@ export default function Testeligibility() {
     "Fee Payment Success",
   ];
   const getMaxCount = (p) => {
+    // console.log(p)
     if (p.stage3) {
       return 3;
     } else if (p.stage2) {
@@ -440,103 +511,17 @@ export default function Testeligibility() {
     }
   };
 
-  const handleGetBitlink = (e) => {
-    e.preventDefault();
-    setBitlinkModal(true)
-    try {
-      // setIsRemarkLoading(true);
-      setBitlinkModal(true);
-      fetch(
-        process.env.NEXT_PUBLIC_API_ENDPOINT +
-          `/admin/collegebitlinks`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("pt")}`,
-          },
-        }
-      ).then(async (res) => {
-        if (res.ok) {
-          // console.log(res)
-          let response = await res.json();
-          console.log(response.data);
-
-          console.log(response.data.registered);
-          setCollegebitlink(response.data);
-          // setIsCollegeRegistered(response.data.registered)
-
-        } else {
-          let response = await res.json();
-        }
-        setIsRemarkLoading(false);
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handleOpeniframe = (e,link) =>{
-    e.preventDefault()
-    console.log(link)
-      setIframeModal(true)
-      setApplyLink(link.where_to_apply)
-      setCollegeId(link.college_id)
-      // console.log(applyLink)
-  }
- const handleSubmitIframe = (e)=>{
-  e.preventDefault()
-  Swal.fire({
-    title: "Are you sure you registered the lead?",
-    text:"If yes, You will not be able to re-apply this lead for this college bitlink!",
-    showDenyButton: true,
-    confirmButtonText: "Yes",
-  }).then((result) => {
-    if (result.isConfirmed) {
-      setIsRemarkLoading(true);
-    const fd = new FormData();
-    fd.append("leadType",1);
-    fd.append("leadId", leadId);
-    fd.append("cid", counsellorid);
-    fd.append("collegeId",collegeid)
-    fetch(
-      process.env.NEXT_PUBLIC_API_ENDPOINT +
-        `/admin/bitlink-registration`,
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("pt")}`,
-        },
-        method: "POST",
-        body: fd,
-      }
-    ).then(async (response) => {
-      var res = await response.json();
-      // console.log(res);
+  useEffect(()=>{
+    getUserList();
+  },[page])
+ 
+  const handlePage=(event, newPage)=>{
+    event.preventDefault()
+    setPage(newPage);
+    // console.log(newPage)
     
-      if (response.ok) {
-        Swal.fire({
-          title: "Success",
-          text: `${res.message}`,
-          icon: "success",
-          confirmButtonText: "Ok",
-        }).then(() => {
-          setIframeModal(false)
-          setIsRemarkLoading(false);
-          handleGetBitlink(e)
 
-        });
-      } else {
-        Swal.fire({
-          title: "error",
-          text: `${res.error}`,
-          icon: "error",
-          confirmButtonText: "Ok",
-        });
-      }
-    });
-      // setIframeModal(false)
-    }
-  });
- }
-
+  }
   return (
     <>
       <Box sx={{ width: "100%" }}>
@@ -545,11 +530,13 @@ export default function Testeligibility() {
             numSelected={selected.length}
             userListData={getUserList}
             rowsList={rows}
+            totalrecord={totalrecord}
             onSearchChange={(value) => handleSearchChange(value)}
             OnModalOpen={(value) => handleModalOpen(value)}
             counsellorList={(list) => setCounsellorList(list)}
+            loader={setIsLoading}
           />
-          <TableContainer sx={{ maxHeight: "70vh" }}>
+          <TableContainer sx={{ maxHeight: "calc(70vh - 28px)" }}>
             <Table
               stickyHeader
               sx={{ minWidth: 750 }}
@@ -565,12 +552,6 @@ export default function Testeligibility() {
                 {rows.map((row, index) => {
                   const isItemSelected = isSelected(row._id);
                   const labelId = `enhanced-table-checkbox-${index}`;
-                  // console.log(row)
-                  // const CounsellorID = {row.counsellors.map((counselor, index) => (
-                  //   <TableRow key={index}>
-                  //     <TableCell>{counselor.name}</TableCell>
-                  //   </TableRow>
-                  // ))}
 
                   return (
                     <TableRow
@@ -592,11 +573,7 @@ export default function Testeligibility() {
                           }}
                         />
                       </TableCell>
-                      <TableCell>
-                        {row.name.length > 20
-                          ? row.name.substring(0, 20) + "..."
-                          : row.name}
-                      </TableCell>
+                      <TableCell>{row.name}</TableCell>
                       <TableCell>
                         {row.counsellors.length > 0 ? (
                           row.counsellors.map((c, i) => {
@@ -623,13 +600,9 @@ export default function Testeligibility() {
                           />
                         )}
                       </TableCell>
-                      <TableCell>{row.mobile}</TableCell>
-                      <TableCell>{row.fee}</TableCell>
-                      <TableCell>{row.course}</TableCell>
-                      <TableCell>{row.zone}</TableCell>
-                      <TableCell>{row.qualification}</TableCell>
-                      <TableCell>{row.specialization}</TableCell>
-
+                      <TableCell>{row.mobile || "NA"}</TableCell>
+                      <TableCell>{row.email || "NA"}</TableCell>
+                      <TableCell>{row.course || "NA"}</TableCell>
                       <TableCell>{formatTimestamp(row.createdAt)}</TableCell>
                     </TableRow>
                   );
@@ -637,7 +610,8 @@ export default function Testeligibility() {
               </TableBody>
             </Table>
           </TableContainer>
-        </Paper>
+          <Pagination className="p-2 d-flex justify-content-center" count={count} page={page} color="primary" onChange={handlePage}/>
+        </Paper> 
       </Box>
       <Modal
         centered
@@ -649,7 +623,7 @@ export default function Testeligibility() {
         keyboard={false}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Assign Lead</Modal.Title>
+          <Modal.Title>Assign Leads to Counsellor</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Box
@@ -675,29 +649,29 @@ export default function Testeligibility() {
               })}
             </div>
             {selectedCounsellor != "" ? (
-               <div className="d-flex justify-content-center align-items-center m-2">
-               <Button
-                 disabled={isLoading}
-                 type="submit"
-                 variant="primary" size="md"
-               >
-                 {isLoading ? (
-                   <>
-                     <span>Please Wait...</span>
-                     <Spinner animation="border" role="status" />
-                   </>
-                 ) : (
-                   "Assign"
-                 )}
-               </Button>
-               </div>
+              <Button
+                disabled={isLoading}
+                className="bg-blue-500"
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                {isLoading ? (
+                  <>
+                    <span>Please Wait...</span>
+                    <Spinner animation="border" role="status" />
+                  </>
+                ) : (
+                  "Assign"
+                )}
+              </Button>
             ) : (
               ""
             )}
           </Box>
         </Modal.Body>
       </Modal>
-
       <Modal
         show={remarkshowModal}
         onHide={() => setRemarkshowModal(false)}
@@ -713,76 +687,70 @@ export default function Testeligibility() {
           {!isremarkLoading ? (
             remarksHistory.length > 0 ? (
               <>
-              <table className={`table table-hover custom-table`}>
-                <thead>
-                  <tr>
-                    <th style={{ background: "var(--primary)" }}>Remarks</th>
-                    <th style={{ background: "var(--primary)" }}>Date</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {remarksHistory.map((obj, i) => {
-                    return (
-                      <tr key={i}>
-                        <td>{obj.remarks}</td>
-                        <td>{formatTimestamp(obj.createdAt)}</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-              <hr/>
-              <Stack sx={{ width: "100%" }} spacing={4}>
-              <Stepper
-                alternativeLabel
-                activeStep={pipeline ? getMaxCount(pipeline) : -1}
-              >
-                {steps.map((label) => (
-                  <Step key={label}>
-                    <StepLabel>
-                    {label === "Bit-link Registration Complete" ? (
-                <Button onClick={(e)=>handleGetBitlink(e)}>{label}</Button>
-              ) : (
-                label
-              )}
-                    </StepLabel>
-                  </Step>
-                ))}
-              </Stepper>
-            </Stack>
-            </>
+                <table className={`table table-hover custom-table`}>
+                  <thead>
+                    <tr>
+                      <th style={{ background: "var(--primary)" }}>Remarks</th>
+                      <th style={{ background: "var(--primary)" }}>Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {remarksHistory.map((obj, i) => {
+                      return (
+                        <tr key={i}>
+                          <td>{obj.remarks}</td>
+                          <td>{formatTimestamp(obj.createdAt)}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+                <hr />
+                <Stack sx={{ width: "100%" }} spacing={4}>
+                  <Stepper
+                    alternativeLabel
+                    activeStep={pipeline ? getMaxCount(pipeline) : -1}
+                  >
+                    {steps.map((label) => (
+                      <Step key={label}>
+                        <StepLabel>{label}</StepLabel>
+                      </Step>
+                    ))}
+                  </Stepper>
+                </Stack>
+              </>
             ) : (
               <>
-              <div
-                style={{
-                  display: "flex",
-                  width: "100%",
-                  height: "inherit",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <div style={{ fontWeight: "500" }}>
-                  <span style={{ color: "#0d6efd", cursor: "pointer" }}>
-                    {" "}
-                    No Records{" "}
-                  </span>
+                <div
+                  style={{
+                    display: "flex",
+                    width: "100%",
+                    height: "inherit",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <div style={{ fontWeight: "500" }}>
+                    <span style={{ color: "#0d6efd", cursor: "pointer" }}>
+                      {" "}
+                      No Records{" "}
+                    </span>
+                  </div>
                 </div>
-              </div>
-               <hr/>
-               <Stack sx={{ width: "100%" }} spacing={4}>
-               <Stepper
-                 alternativeLabel
-                 activeStep={pipeline ? getMaxCount(pipeline) : -1}
-               >
-                 {steps.map((label) => (
-                   <Step key={label}>
-                     <StepLabel>{label}</StepLabel>
-                   </Step>
-                 ))}
-               </Stepper>
-             </Stack>
-             </>
+                <hr />
+                <Stack sx={{ width: "100%" }} spacing={4}>
+                  <Stepper
+                    alternativeLabel
+                    activeStep={pipeline ? getMaxCount(pipeline) : -1}
+                  >
+                    {steps.map((label) => (
+                      <Step key={label}>
+                        <StepLabel>{label}</StepLabel>
+                      </Step>
+                    ))}
+                  </Stepper>
+                </Stack>
+              </>
             )
           ) : (
             <div
@@ -797,87 +765,6 @@ export default function Testeligibility() {
             </div>
           )}
         </Modal.Body>
-      </Modal>
-
-      <Modal
-        show={bitlinkModal}
-        onHide={() => setBitlinkModal(false)}
-        scrollable
-        backdrop="static"
-        keyboard={false}
-       size="xl"
-        >
-        <Modal.Header closeButton>
-          <Modal.Title>College BitLink</Modal.Title>
-        </Modal.Header>
-
-        <Modal.Body>
-        <table className={`table table-hover`}>
-                  <thead>
-                    <tr>
-                      <th style={{ background: "var(--primary)" }}>
-                        College Name
-                      </th>
-                      <th style={{ background: "var(--primary)" }}>
-                       Application Link
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {collegebitlink.map((clg, i) => {
-                      return (
-                        <tr key={i}>
-                          <td>{clg.college_name}</td>
-                          <td >
-                            <Chip  label={clg.registered?"Application sent":"Apply Now"} color={clg.registered ? "success" : 'primary'} variant={clg.registered ? "filled" : 'outlined'} onClick={(e)=>!clg.registered && handleOpeniframe(e,clg)} />
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-        </Modal.Body>
-      </Modal>
- 
-      <Modal
-        show={iframeModal}
-        onHide={() => setIframeModal(false)}
-        backdrop="static"
-        keyboard={false}
-        fullscreen={true} 
-      >
-     <Modal.Body className="p-0">
-          <iframe
-            src={applyLink}
-            title="Where to Apply"
-            width="100%"
-            height="99%"
-            style={{ border: 'none' }}
-          ></iframe>
-        </Modal.Body>
-        <Modal.Footer className="d-flex justify-content-center">
-            <Button variant="primary" onClick={(e) => handleSubmitIframe(e)}>
-            BitLink Registration Success?
-          </Button>
-          <Button variant="danger" onClick={() => {
-            Swal.fire({
-              title: "Do you want to close the application form?",
-              showDenyButton: true,
-              confirmButtonText: "Yes",
-              // denyButtonText: `Don't Close`
-            }).then((result) => {
-              /* Read more about isConfirmed, isDenied below */
-              if (result.isConfirmed) {
-                setIframeModal(false)
-              }
-            });
-          }
-            
-            }>
-            Close Application Form
-          </Button>
-        
-        </Modal.Footer>
       </Modal>
       <Loading show={isLoading} onHide={() => setIsLoading(false)} />
     </>

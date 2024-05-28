@@ -31,6 +31,8 @@ import CrmNews from "@/components/CRM/CrmNews";
 import CrmBlogCategory from "@/components/CRM/CrmBlogCategory";
 import BlogManager from "@/components/CRM/BlogManager";
 import LLBPageLeads from "@/components/CRM/LLBPageLeads";
+import PsychologyPageLeads from "@/components/CRM/PsychologyPageLeads";
+import LoanLeads from "@/components/CRM/LoanLeads";
 
 
 
@@ -134,6 +136,16 @@ const componentList = [
   {
     comp:<LLBPageLeads/>,
     slug:"llbleads",
+    role:[0,4]
+  },
+  {
+    comp:<PsychologyPageLeads/>,
+    slug:"psychologyleads",
+    role:[0,4]
+  },
+  {
+    comp:<LoanLeads/>,
+    slug:"loanleads",
     role:[0,4]
   },
   {

@@ -359,8 +359,8 @@ export default class AssignLeads extends Component {
                         <MenuItem value={7}>Mba Leads</MenuItem>
                         <MenuItem value={8}>Ug Leads</MenuItem>
                         <MenuItem value={9}>LLB Leads</MenuItem>
-
-
+                        <MenuItem value={10}>Psychology Leads</MenuItem>
+                        <MenuItem value={11}>Loan Leads</MenuItem>
 
                       </Select>
                     </FormControl>
@@ -379,6 +379,153 @@ export default class AssignLeads extends Component {
             {this.state.counsellorType != "" ? (
               this.state.isApiHitComplete ? (
                 this.state.isDataFound ? (
+                  this.state.counsellorType == 11 ? (
+                    <table className={`table table-hover custom-table`}>
+                      <thead>
+                        <tr>
+                          <th style={{ background: "var(--primary)" }}>
+                            Student Name
+                          </th>
+                          <th style={{ background: "var(--primary)" }}>
+                            Student Mobile
+                          </th>
+                          <th style={{ background: "var(--primary)" }}>
+                            Remarks
+                          </th>
+                          {/* <th style={{ background: "var(--primary)" }}>
+                            Student Email
+                          </th> */}
+                          <th style={{ background: "var(--primary)" }}>
+                            Country
+                          </th>
+                          <th style={{ background: "var(--primary)" }}>
+                            State
+                          </th>
+                          <th style={{ background: "var(--primary)" }}>
+                            City
+                          </th>
+                          <th style={{ background: "var(--primary)" }}>
+                            Budget
+                          </th>
+                          <th style={{ background: "var(--primary)" }}>Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {this.state.clgList.map((clg, i) => {
+                          return (
+                            <tr key={i}>
+                              <td>{clg.name || 'NA'}</td>
+                              <td className="text-center">
+                                <IconButton
+                                  onClick={(e) =>
+                                    this.handleStudentCall(e, clg)
+                                  }
+                                >
+                                  <CallIcon color="primary" fontSize="small" />
+                                </IconButton>
+                              </td>
+                              <td className="text-center">
+                            <Tooltip title="Add Remark">
+                              <IconButton
+                                onClick={(e) =>
+                                  this.setState({ leadid: clg._id }, () =>
+                                    this.handleGetRemarks(11)
+                                  )
+                                }
+                              >
+                                <DifferenceIcon
+                                  color="success"
+                                  fontSize="small"
+                                />
+                              </IconButton>
+                            </Tooltip>
+                          </td>
+                              {/* <td>{clg.email || 'NA'}</td> */}
+                              <td>{clg.country || 'NA'}</td>
+                              <td>{clg.state || 'NA'}</td>
+                              <td>{clg.city || 'NA'}</td>
+                              <td>{clg.amount || 'NA'}</td>
+                              <td
+                                style={{
+                                  color: this.DatebasedOncolor(clg.createdAt),
+                                }}
+                              >
+                                {this.formatTimestamp(clg.createdAt)}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  ):
+                  this.state.counsellorType == 10 ? (
+                    <table className={`table table-hover custom-table`}>
+                      <thead>
+                        <tr>
+                          <th style={{ background: "var(--primary)" }}>
+                            Student Name
+                          </th>
+                          <th style={{ background: "var(--primary)" }}>
+                            Student Mobile
+                          </th>
+                          <th style={{ background: "var(--primary)" }}>
+                            Remarks
+                          </th>
+                          {/* <th style={{ background: "var(--primary)" }}>
+                            Student Email
+                          </th> */}
+                          <th style={{ background: "var(--primary)" }}>
+                            Course
+                          </th>
+                        
+                          <th style={{ background: "var(--primary)" }}>Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {this.state.clgList.map((clg, i) => {
+                          return (
+                            <tr key={i}>
+                              <td>{clg.name || 'NA'}</td>
+                              <td className="text-center">
+                                <IconButton
+                                  onClick={(e) =>
+                                    this.handleStudentCall(e, clg)
+                                  }
+                                >
+                                  <CallIcon color="primary" fontSize="small" />
+                                </IconButton>
+                              </td>
+                              <td className="text-center">
+                            <Tooltip title="Add Remark">
+                              <IconButton
+                                onClick={(e) =>
+                                  this.setState({ leadid: clg._id }, () =>
+                                    this.handleGetRemarks(10)
+                                  )
+                                }
+                              >
+                                <DifferenceIcon
+                                  color="success"
+                                  fontSize="small"
+                                />
+                              </IconButton>
+                            </Tooltip>
+                          </td>
+                              {/* <td>{clg.email || 'NA'}</td> */}
+                              <td>{clg.course || 'NA'}</td>
+                              <td
+                                style={{
+                                  color: this.DatebasedOncolor(clg.createdAt),
+                                }}
+                              >
+                                {this.formatTimestamp(clg.createdAt)}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  ):
                   this.state.counsellorType == 9 ? (
                     <table className={`table table-hover custom-table`}>
                       <thead>
