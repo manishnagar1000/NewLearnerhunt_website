@@ -10,10 +10,10 @@ import LoopIcon from "@mui/icons-material/Loop";
 import DifferenceIcon from "@mui/icons-material/Difference";
 import Tooltip from "@mui/material/Tooltip";
 import RemarkModal from "./component/RemarkModule";
+import DialerModule from "./component/DialerModule";
 
 var oldData = [];
-
-export default class PhoneCalls extends Component {
+export default class DialerLeads extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -31,15 +31,26 @@ export default class PhoneCalls extends Component {
       remark: "",
       remarksHistory: [],
       showModal: false,
+      showDialer: false,
+      toggleDialer: false,
       leadid: "",
       callerType: "",
-      pipeline:null,
-      steps : [
+      pipeline: null,
+      steps: [
         "First Followup Complete",
         "Bit-link Registration Complete",
         "Fee Payment Success",
       ],
       // selectedAsset: null,
+
+      studentname: "",
+      studentemail: "",
+      mobile: "",
+      course: "",
+      pitchedCollege: "",
+      budget: "",
+      studentremark: "",
+      error: "",
     };
   }
 
@@ -94,7 +105,7 @@ export default class PhoneCalls extends Component {
   getAssetList() {
     try {
       this.setState({ isApiHitComplete: false, isDataFound: false });
-      fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/counsellor/phonecalls`, {
+      fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/counsellor/dialer-lead`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("cst")}`,
         },
@@ -132,15 +143,15 @@ export default class PhoneCalls extends Component {
     if (e.target.value == "") {
       this.setState({ clgList: oldData });
       if (oldData.length > 0) {
-        this.setState({ isDataFound: true});
+        this.setState({ isDataFound: true });
       } else {
         this.setState({ isDataFound: false });
       }
     } else {
       const filteredData = oldData.filter(
         (data) =>
-          searchKeyword.test(data.college_name.toLowerCase()) ||
-          searchKeyword.test(data.studEmail.toLowerCase())
+          searchKeyword.test(data.student_name.toLowerCase()) ||
+          searchKeyword.test(data.student_email.toLowerCase())
       );
 
       if (filteredData.length > 0) {
@@ -156,7 +167,7 @@ export default class PhoneCalls extends Component {
       this.setState({ isLoading: true });
       fetch(
         process.env.NEXT_PUBLIC_API_ENDPOINT +
-          `/counsellor/lead-status?lid=${this.state.leadid}&lt=5`,
+          `/counsellor/lead-status?lid=${this.state.leadid}&lt=12`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("cst")}`,
@@ -167,7 +178,10 @@ export default class PhoneCalls extends Component {
           // console.log(res)
           let response = await res.json();
           // console.log(response.data);
-          this.setState({ remarksHistory: response.data.remarks ,pipeline:response.data.pipeline});
+          this.setState({
+            remarksHistory: response.data.remarks,
+            pipeline: response.data.pipeline,
+          });
           this.setState({ showModal: true });
         } else {
           let response = await res.json();
@@ -189,7 +203,7 @@ export default class PhoneCalls extends Component {
 
       const fd = new FormData();
       fd.append("agentNum", counsellorInfo.agent_number); // agent number counsellor number
-      fd.append("customerNum", counsellorInfo.customer_number); // student number
+      fd.append("customerNum", counsellorInfo.mobile); // student number
       fd.append("slug", counsellorInfo.slug); // college slug
       fd.append("counsEmail", localStorage.getItem("useremail")); // counsellor email
       fd.append("studEmail", counsellorInfo.studEmail); // student email
@@ -237,15 +251,18 @@ export default class PhoneCalls extends Component {
       try {
         const fd = new FormData();
         fd.append("remarks", this.state.remark);
-        fd.append("leadType", 5);
+        fd.append("leadType", 12);
         fd.append("leadId", this.state.leadid);
-        fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/counsellor/lead-status", {
-          method: "POST",
-          body: fd,
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("cst")}`,
-          },
-        }).then(async (response) => {
+        fetch(
+          process.env.NEXT_PUBLIC_API_ENDPOINT + "/counsellor/lead-status",
+          {
+            method: "POST",
+            body: fd,
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("cst")}`,
+            },
+          }
+        ).then(async (response) => {
           if (response.ok) {
             var res = await response.json();
             // console.log(res);
@@ -278,8 +295,8 @@ export default class PhoneCalls extends Component {
   toggleModal = () => {
     this.setState({ showModal: !this.state.showModal });
   };
+
   getMaxCount = (p) => {
-    // console.log(p)
     if (p.stage3) {
       return 3;
     } else if (p.stage2) {
@@ -289,38 +306,70 @@ export default class PhoneCalls extends Component {
     }
   };
 
-  // handleChange = (e) => {
-  //   this.setState({ callerType: e.target.value });
-  //   if (e.target.value == "all") {
-  //     this.setState({ clgList: oldData });
-  //     if (oldData.length > 0) {
-  //       this.setState({ isDataFound: true });
-  //     } else {
-  //       this.setState({ isDataFound: false });
-  //     }
-  //   } else if (e.target.value == "student") {
-  //     const filteredData = oldData.filter((data) => !data.reverse_call);
+  //   e.preventDefault();
+  //   const fd = new FormData();
+  //   fd.append("studName", this.state.studentname);
+  //   fd.append("studEmail", this.state.studentemail);
+  //   fd.append("mobile", this.state.mobile);
+  //   fd.append("course", this.state.course);
+  //   fd.append("pitchedCollege", this.state.pitchedCollege);
+  //   fd.append("budget", this.state.budget);
+  //   fd.append("remarks", this.state.studentremark);
 
-  //     if (filteredData.length > 0) {
-  //       this.setState({ clgList: filteredData, isDataFound: true });
-  //     } else {
-  //       this.setState({ isDataFound: false });
-  //     }
-  //   } else if (e.target.value == "counsellor") {
-  //     const filteredData = oldData.filter((data) => data.reverse_call);
+  //   try {
+  //     const response = await fetch(
+  //       process.env.NEXT_PUBLIC_API_ENDPOINT + "/counsellor/dialer-lead",
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${localStorage.getItem("cst")}`,
+  //         },
+  //         method: "POST",
+  //         body: fd,
+  //       }
+  //     );
 
-  //     if (filteredData.length > 0) {
-  //       this.setState({ clgList: filteredData, isDataFound: true });
+  //     const res = await response.json();
+  //     console.log(res);
+
+  //     if (response.ok) {
+  //       Swal.fire({
+  //         title: "Success",
+  //         text: `${res.message}`,
+  //         icon: "success",
+  //         confirmButtonText: "Ok",
+  //       }).then(() => {
+  //         this.setState({
+  //           studentname: "",
+  //           studentemail: "",
+  //           mobile: "",
+  //           course: "",
+  //           pitchedCollege: "",
+  //           budget: "",
+  //           studentremark: "",
+  //         });
+  //         this.props.getAssetList();
+  //       });
   //     } else {
-  //       this.setState({ isDataFound: false });
+  //       Swal.fire({
+  //         title: "Error",
+  //         text: `${res.error}`,
+  //         icon: "error",
+  //         confirmButtonText: "Ok",
+  //       });
   //     }
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //     Swal.fire({
+  //       title: "Error",
+  //       text: "Something went wrong!",
+  //       icon: "error",
+  //       confirmButtonText: "Ok",
+  //     });
   //   }
   // };
   render() {
     return (
       <>
-        {/* <div className={styles["basic-details"]}> */}
-
         {this.state.error == "" ? (
           <>
             <Tablenav
@@ -337,21 +386,6 @@ export default class PhoneCalls extends Component {
               Actions={{
                 Actions: (
                   <div className="d-flex justify-content-between align-items-center">
-                    {/* <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }} fullWidth>
-        <InputLabel id="demo-simple-select-label">Select the Caller</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={this.state.callerType}
-          label="Select"
-          onChange={(e)=>this.handleChange(e)}
-        >
-          <MenuItem value='student'>Student</MenuItem>
-          <MenuItem value='counsellor'>Counsellor</MenuItem>
-          <MenuItem value='all'>All</MenuItem>
-
-        </Select>
-      </FormControl> */}
                     <input
                       type="text"
                       className="form-control"
@@ -367,6 +401,12 @@ export default class PhoneCalls extends Component {
                         <LoopIcon />
                       </IconButton>
                     </Tooltip>
+                    <Button
+                      variant="primary"
+                      onClick={() => this.setState({ showDialer: true })}
+                    >
+                      +
+                    </Button>
                   </div>
                 ),
               }}
@@ -377,17 +417,19 @@ export default class PhoneCalls extends Component {
                   <thead>
                     <tr>
                       <th style={{ background: "var(--primary)" }}>
-                        College Name
+                        Student Name
                       </th>
+
                       <th style={{ background: "var(--primary)" }}>
                         Click to Call
                       </th>
-                      {/* <th style={{ background: "var(--primary)" }}>Caller</th> */}
-                      {/* <th style={{ background: "var(--primary)" }}>
-                        Student Email
-                      </th> */}
-                      <th style={{ background: "var(--primary)" }}>Remarks</th>
 
+                      <th style={{ background: "var(--primary)" }}>Remarks</th>
+                      <th style={{ background: "var(--primary)" }}>
+                        College Name
+                      </th>
+                      <th style={{ background: "var(--primary)" }}>Course</th>
+                      <th style={{ background: "var(--primary)" }}>Budget</th>
                       <th style={{ background: "var(--primary)" }}>Date</th>
                     </tr>
                   </thead>
@@ -395,7 +437,8 @@ export default class PhoneCalls extends Component {
                     {this.state.clgList.map((clg, i) => {
                       return (
                         <tr key={i}>
-                          <td>{clg.college_name}</td>
+                          <td>{clg.student_name}</td>
+
                           <td className="text-center">
                             <Tooltip title="Call">
                               <IconButton
@@ -405,29 +448,7 @@ export default class PhoneCalls extends Component {
                               </IconButton>
                             </Tooltip>
                           </td>
-                          {/* <td style={{ fontWeight: "500" }}>
-                            {clg.reverse_call ? (
-                              <span
-                                style={{ color: clg.reverse_call && "#2e7d32" }}
-                              >
-                                Counsellor
-                              </span>
-                            ) : (
-                              <span
-                                style={{
-                                  color: !clg.reverse_call && "#1976d2",
-                                }}
-                              >
-                                Student
-                              </span>
-                            )}
-                          </td> */}
 
-                          {/* <td>{clg.customer_number}</td> */}
-                          {/* <td>
-                           
-                            {clg.studEmail}
-                          </td> */}
                           <td className="text-center">
                             <Tooltip title="Add Remark">
                               <IconButton
@@ -444,6 +465,9 @@ export default class PhoneCalls extends Component {
                               </IconButton>
                             </Tooltip>
                           </td>
+                          <td>{clg.pitched_college}</td>
+                          <td>{clg.course}</td>
+                          <td>{clg.budget}</td>
                           <td
                             style={{
                               color: this.DatebasedOncolor(clg.createdAt),
@@ -451,8 +475,6 @@ export default class PhoneCalls extends Component {
                           >
                             {this.formatTimestamp(clg.createdAt)}
                           </td>
-
-                          {/* <td>{this.Callend(clg.counsellorDisconnected,clg.studentDisconnected)}</td> */}
                         </tr>
                       );
                     })}
@@ -496,126 +518,37 @@ export default class PhoneCalls extends Component {
               onHide={() => this.setState({ isLoading: false })}
             />
 
-            {/* <Modal
-              show={this.state.showModal}
-              onHide={this.toggleModal}
-              backdrop="static"
-              keyboard={false}
-              size="lg"
-            >
-              <Modal.Header closeButton>
-                <Modal.Title>Add Remark</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                <Form.Group controlId="remarkForm">
-                  <Form.Label>Remark</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter remark"
-                    value={this.state.remark}
-                    onChange={this.handleRemarkChange}
-                  />
-                </Form.Group>
-                <div className="text-center mt-2">
-                  <Button variant="primary" onClick={this.handleAddRemark}>
-                    Add
-                  </Button>
-                </div>
-              </Modal.Body>
-              <Modal.Footer></Modal.Footer>
-              <Modal.Body>
-                <h5>Remarks History</h5>
-
-                {this.state.remarksHistory.length > 0 ? (
-                  <>
-                  <table className={`table table-hover custom-table`}>
-                    <thead>
-                      <tr>
-                        <th style={{ background: "var(--primary)" }}>
-                          Remarks
-                        </th>
-                        <th style={{ background: "var(--primary)" }}>Date</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {this.state.remarksHistory.map((obj, i) => {
-                        return (
-                          <tr key={i}>
-                            <td>{obj.remarks}</td>
-                            <td>{this.formatTimestamp(obj.createdAt)}</td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                   <hr/>
-                   <Stack sx={{ width: "100%" }} spacing={4}>
-                   <Stepper
-                     alternativeLabel
-                     activeStep={this.state.pipeline ? this.getMaxCount(this.state.pipeline) : -1}
-                   >
-                     {steps.map((label) => (
-                       <Step key={label}>
-                         <StepLabel>{label}</StepLabel>
-                       </Step>
-                     ))}
-                   </Stepper>
-                 </Stack>
-                 </>
-                ) : (
-                  <>
-                  <div
-                    style={{
-                      display: "flex",
-                      width: "100%",
-                      height: "inherit",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <div style={{ fontWeight: "500" }}>
-                      <span style={{ color: "#0d6efd", cursor: "pointer" }}>
-                        {" "}
-                        No Records{" "}
-                      </span>
-                    </div>
-                  </div>
-                    <hr/>
-                    <Stack sx={{ width: "100%" }} spacing={4}>
-                    <Stepper
-                      alternativeLabel
-                      activeStep={this.state.pipeline ? this.getMaxCount(this.state.pipeline) : -1}
-                    >
-                      {steps.map((label) => (
-                        <Step key={label}>
-                          <StepLabel>{label}</StepLabel>
-                        </Step>
-                      ))}
-                    </Stepper>
-                  </Stack>
-                  </>
-                )}
-            
-              </Modal.Body>
-            </Modal> */}
-
-<RemarkModal
-          showModal={this.state.showModal}
-          toggleModal={this.toggleModal}
-          remark={this.state.remark}
-          handleRemarkChange={this.handleRemarkChange}
-          handleAddRemark={this.handleAddRemark}
-          remarksHistory={this.state.remarksHistory}
-          formatTimestamp={this.formatTimestamp}
-          steps={this.state.steps}
-          getMaxCount={this.getMaxCount}
-          pipeline={this.state.pipeline}
-        />
+            <RemarkModal
+              showModal={this.state.showModal}
+              toggleModal={this.toggleModal}
+              remark={this.state.remark}
+              handleRemarkChange={this.handleRemarkChange}
+              handleAddRemark={this.handleAddRemark}
+              remarksHistory={this.state.remarksHistory}
+              formatTimestamp={this.formatTimestamp}
+              steps={this.state.steps}
+              getMaxCount={this.getMaxCount}
+              pipeline={this.state.pipeline}
+            />
+            {this.state.showDialer && (
+              <DialerModule
+                toggleDialer={() => this.setState({ showDialer: false })}
+                isLoading={this.state.isLoading}
+                getAssetList={()=>this.getAssetList()}
+                studentname={this.state.studentname}
+                studentemail={this.state.studentemail}
+                mobile={this.state.mobile}
+                course={this.state.course}
+                pitchedCollege={this.state.pitchedCollege}
+                budget={this.state.budget}
+                studentremark={this.state.studentremark}
+                error={this.state.error}
+              />
+            )}
           </>
         ) : (
           this.state.error
         )}
-        {/* </div> */}
       </>
     );
   }

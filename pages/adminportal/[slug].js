@@ -8,31 +8,34 @@ import ApiIntegration from "/components/CRM/ApiIntegration";
 import TrashColleges from "/components/CRM/TrashCollege";
 import Imarticus from "/components/CRM/Imarticus";
 import VuPune from "/components/CRM/VuPune";
-
 import Swal from "sweetalert2";
-import Testeligibility from "/components/CRM/Testeligibility";
-import Studentappliedclg from "/components/CRM/Studentappliedclg";
-import Studentregistertbl from "/components/CRM/Studentregistertbl";
+import Testeligibility from "@/components/CRM/Leads/Testeligibility";
+import AppliedCollege from "@/components/CRM/Leads/AppliedCollege";
+import StudentRegistered from "@/components/CRM/Leads/StudentRegistered";
+import PopupLeads from "@/components/CRM/Leads/PopupLeads";
+import LoanLeads from "@/components/CRM/Leads/LoanLeads";
+import DialerLeads from "@/components/CRM/Leads/DialerLeads";
+import UgLeads from "@/components/CRM/Leads/UgLeads";
+import LlbLeads from "@/components/CRM/Leads/LlbLeads";
+import PsychologyLeads from "@/components/CRM/Leads/PsychologyLeads";
+
+
+
+
 import AddLeads from "@/components/CRM/AddLeads";
 import CollegeAdmins from "@/components/CRM/CollegeAdmins";
 import ImportExport from "/components/CRM/ImportExport";
-import PopUpRegister from "/components/CRM/PopUpRegister";
 import ClgadminRegister from "@/components/CRM/ClgadminRegister";
 import ActiveDeactiveclg from "@/components/CRM/ActiveDeactiveclg";
 import ManageUser from "@/components/CRM/ManageUser";
 import AssociatedCounsellorCrm from "@/components/CRM/AssociatedCounselorCrm";
 import LandingPageLeads from "@/components/CRM/LandingPageLeads";
-import UgPageLeads from "@/components/CRM/UgPageLeads";
-
 import TopCollegeSection from "@/components/CRM/TopCollegeSection";
 import SEOManage from "@/components/CRM/SeoManage";
 import CrmBlog from "@/components/CRM/CrmBlog";
 import CrmNews from "@/components/CRM/CrmNews";
 import CrmBlogCategory from "@/components/CRM/CrmBlogCategory";
 import BlogManager from "@/components/CRM/BlogManager";
-import LLBPageLeads from "@/components/CRM/LLBPageLeads";
-import PsychologyPageLeads from "@/components/CRM/PsychologyPageLeads";
-import LoanLeads from "@/components/CRM/LoanLeads";
 
 
 
@@ -74,12 +77,12 @@ const componentList = [
     role:[0,4]
   },
   {
-    comp:<Studentappliedclg/>,
+    comp:<AppliedCollege/>,
     slug:"appliedcollege",
     role:[0,4]
   },
   {
-    comp:<Studentregistertbl/>,
+    comp:<StudentRegistered/>,
     slug:"studentregister",
     role:[0,4]
   },
@@ -99,7 +102,7 @@ const componentList = [
     role:[0,4]
   },
   {
-    comp:<PopUpRegister/>,
+    comp:<PopupLeads/>,
     slug:"popupregister",
     role:[0,4]
   },
@@ -129,23 +132,28 @@ const componentList = [
     role:[0,4]
   },
   {
-    comp:<UgPageLeads/>,
+    comp:<UgLeads/>,
     slug:"ugleads",
     role:[0,4]
   },
   {
-    comp:<LLBPageLeads/>,
+    comp:<LlbLeads/>,
     slug:"llbleads",
     role:[0,4]
   },
   {
-    comp:<PsychologyPageLeads/>,
+    comp:<PsychologyLeads/>,
     slug:"psychologyleads",
     role:[0,4]
   },
   {
     comp:<LoanLeads/>,
     slug:"loanleads",
+    role:[0,4]
+  },
+  {
+    comp:<DialerLeads/>,
+    slug:"dialerleads",
     role:[0,4]
   },
   {

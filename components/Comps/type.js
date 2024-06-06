@@ -1124,7 +1124,93 @@ export const ugbtechleads =
   ]
 
 
+  // loan page
   
+export const LoanFeaturesData = [
+  {
+    title: "100% Financing",
+    icon: `/assets/images/Loan/LoanFeaturesIcon/salary.webp`
+  },
+  {
+    title: "Pre-Admission Loan",
+    icon: `/assets/images/Loan/LoanFeaturesIcon/loan.webp`
+  },
+  {
+    title: "Fastest Sanctions",
+    icon: `/assets/images/Loan/LoanFeaturesIcon/quick.webp`
+  },
+  {
+    title: "Pre-Visa Disbursement",
+    icon: `/assets/images/Loan/LoanFeaturesIcon/travel.webp`
+  },
+  {
+    title: "Customized Loans",
+    icon: `/assets/images/Loan/LoanFeaturesIcon/task.webp`
+  },
+  {
+    title: "Fast Track Loan",
+    icon: `/assets/images/Loan/LoanFeaturesIcon/discount.webp`
+  },
+  {
+    title: "Comptetive Interest Rates",
+    icon: `/assets/images/Loan/LoanFeaturesIcon/interest.webp`
+  },
+  {
+    title: "Score Based Benefit",
+    icon: `/assets/images/Loan/LoanFeaturesIcon/good-feedback.webp`
+  },
+  {
+    title: "Flexible Repayment",
+    icon: `/assets/images/Loan/LoanFeaturesIcon/payment-method.webp`
+  },
+  {
+    title: "Funds Certificate",
+    icon: `/assets/images/Loan/LoanFeaturesIcon/certificate.webp`
+  },
+  {
+    title: "High on Services",
+    icon: `/assets/images/Loan/LoanFeaturesIcon/24-hours.webp`
+  },
+  {
+    title: "Transport Processes",
+    icon: `/assets/images/Loan/LoanFeaturesIcon/process.webp`
+  }
+]
+
+export const LoanOffersData = [{
+  title: "Higher Education Abroad",
+  icon: `/assets/images/Loan/LoanOffersIcon/earth.webp`
+},
+{
+  title: "Higher Education India",
+  icon: `/assets/images/Loan/LoanOffersIcon/india.webp`
+},
+{
+  title: "Executive Education Loan",
+  icon: `/assets/images/Loan/LoanOffersIcon/graduation.webp`
+},
+{
+  title: "Skill Development",
+  icon: `/assets/images/Loan/LoanOffersIcon/logical.webp`
+},
+{
+  title: "Privilege Loans",
+  icon: `/assets/images/Loan/LoanOffersIcon/officer.webp`
+},
+{
+  title: "Education Loan refinancing",
+  icon: `/assets/images/Loan/LoanOffersIcon/finance.webp`
+}
+]
+
+
+export const ProcessData = [
+  { title: 'Application Process', icon: '/assets/images/loan/Process/user.gif' },
+  { title: 'Application Review', icon: '/assets/images/loan/Process/search.gif' },
+  { title: 'Provisional Offers', icon: '/assets/images/loan/Process/black-friday.gif' },
+  { title: 'Provide Documents', icon: '/assets/images/loan/Process/accounting.gif' },
+  { title: 'Disbursement', icon: '/assets/images/loan/Process/dollar.gif' },
+];
 
 
   

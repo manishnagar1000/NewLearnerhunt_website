@@ -1,26 +1,13 @@
 import React, { useEffect } from "react";
 import PortalLayout from "/components/collegeDashboardCrm/Portallayout";
 import { useRouter, notFound } from "next/router";
-import Dashboard from "/components/CRM/Dashboard";
 import Addcollege from "/components/collegeDashboardCrm/addcollege/Addcollege";
-import Allcollege from "/components/CRM/addcollege/Allcollege";
-import ApiIntegration from "/components/CRM/ApiIntegration";
-import TrashColleges from "/components/CRM/TrashCollege";
-import Imarticus from "/components/CRM/Imarticus";
 import Swal from "sweetalert2";
-import Testeligibility from "/components/CRM/Testeligibility";
-import Studentappliedclg from "/components/CRM/Studentappliedclg";
-import Studentregistertbl from "/components/CRM/Studentregistertbl";
-import AddLeads from "@/components/CRM/AddLeads";
 import MyKyc from "/components/collegeDashboardCrm/MyKyc";
-import MyCollege from "/components/collegeDashboardCrm/MyCollege";
 import InterestedLeads from "/components/collegeDashboardCrm/InterestedLeads";
 import CampaignLeads from "/components/collegeDashboardCrm/CampaignLeads";
 import AssociatedCounsellor from "@/components/collegeDashboardCrm/AssociatedCounsellor";
 import Support from "@/components/collegeDashboardCrm/Support";
-
-
-
 
 const componentList = [
   {

@@ -24,7 +24,7 @@
   }
   
   .heading {
-    color: #004b7a;
+    color: #1c4fa3;
     margin-bottom: 2rem;
     font-size: 25px;
     font-weight: bold;
@@ -53,13 +53,18 @@
   }
   
   .topText {
-    position: absolute;
+    /* position: absolute;
     top: 5%;
     left: 50%;
     transform: translateX(-50%);
     font-size: 25px;
     font-weight: bold;
-    color: #004b7a;
+    color: #1c4fa3; */
+    margin-top: 20px;
+    text-align: center;
+    color: #1c4fa3;
+    font-weight: bolder;
+    font-size: 25px;
   }
   
   .iconText {
@@ -71,22 +76,22 @@
   }
   
   .icon1 {
-    color: #004b7a;
+    color: #1c4fa3;
     font-size: 70px;
   }
   
   .icon2 {
-    color: #004b7a;
+    color: #1c4fa3;
     font-size: 70px;
   }
   
   .icon3 {
-    color: #004b7a;
+    color: #1c4fa3;
     font-size: 70px;
   }
   
   .icon4 {
-    color: #004b7a;
+    color: #1c4fa3;
     font-size: 70px;
   }
   
@@ -103,20 +108,20 @@
   .processContent {
     padding: 20px;
     text-align: center;
-    color: #004b7a;
+    color: #1c4fa3;
   }
   
   .headingMore {
     margin-top: 20px;
     text-align: center;
-    color: #004b7a;
+    color: #1c4fa3;
     font-weight: bolder;
     font-size: 25px;
   }
   
   .heading2 {
     text-align: center;
-    color: #004b7a;
+    color: #1c4fa3;
     font-weight: bold;
     font-size: 25px;
   }
@@ -141,7 +146,7 @@
   }
   
   .iconText {
-    color: #004b7a;
+    color: #1c4fa3;
     font-family: sans-serif;
   }
   
@@ -170,13 +175,13 @@
   
   .questionContainer {
     font-weight: bold;
-    color: #004b7a;
+    color: #1c4fa3;
   }
   
   .heading3 {
     margin-bottom: 2rem;
     text-align: center;
-    color: #004b7a;
+    color: #1c4fa3;
     font-weight: bold;
     font-size: 30px;
   }
@@ -201,17 +206,11 @@
   }
   
   .chooseUsButton {
-    width: 240px;
-    height: 50px;
     border: 2px solid #ffffff;
-    border-radius: 30px;
     letter-spacing: 2px;
     background-color: #15549a;
     color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 2rem
+    margin-top: 1rem
   }
   
   .chooseUsButton:hover {
@@ -460,7 +459,7 @@
   }
   
   .loanCard2 {
-    color: #004b7a;
+    color: #1c4fa3;
     margin: 40px;
     text-align: center;
     font-size: 25px;
@@ -478,20 +477,19 @@
   }
   
   .button {
-    width: 100px;
     margin: 0 1rem;
     background-color: white;
-    color: #225B87;
-    border: 2px solid #225B87;
+    color: #1c4fa3;
+    border: 2px solid #1c4fa3;
   }
   
   .button.selected {
-    background-color: #225B87;
+    background-color: #1c4fa3;
     color: white;
   }
   
   .button:hover {
-    background-color: #225B87;
+    background-color: #1c4fa3;
   }
   
   .cardContainer {
@@ -501,7 +499,7 @@
   
   
   .cardName {
-    color: #004b7a;
+    color: #1c4fa3;
     font-size: 22px;
   }
   
@@ -524,12 +522,96 @@
   }
   
   .cardButton {
-    background-color: #225B87;
+    background-color: #1c4fa3;
   }
   
   .linkDiv {
     display: flex;
   }
+
+  /* elegibilty checker */
+  .button {
+    color: #1c4fa3;
+    border-color: #1c4fa3;
+    transition: background-color 0.3s, color 0.3s;
+    background-color: transparent;
+}
+
+.button:hover {
+    background-color: #1c4fa3;
+    color: #ffffff;
+}
+
+.buttonSelected {
+    background-color: #1c4fa3;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.buttonSelected:hover {
+    background-color: #0a5e92;
+    color: #ffffff;
+}
+
+/* .mainHeading {
+    color: #1c4fa3;
+} */
+
+.mainCard {
+    background-color: #eef5fa;
+    min-height: 21rem;
+}
+
+.card {
+    cursor: pointer;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    width: 135px;
+    background-color: #1c4fa3;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+
+}
+
+.card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: scale(1.05);
+    background: #1c4fa3;
+}
+
+.InputHidden {
+    display: none;
+    
+}
+
+.AddmissionOption {
+    color: #ffffff;
+    background-color: #1c4fa3;
+    min-width: 30%;
+}
+
+.AddmissionOption:hover {
+    cursor: pointer;
+    background-color: #0a5e92
+  
+}
+
+
+
+.fadeIn {
+    animation: fadeInAnimation 0.5s ease-in-out;
+}
+
+@keyframes fadeInAnimation {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 9;
+    }
+}
+
+
   
   @media only screen and (max-width: 500px) {
     .cont {
@@ -600,11 +682,11 @@
       width: 100%;
     }
   
-    .box1 {
+    /* .box1 {
       width: 75%;
       text-align: center;
       height: auto;
-    }
+    } */
   
     .paragraph {
       color: #ffffff;

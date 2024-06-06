@@ -11,20 +11,12 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import DifferenceIcon from "@mui/icons-material/Difference";
 import Tooltip from '@mui/material/Tooltip';
+import AttachEmailIcon from '@mui/icons-material/AttachEmail';
 import LoopIcon from "@mui/icons-material/Loop";
-import { Modal, Button, Form } from "react-bootstrap";
-import Stack from "@mui/material/Stack";
-import Stepper from "@mui/material/Stepper";
-import Step from "@mui/material/Step";
-import StepLabel from "@mui/material/StepLabel";
-
+import RemarkModal from "./component/RemarkModule";
+import Bitlinksend from "./component/Bitlinksend";
 
 var oldData = [];
-var steps = [
-    "First Followup Complete",
-    "Bit-link Registration Complete",
-    "Fee Payment Success",
-  ];
 export default class AssignLeads extends Component {
   constructor(props) {
     super(props);
@@ -37,15 +29,22 @@ export default class AssignLeads extends Component {
       username: localStorage.getItem("username"),
       statusAnchorEl: null,
       lastrecid: "-1",
-      searchInput: "", // Search input
+      searchInput: "", 
       error: "",
       TotalCountNumber: "",
       remark: "",
       remarksHistory: [],
       showModal: false,
+      showbitModal:false,
       leadid: "",
       counsellorType: "",
-      pipeline:null
+      pipeline:null,
+     steps : [
+    "First Followup Complete",
+    "Bit-link Registration Complete",
+    "Fee Payment Success",
+  ],
+  clgBroucher:[]
     };
   }
 
@@ -220,7 +219,7 @@ export default class AssignLeads extends Component {
     // })
     try {
       this.setState({ isLoading: true,counsellorType:type }),(()=>{
-        console.log("hello1")
+        // console.log("hello1")
       });
       fetch(
         process.env.NEXT_PUBLIC_API_ENDPOINT +
@@ -235,6 +234,34 @@ export default class AssignLeads extends Component {
           let response = await res.json();
           this.setState({ remarksHistory: response.data.remarks,pipeline:response.data.pipeline });
           this.setState({ showModal: true });
+        } else {
+          let response = await res.json();
+          this.setState({ error: response.error });
+        }
+        this.setState({ isLoading: false });
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  handleGetBitlink = () => {
+    try {
+      this.setState({ isLoading: true })
+      fetch(
+        process.env.NEXT_PUBLIC_API_ENDPOINT +
+          `/counsellor/clg-broucher-list`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("cst")}`,
+          },
+        }
+      ).then(async (res) => {
+        if (res.ok) {
+          let response = await res.json();
+          // console.log(response.data)
+          this.setState({ clgBroucher: response.data});
+          this.setState({ showbitModal: true });
         } else {
           let response = await res.json();
           this.setState({ error: response.error });
@@ -297,10 +324,13 @@ export default class AssignLeads extends Component {
   toggleModal = () => {
     this.setState({ showModal: !this.state.showModal });
   };
+  togglebitModal = () => {
+    this.setState({ showbitModal: !this.state.showbitModal });
+  };
 
   
    getMaxCount = (p) => {
-    console.log(p)
+    // console.log(p)
     if (p.stage3) {
       return 3;
     } else if (p.stage2) {
@@ -309,6 +339,52 @@ export default class AssignLeads extends Component {
       return 1;
     }
   };
+
+  handleShare = (obj) =>{
+    // console.log(obj)
+    try {
+      this.setState({ isLoading: true });
+      const fd = new FormData();
+      fd.append("broucher", `https://learnerhunt-assets.s3.amazonaws.com/${obj.college_broucher_pdf}`); 
+      fd.append("cName", obj.college_name); 
+      fd.append("lid", this.state.leadid); 
+      fd.append("lt",this.state.counsellorType); 
+
+      fetch(
+        process.env.NEXT_PUBLIC_API_ENDPOINT + "/counsellor/send-broucher",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("cst")}`,
+          },
+          method: "POST",
+          body: fd,
+        }
+      ).then(async (response) => {
+        var res = await response.json();
+        // console.log(res.data);
+        if (res.error) {
+          Swal.fire({
+            title: "error",
+            text: `${res.error}`,
+            icon: "error",
+            confirmButtonText: "Ok",
+          });
+        } else {
+          Swal.fire({
+            title: "success",
+            text: `${res.message}`,
+            icon: "success",
+            confirmButtonText: "Ok",
+          });
+        }
+        this.setState({ isLoading: false });
+      });
+    } catch (error) {
+      this.setState({ isLoading: false });
+
+      console.error("Failed to fetch OTP:", error);
+    }
+  }
   render() {
     return (
       <>
@@ -392,9 +468,9 @@ export default class AssignLeads extends Component {
                           <th style={{ background: "var(--primary)" }}>
                             Remarks
                           </th>
-                          {/* <th style={{ background: "var(--primary)" }}>
-                            Student Email
-                          </th> */}
+                          <th style={{ background: "var(--primary)" }}>
+                            Send Email
+                          </th>
                           <th style={{ background: "var(--primary)" }}>
                             Country
                           </th>
@@ -440,6 +516,23 @@ export default class AssignLeads extends Component {
                               </IconButton>
                             </Tooltip>
                           </td>
+                          <td className="text-center">
+                            <Tooltip title="Send Email">
+                              <IconButton
+                                onClick={(e) =>
+                                  this.setState({ leadid: clg._id }, () =>
+                                    this.handleGetBitlink()
+                                  )
+                                }
+                              >
+                                <AttachEmailIcon
+                                  color="secondary"
+                                  fontSize="small"
+                                />
+                              </IconButton>
+                            </Tooltip>
+                            
+                          </td>
                               {/* <td>{clg.email || 'NA'}</td> */}
                               <td>{clg.country || 'NA'}</td>
                               <td>{clg.state || 'NA'}</td>
@@ -471,9 +564,9 @@ export default class AssignLeads extends Component {
                           <th style={{ background: "var(--primary)" }}>
                             Remarks
                           </th>
-                          {/* <th style={{ background: "var(--primary)" }}>
-                            Student Email
-                          </th> */}
+                          <th style={{ background: "var(--primary)" }}>
+                            Send Email
+                          </th>
                           <th style={{ background: "var(--primary)" }}>
                             Course
                           </th>
@@ -511,6 +604,23 @@ export default class AssignLeads extends Component {
                               </IconButton>
                             </Tooltip>
                           </td>
+                          <td className="text-center">
+                            <Tooltip title="Send Email">
+                              <IconButton
+                                onClick={(e) =>
+                                  this.setState({ leadid: clg._id }, () =>
+                                    this.handleGetBitlink()
+                                  )
+                                }
+                              >
+                                <AttachEmailIcon
+                                  color="secondary"
+                                  fontSize="small"
+                                />
+                              </IconButton>
+                            </Tooltip>
+                            
+                          </td>
                               {/* <td>{clg.email || 'NA'}</td> */}
                               <td>{clg.course || 'NA'}</td>
                               <td
@@ -539,9 +649,9 @@ export default class AssignLeads extends Component {
                           <th style={{ background: "var(--primary)" }}>
                             Remarks
                           </th>
-                          {/* <th style={{ background: "var(--primary)" }}>
-                            Student Email
-                          </th> */}
+                          <th style={{ background: "var(--primary)" }}>
+                            Send Email
+                          </th>
                           <th style={{ background: "var(--primary)" }}>
                             Course
                           </th>
@@ -580,6 +690,23 @@ export default class AssignLeads extends Component {
                             </Tooltip>
                           </td>
                               {/* <td>{clg.email || 'NA'}</td> */}
+                              <td className="text-center">
+                            <Tooltip title="Send Email">
+                              <IconButton
+                                onClick={(e) =>
+                                  this.setState({ leadid: clg._id }, () =>
+                                    this.handleGetBitlink()
+                                  )
+                                }
+                              >
+                                <AttachEmailIcon
+                                  color="secondary"
+                                  fontSize="small"
+                                />
+                              </IconButton>
+                            </Tooltip>
+                            
+                          </td>
                               <td>{clg.course || 'NA'}</td>
                               <td
                                 style={{
@@ -607,9 +734,9 @@ export default class AssignLeads extends Component {
                           <th style={{ background: "var(--primary)" }}>
                             Remarks
                           </th>
-                          {/* <th style={{ background: "var(--primary)" }}>
-                            Student Email
-                          </th> */}
+                          <th style={{ background: "var(--primary)" }}>
+                            Send Email
+                          </th>
                           <th style={{ background: "var(--primary)" }}>
                             Course
                           </th>
@@ -652,6 +779,23 @@ export default class AssignLeads extends Component {
                               </IconButton>
                             </Tooltip>
                           </td>
+                          <td className="text-center">
+                            <Tooltip title="Send Email">
+                              <IconButton
+                                onClick={(e) =>
+                                  this.setState({ leadid: clg._id }, () =>
+                                    this.handleGetBitlink()
+                                  )
+                                }
+                              >
+                                <AttachEmailIcon
+                                  color="secondary"
+                                  fontSize="small"
+                                />
+                              </IconButton>
+                            </Tooltip>
+                            
+                          </td>
                               {/* <td>{clg.email || 'NA'}</td> */}
                               <td>{clg.course || 'NA'}</td>
                               <td>{clg.city || 'NA'}</td>
@@ -682,9 +826,9 @@ export default class AssignLeads extends Component {
                           <th style={{ background: "var(--primary)" }}>
                             Remarks
                           </th>
-                          {/* <th style={{ background: "var(--primary)" }}>
-                            Student Email
-                          </th> */}
+                          <th style={{ background: "var(--primary)" }}>
+                            Send Email
+                          </th>
                           <th style={{ background: "var(--primary)" }}>
                             Course
                           </th>
@@ -727,6 +871,23 @@ export default class AssignLeads extends Component {
                               </IconButton>
                             </Tooltip>
                           </td>
+                          <td className="text-center">
+                            <Tooltip title="Send Email">
+                              <IconButton
+                                onClick={(e) =>
+                                  this.setState({ leadid: clg._id }, () =>
+                                    this.handleGetBitlink()
+                                  )
+                                }
+                              >
+                                <AttachEmailIcon
+                                  color="secondary"
+                                  fontSize="small"
+                                />
+                              </IconButton>
+                            </Tooltip>
+                            
+                          </td>
                               {/* <td>{clg.email || 'NA'}</td> */}
                               <td>{clg.course || 'NA'}</td>
                               <td>{clg.city || 'NA'}</td>
@@ -756,6 +917,9 @@ export default class AssignLeads extends Component {
                           </th>
                           <th style={{ background: "var(--primary)" }}>
                             Remarks
+                          </th>
+                          <th style={{ background: "var(--primary)" }}>
+                           Send Email
                           </th>
                           {/* <th style={{ background: "var(--primary)" }}>
                             Student Email
@@ -798,6 +962,23 @@ export default class AssignLeads extends Component {
                                 />
                               </IconButton>
                             </Tooltip>
+                          </td>
+                          <td className="text-center">
+                            <Tooltip title="Send Email">
+                              <IconButton
+                                onClick={(e) =>
+                                  this.setState({ leadid: clg._id }, () =>
+                                    this.handleGetBitlink()
+                                  )
+                                }
+                              >
+                                <AttachEmailIcon
+                                  color="secondary"
+                                  fontSize="small"
+                                />
+                              </IconButton>
+                            </Tooltip>
+                            
                           </td>
                               {/* <td>{clg.email}</td> */}
                               <td>{clg.course}</td>
@@ -897,9 +1078,9 @@ export default class AssignLeads extends Component {
                           <th style={{ background: "var(--primary)" }}>
                             Remarks
                           </th>
-                          {/* <th style={{ background: "var(--primary)" }}>
-                            Email
-                          </th> */}
+                          <th style={{ background: "var(--primary)" }}>
+                           Send Email
+                          </th>
                           <th style={{ background: "var(--primary)" }}>
                             Gender
                           </th>
@@ -941,6 +1122,24 @@ export default class AssignLeads extends Component {
                                 />
                               </IconButton>
                             </Tooltip>
+
+                          </td>
+                          <td className="text-center">
+                            <Tooltip title="Send Email">
+                              <IconButton
+                                onClick={(e) =>
+                                  this.setState({ leadid: clg._id }, () =>
+                                    this.handleGetBitlink()
+                                  )
+                                }
+                              >
+                                <AttachEmailIcon
+                                  color="secondary"
+                                  fontSize="small"
+                                />
+                              </IconButton>
+                            </Tooltip>
+                            
                           </td>
                               {/* <td>{clg.email}</td> */}
                               <td>{clg.gender}</td>
@@ -970,6 +1169,9 @@ export default class AssignLeads extends Component {
                           </th>
                           <th style={{ background: "var(--primary)" }}>
                             Remarks
+                          </th>
+                          <th style={{ background: "var(--primary)" }}>
+                           Send Email
                           </th>
                           {/* <th style={{ background: "var(--primary)" }}>
                             Email
@@ -1012,6 +1214,23 @@ export default class AssignLeads extends Component {
                                 />
                               </IconButton>
                             </Tooltip>
+                          </td>
+                          <td className="text-center">
+                            <Tooltip title="Send Email">
+                              <IconButton
+                                onClick={(e) =>
+                                  this.setState({ leadid: clg._id }, () =>
+                                    this.handleGetBitlink()
+                                  )
+                                }
+                              >
+                                <AttachEmailIcon
+                                  color="secondary"
+                                  fontSize="small"
+                                />
+                              </IconButton>
+                            </Tooltip>
+                            
                           </td>
                               {/* <td>{clg.email}</td> */}
                               <td>{clg.selected_stream}</td>
@@ -1083,7 +1302,7 @@ export default class AssignLeads extends Component {
                 </div>
               </div>
             )}
-    <Modal
+    {/* <Modal
               show={this.state.showModal}
               onHide={this.toggleModal}
               backdrop="static"
@@ -1128,7 +1347,7 @@ export default class AssignLeads extends Component {
                       {this.state.remarksHistory.map((obj, i) => {
                         return (
                           <tr key={i}>
-                            <td>{obj.remarks}</td>
+                            <td style={{whiteSpace:'break-spaces',wordBreak:'break-all'}}>{obj.remarks}</td>
                             <td>{this.formatTimestamp(obj.createdAt)}</td>
                           </tr>
                         );
@@ -1184,7 +1403,30 @@ export default class AssignLeads extends Component {
                 )}
               
               </Modal.Body>
-            </Modal>
+            </Modal> */}
+
+
+            <RemarkModal
+          showModal={this.state.showModal}
+          toggleModal={this.toggleModal}
+          remark={this.state.remark}
+          handleRemarkChange={this.handleRemarkChange}
+          handleAddRemark={this.handleAddRemark}
+          remarksHistory={this.state.remarksHistory}
+          formatTimestamp={this.formatTimestamp}
+          steps={this.state.steps}
+          getMaxCount={this.getMaxCount}
+          pipeline={this.state.pipeline}
+        />
+
+        <Bitlinksend
+         showbitModal={this.state.showbitModal}
+         togglebitModal={this.togglebitModal}
+         clgBroucher={this.state.clgBroucher}
+         handleShare={this.handleShare}
+        />
+
+
             <Loading
               show={this.state.isLoading}
               onHide={() => this.setState({ isLoading: false })}

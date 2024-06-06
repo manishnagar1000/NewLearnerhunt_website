@@ -132,7 +132,7 @@ export default class AddLeads extends Component {
           this.setState({isDataFound:false})
         }
       }}
-      getOptionLabel={(option) => option.college_name}
+      getOptionLfabel={(option) => option.college_name}
 renderInput={(params) => <TextField {...params} label="College List" />}
     />
       

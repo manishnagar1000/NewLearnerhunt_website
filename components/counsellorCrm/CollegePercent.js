@@ -2,9 +2,7 @@ import React ,{useState,useEffect} from 'react'
 import { collegeperexcle } from "/components/Comps/type";
 import Table from 'react-bootstrap/Table';
 import Tablenav from "../Comps/Tablenav";
-import LoopIcon from "@mui/icons-material/Loop";
-import DifferenceIcon from "@mui/icons-material/Difference";
-import Tooltip from '@mui/material/Tooltip';
+
 export default function CollegePercent() {
     const [searchInput, setSearchInput] = useState('');
     const [totalCount, setTotalCount] = useState(0);
@@ -70,7 +68,7 @@ export default function CollegePercent() {
     ))
   ) : (
     <tr>
-      <td colSpan={4}>No records found.</td>
+      <td colSpan={4} style={{textAlign:"center"}}>No records found.</td>
     </tr>
   )}
 </tbody>

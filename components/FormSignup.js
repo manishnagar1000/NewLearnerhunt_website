@@ -225,6 +225,7 @@ const FormSignUp = ({ closeModal ,role ,islogin }) => {
             const fd = new FormData();
             fd.append("email", signupemail);
             fd.append("otp", signupuserotp);
+            fd.append("isNew",true)
             fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/user/login", {
               method: "POST",
               body: fd,

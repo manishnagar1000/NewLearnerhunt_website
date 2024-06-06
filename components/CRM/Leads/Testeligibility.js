@@ -1,8 +1,6 @@
-// 
+"use client"
 
 import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
-import { alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -15,21 +13,17 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
+import { alpha } from "@mui/material/styles";
 import Tooltip from "@mui/material/Tooltip";
-import { Modal } from "react-bootstrap";
-import Button from "@mui/material/Button";
 import Swal from "sweetalert2";
-import { Spinner } from "react-bootstrap";
 import SendTimeExtensionIcon from "@mui/icons-material/SendTimeExtension";
-import Avatar from "@mui/material/Avatar";
-import Classes from "/styles/Popup.module.css";
 import Chip from "@mui/material/Chip";
 import LoopIcon from "@mui/icons-material/Loop";
 import Loading from "@/components/Comps/Loading";
-import Stack from "@mui/material/Stack";
-import Stepper from "@mui/material/Stepper";
-import Step from "@mui/material/Step";
-import StepLabel from "@mui/material/StepLabel";
+import AssignLeadModal from "./components/AssignLeadModal";
+import RemarkHistoryModal from "./components/RemarkHistoryModal";
+import FormatTimestamp from "../../Comps/FormatTimeStamp";
+
 
 const headCells = [
   {
@@ -45,25 +39,39 @@ const headCells = [
     label: "Mobile Number",
   },
   {
-    id: "email",
-    label: "Email",
+    id: "fee",
+    label: "Fees",
   },
   {
-    id: "level",
-    label: "Level",
+    id: "course",
+    label: "Interested Course",
   },
   {
-    id: "stream",
-    label: "Stream",
+    id: "zone",
+    label: "Zone",
   },
+  {
+    id: "qualification",
+    label: "Qualification",
+  },
+  {
+    id: "specialization",
+    label: "Specialization",
+  },
+
   {
     id: "date",
     label: "Date",
   },
 ];
 
+const steps = [
+  "First Followup Complete",
+  "Bit-link Registration Complete",
+  "Fee Payment Success",
+];
 function EnhancedTableHead(props) {
-  // console.log(props);
+
   const {
     onSelectAllClick,
     order,
@@ -78,10 +86,11 @@ function EnhancedTableHead(props) {
 
   return (
     <TableHead>
-      <TableRow>
+      <TableRow >
         <TableCell padding="checkbox">
           <Checkbox
-            color="primary"
+            // color="primary"
+            className="border border-light"
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
@@ -104,20 +113,12 @@ function EnhancedTableHead(props) {
   );
 }
 
-EnhancedTableHead.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-  onRequestSort: PropTypes.func.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
-  order: PropTypes.oneOf(["asc", "desc"]).isRequired,
-  orderBy: PropTypes.string.isRequired,
-  rowCount: PropTypes.number.isRequired,
-};
 
 function EnhancedTableToolbar(props) {
-  console.log(props);
-  // console.log(props.rowsList);
+
   const [searchInput, setSearchInput] = useState("");
-  const { numSelected } = props;
+
+  const { numSelected, AssignModalOpenTrue } = props;
   const handleSearchChange = (e) => {
     setSearchInput(e.target.value);
     props.onSearchChange(e.target.value);
@@ -126,19 +127,19 @@ function EnhancedTableToolbar(props) {
   };
 
   const handleOpen = (e) => {
+    AssignModalOpenTrue();
+
+
     fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/counsellor-list`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("pt")}`,
       },
     }).then(async (res) => {
-      // console.log(res)
       let response = await res.json();
-      console.log(response);
       if (response.data) {
         if (response.data.length > 0) {
           props.counsellorList(response.data);
-          // props.setCounsellor(response.data);
-          props.OnModalOpen(true);
+          // props.OnModalOpen(true);
         }
       } else {
         Swal.fire({
@@ -150,6 +151,9 @@ function EnhancedTableToolbar(props) {
       }
     });
   };
+
+
+
 
   return (
     <>
@@ -201,14 +205,14 @@ function EnhancedTableToolbar(props) {
               placeholder="Search..."
               onChange={handleSearchChange}
             />
-              <Tooltip title="Refresh">
-                      <IconButton
-                        aria-label="Refresh"
-                        onClick={() =>props.userListData()}
-                      >
-                        <LoopIcon />
-                      </IconButton>
-                    </Tooltip>
+            <Tooltip title="Refresh">
+              <IconButton
+                aria-label="Refresh"
+                onClick={() => props.userListData()}
+              >
+                <LoopIcon />
+              </IconButton>
+            </Tooltip>
           </>
         )}
       </Toolbar>
@@ -216,30 +220,34 @@ function EnhancedTableToolbar(props) {
   );
 }
 
-EnhancedTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-};
+const ListType = "1"
+
+
 var oldData = [];
-export default function Studentappliedclg() {
+export default function Testeligibility() {
   const [selected, setSelected] = React.useState([]);
   const [rows, setRows] = useState([]);
   const [counsellorList, setCounsellorList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isremarkLoading,setIsRemarkLoading] = useState(false)
+  const [isremarkLoading, setIsRemarkLoading] = useState(false)
   const [selectedCounsellor, setSelectedCounsellor] = useState("");
-  const [remarkshowModal, setRemarkshowModal] = useState(false);
   const [remarksHistory, setRemarksHistory] = useState([]);
   const [pipeline, setPipeLine] = useState(null);
+  const [isAssignLeadModalOpen, setIsAssignLeadModalOpen] = useState(false);
+  const [isRemarkHistoryModalOpen, setIsRemarkHistoryModalOpen] = useState(false);
+  const [leadId, setLeadId] = useState('')
+  const [counsellorId, setCounsellorId] = useState('')
+
 
   useEffect(() => {
     getUserList();
   }, []);
 
   const getUserList = () => {
-    setIsLoading(true)
+    setIsLoading(true);
     fetch(
-      process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/leads?lid=${-1}&type=3`,
+      process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/leads?lid=${-1}&type=${ListType}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("pt")}`,
@@ -262,26 +270,8 @@ export default function Studentappliedclg() {
           window.location.reload();
         });
       }
-    setIsLoading(false)
-
+      setIsLoading(false);
     });
-  };
-  const formatTimestamp = (timestamp) => {
-    const dateObject = new Date(timestamp);
-
-    const formattedTime = dateObject.toLocaleTimeString("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    });
-
-    const formattedDate = dateObject.toLocaleDateString("en-US", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    });
-
-    return `${formattedTime}, ${formattedDate}`;
   };
 
   const handleSelectAllClick = (event) => {
@@ -294,6 +284,7 @@ export default function Studentappliedclg() {
   };
 
   const handleClick = (event, id) => {
+
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
     if (selectedIndex === -1) {
@@ -313,35 +304,40 @@ export default function Studentappliedclg() {
 
   const isSelected = (id) => selected.indexOf(id) !== -1;
 
+
+
   const handleSearchChange = (value) => {
     const searchTerm = value.trim().replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
     const searchKeyword = new RegExp(`\\b${searchTerm}\\w*\\b`, "i");
 
     if (searchKeyword === "") {
       setRows(oldData);
+      // setIsDataFound(oldData.length > 0);
     } else {
       const filteredData = oldData.filter((data) =>
-        searchKeyword.test(data.email.toLowerCase())
+        searchKeyword.test(data.name.toLowerCase())
       );
       setRows(filteredData);
     }
   };
 
-  const handleModalOpen = (value) => {
-    setIsModalOpen(value);
-    setIsLoading(false);
-  };
+  // const handleModalOpen = (value) => {
+  //   console.log(value)
+  //   setIsModalOpen(value);
+  //   setIsLoading(false);
+  // };
 
-  const handleSubmit = (e) => {
+  const handleAssignLead = (e) => {
     e.preventDefault();
+    setIsAssignLeadModalOpen(false)
     setIsLoading(true);
     const fd = new FormData();
     fd.append("lid", selected.join("&"));
-    fd.append("lt", 3);
+    fd.append("lt", ListType);
     fd.append("cid", selectedCounsellor);
     fetch(
       process.env.NEXT_PUBLIC_API_ENDPOINT +
-        `/admin/assign-leads-to-counsellor`,
+      `/admin/assign-leads-to-counsellor`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("pt")}`,
@@ -351,7 +347,6 @@ export default function Studentappliedclg() {
       }
     ).then(async (response) => {
       var res = await response.json();
-      console.log(res);
       setIsLoading(false);
       if (response.ok) {
         Swal.fire({
@@ -362,8 +357,8 @@ export default function Studentappliedclg() {
         }).then(() => {
           setIsLoading(false);
           setIsModalOpen(false);
-          setSelectedCounsellor("");
           setSelected([])
+          setSelectedCounsellor("");
           getUserList();
         });
       } else {
@@ -376,45 +371,44 @@ export default function Studentappliedclg() {
       }
     });
   };
+
+
   const handleGetRemarks = (e, c, id) => {
     e.preventDefault();
     try {
       setIsRemarkLoading(true);
-     
-      setRemarkshowModal(true);
+      setLeadId(id)
+      setCounsellorId(c._id)
+
       fetch(
         process.env.NEXT_PUBLIC_API_ENDPOINT +
-          `/admin/counsellor-lead-status?lid=${id}&lt=3&cid=${c._id}`,
+        `/admin/counsellor-lead-status?lid=${id}&lt=${ListType}&cid=${c._id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("pt")}`,
           },
         }
       ).then(async (res) => {
+
         if (res.ok) {
-          // console.log(res)
           let response = await res.json();
-          console.log(response.data);
           setRemarksHistory(response.data.remarks);
           setPipeLine(response.data.pipeline);
-
         } else {
           let response = await res.json();
         }
         setIsRemarkLoading(false);
-      
+        setIsRemarkHistoryModalOpen(true);
+
       });
     } catch (error) {
       console.error(error);
     }
   };
-  const steps = [
-    "First Followup Complete",
-    "Bit-link Registration Complete",
-    "Fee Payment Success",
-  ];
+
+
+
   const getMaxCount = (p) => {
-    console.log(p)
     if (p.stage3) {
       return 3;
     } else if (p.stage2) {
@@ -423,6 +417,15 @@ export default function Studentappliedclg() {
       return 1;
     }
   };
+
+  const setTrue = () => {
+    setIsAssignLeadModalOpen(true)
+  }
+
+
+  const SetSelectedCounsellorID = (id) => {
+    setSelectedCounsellor(id)
+  }
   return (
     <>
       <Box sx={{ width: "100%" }}>
@@ -431,8 +434,9 @@ export default function Studentappliedclg() {
             numSelected={selected.length}
             userListData={getUserList}
             rowsList={rows}
+            AssignModalOpenTrue={setTrue}
             onSearchChange={(value) => handleSearchChange(value)}
-            OnModalOpen={(value) => handleModalOpen(value)}
+            // OnModalOpen={(value) => handleModalOpen(value)}
             counsellorList={(list) => setCounsellorList(list)}
           />
           <TableContainer sx={{ maxHeight: "70vh" }}>
@@ -472,7 +476,9 @@ export default function Studentappliedclg() {
                           }}
                         />
                       </TableCell>
-                      <TableCell>{row.name}</TableCell>
+                      <TableCell>{row.name.length > 20
+                          ? row.name.substring(0, 20) + "..."
+                          : row.name}</TableCell>
                       <TableCell>
                         {row.counsellors.length > 0 ? (
                           row.counsellors.map((c, i) => {
@@ -500,10 +506,12 @@ export default function Studentappliedclg() {
                         )}
                       </TableCell>
                       <TableCell>{row.mobile}</TableCell>
-                      <TableCell>{row.email}</TableCell>
-                      <TableCell>{row.selected_level}</TableCell>
-                      <TableCell>{row.selected_stream}</TableCell>
-                      <TableCell>{formatTimestamp(row.createdAt)}</TableCell>
+                      <TableCell>{row.fee}</TableCell>
+                      <TableCell>{row.course}</TableCell>
+                      <TableCell>{row.zone}</TableCell>
+                      <TableCell>{row.qualification}</TableCell>
+                      <TableCell>{row.specialization}</TableCell>
+                      <TableCell> <FormatTimestamp timestamp={row.createdAt} /></TableCell>
                     </TableRow>
                   );
                 })}
@@ -512,161 +520,33 @@ export default function Studentappliedclg() {
           </TableContainer>
         </Paper>
       </Box>
-      <Modal
-        centered
-        show={isModalOpen}
-        onHide={() => {
-          setIsModalOpen(false);
-        }}
-        backdrop="static"
-        keyboard={false}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Assign Lead</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
-          >
-            <div>
-              {counsellorList.map((s, i) => {
-                return (
-                  <div
-                    key={i}
-                    className={`${Classes.counsellorList} ${
-                      s._id == selectedCounsellor ? Classes.selected : ""
-                    }`}
-                    onClick={() => setSelectedCounsellor(s._id)}
-                  >
-                    <Avatar>{s.name.substring(0, 1)}</Avatar>
-                    <span className="ms-3">{s.name}</span>
-                  </div>
-                );
-              })}
-            </div>
-            {selectedCounsellor != "" ? (
-              <Button
-                disabled={isLoading}
-                className="bg-blue-500"
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
-                {isLoading ? (
-                  <>
-                    <span>Please Wait...</span>
-                    <Spinner animation="border" role="status" />
-                  </>
-                ) : (
-                  "Assign"
-                )}
-              </Button>
-            ) : (
-              ""
-            )}
-          </Box>
-        </Modal.Body>
-      </Modal>
-      <Modal
-        show={remarkshowModal}
-        onHide={() => setRemarkshowModal(false)}
-        backdrop="static"
-        keyboard={false}
-        size="lg"
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Counsellor Remark History</Modal.Title>
-        </Modal.Header>
+      <AssignLeadModal
+        isOpen={isAssignLeadModalOpen}
+        handleClose={() => setIsAssignLeadModalOpen(false)}
+        counsellorList={counsellorList}
+        selectedCounsellor={selectedCounsellor}
+        handleAssign={handleAssignLead}
+        isLoading={isLoading}
+        counsellorID={SetSelectedCounsellorID}
 
-        <Modal.Body>
-          {!isremarkLoading ? (
-            remarksHistory.length > 0 ? (
-              <>
-              <table className={`table table-hover custom-table`}>
-                <thead>
-                  <tr>
-                    <th style={{ background: "var(--primary)" }}>Remarks</th>
-                    <th style={{ background: "var(--primary)" }}>Date</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {remarksHistory.map((obj, i) => {
-                    return (
-                      <tr key={i}>
-                        <td>{obj.remarks}</td>
-                        <td>{formatTimestamp(obj.createdAt)}</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-                <hr/>
-                <Stack sx={{ width: "100%" }} spacing={4}>
-                <Stepper
-                  alternativeLabel
-                  activeStep={pipeline ? getMaxCount(pipeline) : -1}
-                >
-                  {steps.map((label) => (
-                    <Step key={label}>
-                      <StepLabel>{label}</StepLabel>
-                    </Step>
-                  ))}
-                </Stepper>
-              </Stack>
-              </>
-            ) : (
-              <>
-              <div
-                style={{
-                  display: "flex",
-                  width: "100%",
-                  height: "inherit",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <div style={{ fontWeight: "500" }}>
-                  <span style={{ color: "#0d6efd", cursor: "pointer" }}>
-                    {" "}
-                    No Records{" "}
-                  </span>
-                </div>
-              </div>
-              <hr/>
-                <Stack sx={{ width: "100%" }} spacing={4}>
-                <Stepper
-                  alternativeLabel
-                  activeStep={pipeline ? getMaxCount(pipeline) : -1}
-                >
-                  {steps.map((label) => (
-                    <Step key={label}>
-                      <StepLabel>{label}</StepLabel>
-                    </Step>
-                  ))}
-                </Stepper>
-              </Stack>
-              </>
-            )
-          ) : (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "100%",
-              }}
-            >
-              <Spinner animation="border" variant="dark" />
-            </div>
-          )}
-        </Modal.Body>
-      </Modal>
-      <Loading show={isLoading} onHide={() => setIsLoading(false)} />
+      />
+      <RemarkHistoryModal
+        isOpen={isRemarkHistoryModalOpen}
+        handleClose={() => setIsRemarkHistoryModalOpen(false)}
+        remarksHistory={remarksHistory}
+        pipeline={pipeline}
+        ListType={ListType}
+        getMaxCount={getMaxCount}
+        steps={steps}
+        leadId={leadId}
+        isremarkLoading={isremarkLoading}
+        counsellorId={counsellorId}
+      />
 
+      <Loading show={isremarkLoading} onHide={() => setIsRemarkLoading(false)} />
     </>
+
+
   );
 }
+

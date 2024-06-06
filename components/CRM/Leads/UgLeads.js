@@ -34,6 +34,9 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Pagination from "@mui/material/Pagination";
 
+import AssignLeadModal from "./components/AssignLeadModal";
+import RemarkHistoryModal from "./components/RemarkHistoryModal";
+import FormatTimestamp from "../../Comps/FormatTimestamp";
 const headCells = [
   {
     id: "studname",
@@ -311,6 +314,9 @@ function EnhancedTableToolbar(props) {
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
+
+const ListType = "8"
+
 var oldData = [];
 export default function Studentappliedclg() {
   const [selected, setSelected] = React.useState([]);
@@ -326,6 +332,11 @@ export default function Studentappliedclg() {
   const [page, setPage] = React.useState(1);
   const [totalrecord, setTotalrecord] = React.useState(0);
   const [count, setCount] = React.useState(0);
+  
+  const [isAssignLeadModalOpen, setIsAssignLeadModalOpen] = useState(false);
+  const [isRemarkHistoryModalOpen, setIsRemarkHistoryModalOpen] = useState(false);
+  const [leadId, setLeadId] = useState('')
+  const [counsellorId, setCounsellorId] = useState('')
   const rowsPerPage = 50;
   useEffect(() => {
     getUserList();
@@ -334,7 +345,7 @@ export default function Studentappliedclg() {
   const getUserList = () => {
     setIsLoading(true)
     fetch(
-      process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/learnerhunt-landing-page-leads?lt=8&page=${page}`,
+      process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/learnerhunt-landing-page-leads?lt=${ListType}&page=${page}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("pt")}`,
@@ -367,23 +378,7 @@ export default function Studentappliedclg() {
   useEffect(()=>{
     getUserList();
   },[page])
-  const formatTimestamp = (timestamp) => {
-    const dateObject = new Date(timestamp);
 
-    const formattedTime = dateObject.toLocaleTimeString("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    });
-
-    const formattedDate = dateObject.toLocaleDateString("en-US", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    });
-
-    return `${formattedTime}, ${formattedDate}`;
-  };
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
@@ -429,16 +424,17 @@ export default function Studentappliedclg() {
   };
 
   const handleModalOpen = (value) => {
-    setIsModalOpen(value);
+    setIsAssignLeadModalOpen(value);
+
     setIsLoading(false);
   };
 
-  const handleSubmit = (e) => {
+  const handleAssignLead = (e) => {
     e.preventDefault();
     setIsLoading(true);
     const fd = new FormData();
     fd.append("lid", selected.join("&"));
-    fd.append("lt", 8);
+    fd.append("lt", ListType);
     fd.append("cid", selectedCounsellor);
     fetch(
       process.env.NEXT_PUBLIC_API_ENDPOINT +
@@ -462,7 +458,8 @@ export default function Studentappliedclg() {
           confirmButtonText: "Ok",
         }).then(() => {
           setIsLoading(false);
-          setIsModalOpen(false);
+          setIsAssignLeadModalOpen(false);
+
           setSelectedCounsellor("");
           setSelected([])
           getUserList();
@@ -479,13 +476,15 @@ export default function Studentappliedclg() {
   };
   const handleGetRemarks = (e, c, id) => {
     e.preventDefault();
+    setLeadId(id)
+    setCounsellorId(c._id)
     try {
       setIsRemarkLoading(true);
-     
-      setRemarkshowModal(true);
+      setIsRemarkHistoryModalOpen(true);
+
       fetch(
         process.env.NEXT_PUBLIC_API_ENDPOINT +
-          `/admin/counsellor-lead-status?lid=${id}&lt=8&cid=${c._id}`,
+          `/admin/counsellor-lead-status?lid=${id}&lt=${ListType}&cid=${c._id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("pt")}`,
@@ -527,6 +526,9 @@ export default function Studentappliedclg() {
   const handlePage=(event, newPage)=>{
     event.preventDefault()
     setPage(newPage);
+  }
+  const SetSelectedCounsellorID = (id) => {
+    setSelectedCounsellor(id)
   }
   return (
     <>
@@ -611,7 +613,7 @@ export default function Studentappliedclg() {
                       <TableCell>{row.city || 'NA'}</TableCell>
                       <TableCell>{row.budget || 'NA'}</TableCell>
                       <TableCell>{row.course || 'NA'}</TableCell>
-                      <TableCell>{formatTimestamp(row.createdAt)}</TableCell>
+                      <TableCell><FormatTimestamp timestamp={row.createdAt} /></TableCell>
                     </TableRow>
                   );
                 })}
@@ -621,159 +623,28 @@ export default function Studentappliedclg() {
           <Pagination className="p-2 d-flex justify-content-center" count={count} page={page} color="primary" onChange={handlePage}/>
         </Paper>
       </Box>
-      <Modal
-        centered
-        show={isModalOpen}
-        onHide={() => {
-          setIsModalOpen(false);
-        }}
-        backdrop="static"
-        keyboard={false}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Assign Leads to Counsellor</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
-          >
-            <div>
-              {counsellorList.map((s, i) => {
-                return (
-                  <div
-                    key={i}
-                    className={`${Classes.counsellorList} ${
-                      s._id == selectedCounsellor ? Classes.selected : ""
-                    }`}
-                    onClick={() => setSelectedCounsellor(s._id)}
-                  >
-                    <Avatar>{s.name.substring(0, 1)}</Avatar>
-                    <span className="ms-3">{s.name}</span>
-                  </div>
-                );
-              })}
-            </div>
-            {selectedCounsellor != "" ? (
-              <Button
-                disabled={isLoading}
-                className="bg-blue-500"
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
-                {isLoading ? (
-                  <>
-                    <span>Please Wait...</span>
-                    <Spinner animation="border" role="status" />
-                  </>
-                ) : (
-                  "Assign"
-                )}
-              </Button>
-            ) : (
-              ""
-            )}
-          </Box>
-        </Modal.Body>
-      </Modal>
-      <Modal
-        show={remarkshowModal}
-        onHide={() => setRemarkshowModal(false)}
-        backdrop="static"
-        keyboard={false}
-        size="lg"
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Counsellor Remark History</Modal.Title>
-        </Modal.Header>
+      <AssignLeadModal
+        isOpen={isAssignLeadModalOpen}
+        handleClose={() => setIsAssignLeadModalOpen(false)}
+        counsellorList={counsellorList}
+        selectedCounsellor={selectedCounsellor}
+        handleAssign={handleAssignLead}
+        isLoading={isLoading}
+        counsellorID={SetSelectedCounsellorID}
 
-        <Modal.Body>
-          {!isremarkLoading ? (
-            remarksHistory.length > 0 ? (
-              <>
-              <table className={`table table-hover custom-table`}>
-                <thead>
-                  <tr>
-                    <th style={{ background: "var(--primary)" }}>Remarks</th>
-                    <th style={{ background: "var(--primary)" }}>Date</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {remarksHistory.map((obj, i) => {
-                    return (
-                      <tr key={i}>
-                        <td>{obj.remarks}</td>
-                        <td>{formatTimestamp(obj.createdAt)}</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-              <hr/>
-                <Stack sx={{ width: "100%" }} spacing={4}>
-                <Stepper
-                  alternativeLabel
-                  activeStep={pipeline ? getMaxCount(pipeline) : -1}
-                >
-                  {steps.map((label) => (
-                    <Step key={label}>
-                      <StepLabel>{label}</StepLabel>
-                    </Step>
-                  ))}
-                </Stepper>
-              </Stack>
-              </>
-            ) : (
-              <>
-              <div
-                style={{
-                  display: "flex",
-                  width: "100%",
-                  height: "inherit",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <div style={{ fontWeight: "500" }}>
-                  <span style={{ color: "#0d6efd", cursor: "pointer" }}>
-                    {" "}
-                    No Records{" "}
-                  </span>
-                </div>
-              </div>
-                  <hr/>
-                  <Stack sx={{ width: "100%" }} spacing={4}>
-                  <Stepper
-                    alternativeLabel
-                    activeStep={pipeline ? getMaxCount(pipeline) : -1}
-                  >
-                    {steps.map((label) => (
-                      <Step key={label}>
-                        <StepLabel>{label}</StepLabel>
-                      </Step>
-                    ))}
-                  </Stepper>
-                </Stack>
-                </>
-            )
-          ) : (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "100%",
-              }}
-            >
-              <Spinner animation="border" variant="dark" />
-            </div>
-          )}
-        </Modal.Body>
-      </Modal>
+      />
+      <RemarkHistoryModal
+        isOpen={isRemarkHistoryModalOpen}
+        handleClose={() => setIsRemarkHistoryModalOpen(false)}
+        remarksHistory={remarksHistory}
+        pipeline={pipeline}
+        ListType={ListType}
+        getMaxCount={getMaxCount}
+        steps={steps}
+        leadId={leadId}
+        isremarkLoading={isremarkLoading}
+        counsellorId={counsellorId}
+      />
       <Loading show={isLoading} onHide={() => setIsLoading(false)} />
     </>
   );

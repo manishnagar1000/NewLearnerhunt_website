@@ -1,3 +1,5 @@
+// 
+
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { alpha } from "@mui/material/styles";
@@ -24,15 +26,13 @@ import Classes from "/styles/Popup.module.css";
 import Chip from "@mui/material/Chip";
 import LoopIcon from "@mui/icons-material/Loop";
 import Loading from "@/components/Comps/Loading";
-import * as XLSX from "xlsx";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import FileUploadIcon from "@mui/icons-material/FileUpload";
-import { useDropzone } from "react-dropzone";
 import Stack from "@mui/material/Stack";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
-import Pagination from "@mui/material/Pagination";
+import AssignLeadModal from "./components/AssignLeadModal";
+import RemarkHistoryModal from "./components/RemarkHistoryModal";
+import FormatTimestamp from "../../Comps/FormatTimestamp";
 
 const headCells = [
   {
@@ -41,7 +41,7 @@ const headCells = [
   },
   {
     id: "counsellorname",
-    label: "Assigned to Counsellor",
+    label: "Counsellor name",
   },
   {
     id: "mobnumber",
@@ -52,8 +52,12 @@ const headCells = [
     label: "Email",
   },
   {
-    id: "course",
-    label: "Course",
+    id: "level",
+    label: "Level",
+  },
+  {
+    id: "stream",
+    label: "Stream",
   },
   {
     id: "date",
@@ -132,7 +136,7 @@ function EnhancedTableToolbar(props) {
     }).then(async (res) => {
       // console.log(res)
       let response = await res.json();
-      //   console.log(response);
+      console.log(response);
       if (response.data) {
         if (response.data.length > 0) {
           props.counsellorList(response.data);
@@ -149,66 +153,6 @@ function EnhancedTableToolbar(props) {
       }
     });
   };
-
-  const onDrop = (acceptedFiles) => {
-    const file = acceptedFiles[0];
-    const reader = new FileReader();
-
-    reader.onload = (e) => {
-      const data = new Uint8Array(e.target.result);
-      const workbook = XLSX.read(data, { type: "array" });
-      const sheetName = workbook.SheetNames[0];
-      const sheet = workbook.Sheets[sheetName];
-      const json = XLSX.utils.sheet_to_json(sheet);
-
-      // setJsonData(json);
-      //   console.log(json)
-      //   console.log(JSON.stringify(json))
-      props.loader(true);
-      const fd = new FormData();
-      fd.append("data", JSON.stringify(json));
-      fetch(
-        process.env.NEXT_PUBLIC_API_ENDPOINT +
-          `/admin/llbleads-template-upload`,
-        {
-          method: "POST",
-          body: fd,
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("pt")}`,
-          },
-        }
-      ).then(async (res) => {
-        let response = await res.json();
-        if (response.data) {
-          Swal.fire({
-            title: "Success",
-            html: `${response.message}`,
-            icon: "success",
-            confirmButtonText: "Ok",
-          }).then((s) => {
-            props.userListData();
-          });
-        } else {
-          Swal.fire({
-            title: "Error",
-            html: `${response.error}`,
-            icon: "error",
-            confirmButtonText: "Ok",
-          });
-        }
-        props.loader(false);
-
-        // setIsLoading(false)
-      });
-    };
-
-    reader.readAsArrayBuffer(file);
-  };
-
-  const { getRootProps, getInputProps } = useDropzone({
-    accept: ".xlsx",
-    onDrop,
-  });
 
   return (
     <>
@@ -241,12 +185,12 @@ function EnhancedTableToolbar(props) {
             id="tableTitle"
             component="div"
           >
-            Total Rows : {props.rowsList.length} , Total Records :{props.totalrecord}
+            Total Users : {props.rowsList.length}
           </Typography>
         )}
 
         {numSelected > 0 ? (
-          <Tooltip title="Assigned Leads">
+          <Tooltip title="Assign Leads">
             <IconButton>
               <SendTimeExtensionIcon onClick={handleOpen} />
             </IconButton>
@@ -260,36 +204,14 @@ function EnhancedTableToolbar(props) {
               placeholder="Search..."
               onChange={handleSearchChange}
             />
-            <div className="d-flex justify-content-end">
-              <Tooltip title="Upload UgLeads Form Excel" arrow>
-                <Button className="m-4" variant="primary" {...getRootProps()}>
-                  <input {...getInputProps()} />
-                  <FileUploadIcon />
-                  Upload
-                </Button>
-              </Tooltip>
-
-              {/* <a href=`process.env.NEXT_PUBLIC_API_ENDPOINT + 'download_excel'` target='blank'> <Button className='m-4' variant="success" > */}
-              <a
-                href={`${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/llbleads-template-download`}
-                target="blank"
-              >
-                <Tooltip title="Download UgLeads Excel Template" arrow>
-                  <Button className="m-4" variant="success">
-                    <FileDownloadIcon />
-                    Download
-                  </Button>
-                </Tooltip>
-              </a>
-            </div>
-            <Tooltip title="Refresh">
-              <IconButton
-                aria-label="Refresh"
-                onClick={() => props.userListData()}
-              >
-                <LoopIcon />
-              </IconButton>
-            </Tooltip>
+              <Tooltip title="Refresh">
+                      <IconButton
+                        aria-label="Refresh"
+                        onClick={() =>props.userListData()}
+                      >
+                        <LoopIcon />
+                      </IconButton>
+                    </Tooltip>
           </>
         )}
       </Toolbar>
@@ -301,31 +223,30 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
+const ListType = "3"
 var oldData = [];
-export default function LLBPageLeads() {
+export default function Studentappliedclg() {
   const [selected, setSelected] = React.useState([]);
   const [rows, setRows] = useState([]);
   const [counsellorList, setCounsellorList] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isremarkLoading, setIsRemarkLoading] = useState(false);
+  const [isremarkLoading,setIsRemarkLoading] = useState(false)
   const [selectedCounsellor, setSelectedCounsellor] = useState("");
-  const [remarkshowModal, setRemarkshowModal] = useState(false);
+  const [isAssignLeadModalOpen, setIsAssignLeadModalOpen] = useState(false);
+  const [isRemarkHistoryModalOpen, setIsRemarkHistoryModalOpen] = useState(false);
+  const [leadId, setLeadId] = useState('')
+  const [counsellorId, setCounsellorId] = useState('')
   const [remarksHistory, setRemarksHistory] = useState([]);
   const [pipeline, setPipeLine] = useState(null);
-  const [page, setPage] = React.useState(1);
-  const [totalrecord, setTotalrecord] = React.useState(0);
-  const [count, setCount] = React.useState(0);
-  const rowsPerPage = 50;
+
   useEffect(() => {
     getUserList();
   }, []);
 
   const getUserList = () => {
-    setIsLoading(true);
+    setIsLoading(true)
     fetch(
-      process.env.NEXT_PUBLIC_API_ENDPOINT +
-        `/admin/learnerhunt-landing-page-leads?lt=9&page=${page}`,
+      process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/leads?lid=${-1}&type=${ListType}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("pt")}`,
@@ -336,9 +257,7 @@ export default function LLBPageLeads() {
       if (response.data) {
         if (response.data.length > 0) {
           setRows(response.data);
-          setCount(Math.ceil(response.totalRecords / rowsPerPage));
         }
-        setTotalrecord(response.totalRecords);
         oldData = response.data;
       } else {
         Swal.fire({
@@ -350,27 +269,10 @@ export default function LLBPageLeads() {
           window.location.reload();
         });
       }
-      setIsLoading(false);
+    setIsLoading(false)
+
     });
   };
-  const formatTimestamp = (timestamp) => {
-    const dateObject = new Date(timestamp);
-
-    const formattedTime = dateObject.toLocaleTimeString("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    });
-
-    const formattedDate = dateObject.toLocaleDateString("en-US", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    });
-
-    return `${formattedTime}, ${formattedDate}`;
-  };
-
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
       const newSelected = rows.map((n) => n._id);
@@ -415,16 +317,16 @@ export default function LLBPageLeads() {
   };
 
   const handleModalOpen = (value) => {
-    setIsModalOpen(value);
+    setIsAssignLeadModalOpen(value);
     setIsLoading(false);
   };
 
-  const handleSubmit = (e) => {
+  const handleAssignLead = (e) => {
     e.preventDefault();
     setIsLoading(true);
     const fd = new FormData();
     fd.append("lid", selected.join("&"));
-    fd.append("lt", 9);
+    fd.append("lt",ListType);
     fd.append("cid", selectedCounsellor);
     fetch(
       process.env.NEXT_PUBLIC_API_ENDPOINT +
@@ -438,7 +340,7 @@ export default function LLBPageLeads() {
       }
     ).then(async (response) => {
       var res = await response.json();
-      //   console.log(res);
+      console.log(res);
       setIsLoading(false);
       if (response.ok) {
         Swal.fire({
@@ -448,9 +350,9 @@ export default function LLBPageLeads() {
           confirmButtonText: "Ok",
         }).then(() => {
           setIsLoading(false);
-          setIsModalOpen(false);
+          setIsAssignLeadModalOpen(false);
           setSelectedCounsellor("");
-          setSelected([]);
+          setSelected([])
           getUserList();
         });
       } else {
@@ -465,13 +367,14 @@ export default function LLBPageLeads() {
   };
   const handleGetRemarks = (e, c, id) => {
     e.preventDefault();
+    setLeadId(id)
+    setCounsellorId(c._id)
     try {
       setIsRemarkLoading(true);
-
-      setRemarkshowModal(true);
+      setIsRemarkHistoryModalOpen(true);
       fetch(
         process.env.NEXT_PUBLIC_API_ENDPOINT +
-          `/admin/counsellor-lead-status?lid=${id}&lt=9&cid=${c._id}`,
+          `/admin/counsellor-lead-status?lid=${id}&lt=${ListType}&cid=${c._id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("pt")}`,
@@ -481,13 +384,15 @@ export default function LLBPageLeads() {
         if (res.ok) {
           // console.log(res)
           let response = await res.json();
-          //   console.log(response.data);
+          console.log(response.data);
           setRemarksHistory(response.data.remarks);
           setPipeLine(response.data.pipeline);
+
         } else {
           let response = await res.json();
         }
         setIsRemarkLoading(false);
+      
       });
     } catch (error) {
       console.error(error);
@@ -499,7 +404,7 @@ export default function LLBPageLeads() {
     "Fee Payment Success",
   ];
   const getMaxCount = (p) => {
-    // console.log(p)
+    console.log(p)
     if (p.stage3) {
       return 3;
     } else if (p.stage2) {
@@ -508,17 +413,8 @@ export default function LLBPageLeads() {
       return 1;
     }
   };
-
-  useEffect(()=>{
-    getUserList();
-  },[page])
- 
-  const handlePage=(event, newPage)=>{
-    event.preventDefault()
-    setPage(newPage);
-    // console.log(newPage)
-    
-
+  const SetSelectedCounsellorID = (id) => {
+    setSelectedCounsellor(id)
   }
   return (
     <>
@@ -528,13 +424,11 @@ export default function LLBPageLeads() {
             numSelected={selected.length}
             userListData={getUserList}
             rowsList={rows}
-            totalrecord={totalrecord}
             onSearchChange={(value) => handleSearchChange(value)}
             OnModalOpen={(value) => handleModalOpen(value)}
             counsellorList={(list) => setCounsellorList(list)}
-            loader={setIsLoading}
           />
-          <TableContainer sx={{ maxHeight: "calc(70vh - 28px)" }}>
+          <TableContainer sx={{ maxHeight: "70vh" }}>
             <Table
               stickyHeader
               sx={{ minWidth: 750 }}
@@ -598,173 +492,43 @@ export default function LLBPageLeads() {
                           />
                         )}
                       </TableCell>
-                      <TableCell>{row.mobile || "NA"}</TableCell>
-                      <TableCell>{row.email || "NA"}</TableCell>
-                      <TableCell>{row.course || "NA"}</TableCell>
-                      <TableCell>{formatTimestamp(row.createdAt)}</TableCell>
+                      <TableCell>{row.mobile}</TableCell>
+                      <TableCell>{row.email}</TableCell>
+                      <TableCell>{row.selected_level}</TableCell>
+                      <TableCell>{row.selected_stream}</TableCell>
+                      <TableCell> <FormatTimestamp timestamp={row.createdAt} /></TableCell>
                     </TableRow>
                   );
                 })}
               </TableBody>
             </Table>
           </TableContainer>
-          <Pagination className="p-2 d-flex justify-content-center" count={count} page={page} color="primary" onChange={handlePage}/>
-        </Paper> 
+        </Paper>
       </Box>
-      <Modal
-        centered
-        show={isModalOpen}
-        onHide={() => {
-          setIsModalOpen(false);
-        }}
-        backdrop="static"
-        keyboard={false}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Assign Leads to Counsellor</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
-          >
-            <div>
-              {counsellorList.map((s, i) => {
-                return (
-                  <div
-                    key={i}
-                    className={`${Classes.counsellorList} ${
-                      s._id == selectedCounsellor ? Classes.selected : ""
-                    }`}
-                    onClick={() => setSelectedCounsellor(s._id)}
-                  >
-                    <Avatar>{s.name.substring(0, 1)}</Avatar>
-                    <span className="ms-3">{s.name}</span>
-                  </div>
-                );
-              })}
-            </div>
-            {selectedCounsellor != "" ? (
-              <Button
-                disabled={isLoading}
-                className="bg-blue-500"
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
-                {isLoading ? (
-                  <>
-                    <span>Please Wait...</span>
-                    <Spinner animation="border" role="status" />
-                  </>
-                ) : (
-                  "Assign"
-                )}
-              </Button>
-            ) : (
-              ""
-            )}
-          </Box>
-        </Modal.Body>
-      </Modal>
-      <Modal
-        show={remarkshowModal}
-        onHide={() => setRemarkshowModal(false)}
-        backdrop="static"
-        keyboard={false}
-        size="lg"
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Counsellor Remark History</Modal.Title>
-        </Modal.Header>
+      <AssignLeadModal
+        isOpen={isAssignLeadModalOpen}
+        handleClose={() => setIsAssignLeadModalOpen(false)}
+        counsellorList={counsellorList}
+        selectedCounsellor={selectedCounsellor}
+        handleAssign={handleAssignLead}
+        isLoading={isLoading}
+        counsellorID={SetSelectedCounsellorID}
 
-        <Modal.Body>
-          {!isremarkLoading ? (
-            remarksHistory.length > 0 ? (
-              <>
-                <table className={`table table-hover custom-table`}>
-                  <thead>
-                    <tr>
-                      <th style={{ background: "var(--primary)" }}>Remarks</th>
-                      <th style={{ background: "var(--primary)" }}>Date</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {remarksHistory.map((obj, i) => {
-                      return (
-                        <tr key={i}>
-                          <td>{obj.remarks}</td>
-                          <td>{formatTimestamp(obj.createdAt)}</td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-                <hr />
-                <Stack sx={{ width: "100%" }} spacing={4}>
-                  <Stepper
-                    alternativeLabel
-                    activeStep={pipeline ? getMaxCount(pipeline) : -1}
-                  >
-                    {steps.map((label) => (
-                      <Step key={label}>
-                        <StepLabel>{label}</StepLabel>
-                      </Step>
-                    ))}
-                  </Stepper>
-                </Stack>
-              </>
-            ) : (
-              <>
-                <div
-                  style={{
-                    display: "flex",
-                    width: "100%",
-                    height: "inherit",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <div style={{ fontWeight: "500" }}>
-                    <span style={{ color: "#0d6efd", cursor: "pointer" }}>
-                      {" "}
-                      No Records{" "}
-                    </span>
-                  </div>
-                </div>
-                <hr />
-                <Stack sx={{ width: "100%" }} spacing={4}>
-                  <Stepper
-                    alternativeLabel
-                    activeStep={pipeline ? getMaxCount(pipeline) : -1}
-                  >
-                    {steps.map((label) => (
-                      <Step key={label}>
-                        <StepLabel>{label}</StepLabel>
-                      </Step>
-                    ))}
-                  </Stepper>
-                </Stack>
-              </>
-            )
-          ) : (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "100%",
-              }}
-            >
-              <Spinner animation="border" variant="dark" />
-            </div>
-          )}
-        </Modal.Body>
-      </Modal>
+      />
+      <RemarkHistoryModal
+        isOpen={isRemarkHistoryModalOpen}
+        handleClose={() => setIsRemarkHistoryModalOpen(false)}
+        remarksHistory={remarksHistory}
+        pipeline={pipeline}
+        ListType={ListType}
+        getMaxCount={getMaxCount}
+        steps={steps}
+        leadId={leadId}
+        isremarkLoading={isremarkLoading}
+        counsellorId={counsellorId}
+      />
       <Loading show={isLoading} onHide={() => setIsLoading(false)} />
+
     </>
   );
 }

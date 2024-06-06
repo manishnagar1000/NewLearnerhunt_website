@@ -26,7 +26,7 @@ import dynamic from "next/dynamic";
 const AgoraUIKit = dynamic(() => import("agora-react-uikit"), { ssr: false });
 // import CallingSound from "@/assets/audio/callingAudio.mp3";
 import EmojiSymbolsIcon from '@mui/icons-material/EmojiSymbols';
-import CollegeBitLink from "./CollegeBitLink";
+import DialpadIcon from '@mui/icons-material/Dialpad';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 const agoraAppid = process.env.NEXT_PUBLIC_AGORA_APP_ID,
   agoraTokenurl = process.env.NEXT_PUBLIC_AGORA_TOKEN_URL;
@@ -62,11 +62,11 @@ const sidebarList = [
     icon: <EmojiSymbolsIcon />,
     path: "/counsellorportal/college-slab",
   },
-  // {
-  //   name: "College Bitlink",
-  //   icon: <OpenInNewIcon />,
-  //   path: "/counsellorportal/college-bit-link",
-  // }
+  {
+    name: "Dialer Leads",
+    icon: <DialpadIcon />,
+    path: "/counsellorportal/dialer-lead",
+  },
 ];
 export default class PortalLayout extends Component {
   constructor(props) {

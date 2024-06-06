@@ -13,14 +13,7 @@ export default function App({ Component, pageProps }) {
   return (
     <>
       <Head>
-        {/* <title>
-          Learnerhunt: Top Colleges & Universities in India | Latest News About
-          Courses & Admission
-        </title>
-        <meta
-          name="description"
-          content="Learnerhunt - The one-stop platform to explore top UG & PG colleges, universities and diploma, certificate courses in India and abroad. Get all the latest education news and more at www.learnerhunt.com"
-        /> */}
+      
         <meta
           name="facebook-domain-verification"
           content="dlwg9ck6pstfnxvx0h76eu38irnw2x"
@@ -34,38 +27,7 @@ export default function App({ Component, pageProps }) {
           referrerPolicy="no-referrer"
         />
 
-        {/* og tag */}
-        {/* <meta
-          property="og:title"
-          content="Top Colleges & Universities in India | Explore Courses, Exams, Admissions & Latest News"
-        />
-        <meta property="og:site_name" content="Learnerhunt" />
-        <meta
-          property="og:description"
-          content="The one-stop platform to explore Top UG & PG Colleges, Universities and Diploma, Certificate Courses in India."
-        />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.learnerhunt.com/" />
-        <meta
-          property="og:image"
-          content="https://www.learnerhunt.com/assets/images/learnerhunt-logo.webp"
-        /> */}
-
-        {/* Twitter Tag */}
-        {/* <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@ Learnerhunt" />
-        <meta
-          name="twitter:title"
-          content="Top Colleges & Universities in India | Explore Courses, Admission"
-        />
-        <meta
-          name="twitter:description"
-          content="The one-stop platform to explore top UG & PG colleges, universities and diploma, certificate courses in India and abroad. Get all the latest education news and more at www.learnerhunt.com"
-        />
-        <meta
-          name="twitter:image"
-          content="https://www.learnerhunt.com/assets/images/learnerhunt-logo.webp"
-        /> */}
+     
 
         <script
           async
@@ -150,6 +112,33 @@ var s1=document.createElement("script"),s0=document.getElementsByTagName("script
 })();
 `}}>
         </script>
+
+
+        {/* google clearty of website */}
+        {/* vidhi */}
+        {/* <script
+          defer
+          dangerouslySetInnerHTML={{
+            __html: `
+            (function(c,l,a,r,i,t,y){
+              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+              t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+          })(window, document, "clarity", "script", "m9tbmmk5bx");`,
+          }}
+        /> */}
+        {/* me  */}
+          <script
+          defer
+          dangerouslySetInnerHTML={{
+            __html: `
+            (function(c,l,a,r,i,t,y){
+              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+              t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+          })(window, document, "clarity", "script", "mjh2w7pwsq");`,
+          }}
+        />
       </Head>
       <Layout>
         <Component {...pageProps} />

@@ -8,7 +8,7 @@ import AssignLeads from "@/components/counsellorCrm/AssignLeads";
 import VideoCalls from "@/components/counsellorCrm/VideoCalls";
 import MyCallinghistory from "@/components/counsellorCrm/MyCallinghistory";
 import CollegePercent from "@/components/counsellorCrm/CollegePercent";
-import CollegeBitLink from "@/components/counsellorCrm/CollegeBitLink";
+import DialerLeads from "@/components/counsellorCrm/DialerLeads";
 
 const componentList = [
   {
@@ -35,11 +35,10 @@ const componentList = [
     comp:<CollegePercent/>,
     slug:'college-slab'
   },
-  // {
-  //   comp:<CollegeBitLink/>,
-  //   slug:'college-bit-link'
-  // }
- 
+  {
+    comp:<DialerLeads/>,
+    slug:'dialer-lead'
+  }
 ];
 export default function AdminPortalSlug() {
   const router = useRouter();

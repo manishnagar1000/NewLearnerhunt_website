@@ -1,26 +1,17 @@
 import React, { Component } from "react";
-import axios from "axios";
 import Swal from "sweetalert2";
 import Loading from "../Comps/Loading";
 import { Spinner } from "react-bootstrap";
-import { Modal, Button, Form } from "react-bootstrap";
 import Tablenav from "../Comps/Tablenav";
 import LoopIcon from '@mui/icons-material/Loop';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import DifferenceIcon from "@mui/icons-material/Difference";
 import CallIcon from "@mui/icons-material/Call";
-import Stack from "@mui/material/Stack";
-import Stepper from "@mui/material/Stepper";
-import Step from "@mui/material/Step";
-import StepLabel from "@mui/material/StepLabel";
+import RemarkModal from "./component/RemarkModule";
 
 var oldData = []
-var steps = [
-  "First Followup Complete",
-  "Bit-link Registration Complete",
-  "Fee Payment Success",
-];
+
 export default class VideoCalls extends Component {
   constructor(props) {
     super(props);
@@ -40,8 +31,12 @@ export default class VideoCalls extends Component {
       remarksHistory: [],
       showModal: false,
       leadid: "",
-      pipeline:null
-
+      pipeline:null,
+      steps : [
+        "First Followup Complete",
+        "Bit-link Registration Complete",
+        "Fee Payment Success",
+      ],
       // selectedAsset: null,
     };
   }
@@ -405,7 +400,7 @@ export default class VideoCalls extends Component {
           show={this.state.isLoading}
           onHide={() => this.setState({ isLoading: false })}
         />
-          <Modal
+          {/* <Modal
               show={this.state.showModal}
               onHide={this.toggleModal}
               backdrop="static"
@@ -502,7 +497,19 @@ export default class VideoCalls extends Component {
               </Stack>
               </>}
               </Modal.Body>
-            </Modal>
+            </Modal> */}
+            <RemarkModal
+          showModal={this.state.showModal}
+          toggleModal={this.toggleModal}
+          remark={this.state.remark}
+          handleRemarkChange={this.handleRemarkChange}
+          handleAddRemark={this.handleAddRemark}
+          remarksHistory={this.state.remarksHistory}
+          formatTimestamp={this.formatTimestamp}
+          steps={this.state.steps}
+          getMaxCount={this.getMaxCount}
+          pipeline={this.state.pipeline}
+        />
     </>:this.state.error}
       {/* </div> */}
       </>

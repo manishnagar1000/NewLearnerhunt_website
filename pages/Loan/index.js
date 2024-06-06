@@ -30,6 +30,11 @@ import {ukData} from "@/components/Comps/type";
 import {countryData} from "@/components/Comps/type";
 import Styles from "@/styles/Loanpage.module.css";
 import { KeyPressForAlphabets, KeyPressForNumeric } from "@/components/Comps/formValidation";
+import EligibilityChecker from "@/components/Comps/Loan/EligiblityChecker";
+import LoanFeatures from "@/components/Comps/Loan/LoanFeatures";
+import LoanOffers from "@/components/Comps/Loan/LoanOffers";
+import TalktoExpert from "@/components/Comps/Loan/TalktoExpert";
+import Process from "@/components/Comps/Loan/Process";
 
 const Loanpage = () => {
 
@@ -320,38 +325,8 @@ const Loanpage = () => {
         </Row>
       </Container>
       <div>
-      <div className={`${Styles.container2} `}>
-
-        <div className={`container`}>
-          <div className={`${Styles.processContainer} row`}>
-            <div className={Styles.heading}>
-              <h2 className={Styles.heading2}>Reason to Choose Us</h2>
-              <p className={`text-center`}>
-                Bad credit is worse than a bad swing but at Cardomain.com your
-                credit is good with us. Easy to apply for a loan with us, Once
-                you have complete this form.{" "}
-              </p>
-            </div>
-          </div>
-
-          
-            <div className='row'>
-              {Reasondata.map((box, index) => (
-                <div key={index} className='col-md-3'>
-                    <div className="d-flex flex-column align-items-center">
-                  <div className={`${Styles.icon22} my-2`}>
-                    <div iconName={box.icon} />
-                    {box.ico}
-                  </div>
-                  <h3 className={Styles.heading6}>{box.title}</h3>
-                  <p className={`text-center my-2`}>{box.description}</p>
-                </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-        </div>
+    
+        <Process/>
 
         <Container>
           <Row>
@@ -443,7 +418,44 @@ const Loanpage = () => {
             </Col>
           </Row>
         </Container>
+
+      <EligibilityChecker/>
+
       </div>
+      <div className={`${Styles.container2} `}>
+
+<div className={`container`}>
+  <div className={`${Styles.processContainer} row`}>
+    <div className={Styles.heading}>
+      <h2 className={Styles.heading2}>Reason to Choose Us</h2>
+      <p className={Styles.headingp} >
+        Bad credit is worse than a bad swing but at Cardomain.com your
+        credit is good with us. Easy to apply for a loan with us, Once
+        you have complete this form.{" "}
+      </p>
+    </div>
+  </div>
+
+  
+    <div className='row'>
+      {Reasondata.map((box, index) => (
+        <div key={index} className='col-md-3'>
+            <div className="d-flex flex-column align-items-center">
+          <div className={`${Styles.icon22} my-2`}>
+            <div iconName={box.icon} />
+            {box.ico}
+          </div>
+          <h3 className={Styles.heading6}>{box.title}</h3>
+          <p className={`text-center my-2`}>{box.description}</p>
+        </div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+</div>
+      <LoanFeatures/>
+
       <div className={Styles.outerDiv}>
         <Container>
           <Row>
@@ -515,6 +527,8 @@ const Loanpage = () => {
     </div>
   </div>
 </div> */}
+     
+      <LoanOffers/>
       <div>
         <Container className={Styles.main}>
           <Row className="text-center">
@@ -553,7 +567,7 @@ const Loanpage = () => {
           </Row>
         </Container>
       </div>
-      <div className={Styles.processContainer}>
+      {/* <div className={Styles.processContainer}>
         <div className={Styles.heading}>
           <h2 className={Styles.heading2}>
             Catch Your Dream to Study Abroad with Overseas Education Loan
@@ -657,7 +671,7 @@ const Loanpage = () => {
             </Row>
           </Container>
         </div>
-      </div>
+      </div> */}
       {/* <div className="container">
         <div className={Styles.loanCard2}>
           <h1 className={Styles.loanCard2}>
@@ -726,6 +740,8 @@ const Loanpage = () => {
           ))}
         </Accordion>
       </div>
+
+      <TalktoExpert/>
 
     </>
   );
