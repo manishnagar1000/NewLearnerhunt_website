@@ -22,7 +22,8 @@ import LoopIcon from "@mui/icons-material/Loop";
 import Loading from "@/components/Comps/Loading";
 import AssignLeadModal from "./components/AssignLeadModal";
 import RemarkHistoryModal from "./components/RemarkHistoryModal";
-import FormatTimestamp from "../../Comps/FormatTimeStamp";
+import FormatTimestamp from "../../Comps/FormatTimestamp";
+
 
 
 const headCells = [
@@ -127,9 +128,6 @@ function EnhancedTableToolbar(props) {
   };
 
   const handleOpen = (e) => {
-    AssignModalOpenTrue();
-
-
     fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/counsellor-list`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("pt")}`,
@@ -139,7 +137,7 @@ function EnhancedTableToolbar(props) {
       if (response.data) {
         if (response.data.length > 0) {
           props.counsellorList(response.data);
-          // props.OnModalOpen(true);
+          props.OnModalOpen(true);
         }
       } else {
         Swal.fire({
@@ -228,7 +226,6 @@ export default function Testeligibility() {
   const [selected, setSelected] = React.useState([]);
   const [rows, setRows] = useState([]);
   const [counsellorList, setCounsellorList] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isremarkLoading, setIsRemarkLoading] = useState(false)
   const [selectedCounsellor, setSelectedCounsellor] = useState("");
@@ -321,15 +318,14 @@ export default function Testeligibility() {
     }
   };
 
-  // const handleModalOpen = (value) => {
-  //   console.log(value)
-  //   setIsModalOpen(value);
-  //   setIsLoading(false);
-  // };
+  const handleModalOpen = (value) => {
+    setIsLoading(false);
+    setIsAssignLeadModalOpen(value);
+  };
+ 
 
   const handleAssignLead = (e) => {
     e.preventDefault();
-    setIsAssignLeadModalOpen(false)
     setIsLoading(true);
     const fd = new FormData();
     fd.append("lid", selected.join("&"));
@@ -356,7 +352,7 @@ export default function Testeligibility() {
           confirmButtonText: "Ok",
         }).then(() => {
           setIsLoading(false);
-          setIsModalOpen(false);
+          setIsAssignLeadModalOpen(false);
           setSelected([])
           setSelectedCounsellor("");
           getUserList();
@@ -375,10 +371,11 @@ export default function Testeligibility() {
 
   const handleGetRemarks = (e, c, id) => {
     e.preventDefault();
+    setLeadId(id)
+    setCounsellorId(c._id)
     try {
       setIsRemarkLoading(true);
-      setLeadId(id)
-      setCounsellorId(c._id)
+      setIsRemarkHistoryModalOpen(true);
 
       fetch(
         process.env.NEXT_PUBLIC_API_ENDPOINT +
@@ -398,7 +395,6 @@ export default function Testeligibility() {
           let response = await res.json();
         }
         setIsRemarkLoading(false);
-        setIsRemarkHistoryModalOpen(true);
 
       });
     } catch (error) {
@@ -418,9 +414,7 @@ export default function Testeligibility() {
     }
   };
 
-  const setTrue = () => {
-    setIsAssignLeadModalOpen(true)
-  }
+  
 
 
   const SetSelectedCounsellorID = (id) => {
@@ -434,9 +428,8 @@ export default function Testeligibility() {
             numSelected={selected.length}
             userListData={getUserList}
             rowsList={rows}
-            AssignModalOpenTrue={setTrue}
             onSearchChange={(value) => handleSearchChange(value)}
-            // OnModalOpen={(value) => handleModalOpen(value)}
+            OnModalOpen={(value) => handleModalOpen(value)}
             counsellorList={(list) => setCounsellorList(list)}
           />
           <TableContainer sx={{ maxHeight: "70vh" }}>
@@ -539,11 +532,11 @@ export default function Testeligibility() {
         getMaxCount={getMaxCount}
         steps={steps}
         leadId={leadId}
-        isremarkLoading={isremarkLoading}
+        isremarkedLoading={isremarkLoading}
         counsellorId={counsellorId}
       />
 
-      <Loading show={isremarkLoading} onHide={() => setIsRemarkLoading(false)} />
+      <Loading show={isLoading} onHide={() => setIsLoading(false)} />
     </>
 
 

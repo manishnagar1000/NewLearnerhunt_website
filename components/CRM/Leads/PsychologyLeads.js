@@ -630,7 +630,7 @@ export default function PsychologyPageLeads() {
         getMaxCount={getMaxCount}
         steps={steps}
         leadId={leadId}
-        isremarkLoading={isremarkLoading}
+        isremarkedLoading={isremarkLoading}
         counsellorId={counsellorId}
       />
       <Loading show={isLoading} onHide={() => setIsLoading(false)} />

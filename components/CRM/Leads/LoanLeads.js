@@ -627,7 +627,7 @@ export default function LoanLeads() {
         getMaxCount={getMaxCount}
         steps={steps}
         leadId={leadId}
-        isremarkLoading={isremarkLoading}
+        isremarkedLoading={isremarkLoading}
         counsellorId={counsellorId}
       />
       <Loading show={isLoading} onHide={() => setIsLoading(false)} />

@@ -5,9 +5,9 @@ import BitlinkModal from "./BitLinkModal";
 import Loading from "@/components/Comps/Loading";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
-import FormatTimestamp from "../../../Comps/FormatTimeStamp";
-
-function RemarkHistoryModal({ isOpen, handleClose, ListType, remarksHistory, pipeline, getMaxCount, steps, leadId, counsellorId }) {
+import FormatTimestamp from "../../../Comps/FormatTimestamp";
+import Spinner from 'react-bootstrap/Spinner';
+function RemarkHistoryModal({ isOpen, handleClose, ListType, remarksHistory, pipeline, getMaxCount, steps, leadId, counsellorId,isremarkedLoading }) {
 
 
 
@@ -105,7 +105,7 @@ function RemarkHistoryModal({ isOpen, handleClose, ListType, remarksHistory, pip
         </Modal.Header>
 
         <Modal.Body>
-          {!isremarkLoading ? (
+          {!isremarkedLoading ? (
             remarksHistory.length > 0 ? (
               <>
                 <table className={`table table-hover custom-table`}>
@@ -160,7 +160,7 @@ function RemarkHistoryModal({ isOpen, handleClose, ListType, remarksHistory, pip
                 height: "100%",
               }}
             >
-              {/* <Spinner animation="border" variant="dark" /> */}
+              <Spinner animation="border" variant="dark" />
             </div>
           )}
         </Modal.Body>
