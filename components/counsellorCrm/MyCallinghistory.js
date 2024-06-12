@@ -1,13 +1,8 @@
 import React, { Component } from "react";
-import { Modal, Button, Form } from "react-bootstrap";
-import Swal from "sweetalert2";
-import Loading from "../Comps/Loading";
 import { Spinner } from "react-bootstrap";
 import IconButton from "@mui/material/IconButton";
-import CallIcon from "@mui/icons-material/Call";
 import Tablenav from "../Comps/Tablenav";
 import LoopIcon from "@mui/icons-material/Loop";
-import DifferenceIcon from "@mui/icons-material/Difference";
 import Tooltip from '@mui/material/Tooltip';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -22,7 +17,7 @@ export default class MyCallinghistory extends Component {
       isLoading: false,
       clgList: [],
       isDataFound: false,
-      isApiHitComplete: false,
+      isApiHitComplete: true,
       selectedCategory: [],
       username: localStorage.getItem("username"),
       statusAnchorEl: null,
@@ -34,6 +29,7 @@ export default class MyCallinghistory extends Component {
       remarksHistory: [],
       showModal: false,
       leadid: "",
+      ListType:''
       // selectedAsset: null,
     };
   }
@@ -70,26 +66,12 @@ export default class MyCallinghistory extends Component {
     }
   };
 
-  Callend(counsellor, student) {
-    // console.log(counsellor,student)
 
-    if (counsellor && student) {
-      return "Both";
-    }
-
-    if (!counsellor && student) {
-      return "Student";
-    }
-    if (counsellor && !student) {
-      return "Counsellor";
-    }
-    return "-";
-  }
 
   getAssetList() {
     try {
       this.setState({ isApiHitComplete: false, isDataFound: false });
-      fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/counsellor/my-calls`, {
+      fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/counsellor/my-calls/${this.state.ListType}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("cst")}`,
         },
@@ -97,7 +79,7 @@ export default class MyCallinghistory extends Component {
         if (res.ok) {
           // console.log(res)
           let response = await res.json();
-          console.log(response.data);
+          // console.log(response.data);
           if (response.data.length > 0) {
             this.setState({ clgList: response.data, isDataFound: true });
           }
@@ -114,9 +96,9 @@ export default class MyCallinghistory extends Component {
     }
   }
 
-  componentDidMount() {
-    this.getAssetList();
-  }
+  // componentDidMount() {
+  //   this.getAssetList();
+  // }
   handleSearchChange = (e) => {
     this.setState({ searchInput: e.target.value });
     const searchTerm = e.target.value
@@ -133,7 +115,7 @@ export default class MyCallinghistory extends Component {
       }
     } else {
       const filteredData = oldData.filter(
-        (data) => searchKeyword.test(data.studEmail.toLowerCase())
+        (data) => searchKeyword.test(data.studName.toLowerCase())
       );
 
       if (filteredData.length > 0) {
@@ -144,135 +126,10 @@ export default class MyCallinghistory extends Component {
     }
   };
 
-  handleGetRemarks = () => {
-    try {
-      this.setState({  isLoading: true });
-      fetch(
-        process.env.NEXT_PUBLIC_API_ENDPOINT +
-          `/counsellor/remarks?lid=${this.state.leadid}&lt=5`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("cst")}`,
-          },
-        }
-      ).then(async (res) => {
-        if (res.ok) {
-          // console.log(res)
-          let response = await res.json();
-          // console.log(response.data);
-            this.setState({ remarksHistory: response.data.remarks });
-          this.setState({ showModal: true });
-        } else {
-          let response = await res.json();
-          this.setState({ error: response.error });
-        }
-        this.setState({ isLoading: false });
-      });
-    } catch (error) {
-      console.error(error);
-    }
+
+  handleChange = (e) => {
+    this.setState({ ListType: e.target.value },()=>this.getAssetList(this.state.ListType));
   };
-
-  handleStudentCall = (e, counsellorInfo) => {
-    e.preventDefault();
-    // console.log(counsellorInfo);
-
-    try {
-      this.setState({ isLoading: true });
-
-      const fd = new FormData();
-      fd.append("agentNum", counsellorInfo.agent_number); // agent number counsellor number
-      fd.append("customerNum", counsellorInfo.customer_number); // student number
-      fd.append("slug", counsellorInfo.slug); // college slug
-      fd.append("counsEmail", localStorage.getItem("useremail")); // counsellor email
-      fd.append("studEmail", counsellorInfo.studEmail); // student email
-      fetch(
-        process.env.NEXT_PUBLIC_API_ENDPOINT + "/counsellor/callback-student",
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("cst")}`,
-          },
-          method: "POST",
-          body: fd,
-        }
-      ).then(async (response) => {
-        var res = await response.json();
-        // console.log(res.data);
-        if (res.error) {
-          Swal.fire({
-            title: "error",
-            text: `${res.error}`,
-            icon: "error",
-            confirmButtonText: "Ok",
-          });
-        } else {
-          Swal.fire({
-            title: "success",
-            text: `${res.data.success.message}`,
-            icon: "success",
-            confirmButtonText: "Ok",
-          });
-        }
-        this.setState({ isLoading: false });
-      });
-    } catch (error) {
-      console.error("Failed to fetch OTP:", error);
-    }
-  };
-
-  handleRemarkChange = (e) => {
-    this.setState({ remark: e.target.value });
-  };
-
-  handleAddRemark = () => {
-    if (this.state.remark.trim() !== "") {
-      this.setState({isLoading: true });
-      try {
-        const fd = new FormData();
-        fd.append("remarks", this.state.remark);
-        fd.append("leadType", 5);
-        fd.append("leadId", this.state.leadid);
-        fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/counsellor/remarks", {
-          method: "POST",
-          body: fd,
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("cst")}`,
-          },
-        }).then(async (response) => {
-          if (response.ok) {
-            var res = await response.json();
-            // console.log(res);
-            // console.log(res.data);
-            Swal.fire({
-              title: "Success",
-              text: `${res.message}`,
-              icon: "success",
-              confirmButtonText: "Ok",
-            }).then(() => {
-              this.handleGetRemarks();
-              this.setState({ isLoading: false,remark:'' });
-            });
-          } else {
-            var res = await response.json();
-            Swal.fire({
-              title: "error",
-              text: `${res.error}`,
-              icon: "error",
-              confirmButtonText: "Ok",
-            })
-          }
-        });
-      } catch (error) {
-        console.error("Failed to fetch OTP:", error);
-      }
-    }
-  };
-
-  toggleModal = () => {
-    this.setState({ showModal: !this.state.showModal });
-  };
-
- 
   render() {
     return (
       <>
@@ -301,6 +158,37 @@ export default class MyCallinghistory extends Component {
                       placeholder="Search..."
                       onChange={this.handleSearchChange}
                     />
+                        <FormControl
+                      variant="standard"
+                      sx={{ m: 1, minWidth: 120 }}
+                      fullWidth
+                    >
+                      <InputLabel id="demo-simple-select-label">
+                        Select the list
+                      </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={this.state.counsellorType}
+                        label="Select"
+                        onChange={(e) => this.handleChange(e)}
+                      >
+                        <MenuItem value={1}>Test Eligibility</MenuItem>
+                        <MenuItem value={2}>
+                          Student Applied In Colleges
+                        </MenuItem>
+                        <MenuItem value={3}>Registered Students</MenuItem>
+                        <MenuItem value={4}>PopUp Leads</MenuItem>
+                        <MenuItem value={5}>Phone Leads</MenuItem>
+                        <MenuItem value={7}>Mba Leads</MenuItem>
+                        <MenuItem value={8}>Ug Leads</MenuItem>
+                        <MenuItem value={9}>LLB Leads</MenuItem>
+                        <MenuItem value={10}>Psychology Leads</MenuItem>
+                        <MenuItem value={11}>Loan Leads</MenuItem>
+                        <MenuItem value={12}>Dialer Leads</MenuItem>
+
+                      </Select>
+                    </FormControl>
                           <Tooltip title="Refresh">
                     <IconButton
                       aria-label="Refresh"
@@ -320,7 +208,7 @@ export default class MyCallinghistory extends Component {
                     <tr>
                      
                       <th style={{ background: "var(--primary)" }}>
-                        Student Name
+                        {this.state.ListType == '5'?"College Name":"Student Name"}
                       </th>
                       <th style={{ background: "var(--primary)" }}>
                         Call Status
@@ -337,11 +225,9 @@ export default class MyCallinghistory extends Component {
                       return (
                         <tr key={i}>
                           <td>
-                            {/* {clg.studEmail.replace(
-                              /(?<=.{3}).(?=[^@]*?@)/g,
-                              "*"
-                            )} */}
-                             {clg.studName}
+                          {`${this.state.ListType == '5' ? clg.college_name : clg.studName}`}
+                          
+                           
                           </td>
                           <td style={{color:'green',fontWeight:'500'}}>{clg.status}</td>
                           <td>{clg.message}</td>
@@ -387,104 +273,7 @@ export default class MyCallinghistory extends Component {
                 </Spinner>
               </div>
             )}
-            <Loading
-              show={this.state.isLoading}
-              onHide={() => this.setState({ isLoading: false })}
-            />
-
-            <Modal
-              show={this.state.showModal}
-              onHide={this.toggleModal}
-              backdrop="static"
-              keyboard={false}
-              size="lg"
-            >
-              <Modal.Header closeButton>
-                <Modal.Title>Add Remark</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                <Form.Group controlId="remarkForm">
-                  <Form.Label>Remark</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter remark"
-                    value={this.state.remark}
-                    onChange={this.handleRemarkChange}
-                  />
-                </Form.Group>
-                <div className="text-center mt-2">
-                  <Button variant="primary" onClick={this.handleAddRemark}>
-                    Add
-                  </Button>
-                </div>
-              </Modal.Body>
-              <Modal.Footer></Modal.Footer>
-              <Modal.Body>
-                <h5>Remarks History</h5>
-
-                {this.state.remarksHistory.length>0 ?
-                <table className={`table table-hover custom-table`}>
-                  <thead>
-                    <tr>
-                    <th style={{ background: "var(--primary)" }}>Remarks</th>
-                      <th style={{ background: "var(--primary)" }}>Date</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {this.state.remarksHistory.map((obj, i) => {
-                      return (
-                        <tr key={i}>
-                          <td>{obj.remarks}</td>
-                          <td>{this.formatTimestamp(obj.createdAt)}</td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-                : <div
-                style={{
-                  display: "flex",
-                  width: "100%",
-                  height: "inherit",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <div style={{ fontWeight: "500" }}>
-                  <span style={{ color: "#0d6efd", cursor: "pointer" }}>
-                    {" "}
-                    No Records{" "}
-                  </span>
-                </div>
-              </div>}
-                {/* { 
-                  this.state.remarksHistory.length>0 ? (
-                    <ul>
-                      {this.state.remarksHistory.map((obj, index) => (
-                        <li key={index}>{obj.remarks}</li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <div
-                      style={{
-                        display: "flex",
-                        width: "100%",
-                        height: "inherit",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <div style={{ fontWeight: "500" }}>
-                        <span style={{ color: "#0d6efd", cursor: "pointer" }}>
-                          {" "}
-                          No Records{" "}
-                        </span>
-                      </div>
-                    </div>
-                  )
-                    } */}
-              </Modal.Body>
-            </Modal>
+        
           </>
         ) : (
           this.state.error

@@ -39,6 +39,7 @@ export default class AssignLeads extends Component {
       leadid: "",
       counsellorType: "",
       pipeline:null,
+      isCustomRemark:false,
      steps : [
     "First Followup Complete",
     "Bit-link Registration Complete",
@@ -168,9 +169,11 @@ export default class AssignLeads extends Component {
       fd.append("slug", ""); // college slug
       fd.append("counsEmail", localStorage.getItem("useremail")); // counsellor email
       fd.append("studEmail", counsellorInfo.email); // student email
+      fd.append("lid",counsellorInfo._id); // Lead id of row of student
+      fd.append("lt", this.state.counsellorType); //  Lead type of select list 
 
       fetch(
-        process.env.NEXT_PUBLIC_API_ENDPOINT + "/counsellor/callback-student",
+        process.env.NEXT_PUBLIC_API_ENDPOINT + `/counsellor/callback-student`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("cst")}`,
@@ -274,6 +277,13 @@ export default class AssignLeads extends Component {
   };
 
   handleRemarkChange = (e) => {
+    if(e.target.value == "-1"){
+      this.setState({isCustomRemark:true,remark:""})
+    }else{
+      this.setState({isCustomRemark:false,remark: e.target.value})
+    }
+  };
+  handleCustomRemarkChange = (e) => {
     this.setState({ remark: e.target.value });
   };
 
@@ -342,6 +352,16 @@ export default class AssignLeads extends Component {
 
   handleShare = (obj) =>{
     // console.log(obj)
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You want to send the Broucher!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes",
+    }).then((result) => {
+      if (result.isConfirmed) {
     try {
       this.setState({ isLoading: true });
       const fd = new FormData();
@@ -384,6 +404,8 @@ export default class AssignLeads extends Component {
 
       console.error("Failed to fetch OTP:", error);
     }
+  }
+  })
   }
   render() {
     return (
@@ -1411,6 +1433,8 @@ export default class AssignLeads extends Component {
           toggleModal={this.toggleModal}
           remark={this.state.remark}
           handleRemarkChange={this.handleRemarkChange}
+          isCustomRemark={this.state.isCustomRemark}
+          handleCustomRemarkChange={this.handleCustomRemarkChange}
           handleAddRemark={this.handleAddRemark}
           remarksHistory={this.state.remarksHistory}
           formatTimestamp={this.formatTimestamp}

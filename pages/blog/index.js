@@ -7,6 +7,9 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import Link from "next/link";
 import PaginationItem from "@mui/material/PaginationItem";
+import Head from "next/head";
+
+
 
 export default function index(blogs) {
   // console.log(blogs);
@@ -85,6 +88,27 @@ export default function index(blogs) {
   // };
 
   return (
+    <>
+    
+<Head>
+    <title>
+    Learnerhunt Blogs- Explore All Learning Tips and Knowledge.
+        </title>
+        <meta
+          name="description"
+          content="Learnerhunt Blogs: Explore All the Learning Tips and Knowledge That Enhance Your Learning Journey with Valuable Insights and Stay Informed and Empowered."
+        />
+         <meta
+          name="keywords"
+          content="Education Blogs, Informational Blogs, Study Related Blogs"
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(StructuredDataOrg),
+          }}
+        />
+    </Head>
     <div className="container">
       <div className="main">
         <div className={Classes["welcome-box"]}>
@@ -241,6 +265,7 @@ export default function index(blogs) {
         </div>
       </div>
     </div>
+    </>
   );
 }
 

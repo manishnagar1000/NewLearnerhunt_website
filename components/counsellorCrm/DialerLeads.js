@@ -35,6 +35,8 @@ export default class DialerLeads extends Component {
       toggleDialer: false,
       leadid: "",
       callerType: "",
+      isCustomRemark:false,
+      isCustomRemark:false,
       pipeline: null,
       steps: [
         "First Followup Complete",
@@ -202,11 +204,13 @@ export default class DialerLeads extends Component {
       this.setState({ isLoading: true });
 
       const fd = new FormData();
-      fd.append("agentNum", counsellorInfo.agent_number); // agent number counsellor number
+      fd.append("agentNum", counsellorInfo.agent_num); // agent number counsellor number
       fd.append("customerNum", counsellorInfo.mobile); // student number
       fd.append("slug", counsellorInfo.slug); // college slug
       fd.append("counsEmail", localStorage.getItem("useremail")); // counsellor email
-      fd.append("studEmail", counsellorInfo.studEmail); // student email
+      fd.append("studEmail", counsellorInfo.student_email); // student email
+      fd.append("lid",counsellorInfo._id); // Lead id of row of student
+      fd.append("lt", 12); //  Lead type of select list 
       fetch(
         process.env.NEXT_PUBLIC_API_ENDPOINT + "/counsellor/callback-student",
         {
@@ -242,6 +246,13 @@ export default class DialerLeads extends Component {
   };
 
   handleRemarkChange = (e) => {
+    if(e.target.value == "-1"){
+      this.setState({isCustomRemark:true,remark:""})
+    }else{
+      this.setState({isCustomRemark:false,remark: e.target.value})
+    }
+  };
+  handleCustomRemarkChange = (e) => {
     this.setState({ remark: e.target.value });
   };
 
@@ -523,6 +534,9 @@ export default class DialerLeads extends Component {
               toggleModal={this.toggleModal}
               remark={this.state.remark}
               handleRemarkChange={this.handleRemarkChange}
+              
+          isCustomRemark={this.state.isCustomRemark}
+          handleCustomRemarkChange={this.handleCustomRemarkChange}
               handleAddRemark={this.handleAddRemark}
               remarksHistory={this.state.remarksHistory}
               formatTimestamp={this.formatTimestamp}

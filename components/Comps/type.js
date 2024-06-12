@@ -1205,12 +1205,13 @@ export const LoanOffersData = [{
 
 
 export const ProcessData = [
-  { title: 'Application Process', icon: '/assets/images/loan/Process/user.gif' },
-  { title: 'Application Review', icon: '/assets/images/loan/Process/search.gif' },
-  { title: 'Provisional Offers', icon: '/assets/images/loan/Process/black-friday.gif' },
-  { title: 'Provide Documents', icon: '/assets/images/loan/Process/accounting.gif' },
-  { title: 'Disbursement', icon: '/assets/images/loan/Process/dollar.gif' },
+  { title: 'Application Process', icon: '/assets/images/Loan/Process/user.gif' },
+  { title: 'Application Review', icon: '/assets/images/Loan/Process/search.gif' },
+  { title: 'Provisional Offers', icon: '/assets/images/Loan/Process/black-friday.gif' },
+  { title: 'Provide Documents', icon: '/assets/images/Loan/Process/accounting.gif' },
+  { title: 'Disbursement', icon: '/assets/images/Loan/Process/dollar.gif' },
 ];
+
 
 
   

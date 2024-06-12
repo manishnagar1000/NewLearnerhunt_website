@@ -35,6 +35,34 @@ import LoanFeatures from "@/components/Comps/Loan/LoanFeatures";
 import LoanOffers from "@/components/Comps/Loan/LoanOffers";
 import TalktoExpert from "@/components/Comps/Loan/TalktoExpert";
 import Process from "@/components/Comps/Loan/Process";
+import Head from "next/head";
+
+
+
+const StructuredDataOrg = [
+  {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Education Loan 2024- Apply for Student Loan Online",
+      "description": "Learnerhunt Education Loan: Apply for Education Loan at Reasonable Interest Rates That Cover Study-Related Costs. Apply for Student Loan Online in India & UK.",
+      "breadcrumb": {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+              {
+                  "@type": "Organization",
+                  "position": 1,
+                  "name": "Education Loan",
+                  "item": "https://www.learnerhunt.com/loan"
+              }
+          ]
+      }
+  },
+  {
+      "@type": "Organization",
+      "name": "Education Loan 2024- Apply for Student Loan Online",
+      "url": "https://www.learnerhunt.com/loan"
+  }
+]
 
 const Loanpage = () => {
 
@@ -167,6 +195,27 @@ const Loanpage = () => {
 
   return (
     <>
+
+<Head>
+    <title>
+    Education Loan 2024- Apply for Student Loan Online
+        </title>
+        <meta
+          name="description"
+          content="Learnerhunt Education Loan: Apply for Education Loan at Reasonable Interest Rates That Cover Study-Related Costs. Apply for Student Loan Online in India & UK."
+        />
+         <meta
+          name="keywords"
+          content="education loan, education loan online, apply for education loan"
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(StructuredDataOrg),
+          }}
+        />
+    </Head>
+
       <Container fluid className={Styles.cont}>
         <Row className={Styles.contI}>
           <div className={Styles.box1}>

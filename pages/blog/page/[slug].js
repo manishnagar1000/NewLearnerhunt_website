@@ -51,7 +51,7 @@ export default function Page(blogs) {
               it!
             </p>
           </div>
-          <div className={Classes["welcome-box-form"]}>
+          {/* <div className={Classes["welcome-box-form"]}>
             <form
               role="search"
               method="get"
@@ -70,7 +70,7 @@ export default function Page(blogs) {
           </div>
           <div className="d-flex justify-content-center">
             <span>Subscribe to our Newsletter*</span>
-          </div>
+          </div> */}
         </div>
         <div className="pt-2">
           <div className={Classes["blogs_main"]}>

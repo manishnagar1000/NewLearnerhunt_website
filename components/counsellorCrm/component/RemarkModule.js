@@ -1,13 +1,15 @@
 // RemarkModal.js
 import React from 'react';
 import { Modal, Button, Form, Table } from 'react-bootstrap';
-import { Stack, Stepper, Step, StepLabel } from '@mui/material';
+import { Stack, Stepper, Step, StepLabel,Select, MenuItem, FormControl, InputLabel, FormHelperText,Input } from '@mui/material';
 
 const RemarkModal = ({
   showModal,
   toggleModal,
   remark,
   handleRemarkChange,
+  isCustomRemark,
+  handleCustomRemarkChange,
   handleAddRemark,
   remarksHistory,
   formatTimestamp,
@@ -20,15 +22,38 @@ const RemarkModal = ({
       <Modal.Title>Add Remark</Modal.Title>
     </Modal.Header>
     <Modal.Body>
-      <Form.Group controlId="remarkForm">
-        <Form.Label>Remark</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder="Enter remark"
+    <FormControl fullWidth sx={{ m: 1 }}>
+        <InputLabel>Remark</InputLabel>
+        <Select
           value={remark}
+          label="Remark"
           onChange={handleRemarkChange}
-        />
-      </Form.Group>
+        >
+          <MenuItem value="" disabled>
+            <em>Select</em>
+          </MenuItem>
+          <MenuItem value="-1">Custom</MenuItem>
+          <MenuItem value="Interested">Interested</MenuItem>
+          <MenuItem value="Not Interested">Not Interested</MenuItem>
+          <MenuItem value="Error">Error</MenuItem>
+          <MenuItem value="Busy">Busy</MenuItem>
+          <MenuItem value="Disconnected">Disconnected</MenuItem>
+          <MenuItem value="No Response">No Response</MenuItem>
+          <MenuItem value="Appearing Exam">Appearing Exam</MenuItem>
+        </Select>
+        {isCustomRemark && (
+          <FormControl sx={{ m: 2 }}>
+            <InputLabel>Enter custom remark</InputLabel>
+            <Input
+              type="text"
+              placeholder="Enter custom remark"
+              value={remark}
+              onChange={handleCustomRemarkChange}
+            />
+            <FormHelperText>Please enter your custom remark.</FormHelperText>
+          </FormControl>
+        )}
+      </FormControl>
       <div className="text-center mt-2">
         <Button variant="primary" onClick={handleAddRemark}>
           Add
@@ -81,7 +106,7 @@ const RemarkModal = ({
               <span style={{ color: "#0d6efd", cursor: "pointer" }}>No Records</span>
             </div>
           </div>
-          <hr />
+          {/* <hr />
           <Stack sx={{ width: "100%" }} spacing={4}>
             <Stepper alternativeLabel activeStep={pipeline ? getMaxCount(pipeline) : -1}>
               {steps.map((label, index) => (
@@ -90,7 +115,7 @@ const RemarkModal = ({
                 </Step>
               ))}
             </Stepper>
-          </Stack>
+          </Stack> */}
         </>
       )}
     </Modal.Body>
