@@ -55,10 +55,11 @@
 }
 
 .sidebar {
-  width: 280px;
+  /* width: 280px; */
   flex: 0 0 100px;
   position: sticky;
   top: 100px;
+  margin-top: 40px;
 
 }
 

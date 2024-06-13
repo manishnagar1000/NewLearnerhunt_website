@@ -36,5 +36,14 @@ export const KeyPressForAlphabets = (event) => {
         return false;
     }
 };
+export const validateEmail = (email) => {
+    const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    return isValidEmail;
+};
 
+
+export const validatePhoneNumber = (phoneNumber) => {
+    const phoneNumberPattern = /^\d{10}$/;
+    return phoneNumberPattern.test(phoneNumber);
+  };
 

@@ -163,7 +163,9 @@ const [blogid,setBlogId] = useState('');
     fd.append("categories", JSON.stringify(cid));
     fd.append("content", post.content);
     fd.append("title", post.title);
-    fd.append("banner_image", image);
+    if(image){
+      fd.append("banner_image", image);
+      }
     fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/blog`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("pt")}`,
@@ -215,7 +217,10 @@ const [blogid,setBlogId] = useState('');
     fd.append("categories", JSON.stringify(cid));
     fd.append("content", post.content);
     fd.append("title", post.title);
+    if(image){
     fd.append("banner_image", image);
+    }
+    // fd.append("banner_image", image);
     fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/blog`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("pt")}`,
@@ -356,7 +361,7 @@ const [blogid,setBlogId] = useState('');
             ...post,title:res.data.title, content: res.data.content,
             categoryId:editcid
         })
-        setImage(res.data.banner_image)
+        // setImage(res.data.banner_image)
         setPreview(`https://learnerhunt-assets.s3.us-east-1.amazonaws.com/${res.data.banner_image}`)
       })
       .catch((error) => {

@@ -57,7 +57,7 @@ const Slug = (blogs) => {
               {blogs.data &&
                 blogs.data.categories.map((s) => {
                   return (
-                    <a href={s.link}>
+                    <a href={s.link} style={{textTransform:"capitalize"}}>
                       <Chip
                         key={s.slug}
                         // onClick={(e) => handleTabChange(s)}
@@ -78,7 +78,7 @@ const Slug = (blogs) => {
               <h1 className={Style.heading}>
                 {blogs.data.post &&
                   blogs.data.post.title.charAt(0).toUpperCase() +
-                    blogs.data.post.title.slice(1)}
+                  blogs.data.post.title.slice(1)}
               </h1>
               <p>
                 <strong>
@@ -86,35 +86,42 @@ const Slug = (blogs) => {
                   {blogs.data.post &&
                     blogs.data.post.categories.map((c, i) => {
                       let data = blogs.data.categories.find(
-                          (bc) => bc._id == c
-                        ),
+                        (bc) => bc._id == c
+                      ),
                         name = data?.name,
                         link = data?.link;
                       if (i < blogs.data.post.categories.length - 1) {
                         name = " " + name + ", ";
                       }
                       return (
-                        <a className="text-muted" href={link}>
-                          {name.toUpperCase()}
-                        </a>
-                      );
+                        <>
+                          {
+                            name ?
+                              <a style={{textDecoration:'none',textTransform:"capitalize"}} href={link}>
+                                {name}
+                              </a>
+                              :
+                              <span style={{ color: "red" }}>
+                                Category not found
+                              </span>
+                          }
+                        </>
+                      )
                     })}{" "}
-                  |
-                  {new Date(blogs.data.post && blogs.data.post.updatedAt)
+                  |&nbsp;
+                  {new Date(blogs.data.post && blogs.data.post.createdAt)
                     .toLocaleDateString("en-GB")
-                    .split("/")
-                    .reverse()
-                    .join(" / ")}
+                    .replaceAll('/','-')
+                   }
                 </strong>
               </p>
               <img
                 className={Style.img}
-                src={`${
-                  blogs.data.post && blogs.data.post.banner_image
-                    ? "https://learnerhunt-assets.s3.us-east-1.amazonaws.com/" +
-                      blogs.data.post.banner_image
-                    : ""
-                }`}
+                src={`${blogs.data.post && blogs.data.post.banner_image
+                  ? "https://learnerhunt-assets.s3.us-east-1.amazonaws.com/" +
+                  blogs.data.post.banner_image
+                  : ""
+                  }`}
                 // src="https://www.thesagenext.com/blog/assets/images/What-are-the-Top-5-Emerging-Cybersecurity-Challenges.webp"
                 alt="Your Image"
                 style={{ width: "100%" }}
@@ -412,12 +419,11 @@ const Slug = (blogs) => {
                         <a href={`/blog/${s.slug}`}>
                           {" "}
                           <img
-                            src={`${
+                            src={`${s.banner_image
+                              ? "https://learnerhunt-assets.s3.us-east-1.amazonaws.com/" +
                               s.banner_image
-                                ? "https://learnerhunt-assets.s3.us-east-1.amazonaws.com/" +
-                                  s.banner_image
-                                : "/assets/images/blog/DummyBlogSquare.webp"
-                            }`}
+                              : "/assets/images/blog/DummyBlogSquare.webp"
+                              }`}
                             alt="Your Image"
                             width={90}
                             height={80}

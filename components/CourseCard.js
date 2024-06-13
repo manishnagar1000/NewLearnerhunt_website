@@ -19,7 +19,7 @@ const CourseCard = ({ course }) => {
           <div className='row'>
         
           <div className='col-md-12'>
-            <h6 className="fw-bold flex-wrap">{course.course_name}</h6>
+            <h6 className="fw-bold flex-wrap" >{course.course_name}</h6>
             <p className="text-secondary mb-1">Duration: {course.course_description[0].course_duration}</p>
             <p className="text-secondary mb-1">Fees: {course.course_description[0].annual_course_fee}</p>
           </div>

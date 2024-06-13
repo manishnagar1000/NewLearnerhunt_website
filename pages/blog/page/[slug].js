@@ -46,9 +46,8 @@ export default function Page(blogs) {
               <h1 className={Classes["h1Tag"]}>Welcome to our blog</h1>
             </div>
             <p>
-              Your personal space to feed your curiosity and stay up-to-date
-              with accounting, tax, the cloud, and everything that comes with
-              it!
+            Welcome to our educational blog, Dive into our curated content to expand your knowledge,
+            whether you're a student or a professional. Stay updated with the latest trends and insights, and let's embark on a journey of learning and growth together!
             </p>
           </div>
           {/* <div className={Classes["welcome-box-form"]}>

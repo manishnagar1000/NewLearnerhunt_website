@@ -33,7 +33,7 @@ const FeeChip = ({ item, onChangeFee }) => {
 
 const AppliedFilterList = ({ course, zone, rating, fee, onChangeZone, onChangeRating, onChangeFee }) => {
     return (
-        <div className={Style.Applied_Filter_outerBox}>
+        <div className={Style.Applied_Filter_outerBox} style={{textTransform:'capitalize'}}>
             <div className={Style.Applied_Filter}>Applied Filter:</div>
             {course && <CourseChip
                 item={course}

@@ -285,6 +285,7 @@ const CheckBox = ({ data, accessKey }) => {
             />
           }
           label={s[`${accessKey}`]}
+
         />
       );
     })
@@ -436,7 +437,7 @@ const FilterComponent = ({
             }}
           />
         </div>
-        <FormControl size="small" className="rounded-lg">
+        <FormControl size="small" className="rounded-lg" style={{textTransform:'capitalize'}}>
           <RadioGroup
             aria-labelledby="demo-row-radio-buttons-group-label"
             name="row-radio-buttons-group"

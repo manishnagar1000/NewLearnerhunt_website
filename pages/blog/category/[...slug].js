@@ -52,7 +52,7 @@ console.log(slug);
         <div className={`${Classes["bloglist"]} row`}>
           {blogs.data.posts.length>0?blogs.data.posts.map((s,i) => (
             <div key={i} className="col-lg-4 col-md-6 col-md-12">
-              <div key={i} className={`${Classes["card"]} p-0 rounded-0 overlay-img`}>
+              <div key={i} className={`${Classes["card"]} p-0 overlay-img` } style={{boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",cursor:"default",borderRadius:"0 0 15px 15px"}}>
                 <div className={Classes["image-box"]}>
                   <Link className="text-decoration-none text-reset" href={`/blog/${s.slug}`}>
                     <img
@@ -71,9 +71,9 @@ console.log(slug);
                 </div>
                 <div className={`${Classes["card-body"]} pb-0`}>
                   <a className={Classes["card_link"]} href={`/blog/${s.slug}`}>
-                    <h2 className={Classes["card-title"]}>
-                      {s.title.charAt(0).toUpperCase() + s.title.slice(1)}
-                    </h2>
+                    <h2 className={Classes["card-title"]} style={{textTransform:"capitalize"}}>
+                        {s.title}
+                      </h2>
                   </a>
                   <div
                     className="my-1"
@@ -87,13 +87,12 @@ console.log(slug);
                   >
                   </div>
                   <div className="card-footer bg-transparent text-muted pb-3 small border-0">
-                    {new Date(s.updatedAt)
-                      .toLocaleDateString("en-GB")
-                      .split("/")
-                      .reverse()
-                      .join(" / ")}
-                    
-                    
+                  <span style={{ fontWeight: "600" }}>Created at : </span>
+                      <span style={{ color: "#d36d00" }}>
+                        {new Date(s.createdAt)
+                          .toLocaleDateString("en-GB")
+                          .replaceAll("/", '-')}
+                      </span>
                   </div>
                 </div>
               </div>
@@ -117,10 +116,10 @@ console.log(slug);
                 );
               }}
             />
-          {/* <Pagination page={page} count={categoryPost.data.totalPages} color="primary" onChange={handlePage} /> */}
           </Stack>
         </div>
       </div>
+      
       </div>
     </>
   )

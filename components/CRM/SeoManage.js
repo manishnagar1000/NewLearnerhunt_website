@@ -475,11 +475,11 @@ const SEOManage = () => {
         Swal.fire({
           title: "Please enter a keywords.",
         });
-      } else if (formData.keywords.length > 65) {
+      } else if (formData.keywords.length > 165) {
         // Additional validation if needed
         newErrors.keywords = true;
         Swal.fire({
-          title: "Keywords length must be between 1 and 65 characters.",
+          title: "Keywords length must be between 1 and 165 characters.",
         });
       }
       if (formData.canonical.trim() === "") {
@@ -665,11 +665,11 @@ const SEOManage = () => {
         Swal.fire({
           title: "Please enter a keywords.",
         });
-      } else if (formblogData.keywords.length > 65) {
+      } else if (formblogData.keywords.length > 165) {
         // Additional validation if needed
         newblogErrors.keywords = true;
         Swal.fire({
-          title: "Keywords length must be between 1 and 65 characters.",
+          title: "Keywords length must be between 1 and 165 characters.",
         });
       }
       if (formblogData.canonical.trim() === "") {
@@ -848,11 +848,11 @@ const SEOManage = () => {
         Swal.fire({
           title: "Please enter a keywords.",
         });
-      } else if (formcourseData.keywords.length > 65) {
+      } else if (formcourseData.keywords.length > 165) {
         // Additional validation if needed
         newcourseErrors.keywords = true;
         Swal.fire({
-          title: "Keywords length must be between 1 and 65 characters.",
+          title: "Keywords length must be between 1 and 165 characters.",
         });
       }
       if (formcourseData.canonical.trim() === "") {
@@ -1031,11 +1031,11 @@ const SEOManage = () => {
       Swal.fire({
         title: "Please enter a keywords.",
       });
-    } else if (formData.keywords.length > 65) {
+    } else if (formData.keywords.length > 165) {
       // Additional validation if needed
       newErrors.keywords = true;
       Swal.fire({
-        title: "Keywords length must be between 1 and 65 characters.",
+        title: "Keywords length must be between 1 and 165 characters.",
       });
     }
     if (formData.canonical.trim() === "") {
@@ -1223,11 +1223,11 @@ const SEOManage = () => {
       Swal.fire({
         title: "Please enter a keywords.",
       });
-    } else if (formblogData.keywords.length > 65) {
+    } else if (formblogData.keywords.length > 165) {
       // Additional validation if needed
       newblogErrors.keywords = true;
       Swal.fire({
-        title: "Keywords length must be between 1 and 65 characters.",
+        title: "Keywords length must be between 1 and 165 characters.",
       });
     }
     if (formblogData.canonical.trim() === "") {
@@ -1414,11 +1414,11 @@ const SEOManage = () => {
       Swal.fire({
         title: "Please enter a keywords.",
       });
-    } else if (formcourseData.keywords.length > 65) {
+    } else if (formcourseData.keywords.length > 165) {
       // Additional validation if needed
       newcourseErrors.keywords = true;
       Swal.fire({
-        title: "Keywords length must be between 1 and 65 characters.",
+        title: "Keywords length must be between 1 and 165 characters.",
       });
     }
     if (formcourseData.canonical.trim() === "") {
@@ -2065,7 +2065,7 @@ const SEOManage = () => {
                 onChange={(e) => handleInputChange(e, "basic")}
               />
               <Form.Text className="text-muted">
-                Character length must be 60-65.
+                Character length must be 160-165.
               </Form.Text>
             </Form.Group>
           </Col>
@@ -2748,7 +2748,7 @@ const SEOManage = () => {
                 onChange={(e) => handleBlogInputChange(e, "basic")}
               />
               <Form.Text className="text-muted">
-                Character length must be 60-65.
+                Character length must be 160-165.
               </Form.Text>
             </Form.Group>
           </Col>
@@ -3433,7 +3433,7 @@ const SEOManage = () => {
                 onChange={(e) => handleCourseInputChange(e, "basic")}
               />
               <Form.Text className="text-muted">
-                Character length must be 60-65.
+                Character length must be 160-165.
               </Form.Text>
             </Form.Group>
           </Col>
