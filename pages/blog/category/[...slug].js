@@ -12,8 +12,8 @@ import { useRouter } from "next/router";
 export default function categorySlug(blogs) {
   const router = useRouter();
 const { slug } = router.query;
-console.log(slug);
-  console.log(blogs)
+// console.log(slug);
+//   console.log(blogs)
   let pageNumber = 1;
 
   // Extract the page number from the slug if available

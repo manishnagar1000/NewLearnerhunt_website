@@ -58,7 +58,8 @@ export default function TopExams({ exams }) {
  
            <div className={Classes.card} key={exam.slug}>
              <div className={Classes.logo}>
-               <img src={exam.exam_logo} alt={exam.logo} />
+               <img src= {exam.exam_logo == null ||exam.exam_logo == "" ? "/assets/images/DummyLOGO.jpg" :`https://learnerhunt-assets.s3.us-east-1.amazonaws.com/${exam.exam_logo}`}
+                alt={exam.logo} />
              </div>
              <div className={Classes.info}>
                <h4 className={Classes.name}>{exam.exam_name}</h4>
@@ -79,7 +80,7 @@ export default function TopExams({ exams }) {
                </div>
                <div className={Classes.details}>
                  <span className={Classes.detailLabel}>Exam Mode:</span>
-                 <span className={Classes.detailValue}>{exam.exam_pattern[0].mode}</span>
+                 <span className={Classes.detailValue}>{exam.exam_pattern[0] == undefined?"NA":exam.exam_pattern[0].mode}</span>
                </div>
              </div>
              <div className={Classes.buttonContainer}>
@@ -133,7 +134,7 @@ export default function TopExams({ exams }) {
               </div>
               <div className={Classes.details}>
                 <span className={Classes.detailLabel}>Exam Mode:</span>
-                <span className={Classes.detailValue}>{exam.exam_pattern[0].mode}</span>
+                {/* <span className={Classes.detailValue}>{exam.exam_pattern[0].mode}</span> */}
               </div>
             </div>
             <div className={Classes.buttonContainer}>

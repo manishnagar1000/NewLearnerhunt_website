@@ -99,7 +99,7 @@ const CreateBlog = () => {
 
         event.preventDefault();
 
-        console.log(post)
+        // console.log(post)
         // if (post.title.trim() === '') {
         //     toast.error("post  title is required !!")
         //     return;

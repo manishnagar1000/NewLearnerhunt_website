@@ -12,7 +12,7 @@ import Head from "next/head";
 
 
 export default function index(blogs) {
-  console.log(blogs);
+  // console.log(blogs);
   const [page, setPage] = useState(1);
   const [Post, setPost] = useState(blogs);
   // console.log(blogs.data.categories)

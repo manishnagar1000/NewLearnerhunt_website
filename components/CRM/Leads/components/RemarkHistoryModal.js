@@ -80,7 +80,7 @@ function RemarkHistoryModal({ isOpen, handleClose, ListType, remarksHistory, pip
 
   const handleStepClick = (index) => {
     // Handle step click action here
-    console.log("Step clicked:", index);
+    // console.log("Step clicked:", index);
   };
 
   const handleOpeniframe = (clg) => {

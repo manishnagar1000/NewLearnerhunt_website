@@ -313,7 +313,7 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  console.log(props);
+  // console.log(props);
   // console.log(props.rowsList);
   const [searchInput, setSearchInput] = useState("");
   const { numSelected } = props;

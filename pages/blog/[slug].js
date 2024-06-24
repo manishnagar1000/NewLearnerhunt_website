@@ -8,7 +8,7 @@ import "react-multi-carousel/lib/styles.css";
 import Classes from "../../styles/blogs.module.css";
 
 const Slug = (blogs) => {
-  console.log(blogs);
+  // console.log(blogs);
   const router = useRouter();
   // console.log(router)
   const { slug } = router.query;

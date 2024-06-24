@@ -286,7 +286,7 @@ export default function CollegeName({ collegedata }) {
         body: fd,
       }).then(async (response) => {
         var res = await response.json();
-        console.log(res);
+        // console.log(res);
         // console.log(res.error)
         if (res.error) {
           Swal.fire({

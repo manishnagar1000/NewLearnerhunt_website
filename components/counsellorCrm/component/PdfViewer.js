@@ -7,7 +7,7 @@ import { Modal } from 'react-bootstrap';
 
 
 const PdfViewerFile = ({ showpdfModal, togglepdfModal ,pdf }) => {
-    console.log(pdf)
+    // console.log(pdf)
   return (
     <Modal show={showpdfModal} onHide={togglepdfModal} backdrop="static" keyboard={false} scrollable fullscreen>
       <Modal.Header closeButton>

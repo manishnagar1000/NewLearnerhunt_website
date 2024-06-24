@@ -6,6 +6,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 
 
 const examCard = ({ exam }) => {
+  // console.log(exam)
   const [loadingColleges, setLoadingColleges] = useState([]);
 
   const handleCollegeClick = (collegeId) => {

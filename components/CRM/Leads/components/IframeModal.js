@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 
 function IframeModal({ isOpen, handleClose, applyLink, handleSubmitIframe, isLoading, collegeID }) {
 
-  console.log(applyLink, "APPLYlINK")
+  // console.log(applyLink, "APPLYlINK")
 
 
 

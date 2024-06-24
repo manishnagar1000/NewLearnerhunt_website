@@ -241,8 +241,8 @@ export default function DialerLeads() {
       }
     ).then(async (res) => {
       let response = await res.json();
-      console.log(response)
-      console.log(response.data)
+      // console.log(response)
+      // console.log(response.data)
       if (response.data) {
         if (response.data.length > 0) {
           setRows(response.data);

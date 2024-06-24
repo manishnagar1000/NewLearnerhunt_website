@@ -30,7 +30,7 @@ const DialerModule = ({ toggleDialer, getAssetList }) => {
     })
       .then(async (response) => {
         var res = await response.json();
-        console.log(res.data);
+        // console.log(res.data);
         setCollegeApi(res.data.colleges);
       })
       .catch((error) => {

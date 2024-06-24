@@ -7,7 +7,7 @@ import Loading from "@/components/Comps/Loading";
 
 function BitlinkModal({ isBitLinkModalOpen, handlebitlinkClose, collegebitlink,ListType,leadId,counsellorId,handleGetBitlink }) {
 
-  console.log(ListType)
+  // console.log(ListType)
 
 
   const [isIframeModalOpen, setIsIframeModalOpen] = useState(false);

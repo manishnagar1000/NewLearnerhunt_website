@@ -7,7 +7,7 @@
     position: relative;
 }
 .welcome-box .welcome-box-content {
-    width: 630px;
+    /* width: 630px; */
     margin: auto;
     text-align: center;
 }

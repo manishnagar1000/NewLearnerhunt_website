@@ -115,7 +115,7 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  console.log(props);
+  // console.log(props);
   const [searchInput, setSearchInput] = useState("");
   const { numSelected } = props;
   const handleSearchChange = (e) => {
@@ -379,7 +379,7 @@ export default function AppliedCollege() {
         if (res.ok) {
           // console.log(res)
           let response = await res.json();
-          console.log(response.data);
+          // console.log(response.data);
           setRemarksHistory(response.data.remarks);
           setPipeLine(response.data.pipeline);
 

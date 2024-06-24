@@ -138,7 +138,7 @@ const Myprofile = () => {
   };
 
   const handleKycclose = () => {
-    console.log(oldData);
+    // console.log(oldData);
     setname(oldData.name);
     setDate(oldData.dob&&oldData.dob.split('T')[0]);
     setGender(oldData.gender);

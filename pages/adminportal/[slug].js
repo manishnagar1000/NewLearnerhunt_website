@@ -36,6 +36,11 @@ import CrmBlog from "@/components/CRM/CrmBlog";
 import CrmNews from "@/components/CRM/CrmNews";
 import CrmBlogCategory from "@/components/CRM/CrmBlogCategory";
 import BlogManager from "@/components/CRM/BlogManager";
+import AddCourses from "@/components/CRM/addcourses/AddCourses";
+import AllCourses from "@/components/CRM/addcourses/AllCourses";
+
+import AddExams from "@/components/CRM/addexams/AddExams";
+import AllExams from "@/components/CRM/addexams/AllExams";
 
 
 
@@ -54,6 +59,26 @@ const componentList = [
   {
     comp: <Allcollege />,
     slug: "allcollege",
+    role:[0,4]
+  },
+  {
+    comp: <AddCourses />,
+    slug: "addcourse",
+    role:[4]
+  },
+  {
+    comp: <AllCourses />,
+    slug: "allcourses",
+    role:[0,4]
+  },
+  {
+    comp: <AddExams />,
+    slug: "addexam",
+    role:[4]
+  },
+  {
+    comp: <AllExams />,
+    slug: "allexams",
     role:[0,4]
   },
   {

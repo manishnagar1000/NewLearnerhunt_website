@@ -117,7 +117,7 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  console.log(props);
+  // console.log(props);
   // console.log(props.rowsList);
   const [searchInput, setSearchInput] = useState("");
   const { numSelected } = props;
@@ -136,7 +136,7 @@ function EnhancedTableToolbar(props) {
     }).then(async (res) => {
       // console.log(res)
       let response = await res.json();
-      console.log(response);
+      // console.log(response);
       if (response.data) {
         if (response.data.length > 0) {
           props.counsellorList(response.data);
@@ -340,7 +340,7 @@ export default function Studentappliedclg() {
       }
     ).then(async (response) => {
       var res = await response.json();
-      console.log(res);
+      // console.log(res);
       setIsLoading(false);
       if (response.ok) {
         Swal.fire({
@@ -384,7 +384,7 @@ export default function Studentappliedclg() {
         if (res.ok) {
           // console.log(res)
           let response = await res.json();
-          console.log(response.data);
+          // console.log(response.data);
           setRemarksHistory(response.data.remarks);
           setPipeLine(response.data.pipeline);
 
@@ -404,7 +404,7 @@ export default function Studentappliedclg() {
     "Fee Payment Success",
   ];
   const getMaxCount = (p) => {
-    console.log(p)
+    // console.log(p)
     if (p.stage3) {
       return 3;
     } else if (p.stage2) {
