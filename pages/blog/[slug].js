@@ -6,9 +6,10 @@ import Carousel from "react-multi-carousel";
 import Chip from "@mui/material/Chip";
 import "react-multi-carousel/lib/styles.css";
 import Classes from "../../styles/blogs.module.css";
+import Head from "next/head";
 
 const Slug = (blogs) => {
-  // console.log(blogs);
+  console.log(blogs);
   const router = useRouter();
   // console.log(router)
   const { slug } = router.query;
@@ -40,9 +41,126 @@ const Slug = (blogs) => {
       slidestoSlide: 3,
     },
   };
-
+  const checkValues = (key) => {
+    if (blogs.data.post.seoDetails != null && blogs.data.post.seoDetails[key] && blogs.data.post.seoDetails[key] != "") {
+      return true;
+    }
+    return false;
+  };
   return (
     <>
+     <Head>
+        {checkValues("title") && <title>{blogs.data.post.seoDetails.title}</title>}
+        {checkValues("description") && (
+          <meta name="description" content={blogs.data.post.seoDetails.description} />
+        )}
+        {checkValues("keywords") && (
+          <meta name="keywords" content={blogs.data.post.seoDetails.keywords} />
+        )}
+        {checkValues("canonical") && (
+          <link rel="canonical" href={blogs.data.post.seoDetails.canonical} />
+        )}
+
+        {checkValues("structured_data") && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(blogs.data.post.seoDetails.structured_data),
+            }}
+          />
+        )}
+
+        {checkValues("faq_structured_data") && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(blogs.data.post.seoDetails.faq_structured_data),
+            }}
+          />
+        )}
+        {/* Open Graph data */}
+        {checkValues("og_locale") && (
+          <meta property="og:locale" content={blogs.data.post.seoDetails.og_locale} />
+        )}
+        {checkValues("og_type") && (
+          <meta property="og:type" content={blogs.data.post.seoDetails.og_type} />
+        )}
+        {checkValues("og_title") && (
+          <meta property="og:title" content={blogs.data.post.seoDetails.og_title} />
+        )}
+        {checkValues("og_description") && (
+          <meta
+            property="og:description"
+            content={blogs.data.post.seoDetails.og_description}
+          />
+        )}
+        {checkValues("og_url") && (
+          <meta property="og:url" content={blogs.data.post.seoDetails.og_url} />
+        )}
+        {checkValues("og_site_name") && (
+          <meta property="og:site_name" content="Learnerhunt" />
+        )}
+        {checkValues("og_image") && (
+          <meta property="og:image" content={blogs.data.post.seoDetails.og_image} />
+        )}
+        {checkValues("og_image_secure_url") && (
+          <meta
+            property="og:image:secure_url"
+            content={blogs.data.post.seoDetails.og_image_secure_url}
+          />
+        )}
+        {checkValues("og_image_width") && (
+          <meta
+            property="og:image:width"
+            content={blogs.data.post.seoDetails.og_image_width}
+          />
+        )}
+        {checkValues("og_image_height") && (
+          <meta
+            property="og:image:height"
+            content={blogs.data.post.seoDetails.og_image_height}
+          />
+        )}
+        {checkValues("og_image_alt") && (
+          <meta
+            property="og:image:alt"
+            content={blogs.data.post.seoDetails.og_image_alt}
+          />
+        )}
+
+        {/* Twitter Card data */}
+        <meta name="twitter:card" content="summary" />
+        {checkValues("twitter_description") && (
+          <meta
+            name="twitter:description"
+            content={blogs.data.post.seoDetails.twitter_description}
+          />
+        )}
+        {checkValues("twitter_title") && (
+          <meta
+            name="twitter:title"
+            content={blogs.data.post.seoDetails.twitter_title}
+          />
+        )}
+        {checkValues("twitter_site") && (
+          <meta
+            name="twitter:site"
+            content={blogs.data.post.seoDetails.twitter_site}
+          />
+        )}
+        {checkValues("twitter_image") && (
+          <meta
+            name="twitter:image"
+            content={blogs.data.post.seoDetails.twitter_image}
+          />
+        )}
+        {checkValues("twitter_creator") && (
+          <meta
+            name="twitter:creator"
+            content={blogs.data.post.seoDetails.twitter_creator}
+          />
+        )}
+      </Head>
       <div className="container">
         <div className="">
           <div className={Classes["blogs_main"]}>

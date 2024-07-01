@@ -20,7 +20,7 @@ const examCard = ({ exam }) => {
           <div className='row'>
           <div className='col-2'>
           <Image
-            src={exam.exam_logo == null ||exam.exam_logo == "" ? "/assets/images/DummyLOGO.jpg" : exam.exam_logo}
+            src={exam.exam_logo == null ||exam.exam_logo == "" ? "/assets/images/DummyLOGO.jpg" : `https://learnerhunt-assets.s3.us-east-1.amazonaws.com/${exam.exam_logo}`}
             alt="Not Found Image"
             width={80}
             height="auto"
@@ -29,7 +29,7 @@ const examCard = ({ exam }) => {
           <div className='col-md-10'>
             <h6 className="fw-bold flex-wrap">{exam.exam_name}</h6>
             <p className="text-secondary mb-1">Exam Date: {exam.exam_date}</p>
-            <p className="text-secondary mb-1">Mode: {exam.exam_pattern[0].mode}</p>
+            <p className="text-secondary mb-1">Mode: {exam.exam_pattern[0] == undefined?"NA":exam.exam_pattern[0].mode}</p>
           </div>
           
         </div>

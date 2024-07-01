@@ -114,14 +114,14 @@ const [blogid,setBlogId] = useState('');
   }, []);
 
   const fieldChanged = (event) => {
-    console.log(event);
+    // console.log(event);
     setPost({ ...post, [event.target.name]: event.target.value });
   };
   const contentFieldChanaged = (data) => {
     setPost({ ...post, content: data });
   };
   const handleFileChange = (event) => {
-    console.log(event.target.files[0]);
+    // console.log(event.target.files[0]);
     setImage(event.target.files[0]);
 
     const reader = new FileReader();

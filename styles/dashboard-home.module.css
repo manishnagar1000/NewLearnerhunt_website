@@ -1,9 +1,11 @@
 .home-outer-div {
     padding: 1rem;
+    /* background-color:#f0faff; */
+    height:100%;
   }
   .home-outer-div h2 {
     margin-bottom: 1rem;
-    border-bottom: 1px solid #ededed;
+    /* border-bottom: 1px solid #ededed; */
     padding-bottom: 0.5rem;
     font-size: 22px;
     color: var(--textColor);
@@ -14,7 +16,21 @@
     justify-content: flex-start;
     flex-wrap: wrap; */
     margin-left: 1.5rem;
+    /* background-color: red; */
+
   }
+  .dashboard-card-wrapper .custom-radialbox{
+    background-color: #fff;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    padding: 0.8rem;
+    font-size: 18px;
+    font-weight: 500;
+    /* width: 240px; */
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 12px;
+    background: linear-gradient(90deg, rgba(255,95,109,1) 0%, rgba(255,195,113,1) 100%);
+  }
+  
   .dashboard-card {
     /* background-color: #303030; */
     background-color: #fff;
@@ -79,3 +95,58 @@
     }
   }
   
+  .custom-radialbox div{
+    /* margin: 0.3rem 0.2rem; */
+    /* display: flex;
+    justify-content: space-between;
+    align-items: center; */
+  } 
+  .dashboard-lead-table{
+    background-color: white;
+    border-radius: 10px;
+    height: 50vh;
+    width: 100%;
+    /* padding: 1rem; */
+    overflow-y: scroll;
+    position: relative;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 12px;
+    margin-bottom: 2rem;
+  }
+  .dashboard-lead-table .main-heading{
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .dashboard-lead-table .Table-row{
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+    align-items: center;
+    border: 1px solid rgba(149, 157, 165, 0.4);
+    border-radius: 10px;
+    margin: 0.3rem 0;
+  }
+  .dashboard-lead-table .Table-row .Table-col{
+    color: gray;
+  }
+
+  
+  .collegecount{
+    display: flex;
+    justify-content: space-evenly;
+  }
+.college-count-heading{
+  text-align: center;
+  margin: 1rem 0;
+  text-transform: uppercase;
+}
+
+.college-count-label{
+  color: #fff;
+  font-size: 18px;
+  letter-spacing: 1px;
+}
+.college-count-series{
+font-size: 40px;
+color: #fff;
+}

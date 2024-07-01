@@ -123,7 +123,7 @@ const componentList = [
   },
   {
     comp:<TrashColleges/>,
-    slug:"trashcolleges",
+    slug:"trash",
     role:[0,4]
   },
   {

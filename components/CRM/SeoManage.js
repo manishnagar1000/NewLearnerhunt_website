@@ -481,7 +481,7 @@ const SEOManage = () => {
     if (group === "basic") {
       if (type == "select") {
         const selectedblogObj = blogApi.find((obj) => obj._id == value.value);
-        console.log(selectedblogObj);
+        // console.log(selectedblogObj);
         setFormblogData({
           ...formblogData,
           ["canonical"]: `https://www.learnerhunt.com/blog/${selectedblogObj.slug}`,
@@ -498,7 +498,7 @@ const SEOManage = () => {
           ["ogImage"]: `https://learnerhunt-assets.s3.us-east-1.amazonaws.com/${selectedblogObj.banner_image}`,
         });
       } else if (type == "title") {
-        console.log("its a titlte with basic");
+        // console.log("its a titlte with basic");
         setFormblogData({ ...formblogData, [name]: value });
         setTwitterblogDetails({
           ...twitterblogDetails,
@@ -532,7 +532,7 @@ const SEOManage = () => {
         const selectedcourseObj = courseApi.find(
           (obj) => obj._id == value.value
         );
-        console.log(selectedcourseObj);
+        // console.log(selectedcourseObj);
         setFormcourseData({
           ...formcourseData,
           ["canonical"]: `https://www.learnerhunt.com/course/${selectedcourseObj.slug}`,
@@ -549,7 +549,7 @@ const SEOManage = () => {
           ["ogImage"]: `https://learnerhunt-assets.s3.us-east-1.amazonaws.com/${selectedcourseObj.banner_image}`,
         });
       } else if (type == "title") {
-        console.log("its a titlte with basic");
+        // console.log("its a titlte with basic");
         setFormcourseData({ ...formcourseData, [name]: value });
         setTwittercourseDetails({
           ...twittercourseDetails,
@@ -581,7 +581,7 @@ const SEOManage = () => {
     if (group === "basic") {
       if (type == "select") {
         const selectedexamObj = examApi.find((obj) => obj._id == value.value);
-        console.log(selectedexamObj);
+        // console.log(selectedexamObj);
         setFormexamData({
           ...formexamData,
           ["canonical"]: `https://www.learnerhunt.com/exam/${selectedexamObj.slug}`,
@@ -598,7 +598,7 @@ const SEOManage = () => {
           ["ogImage"]: `https://learnerhunt-assets.s3.us-east-1.amazonaws.com/${selectedexamObj.banner_image}`,
         });
       } else if (type == "title") {
-        console.log("its a titlte with basic");
+        // console.log("its a titlte with basic");
         setFormexamData({ ...formexamData, [name]: value });
         setTwitterexamDetails({
           ...twitterexamDetails,

@@ -79,7 +79,7 @@ const DialerModule = ({ toggleDialer, getAssetList }) => {
           body: fd,
         }).then(async (response) => {
           var res = await response.json();
-          console.log(res);
+          // console.log(res);
           if (response.ok) {
             Swal.fire({
               title: "Success",

@@ -1,6 +1,6 @@
-import React from 'react'
-import Classes from '/styles/exams.module.css'
-import Link from 'next/link'
+import React from 'react';
+import Classes from '/styles/exams.module.css';
+import Head from 'next/head';;
 
 
 const formatStringToList = (str) => {
@@ -17,10 +17,127 @@ const formatStringToList = (str) => {
   );
 };
 export default function ExamName({ examdata }) {
-  // console.log(examdata)
+  console.log(examdata)
 //   const dummyBannerImg = collegedata.banner_img_path && collegedata.banner_img_path != "" ? collegedata.banner_img_path : '/assets/images/DummyBG.jpg'
-  const dummyLogoImg = examdata.exam_logo && examdata.exam_logo != "" ? examdata.exam_logo : '/assets/images/DummyLOGO.jpg'
+  const dummyLogoImg = examdata.exam_logo && examdata.exam_logo != "" ? `https://learnerhunt-assets.s3.us-east-1.amazonaws.com/${examdata.exam_logo}` : '/assets/images/DummyLOGO.jpg'
+  const checkValues = (key) => {
+    if (examdata.seoDetails != null && examdata.seoDetails[key] && examdata.seoDetails[key] != "") {
+      return true;
+    }
+    return false;
+  };
   return (
+    <>
+        <Head>
+        {checkValues("title") && <title>{examdata.seoDetails.title}</title>}
+        {checkValues("description") && (
+          <meta name="description" content={examdata.seoDetails.description} />
+        )}
+        {checkValues("keywords") && (
+          <meta name="keywords" content={examdata.seoDetails.keywords} />
+        )}
+        {checkValues("canonical") && (
+          <link rel="canonical" href={examdata.seoDetails.canonical} />
+        )}
+
+        {checkValues("structured_data") && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(examdata.seoDetails.structured_data),
+            }}
+          />
+        )}
+
+        {checkValues("faq_structured_data") && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(examdata.seoDetails.faq_structured_data),
+            }}
+          />
+        )}
+        {checkValues("og_locale") && (
+          <meta property="og:locale" content={examdata.seoDetails.og_locale} />
+        )}
+        {checkValues("og_type") && (
+          <meta property="og:type" content={examdata.seoDetails.og_type} />
+        )}
+        {checkValues("og_title") && (
+          <meta property="og:title" content={examdata.seoDetails.og_title} />
+        )}
+        {checkValues("og_description") && (
+          <meta
+            property="og:description"
+            content={examdata.seoDetails.og_description}
+          />
+        )}
+        {checkValues("og_url") && (
+          <meta property="og:url" content={examdata.seoDetails.og_url} />
+        )}
+        {checkValues("og_site_name") && (
+          <meta property="og:site_name" content="Learnerhunt" />
+        )}
+        {checkValues("og_image") && (
+          <meta property="og:image" content={examdata.seoDetails.og_image} />
+        )}
+        {checkValues("og_image_secure_url") && (
+          <meta
+            property="og:image:secure_url"
+            content={examdata.seoDetails.og_image_secure_url}
+          />
+        )}
+        {checkValues("og_image_width") && (
+          <meta
+            property="og:image:width"
+            content={examdata.seoDetails.og_image_width}
+          />
+        )}
+        {checkValues("og_image_height") && (
+          <meta
+            property="og:image:height"
+            content={examdata.seoDetails.og_image_height}
+          />
+        )}
+        {checkValues("og_image_alt") && (
+          <meta
+            property="og:image:alt"
+            content={examdata.seoDetails.og_image_alt}
+          />
+        )}
+
+        <meta name="twitter:card" content="summary" />
+        {checkValues("twitter_description") && (
+          <meta
+            name="twitter:description"
+            content={examdata.seoDetails.twitter_description}
+          />
+        )}
+        {checkValues("twitter_title") && (
+          <meta
+            name="twitter:title"
+            content={examdata.seoDetails.twitter_title}
+          />
+        )}
+        {checkValues("twitter_site") && (
+          <meta
+            name="twitter:site"
+            content={examdata.seoDetails.twitter_site}
+          />
+        )}
+        {checkValues("twitter_image") && (
+          <meta
+            name="twitter:image"
+            content={examdata.seoDetails.twitter_image}
+          />
+        )}
+        {checkValues("twitter_creator") && (
+          <meta
+            name="twitter:creator"
+            content={examdata.seoDetails.twitter_creator}
+          />
+        )}
+      </Head>
     <div className={Classes['colleges-slug']}>
       <div className="container">
         <div className={Classes['content-section']}>
@@ -294,6 +411,7 @@ export default function ExamName({ examdata }) {
         </div>
       </div>
     </div>
+    </>
   )
 }
 

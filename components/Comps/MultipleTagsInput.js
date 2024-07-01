@@ -45,7 +45,7 @@ class MultipleTagsInput extends Component {
   };
 
   componentDidUpdate(prevProps){
-    console.log(this.props)
+    // console.log(this.props)
     if(prevProps.value != this.props.value){
         this.setState({selectedValues:this.props.value})
     }

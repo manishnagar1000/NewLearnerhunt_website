@@ -14,7 +14,7 @@ export default function index(testeligibility, filterCollege) {
     setIsLoading(true)
     const filterExam_res =  await fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/exams?limit=-1&page=0");
     const filterExam =  await filterExam_res.json();
-    // console.log(filterExam)
+    console.log(filterExam)
     setSearchResults(filterExam.data);
     setIsLoading(false);
   }

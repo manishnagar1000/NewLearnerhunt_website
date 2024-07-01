@@ -15,6 +15,8 @@ import AttachEmailIcon from '@mui/icons-material/AttachEmail';
 import LoopIcon from "@mui/icons-material/Loop";
 import RemarkModal from "./component/RemarkModule";
 import Bitlinksend from "./component/Bitlinksend";
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+
 
 var oldData = [];
 export default class AssignLeads extends Component {
@@ -407,6 +409,65 @@ export default class AssignLeads extends Component {
   }
   })
   }
+
+  handleSendWhatsup = (type,data) => {
+    // console.log(type,data)
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You want to send the Whatsapp!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes",
+    }).then((result) => {
+      if (result.isConfirmed) {
+    try {
+      this.setState({ isLoading: true });
+      const fd = new FormData();
+      fd.append("lid", data._id); 
+      // fd.append("receiver_number", '8383023265'); 
+      fd.append("receiver_number", data.agent_num); 
+      fd.append("receiver_name",`${type == '2'?data.full_name:data.name}`); 
+      fd.append("lead_type",type); 
+
+      fetch(
+        process.env.NEXT_PUBLIC_API_ENDPOINT + "/admin/wa-msg",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("cst")}`,
+          },
+          method: "POST",
+          body: fd,
+        }
+      ).then(async (response) => {
+        var res = await response.json();
+        // console.log(res.data);
+        if (res.error) {
+          Swal.fire({
+            title: "error",
+            text: `${res.error}`,
+            icon: "error",
+            confirmButtonText: "Ok",
+          });
+        } else {
+          Swal.fire({
+            title: "success",
+            text: `${res.message}`,
+            icon: "success",
+            confirmButtonText: "Ok",
+          });
+        }
+        this.setState({ isLoading: false });
+      });
+    } catch (error) {
+      this.setState({ isLoading: false });
+
+      console.error("Failed to fetch OTP:", error);
+    }
+  }
+  })
+  };
   render() {
     return (
       <>
@@ -494,6 +555,9 @@ export default class AssignLeads extends Component {
                             Send Email
                           </th>
                           <th style={{ background: "var(--primary)" }}>
+                            WhatsApp
+                          </th>
+                          <th style={{ background: "var(--primary)" }}>
                             Country
                           </th>
                           <th style={{ background: "var(--primary)" }}>
@@ -555,6 +619,22 @@ export default class AssignLeads extends Component {
                             </Tooltip>
                             
                           </td>
+                          <td className="text-center">
+                            <Tooltip title="Send Whatsapp">
+                              <IconButton
+                                onClick={(e) =>
+                                  this.setState({ leadid: clg._id }, () =>
+                                    this.handleSendWhatsup(11,clg)
+                                  )
+                                }
+                              >
+                                <WhatsAppIcon
+                                  color="success"
+                                  fontSize="small"
+                                />
+                              </IconButton>
+                            </Tooltip>
+                          </td>
                               {/* <td>{clg.email || 'NA'}</td> */}
                               <td>{clg.country || 'NA'}</td>
                               <td>{clg.state || 'NA'}</td>
@@ -588,6 +668,9 @@ export default class AssignLeads extends Component {
                           </th>
                           <th style={{ background: "var(--primary)" }}>
                             Send Email
+                          </th>
+                          <th style={{ background: "var(--primary)" }}>
+                           WhatsApp
                           </th>
                           <th style={{ background: "var(--primary)" }}>
                             Course
@@ -644,6 +727,22 @@ export default class AssignLeads extends Component {
                             
                           </td>
                               {/* <td>{clg.email || 'NA'}</td> */}
+                              <td className="text-center">
+                            <Tooltip title="Send Whatsapp">
+                              <IconButton
+                                onClick={(e) =>
+                                  this.setState({ leadid: clg._id }, () =>
+                                    this.handleSendWhatsup(10,clg)
+                                  )
+                                }
+                              >
+                                <WhatsAppIcon
+                                  color="success"
+                                  fontSize="small"
+                                />
+                              </IconButton>
+                            </Tooltip>
+                          </td>
                               <td>{clg.course || 'NA'}</td>
                               <td
                                 style={{
@@ -673,6 +772,9 @@ export default class AssignLeads extends Component {
                           </th>
                           <th style={{ background: "var(--primary)" }}>
                             Send Email
+                          </th>
+                          <th style={{ background: "var(--primary)" }}>
+                           WhatsApp
                           </th>
                           <th style={{ background: "var(--primary)" }}>
                             Course
@@ -729,6 +831,22 @@ export default class AssignLeads extends Component {
                             </Tooltip>
                             
                           </td>
+                          <td className="text-center">
+                            <Tooltip title="Send Whatsapp">
+                              <IconButton
+                                onClick={(e) =>
+                                  this.setState({ leadid: clg._id }, () =>
+                                    this.handleSendWhatsup(9,clg)
+                                  )
+                                }
+                              >
+                                <WhatsAppIcon
+                                  color="success"
+                                  fontSize="small"
+                                />
+                              </IconButton>
+                            </Tooltip>
+                          </td>
                               <td>{clg.course || 'NA'}</td>
                               <td
                                 style={{
@@ -758,6 +876,9 @@ export default class AssignLeads extends Component {
                           </th>
                           <th style={{ background: "var(--primary)" }}>
                             Send Email
+                          </th>
+                          <th style={{ background: "var(--primary)" }}>
+                            WhatsApp
                           </th>
                           <th style={{ background: "var(--primary)" }}>
                             Course
@@ -818,6 +939,22 @@ export default class AssignLeads extends Component {
                             </Tooltip>
                             
                           </td>
+                          <td className="text-center">
+                            <Tooltip title="Send Whatsapp">
+                              <IconButton
+                                onClick={(e) =>
+                                  this.setState({ leadid: clg._id }, () =>
+                                    this.handleSendWhatsup(8,clg)
+                                  )
+                                }
+                              >
+                                <WhatsAppIcon
+                                  color="success"
+                                  fontSize="small"
+                                />
+                              </IconButton>
+                            </Tooltip>
+                          </td>
                               {/* <td>{clg.email || 'NA'}</td> */}
                               <td>{clg.course || 'NA'}</td>
                               <td>{clg.city || 'NA'}</td>
@@ -850,6 +987,9 @@ export default class AssignLeads extends Component {
                           </th>
                           <th style={{ background: "var(--primary)" }}>
                             Send Email
+                          </th>
+                          <th style={{ background: "var(--primary)" }}>
+                            WhatsApp
                           </th>
                           <th style={{ background: "var(--primary)" }}>
                             Course
@@ -910,6 +1050,22 @@ export default class AssignLeads extends Component {
                             </Tooltip>
                             
                           </td>
+                          <td className="text-center">
+                            <Tooltip title="Send Whatsapp">
+                              <IconButton
+                                onClick={(e) =>
+                                  this.setState({ leadid: clg._id }, () =>
+                                    this.handleSendWhatsup(7,clg)
+                                  )
+                                }
+                              >
+                                <WhatsAppIcon
+                                  color="success"
+                                  fontSize="small"
+                                />
+                              </IconButton>
+                            </Tooltip>
+                          </td>
                               {/* <td>{clg.email || 'NA'}</td> */}
                               <td>{clg.course || 'NA'}</td>
                               <td>{clg.city || 'NA'}</td>
@@ -943,9 +1099,9 @@ export default class AssignLeads extends Component {
                           <th style={{ background: "var(--primary)" }}>
                            Send Email
                           </th>
-                          {/* <th style={{ background: "var(--primary)" }}>
-                            Student Email
-                          </th> */}
+                          <th style={{ background: "var(--primary)" }}>
+                           WhatsApp
+                          </th>
                           <th style={{ background: "var(--primary)" }}>
                             Course
                           </th>
@@ -1002,6 +1158,22 @@ export default class AssignLeads extends Component {
                             </Tooltip>
                             
                           </td>
+                          <td className="text-center">
+                            <Tooltip title="Send Whatsapp">
+                              <IconButton
+                                onClick={(e) =>
+                                  this.setState({ leadid: clg._id }, () =>
+                                    this.handleSendWhatsup(4,clg)
+                                  )
+                                }
+                              >
+                                <WhatsAppIcon
+                                  color="success"
+                                  fontSize="small"
+                                />
+                              </IconButton>
+                            </Tooltip>
+                          </td>
                               {/* <td>{clg.email}</td> */}
                               <td>{clg.course}</td>
                               <td>{clg.qualification}</td>
@@ -1029,6 +1201,9 @@ export default class AssignLeads extends Component {
                           </th>
                           <th style={{ background: "var(--primary)" }}>
                             Remarks
+                          </th>
+                          <th style={{ background: "var(--primary)" }}>
+                          Whatsapp
                           </th>
                           <th style={{ background: "var(--primary)" }}>Fees</th>
                           <th style={{ background: "var(--primary)" }}>Zone</th>
@@ -1071,6 +1246,22 @@ export default class AssignLeads extends Component {
                               </IconButton>
                             </Tooltip>
                           </td>
+                          <td className="text-center">
+                            <Tooltip title="Send Whatsapp">
+                              <IconButton
+                                onClick={(e) =>
+                                  this.setState({ leadid: clg._id }, () =>
+                                    this.handleSendWhatsup(1,clg)
+                                  )
+                                }
+                              >
+                                <WhatsAppIcon
+                                  color="success"
+                                  fontSize="small"
+                                />
+                              </IconButton>
+                            </Tooltip>
+                          </td>
                               <td>{clg.fee}</td>
                               <td>{clg.zone}</td>
                               <td>{clg.course}</td>
@@ -1102,6 +1293,9 @@ export default class AssignLeads extends Component {
                           </th>
                           <th style={{ background: "var(--primary)" }}>
                            Send Email
+                          </th>
+                          <th style={{ background: "var(--primary)" }}>
+                          WhatsApp
                           </th>
                           <th style={{ background: "var(--primary)" }}>
                             Gender
@@ -1163,6 +1357,22 @@ export default class AssignLeads extends Component {
                             </Tooltip>
                             
                           </td>
+                          <td className="text-center">
+                            <Tooltip title="Send Whatsapp">
+                              <IconButton
+                                onClick={(e) =>
+                                  this.setState({ leadid: clg._id }, () =>
+                                    this.handleSendWhatsup(2,clg)
+                                  )
+                                }
+                              >
+                                <WhatsAppIcon
+                                  color="success"
+                                  fontSize="small"
+                                />
+                              </IconButton>
+                            </Tooltip>
+                          </td>
                               {/* <td>{clg.email}</td> */}
                               <td>{clg.gender}</td>
                               <td>{clg.course_interested}</td>
@@ -1195,9 +1405,9 @@ export default class AssignLeads extends Component {
                           <th style={{ background: "var(--primary)" }}>
                            Send Email
                           </th>
-                          {/* <th style={{ background: "var(--primary)" }}>
-                            Email
-                          </th> */}
+                          <th style={{ background: "var(--primary)" }}>
+                            WhatsApp
+                          </th>
                           <th style={{ background: "var(--primary)" }}>
                             Stream
                           </th>
@@ -1253,6 +1463,22 @@ export default class AssignLeads extends Component {
                               </IconButton>
                             </Tooltip>
                             
+                          </td>
+                          <td className="text-center">
+                            <Tooltip title="Send Whatsapp">
+                              <IconButton
+                                onClick={(e) =>
+                                  this.setState({ leadid: clg._id }, () =>
+                                    this.handleSendWhatsup(3,clg)
+                                  )
+                                }
+                              >
+                                <WhatsAppIcon
+                                  color="success"
+                                  fontSize="small"
+                                />
+                              </IconButton>
+                            </Tooltip>
                           </td>
                               {/* <td>{clg.email}</td> */}
                               <td>{clg.selected_stream}</td>

@@ -14,245 +14,131 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-
+import { Chip } from "@mui/material";
+import LeaderboardIcon from "@mui/icons-material/Leaderboard";
+import FlagIcon from "@mui/icons-material/Flag";
+import SpeedIcon from "@mui/icons-material/Speed";
+import GroupIcon from "@mui/icons-material/Group";
+import ContactEmergencyIcon from "@mui/icons-material/ContactEmergency";
+import AddRoadIcon from "@mui/icons-material/AddRoad";
+import ContactPhoneIcon from "@mui/icons-material/ContactPhone";
+import SignalCellularAlt2BarIcon from "@mui/icons-material/SignalCellularAlt2Bar";
+import SchoolIcon from "@mui/icons-material/School";
+import CorporateFareIcon from "@mui/icons-material/CorporateFare";
+import StoreMallDirectoryIcon from "@mui/icons-material/StoreMallDirectory";
+import CreditScoreIcon from "@mui/icons-material/CreditScore";
+const d = () => {
+  let total = 600;
+  let ass = 200;
+  let per = Math.floor((ass / total) * 100);
+  return per;
+};
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
+
+const assigneLeadsIcons = {
+  1: <SpeedIcon color="primary" />,
+  2: <GroupIcon color="secondary" />,
+  3: <ContactEmergencyIcon color="success" />,
+  4: <AddRoadIcon color="action" />,
+  5: <ContactPhoneIcon color="disabled" />,
+  7: <SignalCellularAlt2BarIcon color="primary" />,
+  8: <SchoolIcon color="secondary" />,
+  9: <CorporateFareIcon color="success" />,
+  10: <StoreMallDirectoryIcon color="action" />,
+  11: <CreditScoreIcon color="disabled" />,
+};
+
 export default class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
       baseurl: sessionStorage.getItem("apipathurl"),
       isApiHitComplete: false,
-      ListType: "1",
-      assignleaddata: [],
-      collegeCount: 0,
-      trashcount: 0,
-      activeCAcount: 0,
-      deactiveCAcount: 0,
-      originalAssignData: [],
+      assignedLeadsData: [],
+      collegeAdmins:[],
+      collegeCount: [],
       chartObj: {
-        registeredStud: {
-          series: [
-            {
-              name: "Students",
-              data: [],
-            },
-          ],
-          options: {
-            chart: {
-              id: "registerstud",
-              height: 350,
-              type: "line",
-              // background:'red',
-              zoom: {
-                enabled: false,
-              },
-              toolbar: {
-                show: false,
-              },
-            },
-            dataLabels: {
+      leadsCountBasedOnMonth: {
+        series: [
+          {
+            name: "Lead Per Month",
+            data: [],
+          },
+        ],
+        options: {
+          chart: {
+            id: "leadsCountBasedOnMonth",
+            height: 350,
+            type: "line",
+            // background:'red',
+            zoom: {
               enabled: false,
             },
-            stroke: {
-              curve: "straight",
-            },
-            title: {
-              text: "",
-              align: "left",
-            },
-            grid: {
-              row: {
-                colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
-                opacity: 0.5,
-              },
-            },
-            xaxis: {
-              categories: [],
-            },
-          },
-        },
-        collegeAdmins: {
-          series: [],
-          options: {
-            labels: [],
-            chart: {
-              type: "donut",
-            },
-            title: {
-              text: "",
-              align: "left",
-            },
-            responsive: [
-              {
-                breakpoint: 480,
-                options: {
-                  chart: {
-                    width: 350,
-                  },
-                  legend: {
-                    position: "bottom",
-                  },
-                },
-              },
-            ],
-          },
-        },
-        collegeCount: {
-          series: [],
-          options: {
-            labels: [],
-            chart: {
-              type: "donut",
-            },
-            title: {
-              text: "",
-              align: "left",
-            },
-            responsive: [
-              {
-                breakpoint: 480,
-                options: {
-                  chart: {
-                    width: 350,
-                  },
-                  legend: {
-                    position: "bottom",
-                  },
-                },
-              },
-            ],
-          },
-        },
-        TestElStuds: {
-          series: [
-            {
-              name: "Students",
-              data: [],
-            },
-          ],
-          options: {
-            chart: {
-              id: "TestElStuds",
-              height: 350,
-              type: "line",
-              // background:'red',
-              zoom: {
-                enabled: false,
-              },
-              toolbar: {
-                show: false,
-              },
-            },
-            dataLabels: {
-              enabled: false,
-            },
-            stroke: {
-              curve: "straight",
-            },
-            title: {
-              text: "",
-              align: "left",
-            },
-            grid: {
-              row: {
-                colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
-                opacity: 0.5,
-              },
-            },
-            xaxis: {
-              categories: [],
-            },
-          },
-        },
-        leadsCountBasedOnMonth: {
-          series: [
-            {
-              name: "Lead Per Month",
-              data: [],
-            },
-          ],
-          options: {
-            chart: {
-              id: "leadsCountBasedOnMonth",
-              height: 350,
-              type: "line",
-              // background:'red',
-              zoom: {
-                enabled: false,
-              },
-              toolbar: {
-                show: false,
-              },
-            },
-            dataLabels: {
-              enabled: false,
-            },
-            stroke: {
-              curve: "straight",
-            },
-            title: {
-              text: "",
-              align: "left",
-            },
-            grid: {
-              row: {
-                colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
-                opacity: 0.5,
-              },
-            },
-            xaxis: {
-              categories: [],
-            },
-          },
-        },
-        leadCountBasedOnRemarks: {
-          series: [],
-          options: {
-            labels: [],
-            chart: {
-              type: "polarArea",
-            },
-            title: {
-              text: "",
-              align: "left",
-            },
-            responsive: [
-              {
-                breakpoint: 480,
-                options: {
-                  chart: {
-                    width: 350,
-                  },
-                  legend: {
-                    position: "bottom",
-                  },
-                },
-              },
-            ],
-            tooltip: {
-              enabled: true,
-              onDatasetHover: {
-                highlightDataSeries: true,
-              },
-            },
-          },
-        },
-        leadsCountAssignedNotAssigned: {
-          series: [],
-          options: {
-            legend: {
+            toolbar: {
               show: false,
             },
-            chart: {
-              height: 350,
-              type: "treemap",
+          },
+          dataLabels: {
+            enabled: false,
+          },
+          stroke: {
+            curve: "straight",
+          },
+          title: {
+            text: "",
+            align: "left",
+          },
+          grid: {
+            row: {
+              colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
+              opacity: 0.5,
             },
-            title: {
-              text: "Leads count (Assigned/Total)",
-            },
+          },
+          xaxis: {
+            categories: [],
           },
         },
       },
+      leadCountBasedOnRemarks: {
+      series: [{
+        data: []
+      }],
+      options: {
+        chart: {
+          height: 350,
+          type: 'bar',
+          events: {
+            click: function(chart, w, e) {
+              // console.log(chart, w, e)
+            }
+          }
+        },
+        plotOptions: {
+          bar: {
+            columnWidth: '45%',
+            distributed: true,
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        legend: {
+          show: false
+        },
+        xaxis: {
+          categories: [],
+          labels: {
+            style: {
+              fontSize: '12px'
+            }
+          }
+        },
+        title: {
+          text: '',
+      },
+      },
+    }
+    }
     };
   }
 
@@ -264,235 +150,106 @@ export default class Dashboard extends Component {
       },
     }).then(async (res) => {
       let response = await res.json();
-      // console.log(response.data);
-      // Registered Student
-      var { series, title, xaxis } = response.data.registeredStuds || {};
-      this.state.chartObj.registeredStud.series[0].data = series[0].data;
-      this.state.chartObj.registeredStud.options.title.text = title;
-      this.state.chartObj.registeredStud.options.xaxis = xaxis;
-      // college Admins count
-      var { series, labels, title } = response.data.collegeAdmins || {};
-      this.state.chartObj.collegeAdmins.series = series;
-      this.state.chartObj.collegeAdmins.options.labels = labels;
-      this.state.chartObj.collegeAdmins.options.title.text = title;
-      // college count
-      var { series, labels, title } = response.data.collegeCount || {};
-      this.state.chartObj.collegeCount.series = series;
-      this.state.chartObj.collegeCount.options.labels = labels;
-      this.state.chartObj.collegeCount.options.title.text = title;
-      // test count
-      var { series, title, xaxis } = response.data.TestElStuds || {};
-      this.state.chartObj.TestElStuds.series[0].data = series[0].data;
-      this.state.chartObj.TestElStuds.options.title.text = title;
-      this.state.chartObj.TestElStuds.options.xaxis = xaxis;
-      // leadsCountBasedOnMonth
-      var { data, title, count } = response.data.leadsCountBasedOnMonth || {};
-      // console.log(data)
-      const rd = {
+      console.log(response.data);
+      const { leadsCountAssignedNotAssigned,collegeAdmins,collegeCount } = response.data;
+      // for (const key in leadsCountAssignedNotAssigned) {
+      //   let obj = leadsCountAssignedNotAssigned[key];
+      //   obj["percentage"] = Math.floor((obj.assigned / obj.total) * 100);
+      //   this.state.assignedLeadsData.push(obj);
+      // }
+
+
+         // leadsCountBasedOnMonth
+         var { data, title, count } = response.data.leadsCountBasedOnMonth || {};
+         // console.log(data)
+         const rd = {
+           series: [],
+           categories: [],
+         };
+         data.forEach((el) => {
+           rd.series.push(el.count);
+           rd.categories.push(`${el.date.year}-${el.date.month}`);
+         });
+         this.state.chartObj.leadsCountBasedOnMonth.series[0].data = rd.series;
+         this.state.chartObj.leadsCountBasedOnMonth.options.title.text = title;
+         this.state.chartObj.leadsCountBasedOnMonth.options.xaxis.categories =
+           rd.categories;
+
+             // leadCountBasedOnRemarks
+      var { data,title } = response.data.leadCountBasedOnRemarks || {};
+      const leadremark = {
         series: [],
         categories: [],
       };
       data.forEach((el) => {
-        rd.series.push(el.count);
-        rd.categories.push(`${el.date.year}-${el.date.month}`);
-      });
-      this.state.chartObj.leadsCountBasedOnMonth.series[0].data = rd.series;
-      this.state.chartObj.leadsCountBasedOnMonth.options.title.text = title;
-      this.state.chartObj.leadsCountBasedOnMonth.options.xaxis.categories =
-        rd.categories;
-
-      // leadCountBasedOnRemarks
-      var { title, data } = response.data.leadCountBasedOnRemarks || {};
-      const leadremark = {
-        series: [],
-        labels: [],
-      };
-      data.forEach((el) => {
         leadremark.series.push(el.count);
-        leadremark.labels.push(el.remarks);
+        leadremark.categories.push(el.remarks);
       });
       // console.log(leadremark)
-      this.state.chartObj.leadCountBasedOnRemarks.series = leadremark.series;
-      this.state.chartObj.leadCountBasedOnRemarks.options.labels =
-        leadremark.labels;
+      this.state.chartObj.leadCountBasedOnRemarks.series[0].data  = leadremark.series;
+      this.state.chartObj.leadCountBasedOnRemarks.options.xaxis.categories =leadremark.categories;
       this.state.chartObj.leadCountBasedOnRemarks.options.title.text = title;
 
-      // leadscountassignednotAssigned
 
-      var assigndata = response.data.leadsCountAssignedNotAssigned;
-      // console.log(assigndata)
-      var assignkey = [];
-      for (const key in assigndata) {
-        // console.log(key)
-        assignkey.push({ label: assigndata[key].name, value: key });
-      }
-
-      // const leadassign = {
-      //   series:[],
-      // }
-
-      // console.log(assignkey)
-      let d = assigndata[this.state.ListType];
-      let obj = [
-        { x: "Total Leads", y: d.total },
-        { x: "Assigned Leads", y: d.assigned },
-      ];
-      this.state.chartObj.leadsCountAssignedNotAssigned.series = [{ data: obj }];
       this.setState({
-        assignleaddata: assignkey,
-        originalAssignData: assigndata,
+        assignedLeadsData: leadsCountAssignedNotAssigned,
+        collegeAdmins:collegeAdmins,
+        collegeCount:collegeCount,
+        isApiHitComplete: true,
       });
-
-      this.setState({ isApiHitComplete: true });
-      // this.setState({
-      //   collegeCount: response.data.total_college_count,
-      //   trashcount: response.data.total_deactivated_college_count,
-      //   activeCAcount: response.data.activated_ca_count,
-      //   deactiveCAcount: response.data.deactivated_ca_count,
-      //   isApiHitComplete: true,
-      // });
     });
   }
-  onLeadTypeChange(e) {
-    // console.log(e.target.value);
-    // console.log(this.state.originalAssignData);
-    // const filterdata =
-    // console.log(filterdata)
-    this.state.originalAssignData[e.target.value];
-    let d = this.state.originalAssignData[e.target.value];
-    // console.log(d);
-    let obj = [
-      { x: "Total Leads", y: d.total },
-      { x: "Assigned Leads", y: d.assigned },
-    ];
-    this.state.chartObj.leadsCountAssignedNotAssigned.series = [{ data: obj }];
-    this.setState({ListType:e.target.value})
-  }
+
   componentDidMount() {
     this.getAssetList();
   }
+
   render() {
-    // console.log(this.state.chartObj.registeredStud.series);
     return (
       <div className={Classes["home-outer-div"]}>
         <h2>Dashboard Analysis</h2>
         {this.state.isApiHitComplete ? (
           <div className={Classes["dashboard-card-wrapper"]}>
-            
-            {this.state.chartObj.leadsCountAssignedNotAssigned.series?.length >
-              0 && (
-              <div className="col-md-12 mb-2">
-                <div className="p-2 border bg-white shadow-sm">
-                  <FormControl
-                    variant="standard"
-                    sx={{ m: 1, minWidth: 120 }}
-                    fullWidth
-                  >
-                    <InputLabel id="demo-simple-select-label">
-                      Select the ListType
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={this.state.ListType}
-                      label="Select"
-                      onChange={(e) => this.onLeadTypeChange(e)}
-                    >
-                      {this.state.assignleaddata.map((s) => {
-                        // console.log(s)
-                        return (
-                          <MenuItem key={s.value} value={s.value}>
-                            {s.label}
-                          </MenuItem>
-                        );
-                      })}
-                    </Select>
-                  </FormControl>
-                  <Chart
-                    options={
-                      this.state.chartObj.leadsCountAssignedNotAssigned.options
-                    }
-                    series={
-                      this.state.chartObj.leadsCountAssignedNotAssigned.series
-                    }
-                    type="treemap"
-                    height={300}
-                  />
-                </div>
-              </div>
-            )}
-            <div className="row g-2">
-              {this.state.chartObj.leadCountBasedOnRemarks.series?.length >
-                0 && (
-                <div className="col-md-6">
-                  <div className="p-2 border bg-white shadow-sm">
-                    <Chart
-                      options={
-                        this.state.chartObj.leadCountBasedOnRemarks.options
-                      }
-                      series={
-                        this.state.chartObj.leadCountBasedOnRemarks.series
-                      }
-                      type="polarArea"
-                      height={300}
-                    />
+            {/* <div className="row">
+              {Object.keys(this.state.assignedLeadsData).map((key) => {
+                let obj = this.state.assignedLeadsData[key];
+                return (
+                  <div className="col-2 mb-3">
+                    <div className={Classes["custom-radialbox"]}>
+                      <div>
+                        <p
+                          style={{
+                            fontSize: "14px",
+                            background: "#f8f8f8",
+                            marginBottom: "0",
+                            padding: "0.5rem",
+                          }}
+                        >
+                          {obj.name}
+                        </p>
+                      </div>
+                      <div style={{ padding: "0.5rem" }}>
+                        <span style={{ fontSize: "25px", color: "green" }}>
+                          {obj.assigned}
+                        </span>
+                        <span> are assigned out of</span>
+                        <span style={{ fontSize: "25px", color: "#00BFFF" }}>
+                          {" "}
+                          {obj.total}{" "}
+                        </span>
+                        <span>leads.</span>
+                        
+                      </div>
+                    </div>
                   </div>
-                </div>
-              )}
-              {this.state.chartObj.collegeCount.series?.length > 0 && (
-                <div className="col-md-6">
-                  <div className="p-2 border bg-white shadow-sm">
-                    <Chart
-                      options={this.state.chartObj.collegeCount.options}
-                      series={this.state.chartObj.collegeCount.series}
-                      type="donut"
-                      height={300}
-                    />
-                  </div>
-                </div>
-              )}
-              {this.state.chartObj.collegeAdmins.series?.length > 0 && (
-                <div className="col-md-6">
-                  <div className="p-2 border bg-white shadow-sm">
-                    <Chart
-                      options={this.state.chartObj.collegeAdmins.options}
-                      series={this.state.chartObj.collegeAdmins.series}
-                      type="donut"
-                      height={300}
-                    />
-                  </div>
-                </div>
-              )}
-
-              {this.state.chartObj.registeredStud.series[0].data?.length >
-                0 && (
-                <div className="col-md-6">
-                  <div className="p-2 border bg-white shadow-sm">
-                    <Chart
-                      options={this.state.chartObj.registeredStud.options}
-                      series={this.state.chartObj.registeredStud.series}
-                      type="line"
-                      height={300}
-                    />
-                  </div>
-                </div>
-              )}
-              {this.state.chartObj.TestElStuds.series[0].data?.length > 0 && (
-                <div className="col-md-6">
-                  <div className="p-2 border bg-white shadow-sm">
-                    <Chart
-                      options={this.state.chartObj.TestElStuds.options}
-                      series={this.state.chartObj.TestElStuds.series}
-                      type="line"
-                      height={300}
-                    />
-                  </div>
-                </div>
-              )}
-
-              {this.state.chartObj.leadsCountBasedOnMonth.series[0].data
+                );
+              })}
+            </div> */}
+           
+           <div className="row" style={{margin:'1rem 0'}}>
+            {this.state.chartObj.leadsCountBasedOnMonth.series[0].data
                 ?.length > 0 && (
-                <div className="col-md-6">
+                <div className="col-md-12 gx-0">
                   <div className="p-2 border bg-white shadow-sm">
                     <Chart
                       options={
@@ -505,112 +262,169 @@ export default class Dashboard extends Component {
                   </div>
                 </div>
               )}
-            </div>
+           </div>
 
-            {/* <div className={Classes["dashboard-card"]}>
-          <div className="row">
-            <div className="col-9">
-              <p>Total Colleges</p>
-              {this.state.isApiHitComplete ? (
-                <span className={Classes["number"]}>{this.state.collegeCount}</span>
-              ) : (
-                <div style={{ margin: "0.6rem 0rem" }}>
-                  <Spinner />
-                </div>
-              )}
+
+             <div className="row">
+        {this.state.collegeAdmins.labels.map((label, index) => (
+          <div className="col-md-3">
+
+            <div className={Classes["custom-radialbox"]} key={index}>
+              <div style={{margin:'0.2rem 0',color:"#fff"}}><GroupIcon/></div>
+              <div className={Classes['college-count-label']}>{label}</div>
+              <div className={Classes['college-count-series']}>{this.state.collegeAdmins.series[index]}</div>
             </div>
-            <div className="col-3 d-flex justify-content-end">
-              <div className={Classes["img-div"]}>
-               <MapsHomeWorkIcon />
-              </div>
-            </div>
-            <div className="col-6">
-              <Link href="/adminportal/allcollege">
-                <ArrowRightAltIcon />
-                goto
-              </Link>
-            </div>
-                
+        </div>
+        ))}
+        {this.state.collegeCount.labels.map((label, index) => (
+        <div className="col-md-3">
+            <div className={Classes["custom-radialbox"]} key={index}>
+            <div style={{margin:'0.2rem 0',color:"#fff"}}><CorporateFareIcon /></div>
+              <div className={Classes['college-count-label']}>{label}</div>
+              <div className={Classes['college-count-series']}>{this.state.collegeCount.series[index]}</div>
           </div>
         </div>
-        <div className={Classes["dashboard-card"]}>
-          <div className="row">
-            <div className="col-9">
-              <p>Deactivated Colleges</p>
-              {this.state.isApiHitComplete ? (
-                <span className={Classes["number"]}>{this.state.trashcount}</span>
-              ) : (
-                <div style={{ margin: "0.6rem 0rem" }}>
-                  <Spinner />
-                </div>
-              )}
+
+        ))}
+    </div>
+
+
+
+
+
+
+
+
+
+            {/* registered colleges and registered college admin */}
+            {/* <div className={Classes['college-outer-count']}>
+             <div className="row">
+        <div className="col-md-6 mb-3">
+          <h3 className={Classes['college-count-heading']}>{this.state.collegeAdmins.title}</h3>
+          <div className={Classes['collegecount']}>
+        {this.state.collegeAdmins.labels.map((label, index) => (
+            <div className={Classes["custom-radialbox"]} key={index}>
+              <div >{label}</div>
+              <div>{this.state.collegeAdmins.series[index]}</div>
             </div>
-            <div className="col-3 d-flex justify-content-end">
-              <div className={Classes["img-div"]}>
-               <DeleteSweepIcon />
-              </div>
-            </div>
-            <div className="col-6">
-              <Link href="/adminportal/trashcolleges">
-                <ArrowRightAltIcon />
-                goto
-              </Link>
-            </div>
-                
-          </div>
+        ))}
         </div>
-        <div className={Classes["dashboard-card"]}>
-          <div className="row">
-            <div className="col-9">
-              <p>Activated College Admins</p>
-              {this.state.isApiHitComplete ? (
-                <span className={Classes["number"]}>{this.state.activeCAcount}</span>
-              ) : (
-                <div style={{ margin: "0.6rem 0rem" }}>
-                  <Spinner />
-                </div>
-              )}
-            </div>
-            <div className="col-3 d-flex justify-content-end">
-              <div className={Classes["img-div"]}>
-               <GroupAddIcon />
-              </div>
-            </div>
-            <div className="col-6">
-              <Link href="/adminportal/activedeactive-clg?ca=1">
-                <ArrowRightAltIcon />
-                goto
-              </Link>
-            </div>
-                
-          </div>
         </div>
-        <div className={Classes["dashboard-card"]}>
-          <div className="row">
-            <div className="col-9">
-              <p>Deactivated College Admins</p>
-              {this.state.isApiHitComplete ? (
-                <span className={Classes["number"]}>{this.state.deactiveCAcount}</span>
-              ) : (
-                <div style={{ margin: "0.6rem 0rem" }}>
-                  <Spinner />
+ <div className="col-md-6 mb-3">
+          <h3 className={Classes['college-count-heading']}>{this.state.collegeCount.title}</h3>
+          <div className={Classes['collegecount']}>
+        {this.state.collegeCount.labels.map((label, index) => (
+            <div className={Classes["custom-radialbox"]} key={index}>
+              <div>{label}</div>
+              <div>{this.state.collegeCount.series[index]}</div>
+          </div>
+        ))}
+        </div>
+        </div>
+      </div>
+      </div> */}
+
+      {/* all leads */}
+            <div className="row">
+              <div className="col-md-6">
+                <div className={Classes["dashboard-lead-table"]}>
+                  <div
+                    className={Classes["Table-nav"]}
+                    style={{
+                      position: "sticky",
+                      top: "0",
+                      left: "0",
+                      background: "#fff",
+                      padding: "0.5rem",
+                    }}
+                  >
+               
+                    <div
+                      className={Classes["Table-row"]}
+                      style={{
+                        borderRadius: "0px",
+                        background: "#f8f8f8",
+                        fontWeight: "600",
+                        margin:"0"
+                      }}
+                    >
+                      <span>Leads Name</span>
+                      <div
+                        style={{
+                          display: "flex",
+                          width: "300px",
+                          justifyContent: "space-evenly",
+                        }}
+                      >
+                        <span className={Classes["Table-col"]} style={{color:"#00bfff"}}>
+                          Total Leads
+                        </span>
+                        <span className={Classes["Table-col"]} style={{color:"green"}}>
+                          Assigned Leads
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  {Object.keys(this.state.assignedLeadsData).map((key) => {
+                    let obj = this.state.assignedLeadsData[key];
+                    return (
+                      <>
+                        <div className={Classes["Table-row"]} style={{margin:"0.3rem 0.5rem"}}>
+                          <span> {obj.name}</span>
+                          <div
+                            style={{
+                              display: "flex",
+                              width: "300px",
+                              justifyContent: "space-around",
+                            }}
+                          >
+                            <span className={Classes["Table-col"]}>
+                              {" "}
+                              {obj.total}
+                            </span>
+                            <span className={Classes["Table-col"]}>
+                              {" "}
+                              {obj.assigned}
+                            </span>
+                          </div>
+                        </div>
+                      </>
+                    );
+                  })}
+                </div>
+              </div>
+              {/* <div className="col-md-6">
+                <div className={Classes["dashboard-lead-table"]}>
+                  <div className={Classes["Table-nav"]}>
+                    <span className={Classes["main-heading"]}>All Leads</span>
+                  </div>
+                  <div className={Classes["Table-row"]}>
+                    <span>Ashely Davis</span>
+                    <div>
+                      <span className={Classes["Table-col"]}>4th Dec 22</span>
+                      <span className={Classes["Table-col"]}>Core Product</span>
+                    </div>
+                  </div>
+                </div>
+              </div> */}
+              <div className="col-md-6">
+              {this.state.chartObj.leadCountBasedOnRemarks.series[0].data
+                ?.length > 0 && (
+                <div className="col-md-12 gx-0">
+                  <div className="p-2 border bg-white shadow-sm">
+                    <Chart
+                      options={
+                        this.state.chartObj.leadCountBasedOnRemarks.options
+                      }
+                      series={this.state.chartObj.leadCountBasedOnRemarks.series}
+                      type="bar"
+                      height={300}
+                    />
+                  </div>
                 </div>
               )}
-            </div>
-            <div className="col-3 d-flex justify-content-end">
-              <div className={Classes["img-div"]}>
-               <PersonAddDisabledIcon />
               </div>
             </div>
-            <div className="col-6">
-              <Link href="/adminportal/activedeactive-clg?ca=0">
-                <ArrowRightAltIcon />
-                goto
-              </Link>
-            </div>
-                
-          </div>
-        </div> */}
           </div>
         ) : (
           <div
@@ -624,3 +438,42 @@ export default class Dashboard extends Component {
     );
   }
 }
+
+
+
+{/* <Chip
+                          size="small"
+                          label={
+                            <div>
+                              Assigned Leads{" "}
+                              <span
+                                style={{
+                                  fontSize: "20px",
+                                  marginLeft: "0.2rem",
+                                }}
+                              >
+                                ({obj.assigned})
+                              </span>
+                            </div>
+                          }
+                          color="success"
+                          variant="outlined"
+                        />
+                        <Chip
+                          size="small"
+                          label={
+                            <div>
+                              Total Leads{" "}
+                              <span
+                                style={{
+                                  fontSize: "20px",
+                                  marginLeft: "0.2rem",
+                                }}
+                              >
+                                ({obj.total})
+                              </span>
+                            </div>
+                          }
+                          color="primary"
+                          variant="outlined"
+                        /> */}

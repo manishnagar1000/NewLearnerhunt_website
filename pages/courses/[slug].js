@@ -2,6 +2,7 @@ import React from "react";
 import Classes from "/styles/courses.module.css";
 import Link from "next/link";
 import FAQ from "@/components/Faq";
+import Head from "next/head";
 
 const formatStringToList = (str) => {
   const [dynamicLine, ...listItems] = str?.split("<LIST>");
@@ -21,9 +22,125 @@ const formatStringToList = (str) => {
   }
 };
 export default function CourseName({ coursedata }) {
-  // console.log(coursedata);
-
+  console.log(coursedata);
+  const checkValues = (key) => {
+    if (coursedata.seoDetails != null && coursedata.seoDetails[key] && coursedata.seoDetails[key] != "") {
+      return true;
+    }
+    return false;
+  };
   return (
+    <>
+    <Head>
+        {checkValues("title") && <title>{coursedata.seoDetails.title}</title>}
+        {checkValues("description") && (
+          <meta name="description" content={coursedata.seoDetails.description} />
+        )}
+        {checkValues("keywords") && (
+          <meta name="keywords" content={coursedata.seoDetails.keywords} />
+        )}
+        {checkValues("canonical") && (
+          <link rel="canonical" href={coursedata.seoDetails.canonical} />
+        )}
+
+        {checkValues("structured_data") && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(coursedata.seoDetails.structured_data),
+            }}
+          />
+        )}
+
+        {checkValues("faq_structured_data") && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(coursedata.seoDetails.faq_structured_data),
+            }}
+          />
+        )}
+        {checkValues("og_locale") && (
+          <meta property="og:locale" content={coursedata.seoDetails.og_locale} />
+        )}
+        {checkValues("og_type") && (
+          <meta property="og:type" content={coursedata.seoDetails.og_type} />
+        )}
+        {checkValues("og_title") && (
+          <meta property="og:title" content={coursedata.seoDetails.og_title} />
+        )}
+        {checkValues("og_description") && (
+          <meta
+            property="og:description"
+            content={coursedata.seoDetails.og_description}
+          />
+        )}
+        {checkValues("og_url") && (
+          <meta property="og:url" content={coursedata.seoDetails.og_url} />
+        )}
+        {checkValues("og_site_name") && (
+          <meta property="og:site_name" content="Learnerhunt" />
+        )}
+        {checkValues("og_image") && (
+          <meta property="og:image" content={coursedata.seoDetails.og_image} />
+        )}
+        {checkValues("og_image_secure_url") && (
+          <meta
+            property="og:image:secure_url"
+            content={coursedata.seoDetails.og_image_secure_url}
+          />
+        )}
+        {checkValues("og_image_width") && (
+          <meta
+            property="og:image:width"
+            content={coursedata.seoDetails.og_image_width}
+          />
+        )}
+        {checkValues("og_image_height") && (
+          <meta
+            property="og:image:height"
+            content={coursedata.seoDetails.og_image_height}
+          />
+        )}
+        {checkValues("og_image_alt") && (
+          <meta
+            property="og:image:alt"
+            content={coursedata.seoDetails.og_image_alt}
+          />
+        )}
+
+        <meta name="twitter:card" content="summary" />
+        {checkValues("twitter_description") && (
+          <meta
+            name="twitter:description"
+            content={coursedata.seoDetails.twitter_description}
+          />
+        )}
+        {checkValues("twitter_title") && (
+          <meta
+            name="twitter:title"
+            content={coursedata.seoDetails.twitter_title}
+          />
+        )}
+        {checkValues("twitter_site") && (
+          <meta
+            name="twitter:site"
+            content={coursedata.seoDetails.twitter_site}
+          />
+        )}
+        {checkValues("twitter_image") && (
+          <meta
+            name="twitter:image"
+            content={coursedata.seoDetails.twitter_image}
+          />
+        )}
+        {checkValues("twitter_creator") && (
+          <meta
+            name="twitter:creator"
+            content={coursedata.seoDetails.twitter_creator}
+          />
+        )}
+      </Head>
     <div className={Classes["colleges-slug"]}>
       <div className="container">
         <div className={Classes["content-section"]}>
@@ -316,6 +433,7 @@ export default function CourseName({ coursedata }) {
         </div>
       </div>
     </div>
+    </>
   );
 }
 

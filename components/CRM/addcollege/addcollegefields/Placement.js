@@ -318,13 +318,11 @@ console.error('Error:', error);
               <div className={Classes["form-group"]}>
                 <label className={Classes["labelname"]} htmlFor="name">
                   Total Number Of Job Offered
-                  <span className={Classes["error"]}>*</span>
                 </label>
                 <input
                   type="text"
                   className="form-control"
                   placeholder="No of Job Offered"
-                  required
                   value={this.state.jobofferd}
                   onChange={(e) => this.setState({ jobofferd:e.target.value.replace(/\D/g, "")})}
                 />
@@ -334,13 +332,11 @@ console.error('Error:', error);
               <div className={Classes["form-group"]}>
                 <label className={Classes["labelname"]} htmlFor="name">
                   Total No Of Companies Visited
-                  <span className={Classes["error"]}>*</span>
                 </label>
                 <input
                   type="text"
                   className="form-control"
                   placeholder="No of Companies Visited"
-                  required
                   value={this.state.companyvisit}
                   onChange={(e) =>
                     this.setState({ companyvisit:e.target.value.replace(/\D/g, "") })
