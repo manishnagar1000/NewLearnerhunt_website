@@ -103,9 +103,9 @@ const AboutUsPage = () => {
           <img
             src="/assets/images/about-us/about-us.webp"
             // className="img-fluid"
-            alt="Logo"
-            width={400}
-            height={400}
+            alt="About-Logo"
+            width={350}
+            height={350}
           />
           {/* <Image
       width={350}

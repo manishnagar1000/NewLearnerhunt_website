@@ -15,6 +15,7 @@ import {
   Slider,
 } from "@mui/material";
 import SearchModal from "./SearchModal";
+import { Typewriter } from "react-simple-typewriter";
 
 const SelectionBtns = [
   {
@@ -46,6 +47,7 @@ const HomepageHeroSection = ({ data }) => {
   const [selectedExam, setSelectedExam] = useState("");
   const [selectedRanking, setSelectedRanking] = useState("");
   const [error,setError] = useState(false)
+  const [isTyping,setIsTyping] = useState(false)
   // const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const router = useRouter();
 
@@ -95,7 +97,16 @@ const HomepageHeroSection = ({ data }) => {
         <div className="row">
           <div className="col-lg-7 d-none d-lg-block ">
             <div className={Classes["herosection-desc"]}>
-              <h1> Learnerhunt - Your Path to Exceptional Education</h1>
+              {/* <h1> Learnerhunt - Your Path to Exceptional Education</h1> */}
+              <h1 style={{height: "12vh"}}><Typewriter
+                words={['Learnerhunt - Your Path to Exceptional Education']}
+                loop={false}
+                typeSpeed={50}
+                deleteSpeed={40}
+                delaySpeed={2000}
+                onLoopDone={() => setIsTyping(false)}
+                stopBlinkinCursor={!isTyping}
+              /></h1>
               {/* <ul>
               <li>
               Forem ipsum dolor sit amet, consectetur adipiscing 

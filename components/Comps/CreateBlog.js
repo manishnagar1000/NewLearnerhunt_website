@@ -22,6 +22,17 @@ var oldData = [];
 
 export default function CreateBlog() {
   const editor = useRef(null);
+  const config = {
+    uploader: {
+        insertImageAsBase64URI: true,
+    },
+    buttons: [
+        "bold", "italic", "underline", "strikethrough", "eraser", "ul", "ol", 
+        "font", "fontsize", "paragraph", "lineHeight", "superscript", 
+        "subscript", "classSpan", "file", "image", "video", "spellcheck", 
+        "speechRecognize"
+    ],
+};
   const [categories, setCategories] = useState([]);
   const [blogApi, setBlogApi] = useState([]);
 const [blogid,setBlogId] = useState('');
@@ -563,6 +574,7 @@ const [blogid,setBlogId] = useState('');
                   <JoditEditor
                     ref={editor}
                     value={post.content}
+                    config={config}
                     onChange={(newContent) => contentFieldChanaged(newContent)}
                   />
                 </div>

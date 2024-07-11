@@ -164,9 +164,9 @@ const PopForm = () => {
               <div className={Styles.mainDiv}>
                 <div className={Styles.textDiv}>
 
-                  <Typography className={Styles.mainHeading} id="modal-modal-title" variant="h6" component="h2"  >
+                  <h4 className={Styles.mainHeading} id="modal-modal-title"  >
                     Scholarship upto <Badge bg="danger" >75%</Badge>
-                  </Typography>
+                  </h4>
                   <h5 className={Styles.subHeading}>
                     Get Admission in Your Dream College/University
                   </h5>
@@ -183,11 +183,9 @@ const PopForm = () => {
 
             </Col>
             <Col lg={6} md={12} sm={12} className="mt-2">
-              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                <h5 className={Styles.formHeading}>
+                <h6 className={Styles.formHeading}>
                   Please enter your details to continue
-                </h5>
-              </Typography>
+                </h6>
               <form onSubmit={handleSubmit}>
                 <TextField
                   label="Name"

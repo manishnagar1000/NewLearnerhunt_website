@@ -527,51 +527,36 @@ export default class Gernal extends Component {
               // console.log(res.error)
               this.setState({ isLoading: false });
 
-              // if (response.ok) {
-              //   // console.log("hello", response.data);
-              //   Swal.fire({
-              //     title: "Success",
-              //     text: `${res.message}`,
-              //     icon: "success",
-              //     confirmButtonText: "Ok",
-              //   }).then(() => {
-              //     this.setState(
-              //       {
-              //         collegename: "",
-              //         selectedCountry: "",
-              //         selectedState: "",
-              //         selectedCity: "",
-              //         selectedcollegetype: "",
-              //         selectedValues: [],
-              //         selectedKeyword: [],
-              //         ratings: "",
-              //         selectedFile: null,
-              //       },
-              //       () => (this.fileInputRef.current.value = null)
-              //     );
-              //   });
-              // } else {
-              //   if (res.error && res.status == 0) {
-              //     Swal.fire({
-              //       title: "error",
-              //       text: `${res.error}`,
-              //       icon: "error",
-              //       confirmButtonText: "Login",
-              //     }).then(() => {
-              //       localStorage.removeItem("pt");
-              //       window.location.href = "/adminportal";
-              //     });
-              //   } else {
-              //     Swal.fire({
-              //       title: "error",
-              //       text: `${res.error}`,
-              //       icon: "error",
-              //       confirmButtonText: "Ok",
-              //     }).then(() => {
-              //       this.setState({ isLoading: false });
-              //     });
-              //   }
-              // }
+              if (response.ok) {
+                // console.log("hello", response.data);
+                Swal.fire({
+                  title: "Success",
+                  text: `${res.message}`,
+                  icon: "success",
+                  confirmButtonText: "Ok",
+                })
+              } else {
+                if (res.error && res.status == 0) {
+                  Swal.fire({
+                    title: "error",
+                    text: `${res.error}`,
+                    icon: "error",
+                    confirmButtonText: "Login",
+                  }).then(() => {
+                    localStorage.removeItem("pt");
+                    window.location.href = "/adminportal";
+                  });
+                } else {
+                  Swal.fire({
+                    title: "error",
+                    text: `${res.error}`,
+                    icon: "error",
+                    confirmButtonText: "Ok",
+                  }).then(() => {
+                    this.setState({ isLoading: false });
+                  });
+                }
+              }
             });
           }
         } catch (error) {

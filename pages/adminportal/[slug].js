@@ -54,32 +54,32 @@ const componentList = [
   {
     comp: <Addcollege />,
     slug: "addcollege",
-    role:[4]
+    role:[4,5]
   },
   {
     comp: <Allcollege />,
     slug: "allcollege",
-    role:[0,4]
+    role:[0,4,5]
   },
   {
     comp: <AddCourses />,
     slug: "addcourse",
-    role:[4]
+    role:[4,5]
   },
   {
     comp: <AllCourses />,
     slug: "allcourses",
-    role:[0,4]
+    role:[0,4,5]
   },
   {
     comp: <AddExams />,
     slug: "addexam",
-    role:[4]
+    role:[4,5]
   },
   {
     comp: <AllExams />,
     slug: "allexams",
-    role:[0,4]
+    role:[0,4,5]
   },
   {
     comp:<ApiIntegration/>,
@@ -124,7 +124,7 @@ const componentList = [
   {
     comp:<TrashColleges/>,
     slug:"trash",
-    role:[0,4]
+    role:[0,4,5]
   },
   {
     comp:<PopupLeads/>,

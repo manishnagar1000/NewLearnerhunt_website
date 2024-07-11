@@ -40,6 +40,8 @@ import FormLabel from "@mui/material/FormLabel";
 import InputLabel from "@mui/material/InputLabel";
 import { Spinner } from "react-bootstrap";
 import ScreenSearchDesktopOutlinedIcon from "@mui/icons-material/ScreenSearchDesktopOutlined";
+import Loading from "@/components/Comps/Loading";
+
 const headCells = [
   {
     id: "userrole",
@@ -238,6 +240,8 @@ export default function EnhancedTable() {
   }, []);
 
   const getUserList = () => {
+    setIsLoading(true)
+
     fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/crm-users-list`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("pt")}`,
@@ -249,6 +253,7 @@ export default function EnhancedTable() {
       if (response.data) {
         if (response.data.length > 0) {
           setRows(response.data);
+          setIsLoading(false)
           // this.setState({ clgList: response.data, isDataFound: true });
         }
         oldData = response.data;
@@ -312,47 +317,7 @@ export default function EnhancedTable() {
   };
 
   const isSelected = (id) => selected.indexOf(id) !== -1;
-  // const handleApprovalChange = (e, clg) => {
-  //   // this.setState({ approvalStatus: e.target.value });
-  //   // console.log(e.target.checked,e.target.value)
-  //   const s = e.target.checked ? "1" : "0";
-  //   // this.setState({ isLoading: true });
-
-  //   fetch(
-  //     process.env.NEXT_PUBLIC_API_ENDPOINT +
-  //       `/admin/crm-users-list?id=${clg._id}&s=${s}`,
-  //     {
-  //       headers: {
-  //         Authorization: `Bearer ${localStorage.getItem("pt")}`,
-  //       },
-  //       method: "PUT",
-  //     }
-  //   ).then(async (response) => {
-  //     var res = await response.json();
-  //     // console.log(res);
-  //     // this.setState({ isLoading: false });
-  //     // setIsLoading(false);
-  //     if (response.ok) {
-  //       Swal.fire({
-  //         title: "Success",
-  //         html: `${res.message}`,
-  //         icon: "success",
-  //         confirmButtonText: "Ok",
-  //       }).then(() => {
-  //         getUserList();
-  //       });
-  //     } else {
-  //       Swal.fire({
-  //         title: "error",
-  //         html: `${res.error}`,
-  //         icon: "error",
-  //         confirmButtonText: "Ok",
-  //       }).then(() => {
-  //         setIsLoading(false);
-  //       });
-  //     }
-  //   });
-  // };
+ 
 
   const handleSearchChange = (value) => {
     const searchTerm = value.trim().replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
@@ -889,6 +854,8 @@ export default function EnhancedTable() {
           </Box>
         </Modal.Body>
       </Modal>
+      <Loading show={isLoading} onHide={() => setIsLoading(false)} />
+
     </>
   );
 }

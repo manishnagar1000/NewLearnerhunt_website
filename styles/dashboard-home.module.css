@@ -30,6 +30,28 @@
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 12px;
     background: linear-gradient(90deg, rgba(255,95,109,1) 0%, rgba(255,195,113,1) 100%);
   }
+  .dashboard-card-wrapper .custom-radialbox-dm{
+    background-color: #fff;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    padding: 0.8rem;
+    font-size: 18px;
+    font-weight: 500;
+    /* width: 240px; */
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 12px;
+    background: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
+  }
+  .dashboard-card-wrapper .custom-radialbox-dm-my{
+    background-color: #fff;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    padding: 0.8rem;
+    font-size: 18px;
+    font-weight: 500;
+    /* width: 240px; */
+    /* box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 12px; */
+    background-image: linear-gradient(to top, #f3e7e9 0%, #e3eeff 99%,#e3eeff 100%);
+  }
   
   .dashboard-card {
     /* background-color: #303030; */
@@ -95,12 +117,7 @@
     }
   }
   
-  .custom-radialbox div{
-    /* margin: 0.3rem 0.2rem; */
-    /* display: flex;
-    justify-content: space-between;
-    align-items: center; */
-  } 
+
   .dashboard-lead-table{
     background-color: white;
     border-radius: 10px;
@@ -129,7 +146,9 @@
   .dashboard-lead-table .Table-row .Table-col{
     color: gray;
   }
-
+.Leadname{
+  font-size: 14px;
+}
   
   .collegecount{
     display: flex;
@@ -149,4 +168,27 @@
 .college-count-series{
 font-size: 40px;
 color: #fff;
+}
+.my-count{
+  padding: 1rem;
+  border: 1px solid gainsboro;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+
+}
+.college-count-label-my{
+  /* color: #fff; */
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+.college-count-series-my{
+font-size: 30px;
+/* color: #fff; */
+}
+.three-d-text {
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: #333;
 }

@@ -46,16 +46,28 @@ export default class Gallary extends Component {
       if (response.error) {
         this.setState({ isError: true, errorMsg: response.error });
       } else {
-        const {
-          banner_img_path,square_img_path,logo_img_path
-        } = response.data;
-      this.setState(
-        {
-          imageLogo: `https://learnerhunt-assets.s3.us-east-1.amazonaws.com/${logo_img_path}`,
-          imageSquare: `https://learnerhunt-assets.s3.us-east-1.amazonaws.com/${square_img_path}`,
-          imageBanner: `https://learnerhunt-assets.s3.us-east-1.amazonaws.com/${banner_img_path}`,
-         },
-      )
+        if(response.data == null){
+          this.setState(
+            {
+              imageLogo: '',
+              imageSquare: '',
+              imageBanner: '',
+             },
+          )
+        }else{
+          const {
+            banner_img_path,square_img_path,logo_img_path
+          } = response.data;
+          this.setState(
+            {
+              imageLogo: `https://learnerhunt-assets.s3.us-east-1.amazonaws.com/${logo_img_path}`,
+              imageSquare: `https://learnerhunt-assets.s3.us-east-1.amazonaws.com/${square_img_path}`,
+              imageBanner: `https://learnerhunt-assets.s3.us-east-1.amazonaws.com/${banner_img_path}`,
+             },
+          )
+        }
+ 
+    
       }
     });
   }

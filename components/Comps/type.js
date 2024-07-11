@@ -1212,7 +1212,654 @@ export const ProcessData = [
   { title: 'Disbursement', icon: '/assets/images/Loan/Process/dollar.gif' },
 ];
 
+export const StudyAbroadData = [
+  {
+    country: "United States",
+    flag: "/assets/images/StudyAbroad/flags/usa.png",
+    image: "/assets/images/StudyAbroad/images/statue-of-liberty2.webp",
+    slug: "/studyabroad/United-States"
+  },
+  {
+    country: "Australia",
+    flag: "/assets/images/StudyAbroad/flags/australia.webp",
+    image: "/assets/images/StudyAbroad/images/australia1.webp",
+    slug: "/studyabroad/Australia"
 
+  },
+  {
+    country: "Germany",
+    flag: "/assets/images/StudyAbroad/flags/germany.webp",
+    image: "/assets/images/StudyAbroad/images/germany1.webp",
+    slug: "/studyabroad/Germany"
+
+  },
+  {
+    country: "UK",
+    flag: "/assets/images/StudyAbroad/flags/united-kingdom.webp",
+    image: "/assets/images/StudyAbroad/images/uk.webp",
+    slug: "/studyabroad/UK"
+  },
+  {
+    country: "France",
+    flag: "/assets/images/StudyAbroad/flags/france.webp",
+    image: "/assets/images/StudyAbroad/images/france1.webp",
+    slug: "/studyabroad/France"
+
+  },
+  {
+    country: "China",
+    flag: "/assets/images/StudyAbroad/flags/china.webp",
+    image: "/assets/images/StudyAbroad/images/china.webp",
+    slug: "/studyabroad/China"
+  },
+]
+
+export const StudyAbroadInnerPageData = {
+  "countries": [
+    {
+      "countryName": "Australia",
+      "countryImage": "/assets/images/StudyAbroad/StudyAbroadInner/countryImages/australia.jpg",
+      "bannerImage": "/assets/images/StudyAbroad/StudyAbroadInner/bannerImage/australiaBANNER.jpg",
+      "slug": "Australia",
+      "details": {
+        "overview": "Australia is a small country in landscape but wide in opportunities. Australia has gained traction in terms of its education system and career opportunities over the years for its aesthetic environment, incredible career growth and vibrant lifestyle. ",
+        "highlights": [
+          "Australia has 26.69 million population.",
+          "Australia has 37 public universities, 3 private universities and 2 international universities.",
+          "Sydney is the business capital of Australia and Canberra is the National capital of Australia. ",
+          "Australian dollar (AU$) is the currency of Australia.",
+        ],
+        "why": [
+          "9 of world’s top 100 universities.",
+          "100% literacy rate. ",
+          "Best advanced specialized courses.",
+          "Diverse career opportunities.",
+          "Research opportunities and career options.",
+          "20 hours a week work permit during session and full time work permit post qualification and more options in settlement.",
+          "Worldwide recognition and highly certified programmes.",
+          "Affordable than other USA & UK. ",
+        ]
+        ,
+        "qualifications_offered": [
+          "Bachelor’s degree.",
+          "Master’s degree.",
+          "Doctoral Degree.",
+          "Certificate Courses.",
+          "Associate degree.",
+        ],
+        "why_study": [
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/global-education.webp",
+            text: "Globally recognized qualifications"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/graduation-hat.webp",
+            text: "A great place to study and work"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/test.webp",
+
+            text: "Research focused & technology driven education"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/wallet.webp",
+
+            text: "Affordable education compared to UK, USA"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/teamwork.webp",
+            text: "Extremely friendly & co-operative people"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/cloudy.webp",
+            text: "Excellent Weather suitable for Indian students"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/contractor.webp",
+            text: "Ample opportunities to work while studying"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/medal.webp",
+            text: "Post Qualification work & settlement options"
+          }
+        ],
+        "FAQs": [
+          {
+            question: 'What are the benefits of studying abroad?',
+            answer: 'Studying abroad can enhance your cultural awareness, language skills, and global perspective. It also offers opportunities for personal growth and can enhance your career prospects.',
+          },
+          {
+            question: 'How do I choose the right study abroad program?',
+            answer: 'Consider factors like academic fit, location, program duration, cost, language requirements, and support services available to international students.',
+          },
+          {
+            question: 'What are the requirements to study abroad?',
+            answer: 'Requirements vary by program and country, but typically include academic transcripts, language proficiency tests (like TOEFL or IELTS), letters of recommendation, and a personal statement.'
+          },
+          {
+            question: 'When should I start planning to study abroad?',
+            answer: 'It is recommended to start planning at least a year in advance to research programs, prepare application materials, and secure funding.',
+          },
+          {
+            question: 'How long can I study abroad for?',
+            answer: 'Study abroad programs can range from a few weeks (summer programs) to a full academic year or longer, depending on the program and your goals.',
+          },
+
+        ]
+      }
+    },
+    {
+      "countryName": "United States",
+      "countryImage": "/assets/images/StudyAbroad/StudyAbroadInner/countryImages/usa.jpg",
+      "bannerImage": "/assets/images/StudyAbroad/StudyAbroadInner/bannerImage/usaBANNER.jpg",
+      "slug": "United-States",
+      "details":
+      {
+        "overview": "The United States of America is the world's topmost study abroad destination and hub of the best universities over the globe. The USA offers an abundance of courses and institutions to those who aspire to study in the country, its diverse academic programmes, renowned faculty, cultural diversity, vibrant campus life and flexible education system makes it a first-choice worldwide. ",
+        "why": [
+          "The USA offers an ample of opportunities in studies in various specialization. ",
+          "Globally recognized qualifications. ",
+          "Scholarship, fellowship and tuition fee waiver by departments. ",
+          "Research based studies and better career opportunities and future.",
+          "Flexibility in education system. ",
+          "Diverse culture and aesthetic campus life.",
+          "Quality of education and practical based courses.",
+          "Work permit of 20 hours per week during study visa.",
+        ],
+        "highlights": [
+          "Over 4000 universities in 50 states and 2 unions.",
+          "4th largest country in the worldwide and ranked no.1 in education. ",
+          "Developed country with advanced infrastructure and technologies.",
+          "The USA’s capital is Washington DC and currency is Dollars ($).",
+        ],
+        "qualifications_offered": [
+          "Associate Degree for the duration of two years.",
+          "Bachelor’s Degree for the duration of four years.",
+          "Master’s degree for the duration of two years.",
+          "Doctoral degree for the duration of 3-5 years. ",
+        ],
+        "why_study": [
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/international.webp",
+            text: "Internationally recognised"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/star-medal.webp",
+            text: "Scholarships and fellowships"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/training.webp",
+            text: "Flexible Education system"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/purse.webp",
+
+            text: "Tuition fee waivers"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/wallet.webp",
+
+            text: "On campus jobs with minimal wages"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/social.webp",
+            text: "Industry based training and research"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/university.webp",
+            text: "Vibrant Campus life"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/medal.webp",
+            text: "Merit based university assistance provided"
+          }
+
+        ],
+        "FAQs": [
+          {
+            question: "Can I study abroad if I don't speak the local language?",
+            answer: 'Yes, many programs offer courses taught in English. However, learning some basics of the local language can enhance your experience.',
+          },
+          {
+            question: 'How do I apply for a study abroad program?',
+            answer: "Typically, you apply directly to the program or through your home university's study abroad office. Follow their application guidelines and deadlines.",
+          },
+          {
+            question: 'What types of financial aid are available for studying abroad?',
+            answer: 'Financial aid options may include scholarships, grants, loans, and funding from your home university or external organizations specializing in study abroad.',
+          },
+          {
+            question: 'Will studying abroad delay my graduation?',
+            answer: 'Not necessarily. With proper planning and credit transfer, you can often stay on track to graduate on time or even early.',
+          },
+          {
+            question: 'Can I work while studying abroad?',
+            answer: 'Regulations vary by country, but many allow international students to work part-time during their studies. Check specific visa requirements and restrictions.',
+          },
+
+        ]
+      }
+
+    },
+    {
+      "countryName": "Germany",
+      "countryImage": "/assets/images/StudyAbroad/StudyAbroadInner/countryImages/germany.jpg",
+      "bannerImage": "/assets/images/StudyAbroad/StudyAbroadInner/bannerImage/germanyBANNER.jpg",
+      "slug": "Germany",
+      "details":
+      {
+        "overview": "Germany is the home of beautiful landscapes and intellectual minds, it is one of the ancient countries of the globe enriched with culture, tradition, beauty, heritage and art. Germany has become a hub of students to pursue courses and careers in the country due to its vast course options and enormous opportunities. ",
+        "why": [
+          "German universities are top-notch and highly advanced, offers numerous specialized programs.",
+          "Affordable due to low or almost no tuition fee. ",
+          "Vibrant lifestyle and personality growth.",
+          "Safe country to reside and study. ",
+          "Scholarships and fellowships offered by different institutions. ",
+          "Research and development oriented programs."
+        ],
+        "highlights": [
+          "Germany has 422 universities that offer latest course study .",
+          "Germany’s capital is Berlin.",
+          "Euro is the currency of Germany and is written as EUR. ",
+          "German is spoken majorly in the country.",
+        ],
+        "qualifications_offered": [
+          "Post graduate programs.",
+          "Graduate programs.",
+          "Diploma.",
+          "Doctoral degree. ",
+        ],
+        "why_study": [
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/wallet.webp",
+            text: "Lowest tuitions fees"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/medal.webp",
+            text: "17,500 degree programmes offered"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/studying.webp",
+
+            text: "Diverse range of study opportunities"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/earth.webp",
+
+            text: "Safe country to live and study"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/contractor.webp",
+            text: "Scientifically oriented study in a wide range of disciplines."
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/global-education.webp",
+            text: "World class degrees recognised around the world"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/star-medal.webp",
+            text: "Ample number of scholarships on offer"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/test.webp",
+            text: "Popular fields of study"
+          }
+
+        ],
+        "FAQs": [
+          {
+            question: 'What are the accommodation options for students studying abroad?',
+            answer: 'Options typically include university dormitories, homestays with local families, shared apartments, or private accommodations arranged through the program.',
+          },
+          {
+            question: 'How can studying abroad enhance my career prospects?',
+            answer: "It demonstrates cultural awareness, adaptability, language skills, and independence—all valued by employers in today's globalized workforce.",
+          },
+          {
+            question: 'How safe is it to study abroad?',
+            answer: 'Safety varies by location, but many study abroad programs prioritize student safety and provide resources for emergencies. Research your destination and follow safety guidelines.',
+          },
+          {
+            question: 'Can I transfer credits from my study abroad program?',
+            answer: 'Yes, most study abroad programs facilitate credit transfer back to your home university. Work with academic advisors to ensure courses align with your degree requirements.',
+          },
+          {
+            question: 'What are the different types of study abroad programs available?',
+            answer: 'Programs can include exchange programs, direct enrollment at a foreign university, faculty-led programs, internships abroad, and language immersion programs.',
+          },
+
+        ]
+      }
+
+    },
+    {
+      "countryName": "UK",
+      "countryImage": "/assets/images/StudyAbroad/StudyAbroadInner/countryImages/uk.jpg",
+      "bannerImage": "/assets/images/StudyAbroad/StudyAbroadInner/bannerImage/ukBANNER.jpg",
+      "slug": "UK",
+      "details":
+      {
+        "overview": "The United Kingdom is one the ancient countries of the world that influenced various countries all over the globe by ruling on them for years. The country offers a diverse range of courses and career opportunities, intellectual minds and scholars reside here. The country has one of the ancient and top listed universities that provides quality education. The country is the first and foremost choice of many aspirants. ",
+        "why": [
+          "Historical Universities with advanced and modern learning.",
+          "Choose from World’s best Universities.",
+          "Abundant programs and courses. ",
+          "Worldwide recognition and best quality .",
+          "Countless career opportunities post graduation. ",
+          "Graduate visa and work permit for 2 years after graduation. ",
+          "Fully funded scholarships for the eligible Indian students.",
+          "No1 choice for education, career, lifestyle and growth.",
+          "Flexible and short duration courses."
+
+        ],
+        "highlights": [
+          "There are over 160 institutes for higher education in UK .",
+          "Currency of The UK is GBP, British Pound Sterling most commonly known as Pound.",
+          "London is the heart and National capital of the country.",
+          "English is the official language of the country .",
+        ],
+        "qualifications_offered": [
+          "Foundation Degree.",
+          "Diploma of Higher Education.",
+          "Postgraduate Programs.",
+          "Master’s Degree. ",
+          "Certificate Course. ",
+          "Higher National Diploma. ",
+          "Accounting Courses.",
+        ],
+        "why_study": [
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/travel-bag.webp",
+            text: "Travel opportunities"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/earth.webp",
+            text: "International education hub for more than 100 years"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/graduation-hat.webp",
+            text: "Easy visa rules for international students"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/studying.webp",
+
+            text: "Diverse range of courses"
+          },
+
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/school.webp",
+            text: "No permission required from the job centre for International students"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/teamwork.webp",
+            text: "Free health insurance for students"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/purse.webp",
+            text: "One of the highest standards of living in the world"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/competition.webp",
+            text: "Academic Excellence"
+          }
+        ],
+        "FAQs": [
+          {
+            question: 'How can I manage homesickness while studying abroad?',
+            answer: 'Stay connected with family and friends through technology, get involved in local activities, maintain a routine, and seek support from fellow students and advisors.',
+          },
+          {
+            question: 'Will studying abroad affect my financial aid eligibility?',
+            answer: 'It depends on your financial aid package and the study abroad program. Speak with your financial aid office to understand how your aid may be impacted.',
+          },
+          {
+            question: 'What cultural challenges might I face while studying abroad?',
+            answer: 'Cultural differences in communication, customs, and social norms can be challenging. Stay open-minded, ask questions, and be willing to learn and adapt.',
+          },
+          {
+            question: 'Do I need health insurance while studying abroad?',
+            answer: "Yes, many study abroad programs require you to have health insurance that covers medical emergencies and healthcare abroad. Check your program's requirements.",
+          },
+          {
+            question: 'Can I travel during breaks while studying abroad?',
+            answer: 'Yes, many students take advantage of breaks to travel within their host country or nearby countries. Plan ahead and consider travel restrictions and visa requirements.',
+          },
+
+        ]
+      }
+
+    },
+    {
+      "countryName": "France",
+      "countryImage": "/assets/images/StudyAbroad/StudyAbroadInner/countryImages/france.jpg",
+      "bannerImage": "/assets/images/StudyAbroad/StudyAbroadInner/bannerImage/franceBANNER.jpg",
+      "slug": "France",
+      "details":
+      {
+        "overview": "France is an exquisite country filled with art, culture, heritage, architecture,  and traditions. It is one of the most popular destinations for education due to its diverse range of career opportunities and courses. ",
+        "why": [
+          "France offers numerous options in universities and schools to choose from. ",
+          "Ranked no 3 in country and Paris no.1 for studies. ",
+          "Intellectuals and outstanding researchers from all over the globe.",
+          "Art of living and vibrant lifestyle. ",
+          "Free french language course provided by institutes.",
+          "Highest placement rate.",
+          "Worldwide recognition. ",
+          "Relatively easier than other countries to work in France after graduation for international students. ",
+          "20 hours of work permit per week for students. ",
+          "2 years of stay back post graduation for work. ",
+          "One of the best country for management and business courses.",
+        ],
+        "highlights": [
+          "French is majorly spoken in France.",
+          "Currency of France is Euro .",
+          "Paris is the capital and soul of the country.",
+          "France has 72 universities, 271 schools for PhD, 220 Business management schools and 227 engineering schools.",
+        ],
+        "qualifications_offered": [
+          "Bachelor’s degree.",
+          "Doctoral Degree.",
+          "Post Graduation degree.",
+          "Diploma. ",
+          "Engineering. ",
+          "Data Analytics. ",
+          "Film Studies.",
+          "Business Administration.",
+          "Education Research.",
+        ],
+        "why_study": [
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/teamwork.webp",
+            text: "Paris has been voted as no.1 student city"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/school.webp",
+            text: "Excellent environment"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/earth.webp",
+
+            text: "Most appealing destinations for students worldwide"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/wallet.webp",
+
+            text: "Highly subsidized tuition fees"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/graduation-hat.webp",
+            text: "Best country to pursue Management and Engineering courses"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/global-education.webp",
+            text: "Head quarter of 39 Global fortune 500 companies"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/university.webp",
+            text: "Excellent placement opportunity for students"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/studying.webp",
+            text: "Offer free French language classes for international students"
+          }
+        ],
+        "FAQs": [
+          {
+            question: 'How can studying abroad impact my language skills?',
+            answer: 'Immersion in a foreign language environment can significantly improve your language proficiency through daily interactions and coursework conducted in that language.',
+          },
+          {
+            question: 'What should I pack for studying abroad?',
+            answer: 'Pack essentials like travel documents, clothing suitable for the climate, medications, adaptors for electronics, and personal items that will make you feel at home.',
+          },
+          {
+            question: 'How can I make friends while studying abroad?',
+            answer: 'Participate in orientation activities, join clubs or organizations, attend social events, and be open to meeting new people from different backgrounds. ',
+          },
+          {
+            question: 'Can I apply for scholarships specifically for studying abroad?',
+            answer: 'Yes, there are numerous scholarships available specifically for study abroad programs. Research scholarships offered by your home university, government, and private organizations.',
+          },
+          {
+            question: 'How can I stay connected with family and friends back home?',
+            answer: 'Use video calls, social media, and messaging apps to stay in touch. Schedule regular check-ins to share your experiences and stay connected..',
+          },
+
+        ]
+      }
+    },
+    {
+      "countryName": "China",
+      "countryImage": "/assets/images/StudyAbroad/StudyAbroadInner/countryImages/china.jpg",
+      "bannerImage": "/assets/images/StudyAbroad/StudyAbroadInner/bannerImage/chinaBANNER.jpg",
+      "slug": "China",
+      "details":
+      {
+        "overview": "Our neighboring country accepts students from India every year. China is the largest in population and most developed country in terms of technology, economy and infrastructure in the world. With the advancement of technology and industries China has huge career opportunities for the youth. Universities in China are well esteemed and globally recognised. ",
+        "why": [
+          "Most economically and technologically developed country.",
+          "Highly intellectual and qualified faculty. ",
+          "Excellence in the fields of engineering, math and medical. ",
+          "Abundance of course choices and universities.",
+          "More focus on research and development. ",
+          "High quality education, cultural enrichment and an ample of professional opportunity. ",
+          "Unique blend of ancient and modern methodologies of studies. ",
+          "Affordable and convenient in comparison to other countries.",
+          "8 hours of work permit per week during student visa.",
+        ],
+        "highlights": [
+          "China stood highest in population with 1.43 billion people living in the country.",
+          "Currency of China is Yuan (CNY) .",
+          "Capital of China - Beijing.",
+          "There are 3012 colleges and institutes for higher education in China .",
+          "Chinese is the primary language of China "
+        ],
+        "qualifications_offered": [
+          "Bachelor of business administration .",
+          "Bachelor of Science.",
+          "Post Graduation degree.",
+          "Diploma. ",
+          "Engineering. ",
+          "Data Analytics. ",
+          "Film Studies.",
+          "Business Administration.",
+          "Education Research.",
+        ],
+        "why_study": [
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/earth.webp",
+            text: "World’s second largest and fastest growing economy"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/graduation-hat.webp",
+            text: "Quality of Education and International Recognition"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/gate.webp",
+
+            text: "Experience the great Chinese Culture First-hand"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/qualifications.webp",
+
+            text: "Gain proficiency in Chinese language"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/medal.webp",
+            text: "Great opportunity to work there on completion of your programme"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/purse.webp",
+            text: "Affordability"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/travel-bag.webp",
+            text: "Travel and Exploration opportunities"
+          },
+          {
+            icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/wallet.webp",
+            text: "Lower Tuition Cost and Scholarships"
+          }
+        ],
+        "FAQs": [
+          {
+            question: 'What are the visa requirements for studying abroad?',
+            answer: 'Visa requirements vary by country and length of stay. Your study abroad program or host university will provide guidance on obtaining the appropriate visa.',
+          },
+          {
+            question: 'How can I manage my finances while studying abroad?',
+            answer: 'Create a budget for living expenses, travel, and leisure activities. Use international banking services and notify your bank of your travel plans to avoid issues with your accounts.',
+          },
+          {
+            question: 'Can studying abroad help me learn about career opportunities in other countries?',
+            answer: 'Yes, studying abroad can provide insights into global job markets, networking opportunities, and cultural understanding that are valuable for pursuing international career paths.',
+          },
+          {
+            question: 'Can I travel independently while studying abroad?',
+            answer: 'Yes, many students explore nearby cities and countries during weekends and breaks. Plan ahead, consider safety precautions, and follow travel guidelines.',
+          },
+          {
+            question: 'How can I handle cultural differences in academic expectations while studying abroad?',
+            answer: 'Familiarize yourself with academic norms in your host country, communicate with professors or advisors for guidance, and adapt your study habits as needed.',
+          },
+
+        ]
+      }
+
+    },
+  ]
+}
+
+export const studyAbroadOfferingsData = [
+  {
+    "image": "/assets/images/StudyAbroad/Offerings/location.png  ",
+    "title": "Exploration & Research 🧐",
+    "subtitle": "Explore through the realm of top-notch universities, global destinations & interesting courses",
+    "description": "Delve into 10,000+ University Profiles & Comprehensive Articles",
+    "buttonText": "Research with wings",
+  },
+  {
+    "title": "Counselling 🗣",
+    "subtitle": "Converse with our Experts for Advice",
+    "description": "Our Experts are here for Guidance & Advice, take a first & foremost step and get in touch with our counselors ",
+    "buttonText": "Book FREE Counselling Session",
+    "image": "/assets/images/StudyAbroad/Offerings/girl.png",
+  },
+  {
+    "title": "Shortlisting ✔",
+    "subtitle": "Look for your Suitable Universities & Courses",
+    "description": "Share with us what you are looking for and let us find the best-fitted Universities & courses for you ",
+    "buttonText": "Try Ai University course finder",
+    "image": "/assets/images/StudyAbroad/Offerings/search.png",
+  },
+  {
+    "title": "University Meet-up 🌍",
+    "subtitle": "Connect with 200+ Prestigious International Universities",
+    "description": "Have a meet-up with representatives of international universities & connect globally with us to secure your seats",
+    "buttonText": "Exploring upcoming events",
+    "image": "/assets/images/StudyAbroad/Offerings/boy.png",
+  }
+]
 
   
   

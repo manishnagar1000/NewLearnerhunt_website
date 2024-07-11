@@ -439,7 +439,7 @@ export default function Topbar() {
                       <Link href="/exams">Exams</Link>
                     </li>
                     <li className={`${Classes["sage-menu-list"]}`}>
-                      <Link href="/comingsoon">Study Abroad</Link>
+                      <Link href="/studyabroad">Study Abroad</Link>
                     </li>
                     <li className={`${Classes["sage-menu-list"]}`}>
                       <Link href="/blog">Blog</Link>
@@ -731,7 +731,7 @@ export default function Topbar() {
                         onClick={() => setShowToggleMenu(!showToggleMenu)}
                         className={`${Classes["sage-menu-list"]}`}
                       >
-                        <Link href="/comingsoon">Study Abroad</Link>
+                        <Link href="/studyabroad">Study Abroad</Link>
                       </li>
                       <li
                         onClick={() => setShowToggleMenu(!showToggleMenu)}

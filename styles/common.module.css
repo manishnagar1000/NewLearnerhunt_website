@@ -24,6 +24,7 @@
     margin-bottom: 0rem;
     color: #fff;
     padding: 0.3rem 0rem;
+    /* font-size: 14px; */
 }
 
 .top-header-para img {
@@ -546,10 +547,12 @@ color: #0151c1;
     .sage-sticky-menu .sage-toggle-icon img {
         z-index: 9999;
     }
+ 
   
 }
 
 @media screen and (max-width: 768px) {
+    
     .sage-flex span {
         padding-top: 1.5rem;
         padding-right: 2rem;
@@ -840,6 +843,7 @@ color: #0151c1;
 }
 
 @media screen and (max-width: 992px) {
+   
     .links-outer-box .custom-row .custom-col {
         width: calc(100% / 3);
     }
@@ -931,7 +935,12 @@ color: #0151c1;
     }
     
 }
-
+/* @media (min-width: 1024px) and (max-width: 1024px) and (min-height: 600px) and (max-height: 600px){
+    .top-header-para {
+        font-size: 14px;
+        background-color: red;
+    }
+  } */
 
 
 /* marquee */
