@@ -1278,15 +1278,52 @@ export const StudyAbroadInnerPageData = {
           "20 hours a week work permit during session and full time work permit post qualification and more options in settlement.",
           "Worldwide recognition and highly certified programmes.",
           "Affordable than other USA & UK. ",
-        ]
-        ,
+        ],
+        "education": [
+          "Early childhood preschools.",
+          "Primary and secondary schools.",
+          "Vocational education & training.",
+          "Universities offering bachelor, masters, doctoral, diploma and certificate programmes."
+        ],
+        "education_subHeading": "Australia is world widely known for its four staged educational system, in both public and private, categorized as",
         "qualifications_offered": [
           "Bachelor’s degree.",
           "Master’s degree.",
           "Doctoral Degree.",
           "Certificate Courses.",
           "Associate degree.",
+          "Advanced Diploma.",
+          "Professional Certification.",
+          "Actuarial Science."
         ],
+        "test_requirements": ["IELTS - International English Language Testing System.",
+          "TOEFL - Test of English as a Foreign Language.",
+          "PTE - Pearson Test of English."
+        ],
+        "top_universities": ["Charles Darwin University, Casuarina.",
+          "University of the Sunshine Coast, Maroochydore.",
+          "Victoria University, Melbourne.",
+          "The University of Melbourne, Melbourne.",
+          "The University of Sydney, Sydney.",
+          "The University of Queensland, Brisbane.",
+          "Australian National University, Canberra."
+        ],
+        "how_to_get_addmission": [
+          "To take admission in an Australian University first search your desired city and University.",
+          "Keep on tracking the admission updates and intakes.",
+          "Apply to the University and check eligibility.",
+          "Maintain all the required documents.",
+          "Appear in IELTS/PTE/TOEFL and attain good band score",
+          "Accept your offer letter."
+        ],
+        "cost_of_education": ["Bachelor’s Degree - 20000 to 50000 AUD .",
+          "Master's degree - 22000 to 60000 AUD.",
+          "Doctoral degree - 22000 to 70000 AUD.",
+          "Vocational Courses - 4000 to 30000 AUD.",
+          "Diploma - 26000 to 40000 AUD."
+        ],
+        "intake": ["Feburary and July."],
+
         "why_study": [
           {
             icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/global-education.webp",
@@ -1372,12 +1409,46 @@ export const StudyAbroadInnerPageData = {
           "Developed country with advanced infrastructure and technologies.",
           "The USA’s capital is Washington DC and currency is Dollars ($).",
         ],
+        "education": [
+          "The US education system is the most versatile and flexible system in the world.",
+          "Education is provided by public, private and homeschooling.",
+          "Mainly classified as elementary school, junior high school, high school and Universities.",
+        ],
         "qualifications_offered": [
           "Associate Degree for the duration of two years.",
           "Bachelor’s Degree for the duration of four years.",
           "Master’s degree for the duration of two years.",
           "Doctoral degree for the duration of 3-5 years. ",
         ],
+        "test_requirements": ["IELTS - International English Language Testing System.",
+          "GMAT - Graduate Management Admission Test.",
+          "SAT - Scholastic Aptitude Test.",
+          "TOEFL - Test of English as a Foreign Language.",
+          "GRE - Graduate Record Examination."
+        ],
+        "top_universities": ["Princeton University.",
+          "Columbia University.",
+          "Harvard University.",
+          "Massachusetts Institute of Technology.",
+          "Stanford University.",
+          "University of Pennsylvania.",
+          "Yale University."
+        ],
+        "how_to_get_addmission": [
+          "Select a city and university as per your desire.",
+          "Find a suitable course.",
+          "Keep an eye on the college updates and intakes.",
+          "Apply for the admission and student Visa.",
+          "Appear in IELTS/GMAT/SAT/TOEFL/GRE and maintain a decent band score.",
+          "Check for eligibility and submit required documents.",
+          "Prepare for Visa interviews.",
+          "Wait for offer letter and Visa."
+        ],
+        "cost_of_education": ["Cost of education in The USA ranges between $7000 to $55000 annually, depending upon the fee structure of programmes and universities."
+        ],
+        "intake": ["January and August."
+        ],
+
         "why_study": [
           {
             icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/international.webp",
@@ -1463,11 +1534,40 @@ export const StudyAbroadInnerPageData = {
           "Euro is the currency of Germany and is written as EUR. ",
           "German is spoken majorly in the country.",
         ],
+        "education": [
+          "Elementary school.",
+          "Universities.",
+        ],
         "qualifications_offered": [
           "Post graduate programs.",
           "Graduate programs.",
           "Diploma.",
           "Doctoral degree. ",
+          "Certificate courses."
+        ],
+        "test_requirements": ["IELTS or TOEFL or GMAT score for Masters and MBA.",
+          "No such requirement for other courses."
+        ],
+        "top_universities": ["Technical University of Munich.",
+          "Heidelberg University.",
+          "University of Hamburg.",
+          "University of Freiberg.",
+          "Technical University of Berlin.",
+          "University of Stuttgart.",
+          "University of Cologne."
+        ],
+        "how_to_get_addmission": [
+          "To take admission in German University first search your desired city and University .",
+          "Keep on tracking the admission updates and intakes.",
+          "Apply to the University and check eligibility.",
+          "Maintain all the required documents.",
+          "Appear in IELTS/TOEFL/GMAT for MBA or Masters and attain good band score.",
+          "Accept your offer letter."
+        ],
+        "cost_of_education": ["Public University majorly takes no fees , It ranges from average 1000 EUR to 2000 EUR per annum for some public universities and 10000 EUR to 14000 EUR per annum for private universities."
+        ],
+        "intake": ["March/April.",
+          "September/October."
         ],
         "why_study": [
           {
@@ -1558,6 +1658,13 @@ export const StudyAbroadInnerPageData = {
           "London is the heart and National capital of the country.",
           "English is the official language of the country .",
         ],
+        "education": [
+          "Primary.",
+          "Secondary.",
+          "Further education.",
+          "Higher education."
+        ],
+        "education_subHeading": "UK education system is one of the ancient education all over the globe, it is mainly classified in 4 category",
         "qualifications_offered": [
           "Foundation Degree.",
           "Diploma of Higher Education.",
@@ -1567,6 +1674,31 @@ export const StudyAbroadInnerPageData = {
           "Higher National Diploma. ",
           "Accounting Courses.",
         ],
+        "test_requirements": ["IELTS - The International English Language Testing System.",
+          "TOEFL - Test of English as a Foreign Language.",
+          "PTE - Pearson Test of English.",
+          "ISE - International Standard for Education."
+        ],
+        "top_universities": ["Imperial College London.",
+          "University of Oxford.",
+          "The University of Edinburgh.",
+          "King’s College London.",
+          "University in Warwick.",
+          "London School of Economics & Political Studies.",
+          "University of Cambridge."
+        ],
+        "how_to_get_addmission": [
+          "Choose your pathway, your desired city, institute and course.",
+          "Apply online through UCAS, an official website to fill application form for British University.",
+          "Check eligibility criteria and collect all the required documents.",
+          "Submit application form and pay they application fees.",
+          "Apply for visa and prepare for the interview.",
+          "Wait for result announcement."
+        ],
+        "cost_of_education": ["Average tuition fee for education in the UK ranges between 9000 GBP - 38000 GBP per annum."],
+        "intake": ["January.",
+          "September."
+        ], 
         "why_study": [
           {
             icon: "/assets/images/StudyAbroad/StudyAbroadInner/icons/travel-bag.webp",
@@ -1656,6 +1788,12 @@ export const StudyAbroadInnerPageData = {
           "Paris is the capital and soul of the country.",
           "France has 72 universities, 271 schools for PhD, 220 Business management schools and 227 engineering schools.",
         ],
+        "education": [
+          "Primary Education - formal schooling.",
+          "Secondary Education - college for four years and lycée for three years.",
+          "Higher Education - Vocational diplomas and Academic diplomas in which Universities, Grandes écoles and specialized schools are involved.",
+        ],
+        "education_subHeading": "The french education system is mostly governed by public institutions and are mainly classified in 3 categories",
         "qualifications_offered": [
           "Bachelor’s degree.",
           "Doctoral Degree.",
@@ -1666,6 +1804,40 @@ export const StudyAbroadInnerPageData = {
           "Film Studies.",
           "Business Administration.",
           "Education Research.",
+        ],
+        "test_requirements": ["TOEFL - Test of English as a Foreign Language.",
+          "TOEIC - Test of English for International Communication.",
+          "IELTS - The International English Language Testing System.",
+          "TCF - Test de connaissance du français.",
+          "Le TEF - The French Evaluation Test.",
+          "DELF - Diplôme d’études en langue française.",
+          "DALF - Diplôme approfondi de langue française.",
+          "GMAT - Graduate Management Admission Test.",
+          "GRE - Graduate Record Examinations."
+        ],
+        "top_universities": ["Sorbonne University.",
+          "University of Paris Saclay.",
+          "Université Grenoble Alpes.",
+          "Pantheon-Sorbonne University.",
+          "Universite-Paris Cite.",
+          "ENS Lyon.",
+          "University of Paris.",
+          "University of Bordeaux."
+        ],
+        "how_to_get_addmission": [
+          "To take admission in France universities you can apply to the official website of the colleges.",
+          "Check eligibility and criteria.",
+          "Appear for professional exam and score decent band marks.",
+          "Apply for visa and and submit required documents.",
+          "Prepare for Visa interviews.",
+          "Final offer letter announcement."
+        ],
+        "cost_of_education": ["Bachelor’s program - 170 EUR per annum.",
+          "Engineering Degree - 620 EUR per annum. ",
+          "Medical programs - 450 EUR annum."
+        ],
+        "intake": ["Feburary.",
+          "September."
         ],
         "why_study": [
           {
@@ -1754,16 +1926,45 @@ export const StudyAbroadInnerPageData = {
           "There are 3012 colleges and institutes for higher education in China .",
           "Chinese is the primary language of China "
         ],
+        "education": [
+          "Primary school - 6 years.",
+          "Lower secondary school - 3 years.",
+          "Upper secondary school - 3 years.",
+          "University - 4 hours."
+        ],
+        "education_subHeading": "China has a strict and most disciplined education system all over the world. They categorized their education system in four categories ",
         "qualifications_offered": [
           "Bachelor of business administration .",
           "Bachelor of Science.",
-          "Post Graduation degree.",
-          "Diploma. ",
-          "Engineering. ",
-          "Data Analytics. ",
-          "Film Studies.",
-          "Business Administration.",
-          "Education Research.",
+          "Bachelor of Arts.",
+          "Bachelor of Global Communication & Management. ",
+          "Degree in CIvil Engineering. ",
+          "Courses. ",
+          "Computer science.",
+          "Graduate certificate.",
+        ], "test_requirements": ["IELTS, TOEFL or Duolingo English test is only required if you are not native English speaker or proficient in spoken English, otherwise a high School degree or diploma is sufficient to apply for study in China."
+        ],
+        "top_universities": ["Peking University, Beijing.",
+          "Shanghai Jiao Tong University, Shanghai.",
+          "Zhejiang University, Hangzhou.",
+          "Huazhong University of Science & Technology, Wuhan.",
+          "Fudan University, Shanghai.",
+          "University of Science & Technology of China, Hefei.",
+          "Harbin Institute of Technology, Harbin.",
+        ],
+        "how_to_get_addmission": [
+          "Choose your pathway, your desired city, institute and course.",
+          "Apply online through CUCAS, an official website to fill application form for Chinese University.",
+          "Check eligibility criteria and collect all the required documents.",
+          "Submit application form and pay they application fees.",
+          "Apply for visa and prepare for the interview.",
+          "Wait for result announcement."
+        ],
+        "cost_of_education": ["Average tuition fees of public institutes of China is 2500 USD to 10000 USD per annum.",
+          "It may vary according to the fee structure of universities and course. "
+        ],
+        "intake": ["March.",
+          "September."
         ],
         "why_study": [
           {
@@ -1861,5 +2062,35 @@ export const studyAbroadOfferingsData = [
   }
 ]
 
+export const illmleads = 
+  {
+    "BBA": [
+      "BBA LLB (Hons.)",
+      "BBA (Hons.) - Artificial Intelligence",
+      "BBA (Hons.) - Banking and Finance",
+      "BBA (Hons.) - Business Analytics",
+      "BBA (Hons.) - Entrepreneurship",
+      "BBA (Hons.) - General (Finance/HR/Marketing)",
+      "BBA (Hons.) - International Business",
+      "BBA (Hons.) - Operations & Supply Chain",
+      "BBA (Hons.) - Aviation Operations",
+      "BBA (Hons.) - Management Technology",
+      "BBA in Entrepreneurship",
+      "BBA in International Management",
+      "BBA with Psychology",
+      "BBA with Communication",
+      "BBA in Business Management",
+      "BBA in Business Analytics"
+    ],
+    "B.Tech": [
+      "B Tech Computer Science and Engineering",
+      "B. Tech in Bioinformatics",
+      "B. Tech in Biotechnology",
+      "B. Tech in Electronics & Communication Engineering",
+      "B. Tech in Food Technology",
+     "B. Tech in Mechanical Engineering",
+      "B. Tech in Robotics & Artificial Intelligence"
+    ],
+  }
   
   

@@ -1,0 +1,134 @@
+$('.tabular.menu .item').tab();
+
+function updateCourseId(courseId) {
+    $('#id_course').val(courseId);
+    $(this).scrollTop($(".bannerImage").offset().top);
+}
+
+function errormessage(msg) {
+    var block = document.getElementById("error_block");
+    if (!block) {
+        $('.form').append('<div id="error_block" style="background: orangered;color: white"></div>')
+    }
+    $('#error_block').html(msg)
+    $('#error_block').fadeIn()
+    $('#error_block').fadeOut(6400)
+}
+
+function successmessage(msg) {
+    var block = document.getElementById("sucess_block");
+    if (!block) {
+        $('.form').append('<div id="sucess_block" style="background: greenyellow;color: white"></div>')
+    }
+    $('#sucess_block').html(msg)
+    $('#sucess_block').fadeIn()
+    $('#sucess_block').fadeOut(6400)
+}
+
+
+$(document).on('click', '.get_otp', function () {
+    getOTP($(this))
+})
+
+function getOTP(bntn) {
+    var prnt = bntn.parents('#form-body')
+    var mobile_number = bntn.parents('#form-body').find('#id_phone').val()
+    var name=bntn.parents('#form-body').find('#id_name').val()
+
+    if (!name){
+         errormessage('Please tell us your name')
+        return false
+    }
+    if (mobile_number.length > 10 || mobile_number.length < 10) {
+        errormessage('Please enter a valid 10 digit mobile number')
+    } else {
+        $.ajax({
+            type: "POST",
+            url: '/api/1/send-otp/',
+            data: {
+                'phone_no': mobile_number
+            },
+            success: function (response) {
+                $('.otp_block').show()
+                successmessage('OTP Sent!!!')
+                showPopup(mobile_number, prnt)
+            }
+        })
+    }
+    return false;
+}
+
+$(document).on('click', '.cross-popup', function () {
+    $('.popupDiv').remove()
+})
+$(document).on('click', '.resendBtn', function () {
+    var bntn = $(this)
+    var prnt = $(this).parents('#form-body')
+    var mobile_number = $(this).parents('#form-body').find('#id_phone').val()
+
+
+    $.ajax({
+        type: "POST",
+        url: '/api/1/send-otp/',
+        data: {
+            'phone_no': mobile_number
+        },
+        success: function (response) {
+            successmessage('OTP Sent!!!')
+        }
+    })
+
+})
+
+function showPopup(mob_no, prnt) {
+    var html = '<div class="popupDiv"><div class="content"><div class="cross-popup">×</div><h2>We have sent a 6-digit verification code to <b>' + mob_no + '</b> via SMS. Please enter it below and you\'re done!</h2>' +
+        '<div id="error_block"></div><div id="sucess_block"></div><input type="text" placeholder="OTP" id="otp_box" class="form-control">' +
+        '<button type="button" class="verify-otp" data-mobno="' + mob_no + '">Verify OTP</button>' +
+        '<button type="button" class="resendBtn">Resend OTP</button>'
+    var otp_type = $('#otp_type').val()
+    if (otp_type == 1) {
+        html += '<span class="skip">skip</span>'
+    }
+    html += '</div></div>'
+    $(prnt).append(html)
+}
+
+$(document).on('click', '.skip', function () {
+    $(this).parents('#form-body').submit()
+})
+
+var otpVerified = false;
+$(document).on('click', '.verify-otp', function () {
+    var bntn = $(this)
+
+    var mobile_number = $(this).data('mobno')
+    var code = $('#otp_box').val()
+    if (code.length > 6 || code.length < 6) {
+        errormessage('please enter a valid 6 digit otp sent to your mobile')
+        return false
+    } else {
+        $.ajax({
+            type: "POST",
+            url: '/api/1/verify-otp/',
+            data: {
+                'phone_no': mobile_number,
+                'code': code
+            },
+            success: function (response) {
+                if (!response.verified) {
+                    errormessage('OTP does not match.')
+                } else {
+                    otpVerified = true;
+                    $(bntn).parents('#form-body').submit()
+                }
+            }
+        })
+    }
+})
+
+function showFormMobile() {
+    $('.ui.formmodal .content').html($('#form').html());
+    $('.ui.formmodal').modal('show');
+}
+
+// $('.ui.radio.checkbox').checkbox();

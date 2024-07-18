@@ -1,0 +1,154 @@
+/* Define keyframes for the animation */
+@keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Styles for the non-sticky and sticky states */
+  .non-sticky {
+    background: white;
+    z-index: 999;
+  }
+  
+  .sticky {
+    position: sticky;
+    top: 0;
+    animation: fadeInDown 0.7s ease-out;
+  }
+
+  .logo{
+    position: relative;
+    padding: 10px;
+  }
+  .logo img{
+    width: 7rem;
+  }
+  .admission-form {
+    background-image: url('/assets/images/illm-banner.jpg');
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .admission-form h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .admission-form p {
+    font-size: 1.25rem;
+  }
+  
+  @media (max-width: 767px) {
+    .admission-form .col {
+      padding: 1rem;
+    }
+  
+    .admission-form h1 {
+      font-size: 2rem;
+    }
+  
+    .admission-form p {
+      font-size: 1rem;
+    }
+  }
+  
+  .h2heading{
+    color: #4a90e2;
+  }
+  .custom-card {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    min-height: 110px;
+  }
+  
+  .custom-card .card-title {
+    color: orange;
+    font-weight: bold;
+  }
+  
+  .custom-card .card-text {
+    color: black;
+  }
+  
+  .btn-warning {
+    background-color: #ff9800;
+    border: none;
+    border-radius: 20px;
+    padding: 0.5rem 2rem;
+  }
+  
+  .btn-warning:hover {
+    background-color: #e68900;
+  }
+
+ 
+  .Students-section {
+    background-image: url('/assets/images/illm-banner.jpg');
+    background-position: top center;
+    position: relative;
+    padding-top: 1.5rem;
+    padding-bottom: 1rem;
+}
+.widget-title h3 {
+    font-size: 45px;
+    display: block;
+    position: relative;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 10px;
+}
+@media only screen and (max-width: 980px) {
+    .widget-title h3 {
+        font-size: 22px;
+        display: block;
+        position: relative;
+        font-weight: 700;
+    }
+}
+.about-content p {
+    text-align: center;
+    font-size: 18px;
+    /* margin-bottom: 30px; */
+    padding: 20px 0;
+    line-height: 28px;
+}
+  
+.footer {
+    width: 100%;
+    display: table;
+    padding: 10px 0;
+    background-color: #696969;
+}
+
+.btn{
+    background: #ef882c;
+    color: #fff;
+    padding: 16px 34px 16px 36px;
+    border: 1px solid #F78D27;
+    border-radius: 65px;
+    font-size: 18px;
+    font-weight: 700;
+}
+  
+  .sideNavi{
+    position: fixed;
+    top: 80%;
+    right: 0;
+    z-index: 2;
+  }
+  .sideNavi a {
+    background-color: #f79122 !important; 
+    color: #FFF;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 9px 16px;
+    margin-bottom: 30px;
+   display: block;
+   text-decoration: none;
+}

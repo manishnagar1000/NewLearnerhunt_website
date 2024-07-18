@@ -8,9 +8,14 @@ import TrashModal from "./trashcomponent/TrashModal";
 // import Styles from "../../styles/trash.module.css";
 
 const data = [
-  { id: 1, type: "College", icon: "🎓" },
-  { id: 2, type: "Course", icon: "💻" },
-  { id: 3, type: "Exam", icon: "📝" },
+  // { id: 1, type: "College", icon: "🎓" },
+  // { id: 2, type: "Course", icon: "💻" },
+  // { id: 3, type: "Exam", icon: "📝" },
+  // { id: 4, type: "Blog", icon: "🗑️" },
+  { id: 1, type: "College", icon: '/assets/images/trash/school.png' },
+  { id: 2, type: "Course", icon: '/assets/images/trash/graduation.png' },
+  { id: 3, type: "Exam", icon: '/assets/images/trash/tablet.png' },
+  { id: 4, type: "Blog", icon: '/assets/images/trash/article.png' },
 ];
 
 class TrashColleges extends Component {
@@ -41,6 +46,8 @@ class TrashColleges extends Component {
       url = "/get-trashed-courses";
     } else if (dataId == "3") {
       url = "/get-trashed-exams";
+    } else if (dataId == "4") {
+      url = "/get-trashed-blogs";
     }
 
     this.setState({ isApiHitComplete: false, isDataFound: false });
@@ -83,6 +90,8 @@ class TrashColleges extends Component {
           return searchKeyword.test(data.course_name.toLowerCase());
         } else if (this.state.dataId == "3") {
           return searchKeyword.test(data.exam_name.toLowerCase());
+        }else if (this.state.dataId == "4") {
+          return searchKeyword.test(data.title.toLowerCase());
         }
         return false;
       });
@@ -97,14 +106,16 @@ class TrashColleges extends Component {
     const url =
       dataId == "1" ? "/admin/restore-clg" :
       dataId == "2" ? "/admin/restore-course" :
-      "/admin/restore-exam";
+      dataId == "3" ? "/admin/restore-exam" :
+      "/admin/restore-blog";
 
     const formData = new FormData();
     
     formData.append(
       dataId == "1" ? "college_id" :
       dataId == "2" ? "course_id" :
-      "exam_id",
+         dataId == "3" ? "exam_id" :
+      "blogId",
       id
     );
 
@@ -149,6 +160,7 @@ class TrashColleges extends Component {
   };
 
   handleModalOpen = (e, dataId) => {
+    console.log(dataId)
     e.preventDefault();
     this.setState({ show: true, dataId }, () => {
       this.getAssetList();
@@ -158,7 +170,7 @@ class TrashColleges extends Component {
   render() {
     const { clgList, isDataFound, isApiHitComplete, show, TotalCountNumber, searchInput, dataId } = this.state;
     return (
-      <>
+      <div style={{padding:"1.5rem"}}>
         <div className="row">
           {data.map((item) => (
             <TrashCategoryCard
@@ -183,7 +195,7 @@ class TrashColleges extends Component {
           handleClose={() => this.setState({ show: false })}
         />
         <LoadingSpinner isLoading={this.state.isLoading} />
-      </>
+      </div>
     );
   }
 }

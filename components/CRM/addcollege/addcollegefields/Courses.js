@@ -163,7 +163,7 @@ export default class Courses extends Component {
        
         }
         else{
-           this.setState({ isLoading: true });
+          //  this.setState({ isLoading: true });
         var formData = new FormData();
         formData.append("college_id", this.state.selectedClg);
         let courses = this.state.courseFields.map((obj) => {
@@ -173,6 +173,8 @@ export default class Courses extends Component {
           };
           return newobj;
         });
+        console.log(courses)
+
         formData.append("courses", JSON.stringify(courses));
 
         fetch(
@@ -229,6 +231,7 @@ export default class Courses extends Component {
 
   onFieldChange(index, field, value, curFields, box) {
     const updatedFields = [...curFields];
+    console.log(index, field, value, curFields, box)
     if (numberKeys.includes(field)) {
       updatedFields[index][field] = value.replace(/\D/g, "");
     } else {
@@ -409,11 +412,11 @@ export default class Courses extends Component {
                                   className="form-select"
                                   required
                                   value={field.eligibility_criteria}
-                                  onChange={(event, newValue) =>
+                                  onChange={(e) =>
                                     this.onFieldChange(
                                       i,
                                       "eligibility_criteria",
-                                      newValue,
+                                      e.target.value,
                                       this.state.courseFields,
                                       "1"
                                     )
@@ -495,11 +498,11 @@ export default class Courses extends Component {
                                   className="form-select"
                                   required
                                   value={field.study_mode}
-                                  onChange={(event, newValue) =>
+                                  onChange={(e) =>
                                     this.onFieldChange(
                                       i,
                                       "study_mode",
-                                      newValue,
+                                      e.target.value,
                                       this.state.courseFields,
                                       "1"
                                     )
@@ -599,11 +602,11 @@ export default class Courses extends Component {
                                   className="form-select"
                                   required
                                   value={field.course_duration}
-                                  onChange={(event, newValue) =>
+                                  onChange={(e) =>
                                     this.onFieldChange(
                                       i,
                                       "course_duration",
-                                      newValue,
+                                      e.target.value,
                                       this.state.courseFields,
                                       "1"
                                     )

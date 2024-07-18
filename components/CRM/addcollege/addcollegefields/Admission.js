@@ -68,6 +68,7 @@ export default class Admission extends Component {
   }
 
   onFieldChange(index, field, value, curFields, box) {
+    console.log(index, field, value, curFields, box)
     const updatedFields = [...curFields];
     updatedFields[index][field] = value;
 

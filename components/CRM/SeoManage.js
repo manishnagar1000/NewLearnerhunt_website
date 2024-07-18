@@ -480,23 +480,36 @@ const SEOManage = () => {
     // console.log(name,value)
     if (group === "basic") {
       if (type == "select") {
+        // console.log(blogApi.)
+      
         const selectedblogObj = blogApi.find((obj) => obj._id == value.value);
         // console.log(selectedblogObj);
-        setFormblogData({
-          ...formblogData,
-          ["canonical"]: `https://www.learnerhunt.com/blog/${selectedblogObj.slug}`,
-          ["blogname"]: value,
-          ["changeSlug"]: selectedblogObj.slug,
-        });
-        setTwitterblogDetails({
-          ...twitterblogDetails,
-          ["twitterImage"]: `https://learnerhunt-assets.s3.us-east-1.amazonaws.com/${selectedblogObj.banner_image}`,
-        });
-        setOgblogDetails({
-          ...ogblogDetails,
-          ["ogUrl"]: `https://www.learnerhunt.com/colleges/${selectedblogObj.slug}`,
-          ["ogImage"]: `https://learnerhunt-assets.s3.us-east-1.amazonaws.com/${selectedblogObj.banner_image}`,
-        });
+  if(selectedblogObj.banner_image == undefined){
+    Swal.fire({
+      text: `We could not found banner image of this blog, please upload the banner image before doing the blog SEO.`,
+      icon: "error",
+      confirmButtonText: "Ok",
+    }).then(() => {
+      setShowModal(false)
+    });
+        }else{
+          setFormblogData({
+            ...formblogData,
+            ["canonical"]: `https://www.learnerhunt.com/blog/${selectedblogObj.slug}`,
+            ["blogname"]: value,
+            ["changeSlug"]: selectedblogObj.slug,
+          });
+          setTwitterblogDetails({
+            ...twitterblogDetails,
+            ["twitterImage"]: `https://learnerhunt-assets.s3.us-east-1.amazonaws.com/${selectedblogObj.banner_image}`,
+          });
+          setOgblogDetails({
+            ...ogblogDetails,
+            ["ogUrl"]: `https://www.learnerhunt.com/blog/${selectedblogObj.slug}`,
+            ["ogImage"]: `https://learnerhunt-assets.s3.us-east-1.amazonaws.com/${selectedblogObj.banner_image}`,
+          });
+        }
+       
       } else if (type == "title") {
         // console.log("its a titlte with basic");
         setFormblogData({ ...formblogData, [name]: value });
@@ -535,7 +548,7 @@ const SEOManage = () => {
         // console.log(selectedcourseObj);
         setFormcourseData({
           ...formcourseData,
-          ["canonical"]: `https://www.learnerhunt.com/course/${selectedcourseObj.slug}`,
+          ["canonical"]: `https://www.learnerhunt.com/courses/${selectedcourseObj.slug}`,
           ["coursename"]: value,
           ["changeSlug"]: selectedcourseObj.slug,
         });
@@ -545,7 +558,7 @@ const SEOManage = () => {
         });
         setOgcourseDetails({
           ...ogcourseDetails,
-          ["ogUrl"]: `https://www.learnerhunt.com/colleges/${selectedcourseObj.slug}`,
+          ["ogUrl"]: `https://www.learnerhunt.com/courses/${selectedcourseObj.slug}`,
           ["ogImage"]: `https://learnerhunt-assets.s3.us-east-1.amazonaws.com/${selectedcourseObj.banner_image}`,
         });
       } else if (type == "title") {
@@ -584,7 +597,7 @@ const SEOManage = () => {
         // console.log(selectedexamObj);
         setFormexamData({
           ...formexamData,
-          ["canonical"]: `https://www.learnerhunt.com/exam/${selectedexamObj.slug}`,
+          ["canonical"]: `https://www.learnerhunt.com/exams/${selectedexamObj.slug}`,
           ["examname"]: value,
           ["changeSlug"]: selectedexamObj.slug,
         });
@@ -594,7 +607,7 @@ const SEOManage = () => {
         });
         setOgexamDetails({
           ...ogexamDetails,
-          ["ogUrl"]: `https://www.learnerhunt.com/colleges/${selectedexamObj.slug}`,
+          ["ogUrl"]: `https://www.learnerhunt.com/exams/${selectedexamObj.slug}`,
           ["ogImage"]: `https://learnerhunt-assets.s3.us-east-1.amazonaws.com/${selectedexamObj.banner_image}`,
         });
       } else if (type == "title") {

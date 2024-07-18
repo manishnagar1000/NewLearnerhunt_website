@@ -11,7 +11,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { Modal } from "react-bootstrap";
 import Box from "@mui/material/Box";
-
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 var oldData = [];
 
@@ -32,8 +32,8 @@ export default class CrmBlogCategory extends Component {
       category: "",
       isModalOpen: false,
       role: 0,
-      editModal:false,
-      categoryId:''
+      editModal: false,
+      categoryId: "",
       // selectedAsset: null,
     };
   }
@@ -115,34 +115,80 @@ export default class CrmBlogCategory extends Component {
     }
   };
 
-handleSubmit(e){
+  handleSubmit(e) {
     e.preventDefault();
     if (!this.state.editModal) {
-    try {
-      this.setState({isLoading:true})
+      try {
+        this.setState({ isLoading: true });
+        const fd = new FormData();
+        fd.append("name", this.state.category);
+        fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/admin/blog-category", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("pt")}`,
+          },
+          method: "POST",
+          body: fd,
+        }).then(async (response) => {
+          var res = await response.json();
+          // console.log(res)
+          // console.log(res.message)
+          if (response.ok) {
+            // console.log("hello", response.data);
+            Swal.fire({
+              title: "Success",
+              text: `${res.message}`,
+              icon: "success",
+              confirmButtonText: "Ok",
+            }).then(() => {
+              // props.onLogin(res.data.token,res.data.role,formData.name);
+              this.setState({
+                isLoading: false,
+                isModalOpen: false,
+                category: "",
+              });
+              this.getAssetList();
+            });
+          } else {
+            Swal.fire({
+              title: "error",
+              text: `${res.error}`,
+              icon: "error",
+              confirmButtonText: "Ok",
+            });
+            this.setState({ isLoading: false });
+          }
+        });
+      } catch (error) {
+        // Handle network or fetch error
+        console.error(error);
+      }
+    } else {
       const fd = new FormData();
+      fd.append("id", this.state.categoryId);
       fd.append("name", this.state.category);
-      fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/admin/blog-category", {
+      fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/blog-category`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("pt")}`,
         },
-        method: "POST",
+        method: "PUT",
         body: fd,
       }).then(async (response) => {
         var res = await response.json();
-        // console.log(res)
-        // console.log(res.message)
+
         if (response.ok) {
-          // console.log("hello", response.data);
           Swal.fire({
             title: "Success",
             text: `${res.message}`,
             icon: "success",
             confirmButtonText: "Ok",
           }).then(() => {
-            // props.onLogin(res.data.token,res.data.role,formData.name);
-            this.setState({isLoading:false,isModalOpen:false,category:''})
-            this.getAssetList()
+            this.setState({
+              isLoading: false,
+              isModalOpen: false,
+              category: "",
+              editModal: false,
+            });
+            this.getAssetList();
           });
         } else {
           Swal.fire({
@@ -151,53 +197,73 @@ handleSubmit(e){
             icon: "error",
             confirmButtonText: "Ok",
           });
-          this.setState({isLoading:false})
+          this.setState({ isLoading: false });
         }
       });
-    } catch (error) {
-      // Handle network or fetch error
-      console.error(error);
     }
-}else{
-    const fd = new FormData();
-    fd.append("id",this.state.categoryId)
-    fd.append("name", this.state.category);
-    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/blog-category`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("pt")}`,
-      },
-      method: "PUT",
-      body: fd,
-    }).then(async (response) => {
-      var res = await response.json();
- 
-      if (response.ok) {
-        Swal.fire({
-          title: "Success",
-          text: `${res.message}`,
-          icon: "success",
-          confirmButtonText: "Ok",
-        }).then(() => {
-            this.setState({isLoading:false,isModalOpen:false,category:'',editModal:false})
-            this.getAssetList()
+  }
 
-        });
-      } else {
-        Swal.fire({
-          title: "error",
-          text: `${res.error}`,
-          icon: "error",
-          confirmButtonText: "Ok",
-        });
-        this.setState({isLoading:false})
+  handleEditModal = (e, row) => {
+    this.setState({
+      isLoading: false,
+      editModal: true,
+      category: row.name,
+      isModalOpen: true,
+      categoryId: row._id,
+    });
+  };
+  handleDeleteModal(e,row){
+    console.log(row)
+    // this.setState({show:true})
+    Swal.fire({
+      title: 'Do you want to Delete?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes'
+    })
+    .then((result) => {
+      if (result.isConfirmed) {
+        // console.log("its delete")
+    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/blog-category/${row._id}`, {
+  method: 'Delete',
+  headers: {
+  'Authorization': `Bearer ${localStorage.getItem("pt")}`
+  },
+  // body: formData
+  })
+  .then (async response => {
+  // console.log(response)
+  if (response.ok) {
+  var res = await response.json();
+  Swal.fire({
+    title: "Success",
+    text: `${res.message}`,
+    icon: "success",
+    confirmButtonText: "Ok",
+  }).then((e)=>{
+    // this.setState({clgList:this.state.clgList.filter(clg=>clg._id!= id)})
+    this.setState({searchInput:""})
+    this.getAssetList()
+  
+  })
+  } else {
+  var res = await response.json();
+  Swal.fire({
+    title: "error",
+    text: `${res.error}`,
+    icon: "error",
+    confirmButtonText: "Ok",
+  })
+  }
+  })
+  .catch(error => {
+  console.error('Error:', error);
+  });
       }
     });
-}
-  };
-
- handleEditModal = (e,row) => {
-    this.setState({isLoading:false,editModal:true,category:row.name,isModalOpen:true,categoryId:row._id})
-  };
+   }
   render() {
     return (
       <>
@@ -231,15 +297,14 @@ handleSubmit(e){
               <thead style={{ top: `8vh` }}>
                 <tr>
                   <th
+                  colspan="2"
                     style={{
                       background: "var(--primary)",
                     }}
                   >
                     Actions
                   </th>
-                  <th style={{ background: "var(--primary)" }}>
-                    Category
-                  </th>
+                  <th style={{ background: "var(--primary)" }}>Category</th>
                   <th style={{ background: "var(--primary)" }}>Date</th>
                 </tr>
               </thead>
@@ -248,10 +313,21 @@ handleSubmit(e){
                   return (
                     <tr key={i}>
                       <td>
-                          <IconButton onClick={(e) => this.handleEditModal(e, clg)}>
-                            <EditIcon />
-                          </IconButton>
+                        <IconButton
+                          onClick={(e) => this.handleEditModal(e, clg)}
+                        >
+                          <EditIcon />
+                        </IconButton>
                       </td>
+                      <td
+                      >
+                        <IconButton
+                          onClick={(e) => this.handleDeleteModal(e, clg)}
+                        >
+                          <DeleteForeverIcon />
+                        </IconButton>
+                      </td>
+
                       <td>{clg.name}</td>
                       <td>{this.formatTimestamp(clg.createdAt)}</td>
                     </tr>
@@ -299,12 +375,20 @@ handleSubmit(e){
         <Modal
           centered
           show={this.state.isModalOpen}
-          onHide={() => this.setState({ isModalOpen: false,editModal:false,category:'' })}
+          onHide={() =>
+            this.setState({
+              isModalOpen: false,
+              editModal: false,
+              category: "",
+            })
+          }
           backdrop="static"
           keyboard={false}
         >
           <Modal.Header closeButton>
-          <Modal.Title>{!this.state.editModal ? "Add New Category" : "Edit Category"}</Modal.Title>
+            <Modal.Title>
+              {!this.state.editModal ? "Add New Category" : "Edit Category"}
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Box
@@ -321,7 +405,7 @@ handleSubmit(e){
                 variant="outlined"
                 label="Category"
                 value={this.state.category}
-                onChange={(e) => this.setState({category: e.target.value })}
+                onChange={(e) => this.setState({ category: e.target.value })}
                 required
               />
 

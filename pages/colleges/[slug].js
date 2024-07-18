@@ -655,7 +655,7 @@ export default function CollegeName({ collegedata }) {
                   &nbsp;&nbsp;
                   <img src="/assets/images/bookmark.png" alt="bookmark" />
                   <span>
-                    Approved By : {collegedata.generalinfo.approved_by}
+                    Approved By : {collegedata.generalinfo.approved_by.replaceAll(',', ', ')}
                   </span>
                   {/* &nbsp;&nbsp;
                 {userStatus ? (
@@ -905,16 +905,16 @@ export default function CollegeName({ collegedata }) {
                         </tr>
                         <tr>
                           <td>Recognised By</td>
-                          <td>{collegedata.overview.recognised_by || "-"}</td>
+                          <td>{collegedata.overview.recognised_by.replaceAll(',', ', ') || "-"}</td>
                         </tr>
                         <tr>
                           <td>Approved By</td>
-                          <td>{collegedata.generalinfo.approved_by || "-"}</td>
+                          <td>{collegedata.generalinfo.approved_by.replaceAll(',', ', ') || "-"}</td>
                         </tr>
                         <tr>
                           <td>Foreign Collaborations</td>
                           <td>
-                            {collegedata.overview.foreign_collaboration || "-"}
+                            {collegedata.overview.foreign_collaboration.replaceAll(',', ', ') || "-"}
                           </td>
                         </tr>
                         <tr>
@@ -993,22 +993,24 @@ export default function CollegeName({ collegedata }) {
                         </tr>
                         <tr>
                           <td>Top Recruiters</td>
-                          <td>{collegedata.overview.top_recruiter || "-"}</td>
+                          <td>{collegedata.overview.top_recruiter.replaceAll(',', ', ') || "-"}</td>
                         </tr>
                         <tr>
                           <td>Campus Facilities</td>
                           <td>
-                            {collegedata.overview.campus_facilities || "-"}
+
+                            {collegedata.overview.campus_facilities.replaceAll(',', ', ') || "-"}
+
                           </td>
                         </tr>
                         <tr>
                           <td>Exams Accepted</td>
-                          <td>{collegedata.overview.exams_accepted || "-"}</td>
+                          <td>{collegedata.overview.exams_accepted.replaceAll(',', ', ') || "-"}</td>
                         </tr>
                         <tr>
                           <td>College Collaborations</td>
                           <td>
-                            {collegedata.overview.college_collaborations || "-"}
+                            {collegedata.overview.college_collaborations.replaceAll(',', ', ') || "-"}
                           </td>
                         </tr>
                       </tbody>

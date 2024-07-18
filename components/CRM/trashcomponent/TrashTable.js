@@ -29,6 +29,14 @@ const TrashTable = ({ clgList, dataId, handleRestore }) => (
               <th>Action</th>
             </>
           )}
+           {dataId == "4" && (
+            <>
+              <th>#</th>
+              <th>Blog Title</th>
+              <th>Author Name</th>
+              <th>Action</th>
+            </>
+          )}
         </tr>
       </thead>
       <tbody>
@@ -49,6 +57,12 @@ const TrashTable = ({ clgList, dataId, handleRestore }) => (
                 </>
             )}
             {dataId == "3" && <td>{item.exam_name}</td>}
+            {dataId == "4" && (
+                <>
+                <td>{item.title}</td>
+                <td>{item.author_name}</td>
+                </>
+            )}
             <td>
               <button
                 type="button"
