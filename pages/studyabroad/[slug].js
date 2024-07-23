@@ -13,6 +13,7 @@ import Faq from "@/components/Comps/Faq";
 import TalktoExpert from '@/components/TalktoExpert';
 import Carousel from "react-multi-carousel";
 import TalktoExpertModal from "@/components/Comps/TalktoExpertModal";
+import Swal from 'sweetalert2';
 
 function StudyAbroadInnerPage() {
 
@@ -211,15 +212,15 @@ function StudyAbroadInnerPage() {
           </div>
           {/* faq */}
 
-          <Container className='mt-3 pb-3 '>
+          <Container className='mt-5 pt-5 pb-3 '>
             <div className='pb-2'>
               <h2 style={{ fontWeight: "lighter" }}>Do You Have <strong className='text-primary'>Questions ?</strong></h2>
             </div>
             <Faq faqs={faqs} />
           </Container>
           {/* overview details */}
-          <Container style={{ minHeight: "44vh" }} className='mt-5  '>
-            <Tab.Container defaultActiveKey="whyStudy">
+          <Container style={{height:"45vh"}}  className='mt-5  '>
+            <Tab.Container  defaultActiveKey="whyStudy">
               <Row>
                 <Col className='my-4' sm={3}>
                   <Nav variant="pills" className="flex-column">
@@ -388,7 +389,7 @@ function StudyAbroadInnerPage() {
                     </Container> */}
 
           <TalktoExpert
-            Background={{ backgroundColor: "#004b7a" }}
+            Background={{ backgroundColor: "#1c4fa3" }}
             heading={`Study in ${countryData.countryName} Now`} paragraphText={"What if you can’t come to our office we can come to you virtually for your study abroad plans ! Get expert counselling services from home or any where ."}
             buttonText="Enquire Now" />
         </>

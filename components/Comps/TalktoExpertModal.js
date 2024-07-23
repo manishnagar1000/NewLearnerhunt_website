@@ -13,7 +13,7 @@ const TalktoExpertModal = ({ show, handleClose, handleInputChange, handleSubmit,
 
         <Form onSubmit={handleSubmit} >
           <Form.Group controlId="formName" className="mb-3">
-            <Form.Label>Name</Form.Label> 
+            <Form.Label>Name</Form.Label>
             <Form.Control value={formData.name} name="name" autoComplete='off' onChange={handleInputChange} onKeyDown={KeyPressForAlphabets} type="text" placeholder="Enter your name" required />
           </Form.Group>
 
