@@ -72,13 +72,6 @@ const TalktoExpert = ({ heading, buttonText, buttonLink, paragraphText, Backgrou
     
       };
     
-
-
-
-
-
-
-
     return (
         <div className="min-vh-50 mb-4 mt-5" style={Background}>
             <Container className="py-5">

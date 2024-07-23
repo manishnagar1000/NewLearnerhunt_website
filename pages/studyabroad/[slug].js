@@ -1,5 +1,5 @@
-import React from "react";
-import { Container, Row, Col, Nav, Tab, ListGroup } from 'react-bootstrap';
+import React, { useState } from "react";
+import { Container, Row, Col, Nav, Tab, ListGroup, Button } from 'react-bootstrap';
 import Styles from "@/styles/studyAbroad.module.css";
 import Image from "next/image";
 import WhereToVoteIcon from '@mui/icons-material/WhereToVote';
@@ -12,8 +12,77 @@ import Spinner from "react-bootstrap/Spinner";
 import Faq from "@/components/Comps/Faq";
 import TalktoExpert from '@/components/TalktoExpert';
 import Carousel from "react-multi-carousel";
+import TalktoExpertModal from "@/components/Comps/TalktoExpertModal";
 
 function StudyAbroadInnerPage() {
+
+
+  const [showModal, setShowModal] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    mobile: ''
+  });
+
+
+  const handleButtonClick = (e) => {
+    e.preventDefault()
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setFormData("")
+  };
+
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    console.log('Form Data:', formData);
+
+    const Data = new FormData();
+    Data.append('name', formData.name);
+    Data.append('email', formData.email);
+    Data.append('mobile', formData.mobile);
+
+
+    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/student/study-abroad-enquire-form", {
+      method: 'POST',
+      body: Data
+    }).then(async (response) => {
+      let resp = await response.json();
+      if (resp.message) {
+        Swal.fire({
+          title: 'Success',
+          icon: 'success',
+          text: resp.message,
+        });
+        handleCloseModal();
+        setFormData("")
+      } else if (resp.error) {
+
+        Swal.fire({
+          title: 'Error',
+          icon: 'error',
+          text: resp.error,
+        })
+      }
+    }).catch(error => {
+      console.error('Error:', error);
+
+    });
+
+  };
+
   const router = useRouter();
   const { slug } = router.query;
 
@@ -58,7 +127,17 @@ function StudyAbroadInnerPage() {
                             <h2 className={Styles.saText}>Study in {countryData.countryName}</h2>
                         </Container>
                     </div> */}
+
+          <div className={Styles["StickyEnquireNow"]}>
+            <Button onClick={handleButtonClick} variant="outline-light ">Enquire Now</Button>
+            <TalktoExpertModal handleInputChange={handleInputChange}
+              handleSubmit={handleSubmit}
+              formData={formData}
+              show={showModal} handleClose={handleCloseModal} />
+          </div>
+
           <Container>
+
             <Row className="mt-5">
               <Col lg={6} md={12}>
                 <Row>
@@ -99,7 +178,7 @@ function StudyAbroadInnerPage() {
               </Col>
             </Row>
           </Container>
-         
+
           <div className={`${Styles.slugWhyStudy} mt-5`}>
             <Container xs={6}>
               <div className="text-center text-light p-4">
@@ -130,138 +209,138 @@ function StudyAbroadInnerPage() {
               </Row>
             </Container>
           </div>
-                {/* faq */}
+          {/* faq */}
 
           <Container className='mt-3 pb-3 '>
-                        <div className='pb-2'>
-                            <h2 style={{ fontWeight: "lighter" }}>Do You Have <strong className='text-primary'>Questions ?</strong></h2>
-                        </div>
-                        <Faq faqs={faqs} />
-                    </Container>
+            <div className='pb-2'>
+              <h2 style={{ fontWeight: "lighter" }}>Do You Have <strong className='text-primary'>Questions ?</strong></h2>
+            </div>
+            <Faq faqs={faqs} />
+          </Container>
           {/* overview details */}
           <Container style={{ minHeight: "44vh" }} className='mt-5  '>
-                        <Tab.Container defaultActiveKey="whyStudy">
-                            <Row>
-                                <Col className='my-4' sm={3}>
-                                    <Nav variant="pills" className="flex-column">
-                                        <Nav.Item>
-                                            <Nav.Link eventKey="whyStudy">Why study in {countryData.countryName}?</Nav.Link>
-                                        </Nav.Item>
-                                        <Nav.Item>
-                                            <Nav.Link eventKey="educationSystem">Education system of {countryData.countryName}</Nav.Link>
-                                        </Nav.Item>
-                                        <Nav.Item>
-                                            <Nav.Link eventKey="topuniversities">Top universities in {countryData.countryName}</Nav.Link>
-                                        </Nav.Item>
-                                        <Nav.Item>
-                                            <Nav.Link eventKey="getaddmission">How to get admission?</Nav.Link>
-                                        </Nav.Item>
-                                        <Nav.Item>
-                                            <Nav.Link eventKey="qualifications">Qualifications offered</Nav.Link>
-                                        </Nav.Item>
-                                        <Nav.Item>
-                                            <Nav.Link eventKey="costofeducation">Cost of education</Nav.Link>
-                                        </Nav.Item>
-                                        <Nav.Item>
-                                            <Nav.Link eventKey="testRequirement">Test requirements</Nav.Link>
-                                        </Nav.Item>
-                                        <Nav.Item>
-                                            <Nav.Link eventKey="intake">Intake</Nav.Link>
-                                        </Nav.Item>
-                                    </Nav>
-                                </Col>
-                                <Col className='my-4' sm={9}>
-                                    <Tab.Content>
-                                        <Tab.Pane eventKey="whyStudy">
-                                            <h2 className={Styles.Heading}>Why study in {countryData.countryName}?</h2>
-                                            <ListGroup>
-                                                {countryData.details.why.map((item, index) => (
-                                                    <ListGroup.Item className='border-0' key={index}>
-                                                        <WhereToVoteIcon color="warning"/> {item}
-                                                    </ListGroup.Item>
-                                                ))}
-                                            </ListGroup>
-                                        </Tab.Pane>
-                                        <Tab.Pane eventKey="educationSystem">
-                                            <h2 className={Styles.Heading}>Education system of {countryData.countryName}</h2>
-                                            {
-                                                countryData.details.education_subHeading ? countryData.details.education_subHeading : ""
-                                            }
-                                            <ListGroup>
+            <Tab.Container defaultActiveKey="whyStudy">
+              <Row>
+                <Col className='my-4' sm={3}>
+                  <Nav variant="pills" className="flex-column">
+                    <Nav.Item>
+                      <Nav.Link eventKey="whyStudy">Why study in {countryData.countryName}?</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                      <Nav.Link eventKey="educationSystem">Education system of {countryData.countryName}</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                      <Nav.Link eventKey="topuniversities">Top universities in {countryData.countryName}</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                      <Nav.Link eventKey="getaddmission">How to get admission?</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                      <Nav.Link eventKey="qualifications">Qualifications offered</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                      <Nav.Link eventKey="costofeducation">Cost of education</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                      <Nav.Link eventKey="testRequirement">Test requirements</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                      <Nav.Link eventKey="intake">Intake</Nav.Link>
+                    </Nav.Item>
+                  </Nav>
+                </Col>
+                <Col className='my-4' sm={9}>
+                  <Tab.Content>
+                    <Tab.Pane eventKey="whyStudy">
+                      <h2 className={Styles.Heading}>Why study in {countryData.countryName}?</h2>
+                      <ListGroup>
+                        {countryData.details.why.map((item, index) => (
+                          <ListGroup.Item className='border-0' key={index}>
+                            <WhereToVoteIcon color="warning" /> {item}
+                          </ListGroup.Item>
+                        ))}
+                      </ListGroup>
+                    </Tab.Pane>
+                    <Tab.Pane eventKey="educationSystem">
+                      <h2 className={Styles.Heading}>Education system of {countryData.countryName}</h2>
+                      {
+                        countryData.details.education_subHeading ? countryData.details.education_subHeading : ""
+                      }
+                      <ListGroup>
 
-                                                {countryData.details.education.map((item, index) => (
-                                                    <ListGroup.Item className='border-0' key={index}>
-                                                        <WhereToVoteIcon color="warning"/> {item}
-                                                    </ListGroup.Item>
-                                                ))}
-                                            </ListGroup>
-                                        </Tab.Pane>
-                                        <Tab.Pane eventKey="qualifications">
-                                            <h2 className={Styles.Heading}>Qualifications offered</h2>
-                                            <ListGroup>
-                                                {countryData.details.qualifications_offered.map((item, index) => (
-                                                    <ListGroup.Item className='border-0' key={index}>
-                                                        <WhereToVoteIcon color="warning"/> {item}
-                                                    </ListGroup.Item>
-                                                ))}
-                                            </ListGroup>
-                                        </Tab.Pane>
-                                        <Tab.Pane eventKey="testRequirement">
-                                            <h2 className={Styles.Heading}>Test requirements</h2>
-                                            <ListGroup>
-                                                {countryData.details.test_requirements.map((item, index) => (
-                                                    <ListGroup.Item className='border-0' key={index}>
-                                                        <WhereToVoteIcon color="warning"/> {item}
-                                                    </ListGroup.Item>
-                                                ))}
-                                            </ListGroup>
-                                        </Tab.Pane>
-                                        <Tab.Pane eventKey="topuniversities">
-                                            <h2 className={Styles.Heading}>Top universities in {countryData.countryName}</h2>
-                                            <ListGroup>
-                                                {countryData.details.top_universities.map((item, index) => (
-                                                    <ListGroup.Item className='border-0' key={index}>
-                                                        <WhereToVoteIcon color="warning"/> {item}
-                                                    </ListGroup.Item>
-                                                ))}
-                                            </ListGroup>
-                                        </Tab.Pane>
-                                        <Tab.Pane eventKey="getaddmission">
-                                            <h2 className={Styles.Heading}>How to get admission?</h2>
-                                            <ListGroup>
-                                                {countryData.details.how_to_get_addmission.map((item, index) => (
-                                                    <ListGroup.Item className='border-0' key={index}>
-                                                        <WhereToVoteIcon color="warning"/> {item}
-                                                    </ListGroup.Item>
-                                                ))}
-                                            </ListGroup>
-                                        </Tab.Pane>
-                                        <Tab.Pane eventKey="costofeducation">
-                                            <h2 className={Styles.Heading}>Cost of education</h2>
-                                            <ListGroup>
-                                                {countryData.details.cost_of_education.map((item, index) => (
-                                                    <ListGroup.Item className='border-0' key={index}>
-                                                        <WhereToVoteIcon color="warning"/> {item}
-                                                    </ListGroup.Item>
-                                                ))}
-                                            </ListGroup>
-                                        </Tab.Pane>
-                                        <Tab.Pane eventKey="intake">
-                                            <h2 className={Styles.Heading}>Intake</h2>
-                                            <ListGroup>
-                                                {countryData.details.intake.map((item, index) => (
-                                                    <ListGroup.Item className='border-0' key={index}>
-                                                        <WhereToVoteIcon color="warning"/> {item}
-                                                    </ListGroup.Item>
-                                                ))}
-                                            </ListGroup>
-                                        </Tab.Pane>
+                        {countryData.details.education.map((item, index) => (
+                          <ListGroup.Item className='border-0' key={index}>
+                            <WhereToVoteIcon color="warning" /> {item}
+                          </ListGroup.Item>
+                        ))}
+                      </ListGroup>
+                    </Tab.Pane>
+                    <Tab.Pane eventKey="qualifications">
+                      <h2 className={Styles.Heading}>Qualifications offered</h2>
+                      <ListGroup>
+                        {countryData.details.qualifications_offered.map((item, index) => (
+                          <ListGroup.Item className='border-0' key={index}>
+                            <WhereToVoteIcon color="warning" /> {item}
+                          </ListGroup.Item>
+                        ))}
+                      </ListGroup>
+                    </Tab.Pane>
+                    <Tab.Pane eventKey="testRequirement">
+                      <h2 className={Styles.Heading}>Test requirements</h2>
+                      <ListGroup>
+                        {countryData.details.test_requirements.map((item, index) => (
+                          <ListGroup.Item className='border-0' key={index}>
+                            <WhereToVoteIcon color="warning" /> {item}
+                          </ListGroup.Item>
+                        ))}
+                      </ListGroup>
+                    </Tab.Pane>
+                    <Tab.Pane eventKey="topuniversities">
+                      <h2 className={Styles.Heading}>Top universities in {countryData.countryName}</h2>
+                      <ListGroup>
+                        {countryData.details.top_universities.map((item, index) => (
+                          <ListGroup.Item className='border-0' key={index}>
+                            <WhereToVoteIcon color="warning" /> {item}
+                          </ListGroup.Item>
+                        ))}
+                      </ListGroup>
+                    </Tab.Pane>
+                    <Tab.Pane eventKey="getaddmission">
+                      <h2 className={Styles.Heading}>How to get admission?</h2>
+                      <ListGroup>
+                        {countryData.details.how_to_get_addmission.map((item, index) => (
+                          <ListGroup.Item className='border-0' key={index}>
+                            <WhereToVoteIcon color="warning" /> {item}
+                          </ListGroup.Item>
+                        ))}
+                      </ListGroup>
+                    </Tab.Pane>
+                    <Tab.Pane eventKey="costofeducation">
+                      <h2 className={Styles.Heading}>Cost of education</h2>
+                      <ListGroup>
+                        {countryData.details.cost_of_education.map((item, index) => (
+                          <ListGroup.Item className='border-0' key={index}>
+                            <WhereToVoteIcon color="warning" /> {item}
+                          </ListGroup.Item>
+                        ))}
+                      </ListGroup>
+                    </Tab.Pane>
+                    <Tab.Pane eventKey="intake">
+                      <h2 className={Styles.Heading}>Intake</h2>
+                      <ListGroup>
+                        {countryData.details.intake.map((item, index) => (
+                          <ListGroup.Item className='border-0' key={index}>
+                            <WhereToVoteIcon color="warning" /> {item}
+                          </ListGroup.Item>
+                        ))}
+                      </ListGroup>
+                    </Tab.Pane>
 
-                                    </Tab.Content>
-                                </Col>
-                            </Row>
-                        </Tab.Container>
-                    </Container>
+                  </Tab.Content>
+                </Col>
+              </Row>
+            </Tab.Container>
+          </Container>
           {/* <Container className={`${Styles.main}  `}>
                         <Row className="text-center">
                             <Col>
@@ -309,9 +388,9 @@ function StudyAbroadInnerPage() {
                     </Container> */}
 
           <TalktoExpert
-                        Background={{ backgroundColor: "#004b7a" }}
-                        heading={`Study in ${countryData.countryName} Now`} paragraphText={"What if you can’t come to our office we can come to you virtually for your study abroad plans ! Get expert counselling services from home or any where ."} 
-                        buttonText="Enquire Now" />
+            Background={{ backgroundColor: "#004b7a" }}
+            heading={`Study in ${countryData.countryName} Now`} paragraphText={"What if you can’t come to our office we can come to you virtually for your study abroad plans ! Get expert counselling services from home or any where ."}
+            buttonText="Enquire Now" />
         </>
       ) : (
         <div

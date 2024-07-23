@@ -109,20 +109,18 @@ export default function Topbar() {
                 <img
                   src="/assets/images/01/down-arrow.svg"
                   alt="downarrow"
-                  className={`${
-                    selectedSmList == el.name ? Classes["dwp-img"] : ""
-                  }`}
+                  className={`${selectedSmList == el.name ? Classes["dwp-img"] : ""
+                    }`}
                   width={11}
                   height={7}
                 />
               ) : null}
             </div>
             <ul
-              className={`${Classes["drop-down-menu"]} ${
-                isMob && selectedSmList == el.name
-                  ? Classes["mob-dropdown"]
-                  : ""
-              }`}
+              className={`${Classes["drop-down-menu"]} ${isMob && selectedSmList == el.name
+                ? Classes["mob-dropdown"]
+                : ""
+                }`}
             >
               {getSideList(el.children, isMob)}
             </ul>
@@ -288,9 +286,8 @@ export default function Topbar() {
 
           {/* Sage Menu start */}
           <div
-            className={`${Classes["sage-menu"]} ${
-              isWindowScroll ? Classes["sage-sticky-menu"] : ""
-            }`}
+            className={`${Classes["sage-menu"]} ${isWindowScroll ? Classes["sage-sticky-menu"] : ""
+              }`}
           >
             <div className={`${Classes["top-header"]}`}>
               <div className="container">
@@ -444,16 +441,19 @@ export default function Topbar() {
                     <li className={`${Classes["sage-menu-list"]}`}>
                       <Link href="/blog">Blog</Link>
                     </li>
+                    <li className={`${Classes["sage-menu-list"]}`}>
+                      <Link href="/mocktest">Mock Test</Link>
+                    </li>
                     {/* <li className={`${Classes["sage-menu-list"]}`}>
                       <Link href="/loan">Apply Loan</Link>
                     </li> */}
                     <li className={`${Classes["sage-menu-list"]} `}>
-  <Link href="/loan">Apply Loan
-  <Badge pill bg="warning" text="dark">New</Badge>
+                      <Link href="/loan">Apply Loan
+                        <Badge pill bg="warning" text="dark">New</Badge>
 
-  </Link>
+                      </Link>
 
-</li>
+                    </li>
                   </ul>
                 </div>
                 <div className={`${Classes["contact-cta"]}`}>
@@ -474,8 +474,8 @@ export default function Topbar() {
                         aria-haspopup="true"
                         aria-expanded={open ? "true" : undefined}
                         onClick={handleClick}
-                        // endIcon={<KeyboardArrowDownIcon />}
-                        // style={{ color: "white",background:"#0151c1",borderRadius:"25px",padding:"0.2rem 1rem 0.5rem 1rem"}}
+                      // endIcon={<KeyboardArrowDownIcon />}
+                      // style={{ color: "white",background:"#0151c1",borderRadius:"25px",padding:"0.2rem 1rem 0.5rem 1rem"}}
                       >
                         Log In
                       </span>
@@ -539,13 +539,12 @@ export default function Topbar() {
         </>
       ) : (
         <>
-         
+
           <div
-            className={`${Classes["sage-menu"]} ${
-              isWindowScroll ? Classes["sage-sticky-menu"] : ""
-            }`}
+            className={`${Classes["sage-menu"]} ${isWindowScroll ? Classes["sage-sticky-menu"] : ""
+              }`}
           >
-              <div className={`${Classes["mobile-top-header"]}`}>
+            <div className={`${Classes["mobile-top-header"]}`}>
               {/* <div className="container">
                 <div className="row">
                   <div className="col-12">
@@ -562,17 +561,17 @@ export default function Topbar() {
                   </div>
                 </div>
               </div> */}
-                    <p className={`${Classes["mobile-center-part"]}`}>
-                    <a
-                        target="_blank"
-                        aria-label="Download"
-                        href="https://play.google.com/store/apps/details?id=com.learnerhunt.app"
-                      >
-                        Download
-                      </a> the app to find best colleges for you.{" "}
-                    </p>
+              <p className={`${Classes["mobile-center-part"]}`}>
+                <a
+                  target="_blank"
+                  aria-label="Download"
+                  href="https://play.google.com/store/apps/details?id=com.learnerhunt.app"
+                >
+                  Download
+                </a> the app to find best colleges for you.{" "}
+              </p>
 
-                      
+
             </div>
             <div className="container">
               <div className="row">
@@ -617,9 +616,8 @@ export default function Topbar() {
           </div>
           <div className={Classes["sm-menu"]}>
             <div
-              className={`${Classes["toggle-menu-container"]} ${
-                showToggleMenu ? Classes["show"] : ""
-              }`}
+              className={`${Classes["toggle-menu-container"]} ${showToggleMenu ? Classes["show"] : ""
+                }`}
             >
               <div
                 className={`${Classes["left-toggle-menu"]}`}
@@ -674,7 +672,7 @@ export default function Topbar() {
                               <React.Fragment key={anchor}>
                                 <span
                                   onClick={(e) => handleProfile(e, anchor)}
-                                  // .then(()=>{setShowToggleMenu(false)})
+                                // .then(()=>{setShowToggleMenu(false)})
                                 >
                                   Profile
                                 </span>
@@ -749,7 +747,7 @@ export default function Topbar() {
                   </div>
                 </div>
                 {/* <div className={`${Classes["bottom-toggle-menu"]}`}> */}
-                  {/* <div className={`${Classes["bottom-toggle-menu-list"]}`}>
+                {/* <div className={`${Classes["bottom-toggle-menu-list"]}`}>
                     <ul>
                       <li>
                         <Link href="#">
@@ -781,19 +779,19 @@ export default function Topbar() {
                       </li>
                     </ul>
                   </div> */}
-                  {/* <hr className="my-sm-4" /> */}
-                  <div className={`${Classes["bottom-toggle-menu-cta"]}`}>
-                    <div className="mt-2">
-                      <span> Sales/Support </span>
-                      <br /> <br />
-                      <a href="tel:+918860077807">
-                        <span> +918860077807</span>
-                      </a>
-                      <a href="https://play.google.com/store/apps/details?id=com.learnerhunt.app">
-                        <span>Download App</span>
-                      </a>
-                    </div>
+                {/* <hr className="my-sm-4" /> */}
+                <div className={`${Classes["bottom-toggle-menu-cta"]}`}>
+                  <div className="mt-2">
+                    <span> Sales/Support </span>
+                    <br /> <br />
+                    <a href="tel:+918860077807">
+                      <span> +918860077807</span>
+                    </a>
+                    <a href="https://play.google.com/store/apps/details?id=com.learnerhunt.app">
+                      <span>Download App</span>
+                    </a>
                   </div>
+                </div>
                 {/* </div> */}
               </div>
             </div>

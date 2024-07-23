@@ -259,5 +259,36 @@
 }
 
 .imgg {
-  margin-left: 50px;
+  margin-left: 50px;
+}
+
+
+.StickyEnquireNow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  width: auto;
+  height: auto;
+  background-color: white;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 9;
+  /* padding: 5px 15px; */
+  box-shadow: 0 0 20px white;
+}
+
+.StickyEnquireNow button {
+  background-color: #0151c1;
+  color: #fff;
+  height: auto;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.5s;
+  line-height: 1;
+  /* margin: 0.5rem; */
 }

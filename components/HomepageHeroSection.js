@@ -46,8 +46,8 @@ const HomepageHeroSection = ({ data }) => {
   const [examAppears, setExamAppears] = useState("");
   const [selectedExam, setSelectedExam] = useState("");
   const [selectedRanking, setSelectedRanking] = useState("");
-  const [error,setError] = useState(false)
-  const [isTyping,setIsTyping] = useState(false)
+  const [error, setError] = useState(false)
+  const [isTyping, setIsTyping] = useState(false)
   // const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const router = useRouter();
 
@@ -74,7 +74,7 @@ const HomepageHeroSection = ({ data }) => {
           `/colleges?course=${selectedCourse}&zone=${selectedLocation}&fee=${fee}&name=${fullName}&mobile=${contact}&specialization=${selectedSpecialization}&qualification=${selectedQualification}&exam=${selectedExam}`
         );
       }
-    
+
     }
   };
   const handleSliderChange = (event, newValue) => {
@@ -98,7 +98,7 @@ const HomepageHeroSection = ({ data }) => {
           <div className="col-lg-7 d-none d-lg-block ">
             <div className={Classes["herosection-desc"]}>
               {/* <h1> Learnerhunt - Your Path to Exceptional Education</h1> */}
-              <h1 style={{height: "12vh"}}><Typewriter
+              <h1 style={{ height: "15vh" }}><Typewriter
                 words={['Learnerhunt - Your Path to Exceptional Education']}
                 loop={false}
                 typeSpeed={50}
@@ -106,7 +106,7 @@ const HomepageHeroSection = ({ data }) => {
                 delaySpeed={2000}
                 onLoopDone={() => setIsTyping(false)}
                 stopBlinkinCursor={!isTyping}
-              /></h1>
+              /></h1>
               {/* <ul>
               <li>
               Forem ipsum dolor sit amet, consectetur adipiscing 
@@ -201,8 +201,8 @@ const HomepageHeroSection = ({ data }) => {
                           onChange={(e) =>
                             setContact(e.target.value.replace(/\D/g, ""))
                           }
-                          error={error ?true :false}
-                          helperText={error ?"Incorrect Entry" :""}
+                          error={error ? true : false}
+                          helperText={error ? "Incorrect Entry" : ""}
                           size="small"
                           variant="outlined"
                         />
@@ -408,18 +408,18 @@ const HomepageHeroSection = ({ data }) => {
                             College Fees: {formatFeeLabel(fee)}
                           </Typography>
                           <Slider
-  value={fee}
-  min={200000}
-  step={100000}
-  max={5000000}
-  // scale={calculateValue}
-  // getAriaValueText={valueLabelFormat}
-  // valueLabelFormat={valueLabelFormat}
-  // marks={[{ value: fee, label: formatFeeLabel(fee) }]}
-  onChange={handleSliderChange}
-  // valueLabelDisplay="auto"
-  aria-labelledby="non-linear-slider"
-/>
+                            value={fee}
+                            min={200000}
+                            step={100000}
+                            max={5000000}
+                            // scale={calculateValue}
+                            // getAriaValueText={valueLabelFormat}
+                            // valueLabelFormat={valueLabelFormat}
+                            // marks={[{ value: fee, label: formatFeeLabel(fee) }]}
+                            onChange={handleSliderChange}
+                            // valueLabelDisplay="auto"
+                            aria-labelledby="non-linear-slider"
+                          />
                           {/* <Slider
                             value={fee}
                             onChange={handleSliderChange}
