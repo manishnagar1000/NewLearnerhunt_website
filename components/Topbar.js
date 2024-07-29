@@ -22,6 +22,9 @@ import SearchIcon from "@mui/icons-material/Search";
 import SearchModal from "./SearchModal";
 import Image from "next/image";
 import { Badge } from "react-bootstrap";
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
 
 export default function Topbar() {
   const [isWindowScroll, setIsWindowScroll] = useState(false);
@@ -441,19 +444,22 @@ export default function Topbar() {
                     <li className={`${Classes["sage-menu-list"]}`}>
                       <Link href="/blog">Blog</Link>
                     </li>
-                    <li className={`${Classes["sage-menu-list"]}`}>
+                    {/* <li className={`${Classes["sage-menu-list"]}`}>
                       <Link href="/mocktest">Mock Test</Link>
                       <Badge pill bg="warning" text="dark">New</Badge>
                     </li>
-                    {/* <li className={`${Classes["sage-menu-list"]}`}>
-                      <Link href="/loan">Apply Loan</Link>
-                    </li> */}
                     <li className={`${Classes["sage-menu-list"]} `}>
                       <Link href="/loan">Apply Loan
                         <Badge pill bg="warning" text="dark">New</Badge>
 
                       </Link>
 
+                    </li> */}
+                    <li className={`${Classes["sage-menu-list"]}`}>
+                      <DropdownButton id="dropdown-basic-button" title="New" variant="warning" size="sm">
+                        <Dropdown.Item ><Link href="/mocktest">Mock Test</Link></Dropdown.Item>
+                        <Dropdown.Item > <Link href="/loan">Apply Loan</Link></Dropdown.Item>
+                      </DropdownButton>
                     </li>
                   </ul>
                 </div>
@@ -738,7 +744,7 @@ export default function Topbar() {
                       >
                         <Link href="/blog">Blog</Link>
                       </li>
-                        <li
+                      <li
                         onClick={() => setShowToggleMenu(!showToggleMenu)}
                         className={`${Classes["sage-menu-list"]}`}
                       >

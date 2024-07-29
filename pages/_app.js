@@ -1,19 +1,25 @@
 import Layout from "@/components/Layout";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/global.css";
+import { useRouter } from "next/router";
 import Head from "next/head";
 // import { useReportWebVitals } from 'next/web-vitals'
 export default function App({ Component, pageProps }) {
 
+
+  const router = useRouter();
+  const { pathname } = router;                                                                                    
+
+
   // useReportWebVitals((metric) => {
   //   console.log(metric)
-  // })
+  // })                                                                                                                                            
 
-  
+
   return (
     <>
       <Head>
-      
+
         <meta
           name="facebook-domain-verification"
           content="dlwg9ck6pstfnxvx0h76eu38irnw2x"
@@ -27,7 +33,7 @@ export default function App({ Component, pageProps }) {
           referrerPolicy="no-referrer"
         />
 
-     
+
 
         <script
           async
@@ -99,6 +105,9 @@ export default function App({ Component, pageProps }) {
           id="zsiqchat"
         ></script> */}
         {/* talk.to chatbot */}
+
+
+        {!pathname.startsWith("/adminportal") &&
         <script defer type="text/javascript" dangerouslySetInnerHTML={{
           __html: `
         var Tawk_API=Tawk_API||{ }, Tawk_LoadStart=new Date();
@@ -112,7 +121,7 @@ var s1=document.createElement("script"),s0=document.getElementsByTagName("script
 })();
 `}}>
         </script>
-
+}
 
         {/* google clearty of website */}
         {/* vidhi */}
@@ -128,7 +137,7 @@ var s1=document.createElement("script"),s0=document.getElementsByTagName("script
           }}
         /> */}
         {/* me  */}
-          <script
+        <script
           defer
           dangerouslySetInnerHTML={{
             __html: `

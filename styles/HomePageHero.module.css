@@ -10,16 +10,19 @@
     overflow: hidden;
 
 }
-.herosection-desc{
+
+.herosection-desc {
     position: relative;
     top: 50%;
     transform: translateY(-50%);
 }
-.herosection-desc h1{
-    color:white;
+
+.herosection-desc h1 {
+    color: white;
 }
-.herosection-desc p{
-    color:whitesmoke;
+
+.herosection-desc p {
+    color: whitesmoke;
     font-style: italic;
 }
 
@@ -161,8 +164,8 @@
 
 .error-border {
     border: 1px solid red;
-  }
-  
+}
+
 @media screen and (max-width:768px) {
     .hero-section .buttons-section {
         justify-content: flex-start;
@@ -170,5 +173,16 @@
 
     .hero-section .search-box .search-bar {
         font-size: 0.8rem;
+    }
+}
+
+
+.animationText {
+    height: 16vh
+}
+
+@media (width: 1024px) and (height: 1366px) {
+    .animationText {
+        height: 9vh;
     }
 }

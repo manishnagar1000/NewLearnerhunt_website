@@ -98,7 +98,9 @@ const HomepageHeroSection = ({ data }) => {
           <div className="col-lg-7 d-none d-lg-block ">
             <div className={Classes["herosection-desc"]}>
               {/* <h1> Learnerhunt - Your Path to Exceptional Education</h1> */}
-              <h1 style={{ height: "15vh" }}><Typewriter
+             
+
+              <h1 className={Classes.animationText}><Typewriter
                 words={['Learnerhunt - Your Path to Exceptional Education']}
                 loop={false}
                 typeSpeed={50}
@@ -106,7 +108,8 @@ const HomepageHeroSection = ({ data }) => {
                 delaySpeed={2000}
                 onLoopDone={() => setIsTyping(false)}
                 stopBlinkinCursor={!isTyping}
-              /></h1>
+                /></h1>
+              
               {/* <ul>
               <li>
               Forem ipsum dolor sit amet, consectetur adipiscing 

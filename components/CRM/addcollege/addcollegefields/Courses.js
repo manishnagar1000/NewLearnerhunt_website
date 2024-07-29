@@ -41,7 +41,7 @@ export default class Courses extends Component {
   getDataCourses = () => {
     fetch(
       process.env.NEXT_PUBLIC_API_ENDPOINT +
-        `/admin/get-college-info?tab=2&id=${this.props.edit_id}`,
+      `/admin/get-college-info?tab=2&id=${this.props.edit_id}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("pt")}`,
@@ -55,13 +55,13 @@ export default class Courses extends Component {
         this.setState({ isError: true, errorMsg: response.error });
       } else {
 
-        if(response.data == null || response.data== undefined){
+        if (response.data == null || response.data == undefined) {
           this.setState(
             {
               courseFields: [],
-             },
+            },
           )
-        }else{
+        } else {
           const { courses } = response.data;
 
           this.setState(
@@ -79,7 +79,7 @@ export default class Courses extends Component {
           );
         }
 
-      
+
       }
     });
   };
@@ -121,7 +121,7 @@ export default class Courses extends Component {
             return newobj;
           });
           formData.append("courses", JSON.stringify(courses));
-  
+
           fetch(
             process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/edit-college-info?tab=2&id=${this.props.edit_id}`,
             {
@@ -142,7 +142,7 @@ export default class Courses extends Component {
                   text: `${res.message}`,
                   icon: "success",
                   confirmButtonText: "Ok",
-                }).then(()=>{
+                }).then(() => {
                   this.getDataCourses()
                 })
               } else {
@@ -160,67 +160,67 @@ export default class Courses extends Component {
             .catch((error) => {
               console.error("Error:", error);
             });
-       
+
         }
-        else{
+        else {
           //  this.setState({ isLoading: true });
-        var formData = new FormData();
-        formData.append("college_id", this.state.selectedClg);
-        let courses = this.state.courseFields.map((obj) => {
-          let newobj = {
-            ...obj,
-            course_specialization: obj.course_specialization.join(","),
-          };
-          return newobj;
-        });
-        console.log(courses)
-
-        formData.append("courses", JSON.stringify(courses));
-
-        fetch(
-          process.env.NEXT_PUBLIC_API_ENDPOINT + "/admin/add-college-course",
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("pt")}`,
-            },
-            body: formData,
-          }
-        )
-          .then(async (response) => {
-            // console.log(response.data);
-            this.setState({ isLoading: false });
-            if (response.ok) {
-              var res = await response.json();
-              Swal.fire({
-                title: "Success",
-                text: `${res.message}`,
-                icon: "success",
-                confirmButtonText: "Ok",
-              }).then(() => {
-                this.setState(
-                  {
-                    coursespecilization: [],
-                    selectedClg: "",
-                  },
-                  () => this.props.onSuccess()
-                );
-              });
-            } else {
-              var res = await response.json();
-              Swal.fire({
-                title: "error",
-                text: `${res.error}`,
-                icon: "error",
-                confirmButtonText: "Ok",
-              }).then(() => {
-                this.setState({ isLoading: false });
-              });
-            }
-          })
-          .catch((error) => {
-            console.error("Error:", error);
+          var formData = new FormData();
+          formData.append("college_id", this.state.selectedClg);
+          let courses = this.state.courseFields.map((obj) => {
+            let newobj = {
+              ...obj,
+              course_specialization: obj.course_specialization.join(","),
+            };
+            return newobj;
           });
+          console.log(courses)
+
+          formData.append("courses", JSON.stringify(courses));
+
+          fetch(
+            process.env.NEXT_PUBLIC_API_ENDPOINT + "/admin/add-college-course",
+            {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("pt")}`,
+              },
+              body: formData,
+            }
+          )
+            .then(async (response) => {
+              // console.log(response.data);
+              this.setState({ isLoading: false });
+              if (response.ok) {
+                var res = await response.json();
+                Swal.fire({
+                  title: "Success",
+                  text: `${res.message}`,
+                  icon: "success",
+                  confirmButtonText: "Ok",
+                }).then(() => {
+                  this.setState(
+                    {
+                      coursespecilization: [],
+                      selectedClg: "",
+                    },
+                    () => this.props.onSuccess()
+                  );
+                });
+              } else {
+                var res = await response.json();
+                Swal.fire({
+                  title: "error",
+                  text: `${res.error}`,
+                  icon: "error",
+                  confirmButtonText: "Ok",
+                }).then(() => {
+                  this.setState({ isLoading: false });
+                });
+              }
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
         }
       }
 
@@ -655,7 +655,7 @@ export default class Courses extends Component {
                                   className={Classes["labelname"]}
                                   htmlFor="name"
                                 >
-                                  Avarage Fees
+                                  Average Fees
                                 </label>
                                 <input
                                   type="text"

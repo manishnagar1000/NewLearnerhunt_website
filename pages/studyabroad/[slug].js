@@ -219,7 +219,7 @@ function StudyAbroadInnerPage() {
             <Faq faqs={faqs} />
           </Container>
           {/* overview details */}
-          <Container style={{height:"45vh"}}  className='mt-5  '>
+          <Container style={{minHeight:"45vh"}}  className='mt-5  '>
             <Tab.Container  defaultActiveKey="whyStudy">
               <Row>
                 <Col className='my-4' sm={3}>

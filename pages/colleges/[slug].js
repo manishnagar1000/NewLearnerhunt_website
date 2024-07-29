@@ -504,12 +504,12 @@ export default function CollegeName({ collegedata }) {
   };
   const dummyBannerImg =
     collegedata.generalinfo.banner_img_path &&
-    collegedata.generalinfo.banner_img_path != ""
+      collegedata.generalinfo.banner_img_path != ""
       ? collegedata.generalinfo.banner_img_path
       : "/assets/images/DummyBG.jpg";
   const dummyLogoImg =
     collegedata.generalinfo.logo_img_path &&
-    collegedata.generalinfo.logo_img_path != ""
+      collegedata.generalinfo.logo_img_path != ""
       ? collegedata.generalinfo.logo_img_path
       : "/assets/images/DummyLOGO.jpg";
 
@@ -1253,119 +1253,84 @@ export default function CollegeName({ collegedata }) {
                       >
                         {collegedata.counsellors.length > 0
                           ? collegedata.counsellors.map((s) => (
-                              <div
-                                key={s._id}
-                                className={Classes["Counsellor-box"]}
-                              >
-                                <div className={Classes["img-div-counsellor"]}>
-                                  <img
-                                    src={
-                                      "/assets/images/counsellorFolder/counsellor-profile.png"
-                                    }
-                                    alt={s.name}
-                                  />
-                                </div>
-                                <h4 style={{ marginTop: "10px" }}>
-                                  {s.name.charAt(0).toUpperCase() +
-                                    s.name.slice(1)}
-                                </h4>
-                                <p>
-                                  {" "}
-                                  <strong>Specializaion:</strong>{" "}
-                                  {s.specialization}
-                                </p>
-                                <p>
-                                  <strong>Location:</strong> {s.state},{s.city}
-                                </p>
+                            <div
+                              key={s._id}
+                              className={Classes["Counsellor-box"]}
+                            >
+                              <div className={Classes["img-div-counsellor"]}>
+                                <img
+                                  src={
+                                    "/assets/images/counsellorFolder/counsellor-profile.png"
+                                  }
+                                  alt={s.name}
+                                />
+                              </div>
+                              <h4 style={{ marginTop: "10px" }}>
+                                {s.name.charAt(0).toUpperCase() +
+                                  s.name.slice(1)}
+                              </h4>
+                              <p>
+                                {" "}
+                                <strong>Specializaion:</strong>{" "}
+                                {s.specialization}
+                              </p>
+                              <p>
+                                <strong>Location:</strong> {s.state},{s.city}
+                              </p>
 
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    margin: "0.5rem 0",
-                                  }}
-                                >
-                                  {userStatus ? ( // Check if userStatus is truthy
-                                    videoCall ? ( // Check if videoCall is truthy
-                                      // If both userStatus and videoCall are truthy, render the video call modal
-                                      <Modal
-                                        fullscreen
-                                        show={true}
-                                        centered
-                                        onHide={() => setVideoCall(false)}
-                                      >
-                                        <Modal.Body>
-                                          <div
-                                            style={{
-                                              display: "flex",
-                                              width: "100%",
-                                              height: "100%",
+                              <div
+                                style={{
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                  margin: "0.5rem 0",
+                                }}
+                              >
+                                {userStatus ? ( // Check if userStatus is truthy
+                                  videoCall ? ( // Check if videoCall is truthy
+                                    // If both userStatus and videoCall are truthy, render the video call modal
+                                    <Modal
+                                      fullscreen
+                                      show={true}
+                                      centered
+                                      onHide={() => setVideoCall(false)}
+                                    >
+                                      <Modal.Body>
+                                        <div
+                                          style={{
+                                            display: "flex",
+                                            width: "100%",
+                                            height: "100%",
+                                          }}
+                                        >
+                                          <AgoraUIKit
+                                            rtcProps={rtcProps}
+                                            rtmProps={rtmProps}
+                                            callbacks={{
+                                              EndCall: handleCallEnd,
                                             }}
-                                          >
-                                            <AgoraUIKit
-                                              rtcProps={rtcProps}
-                                              rtmProps={rtmProps}
-                                              callbacks={{
-                                                EndCall: handleCallEnd,
-                                              }}
-                                            />
-                                          </div>
-                                        </Modal.Body>
-                                      </Modal>
-                                    ) : s.counsellorJoined &&
-                                      !s.counsellorDisconnected ? (
-                                      <button
-                                        style={{
-                                          padding: "0.4rem 1rem",
-                                          backgroundColor: "red",
-                                          color: "#fff",
-                                          border: "none",
-                                          borderRadius: "25px",
-                                          cursor: "no-drop",
-                                        }}
-                                      >
-                                        <DuoIcon fontSize="small" /> Busy
-                                      </button>
-                                    ) : (
-                                      <>
-                                        <button
-                                          onClick={(e) => handleCall(e, s)}
-                                          style={{
-                                            padding: "0.4rem 1rem",
-                                            backgroundColor: "#007bff",
-                                            color: "#fff",
-                                            border: "none",
-                                            borderRadius: "25px",
-                                            cursor: "pointer",
-                                            marginRight: "1rem",
-                                          }}
-                                        >
-                                          <DuoIcon fontSize="small" /> VideoCall
-                                        </button>
-                                        <button
-                                          //  onClick={handlelogin}
-                                          onClick={(e) =>
-                                            handleStudentCall(e, s)
-                                          }
-                                          style={{
-                                            padding: "0.4rem 1rem",
-                                            backgroundColor: "#007bff",
-                                            color: "#fff",
-                                            border: "none",
-                                            borderRadius: "25px",
-                                            cursor: "pointer",
-                                          }}
-                                        >
-                                          <CallIcon fontSize="small" /> Call
-                                        </button>
-                                      </>
-                                    )
+                                          />
+                                        </div>
+                                      </Modal.Body>
+                                    </Modal>
+                                  ) : s.counsellorJoined &&
+                                    !s.counsellorDisconnected ? (
+                                    <button
+                                      style={{
+                                        padding: "0.4rem 1rem",
+                                        backgroundColor: "red",
+                                        color: "#fff",
+                                        border: "none",
+                                        borderRadius: "25px",
+                                        cursor: "no-drop",
+                                      }}
+                                    >
+                                      <DuoIcon fontSize="small" /> Busy
+                                    </button>
                                   ) : (
-                                    // If userStatus is falsey, render a default button (e.g., "hello")
                                     <>
                                       <button
-                                        onClick={handlelogin}
+                                        onClick={(e) => handleCall(e, s)}
                                         style={{
                                           padding: "0.4rem 1rem",
                                           backgroundColor: "#007bff",
@@ -1376,10 +1341,13 @@ export default function CollegeName({ collegedata }) {
                                           marginRight: "1rem",
                                         }}
                                       >
-                                        <DuoIcon fontSize="small" /> Video Call
+                                        <DuoIcon fontSize="small" /> VideoCall
                                       </button>
                                       <button
-                                        onClick={handlelogin}
+                                        //  onClick={handlelogin}
+                                        onClick={(e) =>
+                                          handleStudentCall(e, s)
+                                        }
                                         style={{
                                           padding: "0.4rem 1rem",
                                           backgroundColor: "#007bff",
@@ -1392,9 +1360,41 @@ export default function CollegeName({ collegedata }) {
                                         <CallIcon fontSize="small" /> Call
                                       </button>
                                     </>
-                                  )}
+                                  )
+                                ) : (
+                                  // If userStatus is falsey, render a default button (e.g., "hello")
+                                  <>
+                                    <button
+                                      onClick={handlelogin}
+                                      style={{
+                                        padding: "0.4rem 1rem",
+                                        backgroundColor: "#007bff",
+                                        color: "#fff",
+                                        border: "none",
+                                        borderRadius: "25px",
+                                        cursor: "pointer",
+                                        marginRight: "1rem",
+                                      }}
+                                    >
+                                      <DuoIcon fontSize="small" /> Video Call
+                                    </button>
+                                    <button
+                                      onClick={handlelogin}
+                                      style={{
+                                        padding: "0.4rem 1rem",
+                                        backgroundColor: "#007bff",
+                                        color: "#fff",
+                                        border: "none",
+                                        borderRadius: "25px",
+                                        cursor: "pointer",
+                                      }}
+                                    >
+                                      <CallIcon fontSize="small" /> Call
+                                    </button>
+                                  </>
+                                )}
 
-                                  {/* <button
+                                {/* <button
                                   onClick={() => handleCall(counselor.name)}
                                   style={{
                                     padding: "10px 20px",
@@ -1408,9 +1408,9 @@ export default function CollegeName({ collegedata }) {
                                 >
                                   Message
                                 </button> */}
-                                </div>
                               </div>
-                            ))
+                            </div>
+                          ))
                           : "no record"}
                       </Carousel>
                     </div>
@@ -1634,34 +1634,34 @@ export default function CollegeName({ collegedata }) {
                   <div className={Classes["description-section"]}>
                     {collegedata.admission.admission_eligibility_criteria
                       .length > 0 && (
-                      <>
-                        <h3>
-                          {collegedata.generalinfo.college_name} Courses and
-                          Eligibility Criteria
-                        </h3>
+                        <>
+                          <h3>
+                            {collegedata.generalinfo.college_name} Courses and
+                            Eligibility Criteria
+                          </h3>
 
-                        <Table responsive bordered>
-                          <thead>
-                            <tr>
-                              <th>Course </th>
-                              <th>Eligibility</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {collegedata.admission.admission_eligibility_criteria.map(
-                              (s, i) => {
-                                return (
-                                  <tr key={i}>
-                                    <td>{s.course_name || "-"}</td>
-                                    <td>{s.eligibility || "-"}</td>
-                                  </tr>
-                                );
-                              }
-                            )}
-                          </tbody>
-                        </Table>
-                      </>
-                    )}
+                          <Table responsive bordered>
+                            <thead>
+                              <tr>
+                                <th>Course </th>
+                                <th>Eligibility</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {collegedata.admission.admission_eligibility_criteria.map(
+                                (s, i) => {
+                                  return (
+                                    <tr key={i}>
+                                      <td>{s.course_name || "-"}</td>
+                                      <td>{s.eligibility || "-"}</td>
+                                    </tr>
+                                  );
+                                }
+                              )}
+                            </tbody>
+                          </Table>
+                        </>
+                      )}
                   </div>
                 </div>
               </div>
@@ -1744,33 +1744,33 @@ export default function CollegeName({ collegedata }) {
                     )}
                     {collegedata.scholorship.merit_cum_means_scholorship
                       .length > 0 && (
-                      <>
-                        <h3>
-                          {collegedata.generalinfo.college_name} Merit Cum Means
-                          Scholarships
-                        </h3>
-                        <Table responsive bordered>
-                          <thead>
-                            <tr>
-                              <th>Annual Income </th>
-                              <th>Scholarship</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {collegedata.scholorship.merit_cum_means_scholorship.map(
-                              (s, i) => {
-                                return (
-                                  <tr key={i}>
-                                    <td>{s.annual_income || "-"}</td>
-                                    <td>{s.scholorship || "-"}</td>
-                                  </tr>
-                                );
-                              }
-                            )}
-                          </tbody>
-                        </Table>
-                      </>
-                    )}
+                        <>
+                          <h3>
+                            {collegedata.generalinfo.college_name} Merit Cum Means
+                            Scholarships
+                          </h3>
+                          <Table responsive bordered>
+                            <thead>
+                              <tr>
+                                <th>Annual Income </th>
+                                <th>Scholarship</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {collegedata.scholorship.merit_cum_means_scholorship.map(
+                                (s, i) => {
+                                  return (
+                                    <tr key={i}>
+                                      <td>{s.annual_income || "-"}</td>
+                                      <td>{s.scholorship || "-"}</td>
+                                    </tr>
+                                  );
+                                }
+                              )}
+                            </tbody>
+                          </Table>
+                        </>
+                      )}
                   </div>
                 </div>
               </div>
@@ -2098,23 +2098,87 @@ export default function CollegeName({ collegedata }) {
   );
 }
 
+// export async function getServerSideProps(context) {
+//   const { slug } = context.params;
+//   if (slug) {
+//     const encodedSlug = encodeURIComponent(slug);
+//     const url =
+//       process.env.NEXT_PUBLIC_API_ENDPOINT + "/college?slug=" + encodedSlug;
+//     // console.log(url)
+//     const res = await fetch(url);
+//     const data = await res.json();
+//     // console.log(data.data);
+//     if (data.data && data.data.length > 0) {
+//       return {
+//         props: { collegedata: data.data[0] },
+//       };
+//     } else {
+//       return {
+//         // notFound: true,
+//         redirect: {
+//           permanent: false,
+//           destination: "/",
+//         },
+//         props: {},
+//       };
+//     }
+//   } else {
+//     return {
+//       // notFound: true,
+//       redirect: {
+//         permanent: false,
+//         destination: "/",
+//       },
+//       props: {},
+//     };
+//   }
+// }
+
+
+
 export async function getServerSideProps(context) {
-  const { slug } = context.params;
-  if (slug) {
+  let { slug } = context.params;
+
+  // Check if slug exists and is a string
+  if (typeof slug === 'string') {
+    // Trim trailing hyphens from the slug
+    slug = slug.replace(/-+$/, '');
+
+    // Encode the slug for use in the URL
     const encodedSlug = encodeURIComponent(slug);
-    const url =
-      process.env.NEXT_PUBLIC_API_ENDPOINT + "/college?slug=" + encodedSlug;
-    // console.log(url)
-    const res = await fetch(url);
-    const data = await res.json();
-    // console.log(data.data);
-    if (data.data && data.data.length > 0) {
+    const url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/college?slug=${encodedSlug}`;
+
+    try {
+      // Fetch data from the API
+      const res = await fetch(url);
+
+      // Check if the response is OK
+      if (!res.ok) {
+        throw new Error(`HTTP error! Status: ${res.status}`);
+      }
+
+      const data = await res.json();
+
+      // Check if data exists and has elements
+      if (data.data && data.data.length > 0) {
+        return {
+          props: { collegedata: data.data[0] },
+        };
+      } else {
+        // Redirect if no data is found
+        return {
+          redirect: {
+            permanent: false,
+            destination: "/",
+          },
+          props: {},
+        };
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+
+      // Redirect in case of an error
       return {
-        props: { collegedata: data.data[0] },
-      };
-    } else {
-      return {
-        // notFound: true,
         redirect: {
           permanent: false,
           destination: "/",
@@ -2123,8 +2187,8 @@ export async function getServerSideProps(context) {
       };
     }
   } else {
+    // Redirect if slug is not provided or not a string
     return {
-      // notFound: true,
       redirect: {
         permanent: false,
         destination: "/",

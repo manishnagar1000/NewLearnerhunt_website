@@ -500,7 +500,7 @@ export default class Courses extends Component {
                               className={Classes["labelname"]}
                               htmlFor="name"
                             >
-                              Avarage Fees
+                              Average Fees
                             </label>
                             <input
                               type="text"

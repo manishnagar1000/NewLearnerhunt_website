@@ -931,7 +931,7 @@ export default class Gernal extends Component {
                                   htmlFor="name"
                                 >
                                   Specialisation(Tags)
-                                  <span className={Classes["error"]}>*</span>
+                                  {/* <span className={Classes["error"]}>*</span> */}
                                 </label>
                                 <MultipleTagsInput
                                   placeholder="Enter Specialisation"
