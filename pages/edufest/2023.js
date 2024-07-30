@@ -340,28 +340,28 @@ export default function fest() {
             </div>
           </div>
         </div>
-        <div className={styles.photocontainer}>
-          <div className="container">
-            <div className={styles.edufestPhoto}>
-              <h2>Events through the years...</h2>
-              <Carousel
-                showDots={true}
-                responsive={responsive}
-                autoPlay={true}
-                autoPlaySpeed={2000}
-                arrows={false}
-                dotListclassName={styles["custom-dot-list-style"]}
-                className={styles["react-multi-carousel-list"]}
-              >
-                {edufestPhoto.map((e, index) => (
-                  <div className={styles.photos}>
-                    <img src={e.img} alt={index}></img>
-                  </div>
-                ))}
-              </Carousel>
+          {/* <div className={styles.photocontainer}>
+            <div className="container">
+              <div className={styles.edufestPhoto}>
+                <h2>Events through the years...</h2>
+                <Carousel
+                  showDots={true}
+                  responsive={responsive}
+                  autoPlay={true}
+                  autoPlaySpeed={2000}
+                  arrows={false}
+                  dotListclassName={styles["custom-dot-list-style"]}
+                  className={styles["react-multi-carousel-list"]}
+                >
+                  {edufestPhoto.map((e, index) => (
+                    <div className={styles.photos}>
+                      <img src={e.img} alt={index}></img>
+                    </div>
+                  ))}
+                </Carousel>
+              </div>
             </div>
-          </div>
-        </div>
+          </div> */}
       </div>
     </div>
   );

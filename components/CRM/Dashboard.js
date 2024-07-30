@@ -10,7 +10,7 @@ export default function Dashboard() {
   let dashboardComponent;
   if (role === '0') {
     dashboardComponent = <AdminDashboard />;
-  } else if (role === '5') {
+  } else if (['4','5'].includes(role)) {
     dashboardComponent = <DigitalMarketDashboard />;
   } else {
     dashboardComponent = <div>Role not recognized</div>;

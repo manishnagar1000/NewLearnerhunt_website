@@ -96,7 +96,7 @@ export default class PortalLayout extends Component {
 
   getUserDetails() {
     this.setState({ isLoadingUserDetails: true })
-    fetch('http://192.168.1.19:5000/api/admin/my-profile', {
+    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/admin/my-profile", {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${localStorage.getItem("pt")}`
@@ -177,7 +177,8 @@ export default class PortalLayout extends Component {
       }).then(() => {
         this.setState({ isLoading: false });
       });
-    } else if (this.state.mobile === "") {
+    }
+    else if (this.state.mobile === "") {
       Swal.fire({
         title: "error",
         text: "Please enter your mobile",
@@ -198,7 +199,7 @@ export default class PortalLayout extends Component {
     } else if (this.state.cpassword === "") {
       Swal.fire({
         title: "error",
-        text: "Please enter your confirm password",
+        text: "Please enter confirm password",
         icon: "error",
         confirmButtonText: "Ok",
       }).then(() => {
@@ -226,7 +227,7 @@ export default class PortalLayout extends Component {
         fd.append("dob", this.state.dob);
         fd.append("gender", this.state.gender);
 
-        fetch("http://192.168.1.19:5000/api/admin/my-profile", {
+        fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/admin/my-profile", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("pt")}`,
           },
@@ -288,7 +289,7 @@ export default class PortalLayout extends Component {
       });
 
       try {
-        const response = await fetch('http://192.168.1.19:5000/api/admin/my-profile', {
+        const response = await fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/admin/my-profile", {
           method: 'DELETE',
           headers: {
             Authorization: `Bearer ${localStorage.getItem("pt")}`,
@@ -316,8 +317,6 @@ export default class PortalLayout extends Component {
       }
     }
   }
-
-
 
 
 
@@ -439,6 +438,9 @@ export default class PortalLayout extends Component {
                 </MenuItem>
               </Menu>
             </React.Fragment>
+            {
+
+            }
             <Modal
               size="lg"
               centered
@@ -452,6 +454,7 @@ export default class PortalLayout extends Component {
               // backdrop="static"
               keyboard={false}
             >
+
               <div className={`${Classes.modalBackground} rounded-top `}>
                 <Modal.Header style={{ border: "none", display: "flex", justifyContent: "space-between" }}>
                   <Modal.Title>
@@ -613,6 +616,7 @@ export default class PortalLayout extends Component {
                                 required
                               >
                                 <TextField
+                                  required
                                   id="dob"
                                   name="dob"
                                   type="date"
@@ -682,10 +686,10 @@ export default class PortalLayout extends Component {
                             :
                             <Col style={{ height: "32vh" }}>
                               <h5 className=" text-center pb-3">Personal Details</h5>
-                              <h6>Name : {this.state.userDetails?.name}</h6>
-                              <h6>Email : {this.state.userDetails?.email}</h6>
-                              <h6>Mobile : {this.state.userDetails?.mobile}</h6>
-                              <h6>Gender : {this.state.userDetails?.gender}</h6>
+                              <h6>Name : {this.state.userDetails?.name ? this.state.userDetails?.name : "N/A"}</h6>
+                              <h6>Email : {this.state.userDetails?.email ? this.state.userDetails?.email : "N/A"}</h6>
+                              <h6>Mobile : {this.state.userDetails?.mobile ? this.state.userDetails?.mobile : "N/A"}</h6>
+                              <h6>Gender : {this.state.userDetails?.gender ? this.state.userDetails?.gender : "N/A"}</h6>
                               <h6>Date of birth : {moment(this.state.userDetails?.dob).format('MMMM Do YYYY')}</h6>
                             </Col>
                         }
@@ -693,7 +697,6 @@ export default class PortalLayout extends Component {
                     </Card>
                   </Col>
                 </Row>
-
                 {this.state.editDetails &&
                   <Row>
                     <Col >

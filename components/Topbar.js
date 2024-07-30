@@ -35,7 +35,7 @@ export default function Topbar() {
   const [userrole, setUserRole] = useState(null);
   const [userStatus, setUserStatus] = useState(false);
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
-
+  const [showMoreDropdown, setShowMoreDropdown] = useState(false);
   const [state, setState] = React.useState({
     right: false,
   });
@@ -455,8 +455,9 @@ export default function Topbar() {
                       </Link>
 
                     </li> */}
-                    <li className={`${Classes["sage-menu-list"]}`}>
-                      <DropdownButton id="dropdown-basic-button" title="New" variant="warning" size="sm">
+                    <li onMouseEnter={() => setShowMoreDropdown(true)}
+                      onMouseLeave={() => setShowMoreDropdown(false)} className={`${Classes["sage-menu-list"]}`}>
+                      <DropdownButton style={{ borderRadius: "0px" }} show={showMoreDropdown} id="dropdown-basic-button" title="More" variant="none" size="md">
                         <Dropdown.Item ><Link href="/mocktest">Mock Test</Link></Dropdown.Item>
                         <Dropdown.Item > <Link href="/loan">Apply Loan</Link></Dropdown.Item>
                       </DropdownButton>
