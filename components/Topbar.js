@@ -315,6 +315,7 @@ export default function Topbar() {
                         target="_blank"
                         aria-label="Download Now"
                         href="https://play.google.com/store/apps/details?id=com.learnerhunt.app"
+                     
                       >
                         Download Now
                       </a>
@@ -455,12 +456,34 @@ export default function Topbar() {
                       </Link>
 
                     </li> */}
+                    {/* 
                     <li onMouseEnter={() => setShowMoreDropdown(true)}
                       onMouseLeave={() => setShowMoreDropdown(false)} className={`${Classes["sage-menu-list"]}`}>
-                      <DropdownButton style={{ borderRadius: "0px" }} show={showMoreDropdown} id="dropdown-basic-button" title="More" variant="none" size="md">
+                      <DropdownButton show={showMoreDropdown} id="dropdown-basic-button" title="More" variant="none" size="md">
                         <Dropdown.Item ><Link href="/mocktest">Mock Test</Link></Dropdown.Item>
                         <Dropdown.Item > <Link href="/loan">Apply Loan</Link></Dropdown.Item>
                       </DropdownButton>
+                    </li> */}
+                    <li onMouseEnter={() => setShowMoreDropdown(true)}
+                      onMouseLeave={() => setShowMoreDropdown(false)} className={`${Classes["sage-menu-list"]}`}>
+                      <Dropdown>
+                        <Dropdown.Toggle
+                          variant="none"
+                          style={{
+                            borderColor: 'transparent',
+                            borderWidth: '0px',
+                            position:"relative",
+                            bottom:"2px"
+                          }}
+                        >
+                          More 
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu show={showMoreDropdown}>
+                          <Dropdown.Item ><Link href="/mocktest">Mock Test <Badge pill bg="warning" text="dark">New</Badge></Link></Dropdown.Item>
+                          <Dropdown.Item ><Link href="/loan">Apply Loan <Badge pill bg="warning" text="dark">New</Badge></Link></Dropdown.Item>
+                        </Dropdown.Menu>
+                      </Dropdown>
+                      
                     </li>
                   </ul>
                 </div>

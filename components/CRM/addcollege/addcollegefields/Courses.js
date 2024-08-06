@@ -649,7 +649,7 @@ export default class Courses extends Component {
                               </div>
                             </div>
 
-                            <div className="col-md-3">
+                            {/* <div className="col-md-3">
                               <div className={Classes["form-group"]}>
                                 <label
                                   className={Classes["labelname"]}
@@ -675,7 +675,7 @@ export default class Courses extends Component {
                                   }
                                 />
                               </div>
-                            </div>
+                            </div> */}
                             <div className="col-md-4">
                               <div className={Classes["form-group"]}>
                                 <label

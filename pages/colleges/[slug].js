@@ -873,14 +873,15 @@ export default function CollegeName({ collegedata }) {
                   </p>
                 </div>
               </div> */}
-                  {collegedata.overview.description.length > 0 && (
+                  {/* {collegedata.overview.description.length > 0 && (
                     <div className={Classes["description-section"]}>
                       <h3>{collegedata.generalinfo.college_name} Overview</h3>
                       <p style={{ whiteSpace: "pre-line" }}>
                         {collegedata.overview.description}
                       </p>
                     </div>
-                  )}
+                  )} */}
+                  
                   <div className={Classes["description-section"]}>
                     <h3>{collegedata.generalinfo.college_name} Highlights</h3>
                     <Table responsive bordered>
@@ -1698,19 +1699,37 @@ export default function CollegeName({ collegedata }) {
                             </tr>
                           </thead>
                           <tbody>
-                            {collegedata.scholorship.scholorship_scheme.map(
-                              (s, i) => {
-                                return (
-                                  <tr key={i}>
-                                    <td>{s.category || "-"}</td>
-                                    <td>{s.eligibility_criteria || "-"}</td>
-                                    <td>{s.scholorship || "-"}</td>
-                                  </tr>
-                                );
-                              }
-                            )}
+                            {collegedata.scholorship.scholorship_scheme.map((s, i) => {
+                              return (
+                                <tr key={i}>
+                                  <td>{s.category || ""}</td>
+                                  <td>
+                                    {s.eligibility_criteria
+                                      ? s.eligibility_criteria.split('\n').map((line, index) => (
+                                        <React.Fragment key={index}>
+                                          {line}
+                                          <br />
+                                        </React.Fragment>
+                                      ))
+                                      : ""}
+                                  </td>
+                                  <td>
+                                    {s.scholorship
+                                      ? s.scholorship.split('\n').map((line, index) => (
+                                        <React.Fragment key={index}>
+                                          {line}
+                                          <br />
+                                        </React.Fragment>
+                                      ))
+                                      : "-"}
+                                  </td>
+                                </tr>
+                              );
+                            })}
                           </tbody>
+
                         </Table>
+
                       </>
                     )}
                     {collegedata.scholorship.sports_scholorship.length > 0 && (
@@ -2098,87 +2117,23 @@ export default function CollegeName({ collegedata }) {
   );
 }
 
-// export async function getServerSideProps(context) {
-//   const { slug } = context.params;
-//   if (slug) {
-//     const encodedSlug = encodeURIComponent(slug);
-//     const url =
-//       process.env.NEXT_PUBLIC_API_ENDPOINT + "/college?slug=" + encodedSlug;
-//     // console.log(url)
-//     const res = await fetch(url);
-//     const data = await res.json();
-//     // console.log(data.data);
-//     if (data.data && data.data.length > 0) {
-//       return {
-//         props: { collegedata: data.data[0] },
-//       };
-//     } else {
-//       return {
-//         // notFound: true,
-//         redirect: {
-//           permanent: false,
-//           destination: "/",
-//         },
-//         props: {},
-//       };
-//     }
-//   } else {
-//     return {
-//       // notFound: true,
-//       redirect: {
-//         permanent: false,
-//         destination: "/",
-//       },
-//       props: {},
-//     };
-//   }
-// }
-
-
-
 export async function getServerSideProps(context) {
-  let { slug } = context.params;
-
-  // Check if slug exists and is a string
-  if (typeof slug === 'string') {
-    // Trim trailing hyphens from the slug
-    slug = slug.replace(/-+$/, '');
-
-    // Encode the slug for use in the URL
+  const { slug } = context.params;
+  if (slug) {
     const encodedSlug = encodeURIComponent(slug);
-    const url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/college?slug=${encodedSlug}`;
-
-    try {
-      // Fetch data from the API
-      const res = await fetch(url);
-
-      // Check if the response is OK
-      if (!res.ok) {
-        throw new Error(`HTTP error! Status: ${res.status}`);
-      }
-
-      const data = await res.json();
-
-      // Check if data exists and has elements
-      if (data.data && data.data.length > 0) {
-        return {
-          props: { collegedata: data.data[0] },
-        };
-      } else {
-        // Redirect if no data is found
-        return {
-          redirect: {
-            permanent: false,
-            destination: "/",
-          },
-          props: {},
-        };
-      }
-    } catch (error) {
-      console.error('Error fetching data:', error);
-
-      // Redirect in case of an error
+    const url =
+      process.env.NEXT_PUBLIC_API_ENDPOINT + "/college?slug=" + encodedSlug;
+    // console.log(url)
+    const res = await fetch(url);
+    const data = await res.json();
+    // console.log(data.data);
+    if (data.data && data.data.length > 0) {
       return {
+        props: { collegedata: data.data[0] },
+      };
+    } else {
+      return {
+        // notFound: true,
         redirect: {
           permanent: false,
           destination: "/",
@@ -2187,8 +2142,8 @@ export async function getServerSideProps(context) {
       };
     }
   } else {
-    // Redirect if slug is not provided or not a string
     return {
+      // notFound: true,
       redirect: {
         permanent: false,
         destination: "/",
@@ -2197,3 +2152,67 @@ export async function getServerSideProps(context) {
     };
   }
 }
+
+
+
+// export async function getServerSideProps(context) {
+//   let { slug } = context.params;
+
+//   // Check if slug exists and is a string
+//   if (typeof slug === 'string') {
+//     // Trim trailing hyphens from the slug
+//     slug = slug.replace(/-+$/, '');
+
+//     // Encode the slug for use in the URL
+//     const encodedSlug = encodeURIComponent(slug);
+//     const url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/college?slug=${encodedSlug}`;
+
+//     try {
+//       // Fetch data from the API
+//       const res = await fetch(url);
+
+//       // Check if the response is OK
+//       if (!res.ok) {
+//         throw new Error(`HTTP error! Status: ${res.status}`);
+//       }
+
+//       const data = await res.json();
+
+//       // Check if data exists and has elements
+//       if (data.data && data.data.length > 0) {
+//         return {
+//           props: { collegedata: data.data[0] },
+//         };
+//       } else {
+//         // Redirect if no data is found
+//         return {
+//           redirect: {
+//             permanent: false,
+//             destination: "/",
+//           },
+//           props: {},
+//         };
+//       }
+//     } catch (error) {
+//       console.error('Error fetching data:', error);
+
+//       // Redirect in case of an error
+//       return {
+//         redirect: {
+//           permanent: false,
+//           destination: "/",
+//         },
+//         props: {},
+//       };
+//     }
+//   } else {
+//     // Redirect if slug is not provided or not a string
+//     return {
+//       redirect: {
+//         permanent: false,
+//         destination: "/",
+//       },
+//       props: {},
+//     };
+//   }
+// }

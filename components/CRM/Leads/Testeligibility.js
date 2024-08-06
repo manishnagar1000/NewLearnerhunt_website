@@ -13,12 +13,12 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
-import { alpha } from "@mui/material/styles";
 import Tooltip from "@mui/material/Tooltip";
+import LoopIcon from "@mui/icons-material/Loop";
+import { alpha } from "@mui/material/styles";
 import Swal from "sweetalert2";
 import SendTimeExtensionIcon from "@mui/icons-material/SendTimeExtension";
 import Chip from "@mui/material/Chip";
-import LoopIcon from "@mui/icons-material/Loop";
 import Loading from "@/components/Comps/Loading";
 import AssignLeadModal from "./components/AssignLeadModal";
 import RemarkHistoryModal from "./components/RemarkHistoryModal";
@@ -322,7 +322,7 @@ export default function Testeligibility() {
     setIsLoading(false);
     setIsAssignLeadModalOpen(value);
   };
- 
+
 
   const handleAssignLead = (e) => {
     e.preventDefault();
@@ -414,7 +414,6 @@ export default function Testeligibility() {
     }
   };
 
-  
 
 
   const SetSelectedCounsellorID = (id) => {
@@ -470,8 +469,8 @@ export default function Testeligibility() {
                         />
                       </TableCell>
                       <TableCell>{row.name.length > 20
-                          ? row.name.substring(0, 20) + "..."
-                          : row.name}</TableCell>
+                        ? row.name.substring(0, 20) + "..."
+                        : row.name}</TableCell>
                       <TableCell>
                         {row.counsellors.length > 0 ? (
                           row.counsellors.map((c, i) => {

@@ -32,7 +32,6 @@ import { Select } from "@mui/material";
 import moment from "moment";
 import { KeyPressForAlphabets, KeyPressForNumeric } from "../Comps/formValidation";
 
-
 export default class PortalLayout extends Component {
 
   constructor(props) {

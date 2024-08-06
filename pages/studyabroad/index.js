@@ -99,7 +99,6 @@ const StudyAbroad = () => {
           <h2 className={Styles.saText}>Study Abroad</h2>
         </Container>
       </div>
-
       <Container className=' d-flex flex-row'>
         <Row className='mt-5'>
           <Col md={8}>

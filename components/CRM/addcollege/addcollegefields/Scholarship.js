@@ -18,7 +18,7 @@ export default class Scholorship extends Component {
     super(props)
     this.state = {
       selectedClg: '',
-      scholarshipdesc:"",
+      scholarshipdesc: "",
       iscollegeListEmpty: false,
 
       scholarshipScheme: [], sportsScholorship: [], meritCumMeansScholorship: []
@@ -26,10 +26,10 @@ export default class Scholorship extends Component {
   }
 
 
-  getDataScholarship=()=>{
+  getDataScholarship = () => {
     fetch(
       process.env.NEXT_PUBLIC_API_ENDPOINT +
-        `/admin/get-college-info?tab=5&id=${this.props.edit_id}`,
+      `/admin/get-college-info?tab=5&id=${this.props.edit_id}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("pt")}`,
@@ -37,41 +37,41 @@ export default class Scholorship extends Component {
       }
     ).then(async (res) => {
       let response = await res.json();
-     
+
       // console.log(response.data);
       if (response.error) {
         this.setState({ isError: true, errorMsg: response.error });
       } else {
-        if(response.data == null || response.data== undefined){
+        if (response.data == null || response.data == undefined) {
           this.setState(
             {
-              scholarshipdesc:'',
-              scholarshipScheme:[], 
-              sportsScholorship:[], 
-              meritCumMeansScholorship:[]
-             },
+              scholarshipdesc: '',
+              scholarshipScheme: [],
+              sportsScholorship: [],
+              meritCumMeansScholorship: []
+            },
           )
-        }else{
+        } else {
           const {
-            scholorship_description,merit_cum_means_scholorship,scholorship_scheme,sports_scholorship
+            scholorship_description, merit_cum_means_scholorship, scholorship_scheme, sports_scholorship
           } = response.data;
-        this.setState(
-          {
-            scholarshipdesc:scholorship_description,
-            scholarshipScheme:scholorship_scheme,
-            sportsScholorship: sports_scholorship.map((c) => {
-              return {
-                ...c,
-                level: c.level
-                  ? c.level.split(",")
-                  : [],
-              };
-            }),
-            meritCumMeansScholorship: merit_cum_means_scholorship
-           },
-        )
+          this.setState(
+            {
+              scholarshipdesc: scholorship_description,
+              scholarshipScheme: scholorship_scheme,
+              sportsScholorship: sports_scholorship.map((c) => {
+                return {
+                  ...c,
+                  level: c.level
+                    ? c.level.split(",")
+                    : [],
+                };
+              }),
+              meritCumMeansScholorship: merit_cum_means_scholorship
+            },
+          )
         }
-      
+
       }
     });
   }
@@ -80,7 +80,7 @@ export default class Scholorship extends Component {
       selectedClg: this.props.edit_id,
     });
     if (this.props.edit_id) {
-     this.getDataScholarship()
+      this.getDataScholarship()
     }
   }
 
@@ -145,7 +145,7 @@ export default class Scholorship extends Component {
     }
   }
 
-  handleSubmit =(e)=>{
+  handleSubmit = (e) => {
     e.preventDefault()
     Swal.fire({
       title: 'Are you sure?',
@@ -158,113 +158,114 @@ export default class Scholorship extends Component {
     }).then((result) => {
       if (result.isConfirmed) {
         if (this.props.edit_id) {
-          this.setState({isLoading:true})
-    var formData = new FormData();
-    formData.append("scholorship_description", this.state.scholarshipdesc);
-    formData.append("scholorship_scheme", JSON.stringify(this.state.scholarshipScheme));
-    let sports = this.state.sportsScholorship.map((obj)=>{
-      let newobj =  {
-      level:obj.level.join(","),
-      scholorship:obj.scholorship
-      }
-      return newobj
-    })
-    formData.append("sports_scholorship", JSON.stringify(sports));
-    formData.append("merit_cum_means_scholorship", JSON.stringify(this.state.meritCumMeansScholorship));
+          this.setState({ isLoading: true })
+          var formData = new FormData();
+          formData.append("scholorship_description", this.state.scholarshipdesc);
+          formData.append("scholorship_scheme", JSON.stringify(this.state.scholarshipScheme));
+          let sports = this.state.sportsScholorship.map((obj) => {
+            let newobj = {
+              level: obj.level.join(","),
+              scholorship: obj.scholorship
+            }
+            return newobj
+          })
+          formData.append("sports_scholorship", JSON.stringify(sports));
+          formData.append("merit_cum_means_scholorship", JSON.stringify(this.state.meritCumMeansScholorship));
 
-    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/edit-college-info?tab=5&id=${this.props.edit_id}`, {
-method: 'PUT',
-headers: {
-  'Authorization': `Bearer ${localStorage.getItem("pt")}`
-},
-body: formData
-})
-.then (async response => {
-  // console.log(response)
-  this.setState({  isLoading: false})
+          fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/edit-college-info?tab=5&id=${this.props.edit_id}`, {
+            method: 'PUT',
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem("pt")}`
+            },
+            body: formData
+          })
+            .then(async response => {
+              // console.log(response)
+              this.setState({ isLoading: false })
 
-if (response.ok) {
-  var res = await response.json();
-  Swal.fire({
-    title: "Success",
-    text: `${res.message}`,
-    icon: "success",
-    confirmButtonText: "Ok",
-  }).then(() => {
-    this.getDataScholarship()
-  });
-} else {
-  var res = await response.json();
-  Swal.fire({
-    title: "error",
-    text: `${res.error}`,
-    icon: "error",
-    confirmButtonText: "Ok",
-  }).then(() => {
-    this.setState({isLoading:false})
-  });
-}
-})
-.catch(error => {
-console.error('Error:', error);
-});
+              if (response.ok) {
+                var res = await response.json();
+                Swal.fire({
+                  title: "Success",
+                  text: `${res.message}`,
+                  icon: "success",
+                  confirmButtonText: "Ok",
+                }).then(() => {
+                  this.getDataScholarship()
+                });
+              } else {
+                var res = await response.json();
+                Swal.fire({
+                  title: "error",
+                  text: `${res.error}`,
+                  icon: "error",
+                  confirmButtonText: "Ok",
+                }).then(() => {
+                  this.setState({ isLoading: false })
+                });
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            });
         }
-        else{
-    this.setState({isLoading:true})
-    var formData = new FormData();
-    formData.append("college_id", this.state.selectedClg);
-    formData.append("scholorship_description", this.state.scholarshipdesc);
-    formData.append("scholorship_scheme", JSON.stringify(this.state.scholarshipScheme));
-    let sports = this.state.sportsScholorship.map((obj)=>{
-      let newobj =  {
-      level:obj.level.join(","),
-      scholorship:obj.scholorship
-      }
-      return newobj
-    })
-    formData.append("sports_scholorship", JSON.stringify(sports));
-    formData.append("merit_cum_means_scholorship", JSON.stringify(this.state.meritCumMeansScholorship));
+        else {
+          this.setState({ isLoading: true })
+          var formData = new FormData();
+          formData.append("college_id", this.state.selectedClg);
+          formData.append("scholorship_description", this.state.scholarshipdesc);
+          formData.append("scholorship_scheme", JSON.stringify(this.state.scholarshipScheme));
+          let sports = this.state.sportsScholorship.map((obj) => {
+            let newobj = {
+              level: obj.level.join(","),
+              scholorship: obj.scholorship
+            }
+            return newobj
+          })
+          formData.append("sports_scholorship", JSON.stringify(sports));
+          formData.append("merit_cum_means_scholorship", JSON.stringify(this.state.meritCumMeansScholorship));
 
-    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/admin/add-college-scholorship", {
-method: 'POST',
-headers: {
-  'Authorization': `Bearer ${localStorage.getItem("pt")}`
-},
-body: formData
-})
-.then (async response => {
-  // console.log(response)
-  this.setState({  isLoading: false})
+          fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/admin/add-college-scholorship", {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem("pt")}`
+            },
+            body: formData
+          })
+            .then(async response => {
+              // console.log(response)
+              this.setState({ isLoading: false })
 
-if (response.ok) {
-  var res = await response.json();
-  Swal.fire({
-    title: "Success",
-    text: `${res.message}`,
-    icon: "success",
-    confirmButtonText: "Ok",
-  }).then(() => {
-    this.setState({   
-      selectedClg:"",
-    scholarshipdesc:"",
-    scholarshipScheme: [], sportsScholorship: [], meritCumMeansScholorship: []},()=>this.props.onSuccess())
+              if (response.ok) {
+                var res = await response.json();
+                Swal.fire({
+                  title: "Success",
+                  text: `${res.message}`,
+                  icon: "success",
+                  confirmButtonText: "Ok",
+                }).then(() => {
+                  this.setState({
+                    selectedClg: "",
+                    scholarshipdesc: "",
+                    scholarshipScheme: [], sportsScholorship: [], meritCumMeansScholorship: []
+                  }, () => this.props.onSuccess())
 
-  });
-} else {
-  var res = await response.json();
-  Swal.fire({
-    title: "error",
-    text: `${res.error}`,
-    icon: "error",
-    confirmButtonText: "Ok",
-  }).then(() => {
-    this.setState({isLoading:false})
-  });
-}
-})
-.catch(error => {
-console.error('Error:', error);
-});
+                });
+              } else {
+                var res = await response.json();
+                Swal.fire({
+                  title: "error",
+                  text: `${res.error}`,
+                  icon: "error",
+                  confirmButtonText: "Ok",
+                }).then(() => {
+                  this.setState({ isLoading: false })
+                });
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            });
         }
       }
     });
@@ -276,221 +277,222 @@ console.error('Error:', error);
       <div className={Classes["add-user"]}>
         <div className={Classes["form-div"]}>
           <form action="#" onSubmit={(e) => this.handleSubmit(e)}>
-          {!this.props.edit_id && (
-            <>
-          <AddClgTopbar
-        selectedClg={this.state.selectedClg}
-        onclgchange={(id) => this.setState({ selectedClg: id })}
-              iscollegeListEmpty={(x) =>
-                this.setState({ iscollegeListEmpty: x })
-              }
-            />
-            <hr />
-            </>
-  )}
-            {!this.state.iscollegeListEmpty ? (
-              this.state.selectedClg != "" ? (
-            <div className="row">
-            <div className="col-md-12">
-              <div className={Classes["form-group"]}>
-                <label className={Classes["labelname"]} htmlFor="name">
-                  ScholarShip Description{" "}
-                  <span className={Classes["error"]}>*</span>
-                </label>
-                <textarea
-                  type="text"
-                  rows={4}
-                  className="form-control"
-                  placeholder="Enter Description"
-                  required
-                  value={this.state.scholarshipdesc}
-                  onChange={(e) =>
-                    this.setState({ scholarshipdesc: e.target.value })
+            {!this.props.edit_id && (
+              <>
+                <AddClgTopbar
+                  selectedClg={this.state.selectedClg}
+                  onclgchange={(id) => this.setState({ selectedClg: id })}
+                  iscollegeListEmpty={(x) =>
+                    this.setState({ iscollegeListEmpty: x })
                   }
                 />
-              </div>
-            </div>
-              <div className="col-md-12 border mb-3" style={{ backgroundColor: "#ededed" }}>
-                <h3 style={{ padding: "0.5rem 0rem" }}>Scholarship scheme{" "}
-                  <Badge badgeContent={this.state.scholarshipScheme.length} color="primary">
-                    <ReceiptLongIcon color="action" />
-                  </Badge>
-                </h3>
-                {
-                  this.state.scholarshipScheme.map((s, i) => {
-                    return (
-                      <div className="row">
-                        <div className="col-md-3">
-                          <div className={Classes["form-group"]}>
-                            <label className={Classes["labelname"]} htmlFor="name">Category <span className={Classes["error"]}>*</span></label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              placeholder="ex: A"
-                              required
-                              value={s.category}
-                              onChange={(e) => this.onFieldChange(i, 'category', e.target.value, this.state.scholarshipScheme, '1')}
-                            />
+                <hr />
+              </>
+            )}
+            {!this.state.iscollegeListEmpty ? (
+              this.state.selectedClg != "" ? (
+                <div className="row">
+                  <div className="col-md-12">
+                    <div className={Classes["form-group"]}>
+                      <label className={Classes["labelname"]} htmlFor="name">
+                        ScholarShip Description{" "}
+                        <span className={Classes["error"]}>*</span>
+                      </label>
+                      <textarea
+                        type="text"
+                        rows={4}
+                        required
+                        className="form-control"
+                        placeholder="Enter Description"
+                        // required
+                        value={this.state.scholarshipdesc}
+                        onChange={(e) =>
+                          this.setState({ scholarshipdesc: e.target.value })
+                        }
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-12 border mb-3" style={{ backgroundColor: "#ededed" }}>
+                    <h3 style={{ padding: "0.5rem 0rem" }}>Scholarship scheme{" "}
+                      <Badge badgeContent={this.state.scholarshipScheme.length} color="primary">
+                        <ReceiptLongIcon color="action" />
+                      </Badge>
+                    </h3>
+                    {
+                      this.state.scholarshipScheme.map((s, i) => {
+                        return (
+                          <div className="row">
+                            <div className="col-md-3">
+                              <div className={Classes["form-group"]}>
+                                <label className={Classes["labelname"]} htmlFor="name">Category <span className={Classes["error"]}>*</span></label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  placeholder="ex: A"
+                                  // required
+                                  value={s.category}
+                                  onChange={(e) => this.onFieldChange(i, 'category', e.target.value, this.state.scholarshipScheme, '1')}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-md-3">
+                              <div className={Classes["form-group"]}>
+                                <label className={Classes["labelname"]} htmlFor="name">Eligibility Criteria <span className={Classes["error"]}>*</span></label>
+                                <textarea
+                                  type="text"
+                                  className="form-control"
+                                  placeholder="ex: >=95%"
+                                  required
+                                  value={s.eligibility_criteria}
+                                  onChange={(e) => this.onFieldChange(i, 'eligibility_criteria', e.target.value, this.state.scholarshipScheme, '1')}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-md-5">
+                              <div className={Classes["form-group"]}>
+                                <label className={Classes["labelname"]} htmlFor="name">Scholorship <span className={Classes["error"]}>*</span></label>
+                                <textarea
+                                  type="text"
+                                  rows={2}
+                                  required
+                                  className="form-control"
+                                  placeholder="ex: 100% Scholarship on Tuition Fees"
+                                  value={s.scholorship}
+                                  onChange={(e) => this.onFieldChange(i, 'scholorship', e.target.value, this.state.scholarshipScheme, '1')}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-md-1">
+                              <div className={Classes.dltIcon}>
+                                <Tooltip title="Delete" onClick={() => this.deleteField(i, this.state.scholarshipScheme, '1')}>
+                                  <IconButton>
+                                    <DeleteIcon style={{ color: "red" }} />
+                                  </IconButton>
+                                </Tooltip>
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                        <div className="col-md-3">
-                          <div className={Classes["form-group"]}>
-                            <label className={Classes["labelname"]} htmlFor="name">Eligibility Criteria <span className={Classes["error"]}>*</span></label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              placeholder="ex: >=95%"
-                              required
-                              value={s.eligibility_criteria}
-                              onChange={(e) => this.onFieldChange(i, 'eligibility_criteria', e.target.value, this.state.scholarshipScheme, '1')}
-                            />
+                        )
+                      })
+                    }
+                    <span className="add-more-btn" onClick={() => this.addNewField('1')}>+ Add more</span>
+                  </div>
+                  <div className="col-md-12 border mb-3" style={{ backgroundColor: "#ededed" }}>
+                    <h3 style={{ padding: "0.5rem 0rem" }}>Sports scholarship{" "}
+                      <Badge badgeContent={this.state.sportsScholorship.length} color="primary">
+                        <SportsScoreIcon color="action" />
+                      </Badge>
+                    </h3>
+                    {
+                      this.state.sportsScholorship.map((s, i) => {
+                        return (
+                          <div className="row">
+                            <div className="col-md-5">
+                              <div className={Classes["form-group"]}>
+                                <label className={Classes["labelname"]} htmlFor="name">Level (Tags) <span className={Classes["error"]}>*</span></label>
+                                <MultipleTagsInput
+                                  placeholder="Add level"
+                                  required
+                                  value={s.level}
+                                  onChange={(value) => this.onFieldChange(i, 'level', value, this.state.sportsScholorship, '2')}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-md-6">
+                              <div className={Classes["form-group"]}>
+                                <label className={Classes["labelname"]} htmlFor="name">Scholorship <span className={Classes["error"]}>*</span></label>
+                                <textarea
+                                  type="text"
+                                  rows={2}
+                                  required
+                                  className="form-control"
+                                  placeholder="ex: 20% Scholarship on Tuition Fees for only the First Year"
+                                  value={s.scholorship}
+                                  onChange={(e) => this.onFieldChange(i, 'scholorship', e.target.value, this.state.sportsScholorship, '2')}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-md-1">
+                              <div className={Classes.dltIcon}>
+                                <Tooltip title="Delete" onClick={() => this.deleteField(i, this.state.sportsScholorship, '2')}>
+                                  <IconButton>
+                                    <DeleteIcon style={{ color: "red" }} />
+                                  </IconButton>
+                                </Tooltip>
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                        <div className="col-md-5">
-                          <div className={Classes["form-group"]}>
-                            <label className={Classes["labelname"]} htmlFor="name">Scholorship <span className={Classes["error"]}>*</span></label>
-                            <textarea
-                              type="text"
-                              rows={2}
-                              required
-                              className="form-control"
-                              placeholder="ex: 100% Scholarship on Tuition Fees"
-                              value={s.scholorship}
-                              onChange={(e) => this.onFieldChange(i, 'scholorship', e.target.value, this.state.scholarshipScheme, '1')}
-                            />
+                        )
+                      })
+                    }
+                    <span className="add-more-btn" onClick={() => this.addNewField('2')}>+ Add more</span>
+                  </div>
+                  <div className="col-md-12 border mb-3" style={{ backgroundColor: "#ededed" }}>
+                    <h3 style={{ padding: "0.5rem 0rem" }}>Financial need scholarships{" "}
+                      <Badge badgeContent={this.state.meritCumMeansScholorship.length} color="primary">
+                        <MilitaryTechIcon color="action" />
+                      </Badge>
+                    </h3>
+                    {
+                      this.state.meritCumMeansScholorship.map((s, i) => {
+                        return (
+                          <div className="row">
+                            <div className="col-md-5">
+                              <div className={Classes["form-group"]}>
+                                <label className={Classes["labelname"]} htmlFor="name">Annual income <span className={Classes["error"]}>*</span></label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  placeholder="ex: A"
+                                  required
+                                  value={s.annual_income}
+                                  onChange={(e) => this.onFieldChange(i, 'annual_income', e.target.value, this.state.meritCumMeansScholorship, '3')}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-md-6">
+                              <div className={Classes["form-group"]}>
+                                <label className={Classes["labelname"]} htmlFor="name">Scholorship <span className={Classes["error"]}>*</span></label>
+                                <textarea
+                                  type="text"
+                                  rows={2}
+                                  required
+                                  className="form-control"
+                                  placeholder="ex: 100% Scholarship on Tuition Fees"
+                                  value={s.scholorship}
+                                  onChange={(e) => this.onFieldChange(i, 'scholorship', e.target.value, this.state.meritCumMeansScholorship, '3')}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-md-1">
+                              <div className={Classes.dltIcon}>
+                                <Tooltip title="Delete" onClick={() => this.deleteField(i, this.state.meritCumMeansScholorship, '3')}>
+                                  <IconButton>
+                                    <DeleteIcon style={{ color: "red" }} />
+                                  </IconButton>
+                                </Tooltip>
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                        <div className="col-md-1">
-                          <div className={Classes.dltIcon}>
-                            <Tooltip title="Delete" onClick={() => this.deleteField(i, this.state.scholarshipScheme, '1')}>
-                              <IconButton>
-                                <DeleteIcon style={{ color: "red" }} />
-                              </IconButton>
-                            </Tooltip>
-                          </div>
-                        </div>
-                      </div>
-                    )
-                  })
-                }
-                <span className="add-more-btn" onClick={() => this.addNewField('1')}>+ Add more</span>
-              </div>
-              <div className="col-md-12 border mb-3" style={{ backgroundColor: "#ededed" }}>
-                <h3 style={{ padding: "0.5rem 0rem" }}>Sports scholarship{" "}
-                  <Badge badgeContent={this.state.sportsScholorship.length} color="primary">
-                    <SportsScoreIcon color="action" />
-                  </Badge>
-                </h3>
-                {
-                  this.state.sportsScholorship.map((s, i) => {
-                    return (
-                      <div className="row">
-                        <div className="col-md-5">
-                          <div className={Classes["form-group"]}>
-                            <label className={Classes["labelname"]} htmlFor="name">Level (Tags) <span className={Classes["error"]}>*</span></label>
-                            <MultipleTagsInput
-                              placeholder="Add level"
-                              required
-                              value={s.level}
-                              onChange={(value) => this.onFieldChange(i, 'level', value, this.state.sportsScholorship, '2')}
-                            />
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className={Classes["form-group"]}>
-                            <label className={Classes["labelname"]} htmlFor="name">Scholorship <span className={Classes["error"]}>*</span></label>
-                            <textarea
-                              type="text"
-                              rows={2}
-                              required
-                              className="form-control"
-                              placeholder="ex: 20% Scholarship on Tuition Fees for only the First Year"
-                              value={s.scholorship}
-                              onChange={(e) => this.onFieldChange(i, 'scholorship', e.target.value, this.state.sportsScholorship, '2')}
-                            />
-                          </div>
-                        </div>
-                        <div className="col-md-1">
-                          <div className={Classes.dltIcon}>
-                            <Tooltip title="Delete" onClick={() => this.deleteField(i, this.state.sportsScholorship, '2')}>
-                              <IconButton>
-                                <DeleteIcon style={{ color: "red" }} />
-                              </IconButton>
-                            </Tooltip>
-                          </div>
-                        </div>
-                      </div>
-                    )
-                  })
-                }
-                <span className="add-more-btn" onClick={() => this.addNewField('2')}>+ Add more</span>
-              </div>
-              <div className="col-md-12 border mb-3" style={{ backgroundColor: "#ededed" }}>
-                <h3 style={{ padding: "0.5rem 0rem" }}>Financial need scholarships{" "}
-                  <Badge badgeContent={this.state.meritCumMeansScholorship.length} color="primary">
-                    <MilitaryTechIcon color="action" />
-                  </Badge>
-                </h3>
-                {
-                  this.state.meritCumMeansScholorship.map((s, i) => {
-                    return (
-                      <div className="row">
-                        <div className="col-md-5">
-                          <div className={Classes["form-group"]}>
-                            <label className={Classes["labelname"]} htmlFor="name">Annual income <span className={Classes["error"]}>*</span></label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              placeholder="ex: A"
-                              required
-                              value={s.annual_income}
-                              onChange={(e) => this.onFieldChange(i, 'annual_income', e.target.value, this.state.meritCumMeansScholorship, '3')}
-                            />
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className={Classes["form-group"]}>
-                            <label className={Classes["labelname"]} htmlFor="name">Scholorship <span className={Classes["error"]}>*</span></label>
-                            <textarea
-                              type="text"
-                              rows={2}
-                              required
-                              className="form-control"
-                              placeholder="ex: 100% Scholarship on Tuition Fees"
-                              value={s.scholorship}
-                              onChange={(e) => this.onFieldChange(i, 'scholorship', e.target.value, this.state.meritCumMeansScholorship, '3')}
-                            />
-                          </div>
-                        </div>
-                        <div className="col-md-1">
-                          <div className={Classes.dltIcon}>
-                            <Tooltip title="Delete" onClick={() => this.deleteField(i, this.state.meritCumMeansScholorship, '3')}>
-                              <IconButton>
-                                <DeleteIcon style={{ color: "red" }} />
-                              </IconButton>
-                            </Tooltip>
-                          </div>
-                        </div>
-                      </div>
-                    )
-                  })
-                }
-                <span className="add-more-btn" onClick={() => this.addNewField('3')}>+ Add more</span>
-              </div>
-              <div className="col-md-12">
-                <CTA title={this.props.edit_id ? "Update" : "Create"} />
-              </div>
-            </div>
-             ) : (
+                        )
+                      })
+                    }
+                    <span className="add-more-btn" onClick={() => this.addNewField('3')}>+ Add more</span>
+                  </div>
+                  <div className="col-md-12">
+                    <CTA title={this.props.edit_id ? "Update" : "Create"} />
+                  </div>
+                </div>
+              ) : (
+                <div className={Classes["select-clg"]}>
+                  <p>Please Select a College</p>
+                </div>
+              )
+            ) : (
               <div className={Classes["select-clg"]}>
-                <p>Please Select a College</p>
+                <p>Create a College from General Info</p>
               </div>
-            )
-          ) : (
-            <div className={Classes["select-clg"]}>
-              <p>Create a College from General Info</p>
-            </div>
-          )}
+            )}
           </form>
         </div>
         {

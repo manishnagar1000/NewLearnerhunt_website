@@ -17,6 +17,9 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
+import LoopIcon from "@mui/icons-material/Loop";
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 
 var oldData = [];
 const SEOManage = () => {
@@ -30,6 +33,8 @@ const SEOManage = () => {
   const [searchInput, setSearchInput] = useState("");
   const [collegeId, setCollegId] = useState("");
   const [seoType, setSeoType] = useState("1");
+  const [totalPages, setTotalPages] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
 
   const [formData, setFormData] = useState({
     collegename: "",
@@ -389,12 +394,12 @@ const SEOManage = () => {
   };
   const handleModalShow = () => setShowModal(true);
 
-  const collegeDataApi = (seoType) => {
+  const collegeDataApi = (seoType, page = 1) => {
     setIsApiHitComplete(false);
     setIsDataFound(false);
     fetch(
       process.env.NEXT_PUBLIC_API_ENDPOINT +
-        `/admin/seomanager?type=${seoType}`,
+      `/admin/seomanager?type=${seoType}&page=${page}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("pt")}`,
@@ -403,17 +408,19 @@ const SEOManage = () => {
     )
       .then(async (response) => {
         var res = await response.json();
-        console.log(res.data);
+        // console.log(res.data);
         setCollegeApi(res.data.college_list);
         setBlogApi(res.data.blog_list);
         setCourseApi(res.data.course_list);
         setExamApi(res.data.exam_list);
+        setTotalPages(Math.ceil(res.data.totalSeoRecords / res.data.rowsPerPage))
+
 
         if (res.data.seo_pages.length > 0) {
           setIsDataFound(true);
           setSeoApi(res.data.seo_pages);
         }
-        setTotalCountNumber(res.data.seo_pages.length);
+        setTotalCountNumber(res.data.totalSeoRecords);
         setIsApiHitComplete(true);
         oldData = res.data.seo_pages;
 
@@ -481,18 +488,18 @@ const SEOManage = () => {
     if (group === "basic") {
       if (type == "select") {
         // console.log(blogApi.)
-      
+
         const selectedblogObj = blogApi.find((obj) => obj._id == value.value);
         // console.log(selectedblogObj);
-  if(selectedblogObj.banner_image == undefined){
-    Swal.fire({
-      text: `We could not found banner image of this blog, please upload the banner image before doing the blog SEO.`,
-      icon: "error",
-      confirmButtonText: "Ok",
-    }).then(() => {
-      setShowModal(false)
-    });
-        }else{
+        if (selectedblogObj.banner_image == undefined) {
+          Swal.fire({
+            text: `We could not found banner image of this blog, please upload the banner image before doing the blog SEO.`,
+            icon: "error",
+            confirmButtonText: "Ok",
+          }).then(() => {
+            setShowModal(false)
+          });
+        } else {
           setFormblogData({
             ...formblogData,
             ["canonical"]: `https://www.learnerhunt.com/blog/${selectedblogObj.slug}`,
@@ -509,7 +516,7 @@ const SEOManage = () => {
             ["ogImage"]: `https://learnerhunt-assets.s3.us-east-1.amazonaws.com/${selectedblogObj.banner_image}`,
           });
         }
-       
+
       } else if (type == "title") {
         // console.log("its a titlte with basic");
         setFormblogData({ ...formblogData, [name]: value });
@@ -818,7 +825,7 @@ const SEOManage = () => {
                 text: `${res.error}`,
                 icon: "error",
                 confirmButtonText: "Ok",
-              }).then(() => {});
+              }).then(() => { });
               // console.log("else part");
             }
             setIsDataFound(true);
@@ -1006,7 +1013,7 @@ const SEOManage = () => {
               text: `${res.error}`,
               icon: "error",
               confirmButtonText: "Ok",
-            }).then(() => {});
+            }).then(() => { });
             // console.log("else part");
           }
           setIsDataFound(true);
@@ -1192,7 +1199,7 @@ const SEOManage = () => {
               text: `${res.error}`,
               icon: "error",
               confirmButtonText: "Ok",
-            }).then(() => {});
+            }).then(() => { });
             // console.log("else part");
           }
           setIsDataFound(true);
@@ -1372,7 +1379,7 @@ const SEOManage = () => {
               text: `${res.error}`,
               icon: "error",
               confirmButtonText: "Ok",
-            }).then(() => {});
+            }).then(() => { });
             // console.log("else part");
           }
           setIsDataFound(true);
@@ -1564,7 +1571,7 @@ const SEOManage = () => {
                 text: `${res.error}`,
                 icon: "error",
                 confirmButtonText: "Ok",
-              }).then(() => {});
+              }).then(() => { });
               // console.log("else part");
             }
             setIsDataFound(true);
@@ -1760,7 +1767,7 @@ const SEOManage = () => {
                 text: `${res.error}`,
                 icon: "error",
                 confirmButtonText: "Ok",
-              }).then(() => {});
+              }).then(() => { });
               // console.log("else part");
             }
             setIsDataFound(true);
@@ -1959,7 +1966,7 @@ const SEOManage = () => {
                 text: `${res.error}`,
                 icon: "error",
                 confirmButtonText: "Ok",
-              }).then(() => {});
+              }).then(() => { });
               // console.log("else part");
             }
             setIsDataFound(true);
@@ -2155,7 +2162,7 @@ const SEOManage = () => {
                 text: `${res.error}`,
                 icon: "error",
                 confirmButtonText: "Ok",
-              }).then(() => {});
+              }).then(() => { });
               // console.log("else part");
             }
             setIsDataFound(true);
@@ -2184,12 +2191,12 @@ const SEOManage = () => {
             seoType == 1
               ? data.college_name.toLowerCase()
               : seoType == 2
-              ? data.blog_title.toLowerCase()
-              : seoType == 3
-              ? data.course_name.toLowerCase()
-              : seoType == 4
-              ? data.exam_name.toLowerCase()
-              : ""
+                ? data.blog_title.toLowerCase()
+                : seoType == 3
+                  ? data.course_name.toLowerCase()
+                  : seoType == 4
+                    ? data.exam_name.toLowerCase()
+                    : ""
           )
 
         // if(seoType == 1){
@@ -2473,6 +2480,20 @@ const SEOManage = () => {
     setSearchInput("");
   };
 
+
+  const handleRefresh = () => {
+    collegeDataApi(seoType);
+  };
+
+
+
+  const handlePageChange = (e, page) => {
+    setCurrentPage(page)
+    collegeDataApi(seoType, page);
+
+  };
+
+
   return (
     <>
       {/* <Button variant="primary" onClick={handleModalShow}>
@@ -2524,6 +2545,14 @@ const SEOManage = () => {
                 <Button variant="primary" onClick={handleModalShow}>
                   +
                 </Button>
+                <Tooltip title="Refresh">
+                  <IconButton
+                    aria-label="Refresh"
+                    onClick={handleRefresh}
+                  >
+                    <LoopIcon />
+                  </IconButton>
+                </Tooltip>
               </div>
             </>
           ),
@@ -2692,7 +2721,7 @@ const SEOManage = () => {
                         {...params}
                         label="Select College Name"
                         name="collegename" // Set the name attribute
-                        // value={formData.collegename}
+                      // value={formData.collegename}
                       />
                     )}
                   />
@@ -2911,7 +2940,7 @@ const SEOManage = () => {
                       name="twitterCreator"
                       value={twitterDetails.twitterCreator}
                       disabled
-                      // onChange={(e) => handleInputChange(e, "twitter")}
+                    // onChange={(e) => handleInputChange(e, "twitter")}
                     />
                   </Form.Group>
                 </Col>
@@ -2975,7 +3004,7 @@ const SEOManage = () => {
                       name="ogLocale"
                       value={ogDetails.ogLocale}
                       disabled
-                      // onChange={(e) => handleInputChange(e, "og")}
+                    // onChange={(e) => handleInputChange(e, "og")}
                     />
                   </Form.Group>
                 </Col>
@@ -3005,7 +3034,7 @@ const SEOManage = () => {
                       name="ogType"
                       value={ogDetails.ogType}
                       disabled
-                      // onChange={(e) => handleInputChange(e, "og")}
+                    // onChange={(e) => handleInputChange(e, "og")}
                     />
                   </Form.Group>
                 </Col>
@@ -3380,7 +3409,7 @@ const SEOManage = () => {
                         {...params}
                         label="Select Blog Name"
                         name="blogname" // Set the name attribute
-                        // value={formData.collegename}
+                      // value={formData.collegename}
                       />
                     )}
                   />
@@ -3604,7 +3633,7 @@ const SEOManage = () => {
                       name="twitterCreator"
                       value={twitterblogDetails.twitterCreator}
                       disabled
-                      // onChange={(e) => handleBlogInputChange(e, "twitter")}
+                    // onChange={(e) => handleBlogInputChange(e, "twitter")}
                     />
                   </Form.Group>
                 </Col>
@@ -3668,7 +3697,7 @@ const SEOManage = () => {
                       name="ogLocale"
                       value={ogblogDetails.ogLocale}
                       disabled
-                      // onChange={(e) => handleBlogInputChange(e, "og")}
+                    // onChange={(e) => handleBlogInputChange(e, "og")}
                     />
                   </Form.Group>
                 </Col>
@@ -3698,7 +3727,7 @@ const SEOManage = () => {
                       name="ogType"
                       value={ogblogDetails.ogType}
                       disabled
-                      // onChange={(e) => handleBlogInputChange(e, "og")}
+                    // onChange={(e) => handleBlogInputChange(e, "og")}
                     />
                   </Form.Group>
                 </Col>
@@ -4075,7 +4104,7 @@ const SEOManage = () => {
                         {...params}
                         label="Select Course Name"
                         name="coursename" // Set the name attribute
-                        // value={formData.collegename}
+                      // value={formData.collegename}
                       />
                     )}
                   />
@@ -4299,7 +4328,7 @@ const SEOManage = () => {
                       name="twitterCreator"
                       value={twittercourseDetails.twitterCreator}
                       disabled
-                      // onChange={(e) => handleBlogInputChange(e, "twitter")}
+                    // onChange={(e) => handleBlogInputChange(e, "twitter")}
                     />
                   </Form.Group>
                 </Col>
@@ -4363,7 +4392,7 @@ const SEOManage = () => {
                       name="ogLocale"
                       value={ogcourseDetails.ogLocale}
                       disabled
-                      // onChange={(e) => handleBlogInputChange(e, "og")}
+                    // onChange={(e) => handleBlogInputChange(e, "og")}
                     />
                   </Form.Group>
                 </Col>
@@ -4393,7 +4422,7 @@ const SEOManage = () => {
                       name="ogType"
                       value={ogcourseDetails.ogType}
                       disabled
-                      // onChange={(e) => handleBlogInputChange(e, "og")}
+                    // onChange={(e) => handleBlogInputChange(e, "og")}
                     />
                   </Form.Group>
                 </Col>
@@ -4772,7 +4801,7 @@ const SEOManage = () => {
                         {...params}
                         label="Select exam Name"
                         name="examname" // Set the name attribute
-                        // value={formData.collegename}
+                      // value={formData.collegename}
                       />
                     )}
                   />
@@ -4996,7 +5025,7 @@ const SEOManage = () => {
                       name="twitterCreator"
                       value={twitterexamDetails.twitterCreator}
                       disabled
-                      // onChange={(e) => handleBlogInputChange(e, "twitter")}
+                    // onChange={(e) => handleBlogInputChange(e, "twitter")}
                     />
                   </Form.Group>
                 </Col>
@@ -5060,7 +5089,7 @@ const SEOManage = () => {
                       name="ogLocale"
                       value={ogexamDetails.ogLocale}
                       disabled
-                      // onChange={(e) => handleBlogInputChange(e, "og")}
+                    // onChange={(e) => handleBlogInputChange(e, "og")}
                     />
                   </Form.Group>
                 </Col>
@@ -5090,7 +5119,7 @@ const SEOManage = () => {
                       name="ogType"
                       value={ogexamDetails.ogType}
                       disabled
-                      // onChange={(e) => handleBlogInputChange(e, "og")}
+                    // onChange={(e) => handleBlogInputChange(e, "og")}
                     />
                   </Form.Group>
                 </Col>
@@ -5432,6 +5461,30 @@ const SEOManage = () => {
       ) : (
         "Other"
       )}
+      {isDataFound &&
+        <div className="pt-3">
+          <Stack
+            spacing={2}
+            className="d-flex justify-content-center align-items-center"
+            style={{
+              position: 'fixed',
+              bottom: 0,
+              width: '100%',
+              backgroundColor: 'white',
+              zIndex: 1000,
+              padding: '10px 0',
+              boxShadow: '0 -2px 5px rgba(0,0,0,0.1)',
+            }}
+          >
+            <Pagination
+              count={totalPages}
+              page={currentPage}
+              onChange={handlePageChange}
+              color="primary"
+            />
+          </Stack>
+        </div>
+      }
     </>
   );
 };

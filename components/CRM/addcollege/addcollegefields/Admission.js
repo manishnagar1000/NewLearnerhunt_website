@@ -30,10 +30,10 @@ export default class Admission extends Component {
     };
   }
 
-  getDataAddmission=()=>{
+  getDataAddmission = () => {
     fetch(
       process.env.NEXT_PUBLIC_API_ENDPOINT +
-        `/admin/get-college-info?tab=4&id=${this.props.edit_id}`,
+      `/admin/get-college-info?tab=4&id=${this.props.edit_id}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("pt")}`,
@@ -41,20 +41,20 @@ export default class Admission extends Component {
       }
     ).then(async (res) => {
       let response = await res.json();
-     
+
       // console.log(response.data);
       if (response.error) {
         this.setState({ isError: true, errorMsg: response.error });
       } else {
         const {
-          admission_process,admission_eligibility_criteria
+          admission_process, admission_eligibility_criteria
         } = response.data;
-      this.setState(
-        {
-          admissiondesc: admission_process,
-          admissionFields: admission_eligibility_criteria,
-         },
-      )
+        this.setState(
+          {
+            admissiondesc: admission_process,
+            admissionFields: admission_eligibility_criteria,
+          },
+        )
       }
     });
   }
@@ -63,7 +63,7 @@ export default class Admission extends Component {
       selectedClg: this.props.edit_id,
     });
     if (this.props.edit_id) {
-     this.getDataAddmission()
+      this.getDataAddmission()
     }
   }
 
@@ -83,7 +83,7 @@ export default class Admission extends Component {
       this.setState((prevState) => ({
         admissionFields: [
           ...prevState.admissionFields,
-          {  course_name: '', eligibility: '' }
+          { course_name: '', eligibility: '' }
         ]
       }));
     }
@@ -99,7 +99,7 @@ export default class Admission extends Component {
     }
   }
 
-  handleAdmission =(e)=>{
+  handleAdmission = (e) => {
     e.preventDefault()
     Swal.fire({
       title: 'Are you sure?',
@@ -112,94 +112,96 @@ export default class Admission extends Component {
     }).then((result) => {
       if (result.isConfirmed) {
         if (this.props.edit_id) {
-          this.setState({isLoading:true})
-    var formData = new FormData();
-    formData.append("admission_process", this.state.admissiondesc);
-    formData.append("admission_eligibility_criteria", JSON.stringify(this.state.admissionFields));
-    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT +`/admin/edit-college-info?tab=4&id=${this.props.edit_id}`, {
-method: 'PUT',
-headers: {
-  'Authorization': `Bearer ${localStorage.getItem("pt")}`
-},
-body: formData
-})
-.then (async response => {
-  // console.log(response)
-  this.setState({  isLoading: false})
+          this.setState({ isLoading: true })
+          var formData = new FormData();
+          formData.append("admission_process", this.state.admissiondesc);
+          formData.append("admission_eligibility_criteria", JSON.stringify(this.state.admissionFields));
+          fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/edit-college-info?tab=4&id=${this.props.edit_id}`, {
+            method: 'PUT',
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem("pt")}`
+            },
+            body: formData
+          })
+            .then(async response => {
+              // console.log(response)
+              this.setState({ isLoading: false })
 
-if (response.ok) {
-  var res = await response.json();
-  Swal.fire({
-    title: "Success",
-    text: `${res.message}`,
-    icon: "success",
-    confirmButtonText: "Ok",
-  }).then(() => {
-     this.getDataAddmission()
-  });
-} else {
-  var res = await response.json();
-  Swal.fire({
-    title: "error",
-    text: `${res.error}`,
-    icon: "error",
-    confirmButtonText: "Ok",
-  }).then(() => {
-    this.setState({isLoading:false})
-  });
-}
-})
-.catch(error => {
-console.error('Error:', error);
-});
+              if (response.ok) {
+                var res = await response.json();
+                Swal.fire({
+                  title: "Success",
+                  text: `${res.message}`,
+                  icon: "success",
+                  confirmButtonText: "Ok",
+                }).then(() => {
+                  this.getDataAddmission()
+                });
+              } else {
+                var res = await response.json();
+                Swal.fire({
+                  title: "error",
+                  text: `${res.error}`,
+                  icon: "error",
+                  confirmButtonText: "Ok",
+                }).then(() => {
+                  this.setState({ isLoading: false })
+                });
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            });
         }
-        else{
-    this.setState({isLoading:true})
-    var formData = new FormData();
-    formData.append("college_id", this.state.selectedClg);
-    formData.append("admission_process", this.state.admissiondesc);
-    formData.append("admission_eligibility_criteria", JSON.stringify(this.state.admissionFields));
-    fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/admin/add-college-admission", {
-method: 'POST',
-headers: {
-  'Authorization': `Bearer ${localStorage.getItem("pt")}`
-},
-body: formData
-})
-.then (async response => {
-  // console.log(response)
-  this.setState({  isLoading: false})
+        else {
+          this.setState({ isLoading: true })
+          var formData = new FormData();
+          formData.append("college_id", this.state.selectedClg);
+          formData.append("admission_process", this.state.admissiondesc);
+          formData.append("admission_eligibility_criteria", JSON.stringify(this.state.admissionFields));
+          fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/admin/add-college-admission", {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem("pt")}`
+            },
+            body: formData
+          })
+            .then(async response => {
+              // console.log(response)
+              this.setState({ isLoading: false })
 
-if (response.ok) {
-  var res = await response.json();
-  Swal.fire({
-    title: "Success",
-    text: `${res.message}`,
-    icon: "success",
-    confirmButtonText: "Ok",
-  }).then(() => {
-    this.setState({  admissiondesc: "",
-    selectedClg: '',
-    admissionFields: []},()=>this.props.onSuccess())
+              if (response.ok) {
+                var res = await response.json();
+                Swal.fire({
+                  title: "Success",
+                  text: `${res.message}`,
+                  icon: "success",
+                  confirmButtonText: "Ok",
+                }).then(() => {
+                  this.setState({
+                    admissiondesc: "",
+                    selectedClg: '',
+                    admissionFields: []
+                  }, () => this.props.onSuccess())
 
-  });
-} else {
-  var res = await response.json();
-  Swal.fire({
-    title: "error",
-    text: `${res.error}`,
-    icon: "error",
-    confirmButtonText: "Ok",
-  }).then(() => {
-    this.setState({isLoading:false})
-  });
-}
-})
-.catch(error => {
-console.error('Error:', error);
-});
+                });
+              } else {
+                var res = await response.json();
+                Swal.fire({
+                  title: "error",
+                  text: `${res.error}`,
+                  icon: "error",
+                  confirmButtonText: "Ok",
+                }).then(() => {
+                  this.setState({ isLoading: false })
+                });
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            });
+        }
       }
-    }
     });
   }
   render() {
@@ -208,88 +210,88 @@ console.error('Error:', error);
     return (
       <div className={Classes["add-user"]}>
         <div className={Classes["form-div"]}>
-        <form action="#" onSubmit={(e) => this.handleAdmission(e)}>
-        {!this.props.edit_id && (
-            <>
-        <AddClgTopbar
-        selectedClg={this.state.selectedClg}
+          <form action="#" onSubmit={(e) => this.handleAdmission(e)}>
+            {!this.props.edit_id && (
+              <>
+                <AddClgTopbar
+                  selectedClg={this.state.selectedClg}
 
-              onclgchange={(id) => this.setState({ selectedClg: id })}
-              iscollegeListEmpty={(x) =>
-                this.setState({ iscollegeListEmpty: x })
-              }
-            />
-            <hr />
-            </>
-)}
-            {!this.state.iscollegeListEmpty ? (
-              this.state.selectedClg != "" ? (
-          <div className="row">
-            <div className="col-md-12">
-              <div className={Classes["form-group"]}>
-                <label className={Classes["labelname"]} htmlFor="name">
-                  Admission Process{" "}
-                </label>
-                <textarea
-                  type="text"
-                  rows={4}
-                  className="form-control"
-                  placeholder="Enter Admission Process"
-                  value={this.state.admissiondesc}
-                  onChange={(e) =>
-                    this.setState({ admissiondesc: e.target.value })
+                  onclgchange={(id) => this.setState({ selectedClg: id })}
+                  iscollegeListEmpty={(x) =>
+                    this.setState({ iscollegeListEmpty: x })
                   }
                 />
-              </div>
-            </div>
-        
-            <div
-              className="col-md-12 border mb-3"
-              style={{ backgroundColor: "#ededed" }}
-            >
-              <h3 style={{ padding: "0.5rem 0rem" }}>
-                Admissions{" "}
-                <Badge
-                  badgeContent={this.state.admissionFields.length}
-                  color="primary"
-                >
-                  <ApartmentIcon color="action" />
-                </Badge>
-              </h3>
-              {this.state.admissionFields.map((field, i) => {
-                return (
-                  <div className="row">
-                    <div className="col-md-5">
-                      <div className={Classes["form-group"]}>
-                        <label className={Classes["labelname"]} htmlFor="name">
-                          Course Name
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="Enter coursename"
-                          required
-                          value={field.course_name}
-                          onChange={(e) =>
-                            this.onFieldChange(
-                              i,
-                              "course_name",
-                              e.target.value,
-                              this.state.admissionFields,
-                              "1"
-                            )
-                          }
-                        />
-                                            
-                      </div>
+                <hr />
+              </>
+            )}
+            {!this.state.iscollegeListEmpty ? (
+              this.state.selectedClg != "" ? (
+                <div className="row">
+                  <div className="col-md-12">
+                    <div className={Classes["form-group"]}>
+                      <label className={Classes["labelname"]} htmlFor="name">
+                        Admission Process{" "}
+                      </label>
+                      <textarea
+                        type="text"
+                        rows={4}
+                        className="form-control"
+                        placeholder="Enter Admission Process"
+                        value={this.state.admissiondesc}
+                        onChange={(e) =>
+                          this.setState({ admissiondesc: e.target.value })
+                        }
+                      />
                     </div>
+                  </div>
 
-                    <div className="col-md-5">
-                      <div className={Classes["form-group"]}>
-                        <label className={Classes["labelname"]} htmlFor="name">
-                        Eligibility 
-                        </label>
-                        {/* <input
+                  <div
+                    className="col-md-12 border mb-3"
+                    style={{ backgroundColor: "#ededed" }}
+                  >
+                    <h3 style={{ padding: "0.5rem 0rem" }}>
+                      Admissions{" "}
+                      <Badge
+                        badgeContent={this.state.admissionFields.length}
+                        color="primary"
+                      >
+                        <ApartmentIcon color="action" />
+                      </Badge>
+                    </h3>
+                    {this.state.admissionFields.map((field, i) => {
+                      return (
+                        <div className="row">
+                          <div className="col-md-5">
+                            <div className={Classes["form-group"]}>
+                              <label className={Classes["labelname"]} htmlFor="name">
+                                Course Name
+                              </label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Enter coursename"
+                                required
+                                value={field.course_name}
+                                onChange={(e) =>
+                                  this.onFieldChange(
+                                    i,
+                                    "course_name",
+                                    e.target.value,
+                                    this.state.admissionFields,
+                                    "1"
+                                  )
+                                }
+                              />
+
+                            </div>
+                          </div>
+
+                          <div className="col-md-5">
+                            <div className={Classes["form-group"]}>
+                              <label className={Classes["labelname"]} htmlFor="name">
+                                Eligibility
+                              </label>
+                              <input
                           type="text"
                           className="form-control"
                           placeholder="Enter eligibility"
@@ -304,35 +306,35 @@ console.error('Error:', error);
                               "1"
                             )
                           }
-                        /> */}
-                        <select
-                    name="eligibility"
-                    id="eligibility"
-                    className="form-select"
-                    required
-                    value={field.eligibility}
-                    onChange={(e) =>
-                      this.onFieldChange(
-                        i,
-                        "eligibility",
-                        e.target.value,
-                        this.state.admissionFields,
-                        "1"
-                      )
-                    }
-                 
-                  >
-                    <option disabled value="">Select a Category Type</option>
-                    {coursefulleligibiltyCriteria.map((d, i) => {
-                      return (
-                        <option key={i} value={d.label}
-                       >
-                          {d.label}
-                        </option>
-                      );
-                    })}
-                  </select>
-                                   {/* <Autocomplete
+                        />
+                              {/* <select
+                                name="eligibility"
+                                id="eligibility"
+                                className="form-select"
+                                required
+                                value={field.eligibility}
+                                onChange={(e) =>
+                                  this.onFieldChange(
+                                    i,
+                                    "eligibility",
+                                    e.target.value,
+                                    this.state.admissionFields,
+                                    "1"
+                                  )
+                                }
+
+                              >
+                                <option disabled value="">Select a Category Type</option>
+                                {coursefulleligibiltyCriteria.map((d, i) => {
+                                  return (
+                                    <option key={i} value={d.label}
+                                    >
+                                      {d.label}
+                                    </option>
+                                  );
+                                })}
+                              </select> */}
+                              {/* <Autocomplete
   disablePortal
   id="combo-box-demo"
   options={eligibilityLabels}
@@ -354,53 +356,53 @@ console.error('Error:', error);
     />
   )}
 /> */}
-                      </div>
-                    </div>
-                    <div className="col-md-2">
-                      <div className={Classes.dltIcon}>
-                        <Tooltip
-                          title="Delete"
-                          onClick={() =>
-                            this.deleteField(
-                              i,
-                              this.state.admissionFields,
-                              "1"
-                            )
-                          }
-                        >
-                          <IconButton>
-                            <DeleteIcon style={{ color: "red" }} />
-                          </IconButton>
-                        </Tooltip>
-                      </div>
+                            </div>
+                          </div>
+                          <div className="col-md-2">
+                            <div className={Classes.dltIcon}>
+                              <Tooltip
+                                title="Delete"
+                                onClick={() =>
+                                  this.deleteField(
+                                    i,
+                                    this.state.admissionFields,
+                                    "1"
+                                  )
+                                }
+                              >
+                                <IconButton>
+                                  <DeleteIcon style={{ color: "red" }} />
+                                </IconButton>
+                              </Tooltip>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                    <span
+                      className="add-more-btn"
+                      onClick={() => this.addNewField("1")}
+                    >
+                      + Add More
+                    </span>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-md-12">
+                      <CTA title={this.props.edit_id ? "Update" : "Create"} />
                     </div>
                   </div>
-                );
-              })}
-              <span
-                className="add-more-btn"
-                onClick={() => this.addNewField("1")}
-              >
-                + Add More
-              </span>
-            </div>
-
-            <div className="row">
-              <div className="col-md-12">
-                <CTA title={this.props.edit_id ? "Update" : "Create"} />
+                </div>
+              ) : (
+                <div className={Classes["select-clg"]}>
+                  <p>Please Select a College</p>
+                </div>
+              )
+            ) : (
+              <div className={Classes["select-clg"]}>
+                <p>Create a College from General Info</p>
               </div>
-            </div>
-          </div>
-           ) : (
-            <div className={Classes["select-clg"]}>
-              <p>Please Select a College</p>
-            </div>
-          )
-        ) : (
-          <div className={Classes["select-clg"]}>
-            <p>Create a College from General Info</p>
-          </div>
-        )}
+            )}
           </form>
         </div>
         {

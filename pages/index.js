@@ -130,15 +130,15 @@ export default function Home({
       <WhyChoose />
       <TopColleges colleges={colleges} />
       <TopCourses courses={courses} />
-      <Testimonials/>
+      <Testimonials />
       <CollegeRanking
         zones={testeligibility.zones}
         departments={testeligibility.departments}
         rankingtypes={testeligibility.rankingtypes}
       />
       <TopExams exams={exams} />
-      <StudyAbroad StudyAbroad={ukcolleges} />
-      <FaqHerosection/>
+      {/* <StudyAbroad StudyAbroad={ukcolleges} /> */}
+      <FaqHerosection />
     </>
   );
 }

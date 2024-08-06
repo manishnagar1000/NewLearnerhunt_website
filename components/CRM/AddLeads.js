@@ -9,15 +9,15 @@ import TextField from '@mui/material/TextField';
 import { Input } from "@mui/material";
 import Tablenav from "../Comps/Tablenav";
 
-const convertDate = time =>{
+const convertDate = time => {
   // Get the year, month, and day
-const year = time.getFullYear();
-const month = String(time.getMonth() + 1).padStart(2, '0'); // Month is zero-based
-const day = String(time.getDate()).padStart(2, '0');
+  const year = time.getFullYear();
+  const month = String(time.getMonth() + 1).padStart(2, '0'); // Month is zero-based
+  const day = String(time.getDate()).padStart(2, '0');
 
-// Format the date as "yyyy-mm-dd"
-const formattedDate = `${year}-${month}-${day}`;
-return formattedDate
+  // Format the date as "yyyy-mm-dd"
+  const formattedDate = `${year}-${month}-${day}`;
+  return formattedDate
 }
 export default class AddLeads extends Component {
   constructor(props) {
@@ -25,39 +25,39 @@ export default class AddLeads extends Component {
     this.state = {
       isLoading: false,
       clgList: [],
-      collegeList:[],
+      collegeList: [],
       isDataFound: false,
       isApiHitComplete: true,
       selectedCategory: [],
       username: localStorage.getItem("username"),
       statusAnchorEl: null,
-      lastrecid:"-1",
+      lastrecid: "-1",
       selectedClg: '',
       iscollegeListEmpty: false,
-      from:convertDate(new Date()),
-      to:convertDate(new Date()),
-      cid:""
+      from: convertDate(new Date()),
+      to: convertDate(new Date()),
+      cid: ""
 
       // selectedAsset: null,
     };
   }
 
 
- formatTimestamp(timestamp) {
+  formatTimestamp(timestamp) {
     const dateObject = new Date(timestamp);
-  
+
     const formattedTime = dateObject.toLocaleTimeString('en-US', {
       hour: '2-digit',
       minute: '2-digit',
       hour12: true,
     });
-  
+
     const formattedDate = dateObject.toLocaleDateString('en-US', {
       day: '2-digit',
       month: 'short',
       year: 'numeric',
     });
-  
+
     return `${formattedTime}, ${formattedDate}`;
   }
 
@@ -86,7 +86,7 @@ export default class AddLeads extends Component {
       let response = await res.json();
       // console.log(response.data);
       if (response.data.colleges?.length > 0) {
-        this.setState({ collegeList: response.data.colleges});
+        this.setState({ collegeList: response.data.colleges });
       }
     });;
   }
@@ -95,8 +95,8 @@ export default class AddLeads extends Component {
     // console.log(this.state)
     return (
       <>
-         
-              {/* <select
+
+        {/* <select
                 name="colleges"
                 id="colleges"
                 className="form-select"
@@ -115,51 +115,51 @@ export default class AddLeads extends Component {
                   );
                 })}
               </select> */}
-              <div style={{display:"flex"}}>
-              <Autocomplete
-      disablePortal
-      id="combo-box-demo"
-      options={this.state.collegeList}
-      sx={{ width: 300 ,margin:"0.5rem"  }}
-      onChange={(event, newValue) => {
-        // console.log(newValue)
-        if(newValue){
-          this.setState({cid:newValue._id},()=>{
-          this.getAssetList()
+        <div style={{ display: "flex" }}>
+          <Autocomplete
+            disablePortal
+            id="combo-box-demo"
+            options={this.state.collegeList}
+            sx={{ width: 300, margin: "0.5rem" }}
+            onChange={(event, newValue) => {
+              // console.log(newValue)
+              if (newValue) {
+                this.setState({ cid: newValue._id }, () => {
+                  this.getAssetList()
 
-          })
-        }else{
-          this.setState({isDataFound:false})
-        }
-      }}
-      getOptionLfabel={(option) => option.college_name}
-renderInput={(params) => <TextField {...params} label="College List" />}
-    />
-      
-      <TextField type="date" 
-      sx={{ width: 300 ,margin:"0.5rem"  }}
-      label="From"
-      id="outlined-basic"  variant="outlined" 
-      inputProps={{ max: convertDate(new Date()) }}
-      value={this.state.from}
-      onChange={(e)=>{
-        this.setState({from:e.target.value},()=>this.getAssetList())
-        
-      }}/>
-      <TextField type="date" 
-      label="To"
-      sx={{ width: 300 ,margin:"0.5rem"  }}
-      value={this.state.to}
-      id="outlined-basic"  variant="outlined" 
-      inputProps={{ max: convertDate(new Date()),min:this.state.from }}
-      onChange={(e)=>{
-        this.setState({to:e.target.value},()=>this.getAssetList())
-        
-      }}/>
+                })
+              } else {
+                this.setState({ isDataFound: false })
+              }
+            }}
+            getOptionLfabel={(option) => option.college_name}
+            renderInput={(params) => <TextField {...params} label="College List" />}
+          />
 
-      </div>
-            <hr />
-      
+          <TextField type="date"
+            sx={{ width: 300, margin: "0.5rem" }}
+            label="From"
+            id="outlined-basic" variant="outlined"
+            inputProps={{ max: convertDate(new Date()) }}
+            value={this.state.from}
+            onChange={(e) => {
+              this.setState({ from: e.target.value }, () => this.getAssetList())
+
+            }} />
+          <TextField type="date"
+            label="To"
+            sx={{ width: 300, margin: "0.5rem" }}
+            value={this.state.to}
+            id="outlined-basic" variant="outlined"
+            inputProps={{ max: convertDate(new Date()), min: this.state.from }}
+            onChange={(e) => {
+              this.setState({ to: e.target.value }, () => this.getAssetList())
+
+            }} />
+
+        </div>
+        <hr />
+
         {this.state.isApiHitComplete ? (
           this.state.isDataFound ? (
             <table className={`table table-hover custom-table`}>
@@ -182,46 +182,46 @@ renderInput={(params) => <TextField {...params} label="College List" />}
               <tbody>
                 {this.state.clgList.map((clg, i) => {
                   return (
-                    
-                      <tr key={i}>
-                        <td>{clg.name}</td>
-                        <td>{clg.mobile}</td>
-                        <td>{clg.course}</td>
-                        <td>{clg.email}</td>
-                        <td>{clg.state}</td>
-                        <td>{clg.city}</td>
-                        <td>{this.formatTimestamp(clg.createdAt)}</td>
-                        <td>{clg.ipv4?clg.ipv4:"-"}</td>
 
-                  
+                    <tr key={i}>
+                      <td>{clg.name}</td>
+                      <td>{clg.mobile}</td>
+                      <td>{clg.course}</td>
+                      <td>{clg.email}</td>
+                      <td>{clg.state}</td>
+                      <td>{clg.city}</td>
+                      <td>{this.formatTimestamp(clg.createdAt)}</td>
+                      <td>{clg.ipv4 ? clg.ipv4 : "-"}</td>
 
 
 
-                      </tr>
-                    
+
+
+                    </tr>
+
                   );
                 })}
               </tbody>
             </table>
           ) : (
             <div style={{ display: "flex", width: "100%", height: '68vh', justifyContent: "center", alignItems: 'center' }}>
-            <div style={{ fontWeight: "500" }}>
-              <span style={{ color: "#0d6efd", cursor: 'pointer' }}> No Records </span>
+              <div style={{ fontWeight: "500" }}>
+                <span style={{ color: "#0d6efd", cursor: 'pointer' }}> No Records </span>
+              </div>
             </div>
-          </div>
           )
         ) : (
-             <div style={{ display: "flex", width: "100%", height: '68vh', justifyContent: "center", alignItems: 'center' }}>
-              <Spinner animation="border" role="status" variant="info">
-                <span className="visually-hidden">Loading...</span>
-              </Spinner>
-            </div>
+          <div style={{ display: "flex", width: "100%", height: '68vh', justifyContent: "center", alignItems: 'center' }}>
+            <Spinner animation="border" role="status" variant="info">
+              <span className="visually-hidden">Loading...</span>
+            </Spinner>
+          </div>
         )}
         <Loading
           show={this.state.isLoading}
           onHide={() => this.setState({ isLoading: false })}
         />
-       
+
       </>
     );
   }
