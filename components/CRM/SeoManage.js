@@ -20,6 +20,9 @@ import MenuItem from "@mui/material/MenuItem";
 import LoopIcon from "@mui/icons-material/Loop";
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import FilterModal from "./FilterModal/FilterModal";
+import Chip from '@mui/material/Chip';
 
 var oldData = [];
 const SEOManage = () => {
@@ -35,6 +38,10 @@ const SEOManage = () => {
   const [seoType, setSeoType] = useState("1");
   const [totalPages, setTotalPages] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
+  const [modalShow, setModalShow] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const [isFilterApplied, setisFilterApplied] = useState(false);
+  const [isFilterReset, setisFilterReset] = useState(false);
 
   const [formData, setFormData] = useState({
     collegename: "",
@@ -407,8 +414,18 @@ const SEOManage = () => {
       }
     )
       .then(async (response) => {
-        var res = await response.json();
+        let res = await response.json();
         // console.log(res.data);
+        if (response.status === 429) {
+          Swal.fire({
+            title: "Error",
+            text: response.error,
+            icon: "error",
+            confirmButtonText: "Ok",
+          })
+          this.setState({ isApiHitComplete: true });
+          return;
+        }
         setCollegeApi(res.data.college_list);
         setBlogApi(res.data.blog_list);
         setCourseApi(res.data.course_list);
@@ -2478,11 +2495,18 @@ const SEOManage = () => {
   const handleSeoChange = (e) => {
     setSeoType(e.target.value);
     setSearchInput("");
+    setCurrentPage(1)
+    setisFilterApplied(false)
+    setSearchValue("")
   };
 
 
   const handleRefresh = () => {
-    collegeDataApi(seoType);
+    if (isFilterApplied) {
+      getSearchedCollegeData();
+    } else {
+      collegeDataApi(seoType);
+    }
   };
 
 
@@ -2492,6 +2516,97 @@ const SEOManage = () => {
     collegeDataApi(seoType, page);
 
   };
+
+
+
+
+
+  const getSearchedCollegeData = () => {
+    setIsApiHitComplete(false);
+    setIsDataFound(false);
+    let paramName;
+    switch (seoType) {
+      case 1:
+        paramName = 'clgname';
+        break;
+      case 2:
+        paramName = 'blog_title';
+        break;
+      case 3:
+        paramName = 'course_name';
+        break;
+      case 4:
+        paramName = 'exam_name';
+        break;
+      default:
+        paramName = 'clgname';
+    }
+
+    fetch(
+      process.env.NEXT_PUBLIC_API_ENDPOINT +
+      `/admin/advance-search-seomanager?${paramName}=${searchValue}&type=${seoType}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("pt")}`,
+        },
+      }
+    )
+      .then(async (response) => {
+        let res = await response.json();
+        if (response.status === 429) {
+          Swal.fire({
+            title: "Error",
+            text: res.error,
+            icon: "error",
+            confirmButtonText: "Ok",
+          }).then(() => {
+            handleResetFilter();
+          });
+          setIsApiHitComplete(true);
+          return;
+        }
+        if (res.data?.seo_pages.length > 0) {
+          setIsDataFound(true);
+          setSeoApi(res.data.seo_pages);
+          setTotalCountNumber(res.data.seo_pages.length);
+        }
+        setIsApiHitComplete(true);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+        setIsApiHitComplete(true);
+      });
+  };
+
+
+
+
+  const handleShowSearchModal = () => {
+    setModalShow(true);
+  }
+
+  const handleCloseSearchModal = () => {
+    setModalShow(false);
+  }
+
+  const handleSearchValueChange = (e) => {
+    setSearchValue(e.target.value);
+  };
+
+  const handleApplyFilter = () => {
+    setisFilterApplied(true)
+    setModalShow()
+    getSearchedCollegeData()
+  };
+
+  const handleResetFilter = () => {
+    setSearchValue("")
+    setisFilterApplied(false)
+    setisFilterReset(true)
+    setModalShow(false)
+    collegeDataApi(seoType)
+  };
+
 
 
   return (
@@ -2505,22 +2620,33 @@ const SEOManage = () => {
       <Tablenav
         TotalCount={{
           Total: (
-            <h5>
-              Total Count :{TotalCountNumber == "" ? "0" : TotalCountNumber}
-            </h5>
+            <div className="d-flex">
+
+              <h5>
+                Total Count :{TotalCountNumber == "" ? "0" : TotalCountNumber}
+              </h5>
+              <p style={{ marginLeft: "20px", marginRight: "3px" }}> {isFilterApplied && `Applied Filter : `} </p>
+              {isFilterApplied && <Stack direction="row" spacing={1}>
+                <Chip className="bg-light" label={searchValue} variant="outlined" onDelete={handleResetFilter} />
+              </Stack>}
+            </div>
           ),
         }}
+
         Actions={{
           Actions: (
             <>
-              <div className="d-flex justify-content-between align-items-center">
-                <input
-                  type="text"
-                  className="form-control"
-                  value={searchInput}
-                  placeholder="Search..."
-                  onChange={handleSearchChange}
-                />
+              <div className="d-flex  justify-content-between align-items-center">
+                {!isFilterApplied &&
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={searchInput}
+                    placeholder="Search..."
+                    onChange={handleSearchChange}
+                  />
+                }
+                <FilterModal handleApplyFilter={handleApplyFilter} handleResetFilter={handleResetFilter} handleSearchValueChange={handleSearchValueChange} searchValue={searchValue} filterApplied={isFilterApplied} show={modalShow} handleClose={handleCloseSearchModal} />
                 <FormControl
                   variant="standard"
                   sx={{ m: 1, minWidth: 120 }}
@@ -2542,15 +2668,25 @@ const SEOManage = () => {
                     <MenuItem value={4}>Exam Seo</MenuItem>
                   </Select>
                 </FormControl>
-                <Button variant="primary" onClick={handleModalShow}>
-                  +
-                </Button>
+                {
+                  localStorage.getItem('crmrole') === '5' && <Button variant="primary" onClick={handleModalShow}>
+                    +
+                  </Button>
+                }
                 <Tooltip title="Refresh">
                   <IconButton
                     aria-label="Refresh"
                     onClick={handleRefresh}
                   >
                     <LoopIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Filter">
+                  <IconButton
+                    aria-label="Filter"
+                  >
+                    {/* <FilterAltIcon onClick={handleShowSearchModal} /> */}
+                    <FilterAltIcon className={`${isFilterApplied && "text-primary"}`} onClick={handleShowSearchModal} />
                   </IconButton>
                 </Tooltip>
               </div>
@@ -2578,8 +2714,15 @@ const SEOManage = () => {
                 <th style={{ background: "var(--primary)" }}>Title</th>
                 <th style={{ background: "var(--primary)" }}>keyword</th>
                 <th style={{ background: "var(--primary)" }}>canonical</th>
-                <th style={{ background: "var(--primary)" }}>Remove</th>
-                <th style={{ background: "var(--primary)" }}>Edit</th>
+                {
+                  localStorage.getItem('crmrole') === '5' &&
+                  <>
+                    <th style={{ background: "var(--primary)" }}>Remove</th>
+                    <th style={{ background: "var(--primary)" }}>Edit</th>
+                  </>
+
+                }
+
               </tr>
             </thead>
             <tbody>
@@ -2628,18 +2771,24 @@ const SEOManage = () => {
                     <td style={{ wordWrap: "break-word", whiteSpace: "unset" }}>
                       {clg.canonical}
                     </td>
-                    <td
-                      style={{ wordWrap: "break-word", whiteSpace: "unset" }}
-                      onClick={(e) => handleDelete(e, clg._id)}
-                    >
-                      <DeleteForeverIcon />
-                    </td>
-                    <td
-                      style={{ wordWrap: "break-word", whiteSpace: "unset" }}
-                      onClick={(e) => handleEdit(e, clg._id)}
-                    >
-                      <EditIcon />
-                    </td>
+                    {
+                      localStorage.getItem('crmrole') === '5' &&
+                      <>
+                        <td
+                          style={{ wordWrap: "break-word", whiteSpace: "unset" }}
+                          onClick={(e) => handleDelete(e, clg._id)}
+                        >
+                          <DeleteForeverIcon />
+                        </td>
+                        <td
+                          style={{ wordWrap: "break-word", whiteSpace: "unset" }}
+                          onClick={(e) => handleEdit(e, clg._id)}
+                        >
+                          <EditIcon />
+                        </td>
+                      </>
+
+                    }
                   </tr>
                 );
               })}
@@ -5461,7 +5610,7 @@ const SEOManage = () => {
       ) : (
         "Other"
       )}
-      {isDataFound &&
+      {isDataFound && !isFilterApplied ?
         <div className="pt-3">
           <Stack
             spacing={2}
@@ -5483,7 +5632,7 @@ const SEOManage = () => {
               color="primary"
             />
           </Stack>
-        </div>
+        </div> : ""
       }
     </>
   );

@@ -32,7 +32,7 @@ const SearchModal = ({ onHide }) => {
   return (
     <Modal className={Classes['custom-search-modal']} fullscreen centered show={true} onHide={onHide}>
       <Modal.Header closeButton>
-        <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder='Search colleges, courses, exams & more.' className='form-control' />
+        <input autoFocus type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder='Search colleges, courses, exams & more.' className='form-control' />
       </Modal.Header>
       <Modal.Body style={{ padding: '0' }}>
         <div className={Classes['results']}>
@@ -42,15 +42,16 @@ const SearchModal = ({ onHide }) => {
                 results.length > 0 ?
                   results.map((el) => {
                     const typeCondition =
-                    el.type === 'college'
-                      ? `/colleges/${el.slug}`
-                      : el.type === 'exam'
-                      ? `/exams/${el.slug}`
-                      : el.type === 'course'
-                      ? `/courses/${el.slug}`
-                      : '';
+                      el.type === 'college'
+                        ? `/colleges/${el.slug}`
+                        : el.type === 'exam'
+                          ? `/exams/${el.slug}`
+                          : el.type === 'course'
+                            ? `/courses/${el.slug}`
+                            : el.type === 'blog'
+                              ? `/blog/${el.slug}` : '';
                     return (
-                     
+
                       <Link href={typeCondition} >
                         <div className={Classes['college']} onClick={onHide}>
                           <span>{el.title}</span>

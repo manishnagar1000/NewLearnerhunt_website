@@ -164,11 +164,11 @@ const nextConfig = {
         destination: '/',
         permanent: true,
       },
-      {
-        source: '/colleges/K-R-MANGALAM-UNIVERSITY',
-        destination: '/',
-        permanent: true,
-      },
+      // {
+      //   source: '/colleges/K-R-MANGALAM-UNIVERSITY',
+      //   destination: '/',
+      //   permanent: true,
+      // },
       {
         source: '/colleges/ITS-Engineering-College',
         destination: '/',
@@ -291,7 +291,7 @@ const nextConfig = {
       },
       {
         source: '/colleges/mangalmay-group-of-institution-noida-',
-        destination: '/colleges/mangalmay-group-of-institution-noida',
+        destination: '/colleges/mangalmay-group-of-institution-greater-noida',
         permanent: true,
       },
       {

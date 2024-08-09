@@ -149,7 +149,7 @@ export default class PortalLayout extends Component {
       return 'Learnerhunt-Support'
     }
     return 'Learnerhunt'
-  }
+  } 
 
   handleOpenModal() {
     this.getUserDetails()

@@ -2033,7 +2033,7 @@ export const StudyAbroadInnerPageData = {
 
 export const studyAbroadOfferingsData = [
   {
-    "image": "/assets/images/StudyAbroad/Offerings/location.png  ",
+    "image": "/assets/images/StudyAbroad/Offerings/world_map.webp  ",
     "title": "Exploration & Research 🧐",
     "subtitle": "Explore through the realm of top-notch universities, global destinations & interesting courses",
     "description": "Delve into 10,000+ University Profiles & Comprehensive Articles",

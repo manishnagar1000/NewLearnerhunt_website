@@ -45,7 +45,6 @@ const PopForm = () => {
 
     const timer = setTimeout(() => {
       setShowModal(true);
-
     }, 10000);
 
     return () => clearTimeout(timer);

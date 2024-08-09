@@ -11,6 +11,9 @@ import Link from "next/link";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import LoopIcon from "@mui/icons-material/Loop";
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import FilterModal from "../FilterModal/FilterModal";
+import Chip from '@mui/material/Chip';
 
 
 export default class Allcollege extends Component {
@@ -29,7 +32,11 @@ export default class Allcollege extends Component {
       TotalCountNumber: '',
       currentPage: 1,
       totalPages: '',
-      oldData: []
+      oldData: [],
+      modalShow: false,
+      searchValue: "",
+      isFilterReset: false,
+      isFilterApplied: false
     };
   }
 
@@ -41,6 +48,16 @@ export default class Allcollege extends Component {
       },
     }).then(async (res) => {
       let response = await res.json();
+      if (res.status === 429) {
+        Swal.fire({
+          title: "Error",
+          text: response.error,
+          icon: "error",
+          confirmButtonText: "Ok",
+        })
+        this.setState({ isApiHitComplete: true });
+        return;
+      }
       if (response.data.length > 0) {
         this.setState({
           clgList: response.data,
@@ -50,16 +67,17 @@ export default class Allcollege extends Component {
           totalPages: Math.ceil(response.totalRecords / response.rowsPerPage),
           oldData: response.data
         });
-        console.log(this.state.totalPages, "helloooo")
       } else {
         this.setState({ isDataFound: false });
       }
       this.setState({ isApiHitComplete: true });
+    }).catch((error) => {
+      console.error('Error:', error);
+      this.setState({ isApiHitComplete: true });
     });
   }
-  componentDidUpdate() {
-    console.log(this.state.totalPages, "didupdate")
-  }
+
+
   componentDidMount() {
     this.getAssetList();
   }
@@ -128,13 +146,93 @@ export default class Allcollege extends Component {
     });
   }
 
+
+  getSearchedCollegeData = () => {
+    this.setState({ isApiHitComplete: false, isDataFound: false });
+    fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/advance-search-clg?clgname=${this.state.searchValue}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("pt")}`,
+      },
+    }).then(async (res) => {
+      let response = await res.json();
+      if (res.status === 429) { 
+        Swal.fire({
+          title: "Error",
+          text: response.error,
+          icon: "error",
+          confirmButtonText: "Ok",
+        }).then(()=>{
+          this.handleResetFilter()
+        });
+        this.setState({ isApiHitComplete: true });
+        return;
+      }
+      if (response.data.length > 0) {
+        this.setState({
+          clgList: response.data,
+          TotalCountNumber: response.data.length,
+          isDataFound: true
+        });
+      } else {
+        this.setState({ isDataFound: false });
+      }
+      this.setState({ isApiHitComplete: true });
+    }).catch((error) => {
+      console.error('Error:', error);
+      this.setState({ isApiHitComplete: true });
+    });
+  }
+
+
+  
+
   handleRefresh = () => {
-    this.getAssetList(this.state.currentPage);
+    if (this.state.isFilterApplied) {
+      this.getSearchedCollegeData();
+    } else {
+      this.getAssetList(this.state.currentPage);
+    }
   };
+
 
 
   handlePageChange = (event, page) => {
     this.getAssetList(page);
+  };
+
+  handleShowSearchModal = () => {
+    this.setState({ modalShow: true })
+  }
+
+  handleCloseSearchModal = () => {
+    this.setState({ modalShow: false }
+    )
+  }
+
+  handleSearchValueChange = (e) => {
+    this.setState({ searchValue: e.target.value })
+  };
+
+  handleApplyFilter = () => {
+    this.setState(
+      {
+        isFilterApplied: true,
+        modalShow: false
+      },
+      this.getSearchedCollegeData
+    );
+  };
+
+  handleResetFilter = () => {
+    this.setState(
+      {
+        searchValue: "",
+        isFilterApplied: false,
+        isFilterReset: true,
+        modalShow: false
+      },
+      this.getAssetList
+    );
   };
 
 
@@ -144,25 +242,42 @@ export default class Allcollege extends Component {
         <Tablenav
           TotalCount={{
             Total: (
-              <h5>Total Count: {this.state.TotalCountNumber === '' ? '0' : this.state.TotalCountNumber}</h5>
+              <div className="d-flex">
+                <h5>Total Colleges: {this.state.TotalCountNumber === '' ? '0' : this.state.TotalCountNumber} </h5>
+                <p style={{ marginLeft: "20px", marginRight: "3px" }}> {this.state.isFilterApplied && `Applied Filter : `} </p>
+                {this.state.isFilterApplied && <Stack direction="row" spacing={1}>
+                  <Chip className="bg-light" label={this.state.searchValue} variant="outlined" onDelete={this.handleResetFilter} />
+                </Stack>}
+              </div>
             )
           }}
+
           Actions={{
             Actions: (
               <div className="d-flex">
-                <input
-                  type="text"
-                  className="form-control"
-                  value={this.state.searchInput}
-                  placeholder="Search..."
-                  onChange={this.handleSearchChange}
-                />
+                {!this.state.isFilterApplied &&
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={this.state.searchInput}
+                    placeholder="Search..."
+                    onChange={this.handleSearchChange}
+                  />
+                }
+                <FilterModal handleApplyFilter={this.handleApplyFilter} handleResetFilter={this.handleResetFilter} handleSearchValueChange={this.handleSearchValueChange} filterApplied={this.state.isFilterApplied} searchValue={this.state.searchValue} show={this.state.modalShow} handleClose={this.handleCloseSearchModal} />
                 <Tooltip title="Refresh">
                   <IconButton
                     aria-label="Refresh"
                     onClick={this.handleRefresh}
                   >
                     <LoopIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Filter">
+                  <IconButton
+                    aria-label="Filter"
+                  >
+                    <FilterAltIcon className={`${this.state.isFilterApplied && "text-primary"}`} onClick={this.handleShowSearchModal} />
                   </IconButton>
                 </Tooltip>
               </div>
@@ -216,7 +331,7 @@ export default class Allcollege extends Component {
           onHide={() => this.setState({ isLoading: false })}
         />
 
-        {this.state.isDataFound &&
+        {this.state.isDataFound && !this.state.isFilterApplied ?
           <div className="pt-3">
             <Stack
               spacing={2}
@@ -238,7 +353,7 @@ export default class Allcollege extends Component {
                 color="primary"
               />
             </Stack>
-          </div>
+          </div> : ""
         }
       </>
     );
