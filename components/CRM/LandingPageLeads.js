@@ -26,19 +26,19 @@
 
 //  formatTimestamp(timestamp) {
 //     const dateObject = new Date(timestamp);
-  
+
 //     const formattedTime = dateObject.toLocaleTimeString('en-US', {
 //       hour: '2-digit',
 //       minute: '2-digit',
 //       hour12: true,
 //     });
-  
+
 //     const formattedDate = dateObject.toLocaleDateString('en-US', {
 //       day: '2-digit',
 //       month: 'short',
 //       year: 'numeric',
 //     });
-  
+
 //     return `${formattedTime}, ${formattedDate}`;
 //   }
 
@@ -81,7 +81,7 @@
 //       searchKeyword.test(data.mobile.toLowerCase())||
 //       searchKeyword.test(data.course.toLowerCase())
 
-      
+
 
 //   );
 
@@ -102,7 +102,7 @@
 //         )
 //        }}
 //           Actions={{
-          
+
 //             Actions: (
 //               <input
 //             type="text"
@@ -133,7 +133,7 @@
 //               <tbody>
 //                 {this.state.clgList.reverse().map((clg, i) => {
 //                   return (
-                    
+
 //                       <tr key={i}>
 //                         <td>{clg.name}</td>
 //                         <td>{clg.mobile}</td>
@@ -142,7 +142,7 @@
 //                         <td>{clg.state}</td>
 //                         <td>{this.formatTimestamp(clg.createdAt)}</td>
 //                       </tr>
-                    
+
 //                   );
 //                 })}
 //               </tbody>
@@ -380,14 +380,14 @@ function EnhancedTableToolbar(props) {
       ).then(async (res) => {
         let response = await res.json();
         if (response.data) {
-            Swal.fire({
-              title: "Success",
-              html: `${response.message}`,
-              icon: "success",
-              confirmButtonText: "Ok",
-            }).then((s)=>{
-              props.userListData()
-            })
+          Swal.fire({
+            title: "Success",
+            html: `${response.message}`,
+            icon: "success",
+            confirmButtonText: "Ok",
+          }).then((s) => {
+            props.userListData()
+          })
         } else {
           Swal.fire({
             title: "Error",
@@ -396,12 +396,12 @@ function EnhancedTableToolbar(props) {
             confirmButtonText: "Ok",
           })
         }
-      props.loader(false)
+        props.loader(false)
 
-      // setIsLoading(false)
-  
+        // setIsLoading(false)
+
       });
-      
+
 
     };
 
@@ -446,7 +446,7 @@ function EnhancedTableToolbar(props) {
             id="tableTitle"
             component="div"
           >
-                   Total Rows : {props.rowsList.length} , Total Records :{props.totalrecord}
+            Total Rows : {props.rowsList.length} , Total Records :{props.totalrecord}
           </Typography>
         )}
 
@@ -465,33 +465,33 @@ function EnhancedTableToolbar(props) {
               placeholder="Search..."
               onChange={handleSearchChange}
             />
-              <div className='d-flex justify-content-end'>
+            <div className='d-flex justify-content-end'>
               <Tooltip title="Upload UgLeads Form Excel" arrow>
-        <Button className='m-4' variant="primary" {...getRootProps()} >
-          <input {...getInputProps()} />
-          <FileUploadIcon />
-          Upload
-        </Button>
-        </Tooltip>
+                <Button className='m-4' variant="primary" {...getRootProps()} >
+                  <input {...getInputProps()} />
+                  <FileUploadIcon />
+                  Upload
+                </Button>
+              </Tooltip>
 
-        {/* <a href=`process.env.NEXT_PUBLIC_API_ENDPOINT + 'download_excel'` target='blank'> <Button className='m-4' variant="success" > */}
-        <a href={`${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/mbaleads-template-download`} target='blank'> 
-        <Tooltip title="Download UgLeads Excel Template" arrow>
+              {/* <a href=`process.env.NEXT_PUBLIC_API_ENDPOINT + 'download_excel'` target='blank'> <Button className='m-4' variant="success" > */}
+              <a href={`${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/mbaleads-template-download`} target='blank'>
+                <Tooltip title="Download UgLeads Excel Template" arrow>
 
-<Button className='m-4' variant="success" >
-  <FileDownloadIcon />
-  Download
-</Button>
-</Tooltip></a>
-      </div>
-              <Tooltip title="Refresh">
-                      <IconButton
-                        aria-label="Refresh"
-                        onClick={() =>props.userListData()}
-                      >
-                        <LoopIcon />
-                      </IconButton>
-                    </Tooltip>
+                  <Button className='m-4' variant="success" >
+                    <FileDownloadIcon />
+                    Download
+                  </Button>
+                </Tooltip></a>
+            </div>
+            <Tooltip title="Refresh">
+              <IconButton
+                aria-label="Refresh"
+                onClick={() => props.userListData()}
+              >
+                <LoopIcon />
+              </IconButton>
+            </Tooltip>
           </>
         )}
       </Toolbar>
@@ -509,7 +509,7 @@ export default function Studentappliedclg() {
   const [counsellorList, setCounsellorList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isremarkLoading,setIsRemarkLoading] = useState(false)
+  const [isremarkLoading, setIsRemarkLoading] = useState(false)
   const [selectedCounsellor, setSelectedCounsellor] = useState("");
   const [remarkshowModal, setRemarkshowModal] = useState(false);
   const [remarksHistory, setRemarksHistory] = useState([]);
@@ -551,13 +551,13 @@ export default function Studentappliedclg() {
           window.location.reload();
         });
       }
-    setIsLoading(false)
+      setIsLoading(false)
 
     });
   };
-  useEffect(()=>{
-    getUserList();
-  },[page])
+  // useEffect(()=>{
+  //   getUserList();
+  // },[page])
   const formatTimestamp = (timestamp) => {
     const dateObject = new Date(timestamp);
 
@@ -633,7 +633,7 @@ export default function Studentappliedclg() {
     fd.append("cid", selectedCounsellor);
     fetch(
       process.env.NEXT_PUBLIC_API_ENDPOINT +
-        `/admin/assign-leads-to-counsellor`,
+      `/admin/assign-leads-to-counsellor`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("pt")}`,
@@ -672,11 +672,11 @@ export default function Studentappliedclg() {
     e.preventDefault();
     try {
       setIsRemarkLoading(true);
-     
+
       setRemarkshowModal(true);
       fetch(
         process.env.NEXT_PUBLIC_API_ENDPOINT +
-          `/admin/counsellor-lead-status?lid=${id}&lt=7&cid=${c._id}`,
+        `/admin/counsellor-lead-status?lid=${id}&lt=7&cid=${c._id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("pt")}`,
@@ -694,15 +694,16 @@ export default function Studentappliedclg() {
           let response = await res.json();
         }
         setIsRemarkLoading(false);
-      
+
       });
     } catch (error) {
       console.error(error);
     }
   };
-  const handlePage=(event, newPage)=>{
+  const handlePage = (event, newPage) => {
     event.preventDefault()
     setPage(newPage);
+    getUserList()
   }
   const steps = [
     "First Followup Complete",
@@ -812,7 +813,7 @@ export default function Studentappliedclg() {
               </TableBody>
             </Table>
           </TableContainer>
-          <Pagination className="p-2 d-flex justify-content-center" count={count} page={page} color="primary" onChange={handlePage}/>
+          <Pagination className="p-2 d-flex justify-content-center" count={count} page={page} color="primary" onChange={handlePage} />
         </Paper>
       </Box>
       <Modal
@@ -839,9 +840,8 @@ export default function Studentappliedclg() {
                 return (
                   <div
                     key={i}
-                    className={`${Classes.counsellorList} ${
-                      s._id == selectedCounsellor ? Classes.selected : ""
-                    }`}
+                    className={`${Classes.counsellorList} ${s._id == selectedCounsellor ? Classes.selected : ""
+                      }`}
                     onClick={() => setSelectedCounsellor(s._id)}
                   >
                     <Avatar>{s.name.substring(0, 1)}</Avatar>
@@ -889,58 +889,26 @@ export default function Studentappliedclg() {
           {!isremarkLoading ? (
             remarksHistory.length > 0 ? (
               <>
-              <table className={`table table-hover custom-table`}>
-                <thead>
-                  <tr>
-                    <th style={{ background: "var(--primary)" }}>Remarks</th>
-                    <th style={{ background: "var(--primary)" }}>Date</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {remarksHistory.map((obj, i) => {
-                    return (
-                      <tr key={i}>
-                        <td>{obj.remarks}</td>
-                        <td>{formatTimestamp(obj.createdAt)}</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-              <hr/>
+                <table className={`table table-hover custom-table`}>
+                  <thead>
+                    <tr>
+                      <th style={{ background: "var(--primary)" }}>Remarks</th>
+                      <th style={{ background: "var(--primary)" }}>Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {remarksHistory.map((obj, i) => {
+                      return (
+                        <tr key={i}>
+                          <td>{obj.remarks}</td>
+                          <td>{formatTimestamp(obj.createdAt)}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+                <hr />
                 <Stack sx={{ width: "100%" }} spacing={4}>
-                <Stepper
-                  alternativeLabel
-                  activeStep={pipeline ? getMaxCount(pipeline) : -1}
-                >
-                  {steps.map((label) => (
-                    <Step key={label}>
-                      <StepLabel>{label}</StepLabel>
-                    </Step>
-                  ))}
-                </Stepper>
-              </Stack>
-              </>
-            ) : (
-              <>
-              <div
-                style={{
-                  display: "flex",
-                  width: "100%",
-                  height: "inherit",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <div style={{ fontWeight: "500" }}>
-                  <span style={{ color: "#0d6efd", cursor: "pointer" }}>
-                    {" "}
-                    No Records{" "}
-                  </span>
-                </div>
-              </div>
-                  <hr/>
-                  <Stack sx={{ width: "100%" }} spacing={4}>
                   <Stepper
                     alternativeLabel
                     activeStep={pipeline ? getMaxCount(pipeline) : -1}
@@ -952,7 +920,39 @@ export default function Studentappliedclg() {
                     ))}
                   </Stepper>
                 </Stack>
-                </>
+              </>
+            ) : (
+              <>
+                <div
+                  style={{
+                    display: "flex",
+                    width: "100%",
+                    height: "inherit",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <div style={{ fontWeight: "500" }}>
+                    <span style={{ color: "#0d6efd", cursor: "pointer" }}>
+                      {" "}
+                      No Records{" "}
+                    </span>
+                  </div>
+                </div>
+                <hr />
+                <Stack sx={{ width: "100%" }} spacing={4}>
+                  <Stepper
+                    alternativeLabel
+                    activeStep={pipeline ? getMaxCount(pipeline) : -1}
+                  >
+                    {steps.map((label) => (
+                      <Step key={label}>
+                        <StepLabel>{label}</StepLabel>
+                      </Step>
+                    ))}
+                  </Stepper>
+                </Stack>
+              </>
             )
           ) : (
             <div

@@ -18,7 +18,7 @@ import DialerLeads from "@/components/CRM/Leads/DialerLeads";
 import UgLeads from "@/components/CRM/Leads/UgLeads";
 import LlbLeads from "@/components/CRM/Leads/LlbLeads";
 import PsychologyLeads from "@/components/CRM/Leads/PsychologyLeads";
-
+import IilmLeads from "@/components/CRM/Leads/IilmLeads";
 
 
 
@@ -49,167 +49,172 @@ const componentList = [
   {
     comp: <Dashboard />,
     slug: "dashboard",
-    role:[0,4,5]
+    role: [0, 4, 5]
   },
   {
     comp: <Addcollege />,
     slug: "addcollege",
-    role:[4,5]
+    role: [4, 5]
   },
   {
     comp: <Allcollege />,
     slug: "allcollege",
-    role:[0,4,5]
+    role: [0, 4, 5]
   },
   {
     comp: <AddCourses />,
     slug: "addcourse",
-    role:[4,5]
+    role: [4, 5]
   },
   {
     comp: <AllCourses />,
     slug: "allcourses",
-    role:[0,4,5]
+    role: [0, 4, 5]
   },
   {
     comp: <AddExams />,
     slug: "addexam",
-    role:[4,5]
+    role: [4, 5]
   },
   {
     comp: <AllExams />,
     slug: "allexams",
-    role:[0,4,5]
+    role: [0, 4, 5]
   },
   {
-    comp:<ApiIntegration/>,
-    slug:"api",
-    role:[4]
+    comp: <ApiIntegration />,
+    slug: "api",
+    role: [4]
   },
   {
-    comp:<Imarticus/>,
-    slug:"imarticus",
-    role:[4]
+    comp: <Imarticus />,
+    slug: "imarticus",
+    role: [4]
   },
   {
-    comp:<VuPune/>,
-    slug:"vu-pune",
-    role:[4]
+    comp: <VuPune />,
+    slug: "vu-pune",
+    role: [4]
   },
   {
-    comp:<Testeligibility/>,
-    slug:"testeligibility",
-    role:[0,4]
+    comp: <Testeligibility />,
+    slug: "testeligibility",
+    role: [0, 4]
   },
   {
-    comp:<AppliedCollege/>,
-    slug:"appliedcollege",
-    role:[0,4]
+    comp: <AppliedCollege />,
+    slug: "appliedcollege",
+    role: [0, 4]
   },
   {
-    comp:<StudentRegistered/>,
-    slug:"studentregister",
-    role:[0,4]
+    comp: <StudentRegistered />,
+    slug: "studentregister",
+    role: [0, 4]
   },
   {
-    comp:<AddLeads/>,
-    slug:"adleads",
-    role:[0,4]
+    comp: <AddLeads />,
+    slug: "adleads",
+    role: [0, 4]
   },
   {
-    comp:<CollegeAdmins/>,
-    slug:"collegeadmins",
-    role:[0]
+    comp: <CollegeAdmins />,
+    slug: "collegeadmins",
+    role: [0]
   },
   {
-    comp:<TrashColleges/>,
-    slug:"trash",
-    role:[0,4,5]
+    comp: <TrashColleges />,
+    slug: "trash",
+    role: [0, 4, 5]
   },
   {
-    comp:<PopupLeads/>,
-    slug:"popupregister",
-    role:[0,4]
+    comp: <PopupLeads />,
+    slug: "popupregister",
+    role: [0, 4]
   },
   {
-    comp:<ClgadminRegister/>,
-    slug:"create-clg-admin",
-    role:[0,4]
+    comp: <ClgadminRegister />,
+    slug: "create-clg-admin",
+    role: [0, 4]
   },
   {
-    comp:<ActiveDeactiveclg/>,
-    slug:"activedeactive-clg",
-    role:[0,4]
+    comp: <ActiveDeactiveclg />,
+    slug: "activedeactive-clg",
+    role: [0, 4]
   },
   {
-    comp:<ManageUser/>,
-    slug:"manage-users",
-    role:[0]
+    comp: <ManageUser />,
+    slug: "manage-users",
+    role: [0]
   },
   {
-    comp:<AssociatedCounsellorCrm/>,
-    slug:"associated-counsellor",
-    role:[0,4]
+    comp: <AssociatedCounsellorCrm />,
+    slug: "associated-counsellor",
+    role: [0, 4]
   },
   {
-    comp:<LandingPageLeads/>,
-    slug:"mbaleads",
-    role:[0,4]
+    comp: <LandingPageLeads />,
+    slug: "mbaleads",
+    role: [0, 4]
   },
   {
-    comp:<UgLeads/>,
-    slug:"ugleads",
-    role:[0,4]
+    comp: <UgLeads />,
+    slug: "ugleads",
+    role: [0, 4]
   },
   {
-    comp:<LlbLeads/>,
-    slug:"llbleads",
-    role:[0,4]
+    comp: <LlbLeads />,
+    slug: "llbleads",
+    role: [0, 4]
   },
   {
-    comp:<PsychologyLeads/>,
-    slug:"psychologyleads",
-    role:[0,4]
+    comp: <PsychologyLeads />,
+    slug: "psychologyleads",
+    role: [0, 4]
   },
   {
-    comp:<LoanLeads/>,
-    slug:"loanleads",
-    role:[0,4]
+    comp: <IilmLeads />,
+    slug: "iilmleads",
+    role: [0, 4]
   },
   {
-    comp:<DialerLeads/>,
-    slug:"dialerleads",
-    role:[0,4]
+    comp: <LoanLeads />,
+    slug: "loanleads",
+    role: [0, 4]
   },
   {
-    comp:<TopCollegeSection/>,
-    slug:"web-top-colleges",
-    role:[4]
+    comp: <DialerLeads />,
+    slug: "dialerleads",
+    role: [0, 4]
   },
   {
-    comp:<SEOManage/>,
-    slug:"seo-manager",
-    role:[0,5]
+    comp: <TopCollegeSection />,
+    slug: "web-top-colleges",
+    role: [4]
   },
   {
-    comp:<BlogManager/>,
-    slug:"blog-manager",
-    role:[0,5]
+    comp: <SEOManage />,
+    slug: "seo-manager",
+    role: [0, 5]
   },
   {
-    comp:<CrmBlog/>,
-    slug:"blogs",
-    role:[0,5]
+    comp: <BlogManager />,
+    slug: "blog-manager",
+    role: [0, 5]
   },
   {
-    comp:<CrmBlogCategory/>,
-    slug:"blog-category",
-    role:[0,5]
+    comp: <CrmBlog />,
+    slug: "blogs",
+    role: [0, 5]
   },
   {
-    comp:<CrmNews/>,
-    slug:"news-manager",
-    role:[0,5]
+    comp: <CrmBlogCategory />,
+    slug: "blog-category",
+    role: [0, 5]
+  },
+  {
+    comp: <CrmNews />,
+    slug: "news-manager",
+    role: [0, 5]
   },
   // {
   //   comp:<ImportExport/>,
@@ -220,7 +225,7 @@ const componentList = [
 export default function AdminPortalSlug() {
   const router = useRouter();
   // console.log(router)
-  const { slug} = router.query;
+  const { slug } = router.query;
   // console.log(slug);
   const data = componentList.find((s) => s.slug == slug);
   // console.log(componentList.find((s)=>s.slug==slug))
@@ -249,7 +254,7 @@ export default function AdminPortalSlug() {
   }, []);
 
   const handleLogout = () => {
-   
+
     Swal.fire({
       text: "Are you sure you want to Logout?",
       icon: "warning",
@@ -259,28 +264,28 @@ export default function AdminPortalSlug() {
       confirmButtonText: "Yes",
     }).then((result) => {
       if (result.isConfirmed) {
-      fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/user/logout", {
-        method: "POST",
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem("pt")}`
-        }
-      }).then(async(response) => {
-          var res =await response.json()
-      //  console.log(res)
-    if (!res.data.status) {
-      localStorage.removeItem("pt");
-        window.location.href = "/adminportal";
+        fetch(process.env.NEXT_PUBLIC_API_ENDPOINT + "/user/logout", {
+          method: "POST",
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem("pt")}`
+          }
+        }).then(async (response) => {
+          var res = await response.json()
+          //  console.log(res)
+          if (!res.data.status) {
+            localStorage.removeItem("pt");
+            window.location.href = "/adminportal";
+          }
+        })
       }
-          })
-        }
     });
   };
   return (
     <PortalLayout onLogout={handleLogout}>
-      {data && data.role.includes(Number(localStorage.getItem('crmrole'))) ?  data.comp:
-       <div
-       className="d-flex justify-content-center align-items-center w-100 h-100"
-     ><span style={{fontWeight:"500"}}>Not Found 😞</span></div> }
+      {data && data.role.includes(Number(localStorage.getItem('crmrole'))) ? data.comp :
+        <div
+          className="d-flex justify-content-center align-items-center w-100 h-100"
+        ><span style={{ fontWeight: "500" }}>Not Found 😞</span></div>}
     </PortalLayout>
   );
 }

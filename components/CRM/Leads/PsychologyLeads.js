@@ -506,14 +506,15 @@ export default function PsychologyPageLeads() {
     }
   };
 
-  useEffect(()=>{
-    getUserList();
-  },[page])
+  // useEffect(()=>{
+  //   getUserList();
+  // },[page])
  
   const handlePage=(event, newPage)=>{
     event.preventDefault()
     setPage(newPage);
     // console.log(newPage)
+    getUserList();
     
 
   }

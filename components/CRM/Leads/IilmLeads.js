@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+    import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -24,15 +24,16 @@ import Classes from "/styles/Popup.module.css";
 import Chip from "@mui/material/Chip";
 import LoopIcon from "@mui/icons-material/Loop";
 import Loading from "@/components/Comps/Loading";
-import * as XLSX from 'xlsx';
-import FileDownloadIcon from '@mui/icons-material/FileDownload';
-import FileUploadIcon from '@mui/icons-material/FileUpload';
-import { useDropzone } from 'react-dropzone';
+import * as XLSX from "xlsx";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import FileUploadIcon from "@mui/icons-material/FileUpload";
+import { useDropzone } from "react-dropzone";
 import Stack from "@mui/material/Stack";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Pagination from "@mui/material/Pagination";
+
 
 import AssignLeadModal from "./components/AssignLeadModal";
 import RemarkHistoryModal from "./components/RemarkHistoryModal";
@@ -53,14 +54,6 @@ const headCells = [
   {
     id: "email",
     label: "Email",
-  },
-  {
-    id: "city",
-    label: "City",
-  },
-  {
-    id: "budget",
-    label: "Budget",
   },
   {
     id: "course",
@@ -124,7 +117,7 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  // console.log(props);
+  console.log(props);
   // console.log(props.rowsList);
   const [searchInput, setSearchInput] = useState("");
   const { numSelected } = props;
@@ -143,7 +136,7 @@ function EnhancedTableToolbar(props) {
     }).then(async (res) => {
       // console.log(res)
       let response = await res.json();
-      // console.log(response);
+      //   console.log(response);
       if (response.data) {
         if (response.data.length > 0) {
           props.counsellorList(response.data);
@@ -161,26 +154,26 @@ function EnhancedTableToolbar(props) {
     });
   };
 
-
   const onDrop = (acceptedFiles) => {
     const file = acceptedFiles[0];
     const reader = new FileReader();
 
     reader.onload = (e) => {
       const data = new Uint8Array(e.target.result);
-      const workbook = XLSX.read(data, { type: 'array' });
+      const workbook = XLSX.read(data, { type: "array" });
       const sheetName = workbook.SheetNames[0];
       const sheet = workbook.Sheets[sheetName];
       const json = XLSX.utils.sheet_to_json(sheet);
 
       // setJsonData(json);
-      // console.log(json)
-      // console.log(JSON.stringify(json))
-      props.loader(true)
+      //   console.log(json)
+      //   console.log(JSON.stringify(json))
+      props.loader(true);
       const fd = new FormData();
       fd.append("data", JSON.stringify(json));
       fetch(
-        process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/ugleads-template-upload`,
+        process.env.NEXT_PUBLIC_API_ENDPOINT +
+          `/admin/iilmleads-template-upload`,
         {
           method: "POST",
           body: fd,
@@ -191,40 +184,35 @@ function EnhancedTableToolbar(props) {
       ).then(async (res) => {
         let response = await res.json();
         if (response.data) {
-            Swal.fire({
-              title: "Success",
-              html: `${response.message}`,
-              icon: "success",
-              confirmButtonText: "Ok",
-            }).then((s)=>{
-              props.userListData()
-            })
+          Swal.fire({
+            title: "Success",
+            html: `${response.message}`,
+            icon: "success",
+            confirmButtonText: "Ok",
+          }).then((s) => {
+            props.userListData();
+          });
         } else {
           Swal.fire({
             title: "Error",
             html: `${response.error}`,
             icon: "error",
             confirmButtonText: "Ok",
-          })
+          });
         }
-      props.loader(false)
+        props.loader(false);
 
-      // setIsLoading(false)
-  
+        // setIsLoading(false)
       });
-      
-
     };
 
     reader.readAsArrayBuffer(file);
   };
 
   const { getRootProps, getInputProps } = useDropzone({
-    accept: '.xlsx',
+    accept: ".xlsx",
     onDrop,
   });
-
-
 
   return (
     <>
@@ -276,34 +264,37 @@ function EnhancedTableToolbar(props) {
               placeholder="Search..."
               onChange={handleSearchChange}
             />
-              <div className='d-flex justify-content-end'>
+              <div className="d-flex justify-content-end">
               <Tooltip title="Upload UgLeads Form Excel" arrow>
-        <Button className='m-4' variant="primary" {...getRootProps()} >
-          <input {...getInputProps()} />
-          <FileUploadIcon />
-          Upload
-        </Button>
-        </Tooltip>
+                <Button className="m-4" variant="primary" {...getRootProps()}>
+                  <input {...getInputProps()} />
+                  <FileUploadIcon />
+                  Upload
+                </Button>
+              </Tooltip>
 
-        {/* <a href=`process.env.NEXT_PUBLIC_API_ENDPOINT + 'download_excel'` target='blank'> <Button className='m-4' variant="success" > */}
-        <a href={`${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/ugleads-template-download`} target='blank'>
-        <Tooltip title="Download UgLeads Excel Template" arrow>
-
-        <Button className='m-4' variant="success" >
-          <FileDownloadIcon />
-          Download
-        </Button>
-        </Tooltip>
-        </a>
-      </div>
-              <Tooltip title="Refresh">
-                      <IconButton
-                        aria-label="Refresh"
-                        onClick={() =>props.userListData()}
-                      >
-                        <LoopIcon />
-                      </IconButton>
-                    </Tooltip>
+              {/* <a href=`process.env.NEXT_PUBLIC_API_ENDPOINT + 'download_excel'` target='blank'> <Button className='m-4' variant="success" > */}
+              <a
+                href={`${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/iilmleads-template-download`}
+                target="blank"
+              >
+                <Tooltip title="Download UgLeads Excel Template" arrow>
+                  <Button
+                  className="m-4" variant="success">
+                    <FileDownloadIcon />
+                    Download
+                  </Button>
+                </Tooltip>
+              </a>
+            </div>
+            <Tooltip title="Refresh">
+              <IconButton
+                aria-label="Refresh"
+                onClick={() => props.userListData()}
+              >
+                <LoopIcon />
+              </IconButton>
+            </Tooltip>
           </>
         )}
       </Toolbar>
@@ -315,16 +306,15 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-const ListType = "8"
-
 var oldData = [];
-export default function Studentappliedclg() {
+const ListType = "13"
+export default function IilmLeads() {
   const [selected, setSelected] = React.useState([]);
   const [rows, setRows] = useState([]);
   const [counsellorList, setCounsellorList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isremarkLoading,setIsRemarkLoading] = useState(false)
+  const [isremarkLoading, setIsRemarkLoading] = useState(false);
   const [selectedCounsellor, setSelectedCounsellor] = useState("");
   const [remarkshowModal, setRemarkshowModal] = useState(false);
   const [remarksHistory, setRemarksHistory] = useState([]);
@@ -333,19 +323,22 @@ export default function Studentappliedclg() {
   const [totalrecord, setTotalrecord] = React.useState(0);
   const [count, setCount] = React.useState(0);
   
+
   const [isAssignLeadModalOpen, setIsAssignLeadModalOpen] = useState(false);
   const [isRemarkHistoryModalOpen, setIsRemarkHistoryModalOpen] = useState(false);
   const [leadId, setLeadId] = useState('')
   const [counsellorId, setCounsellorId] = useState('')
   const rowsPerPage = 50;
+
   useEffect(() => {
     getUserList();
   }, []);
 
   const getUserList = () => {
-    setIsLoading(true)
+    setIsLoading(true);
     fetch(
-      process.env.NEXT_PUBLIC_API_ENDPOINT + `/admin/learnerhunt-landing-page-leads?lt=${ListType}&page=${page}`,
+      process.env.NEXT_PUBLIC_API_ENDPOINT +
+        `/admin/learnerhunt-landing-page-leads?lt=${ListType}&page=${page}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("pt")}`,
@@ -356,7 +349,6 @@ export default function Studentappliedclg() {
       if (response.data) {
         if (response.data.length > 0) {
           setRows(response.data);
-
           setCount(Math.ceil(response.totalRecords / rowsPerPage));
         }
         setTotalrecord(response.totalRecords);
@@ -371,15 +363,10 @@ export default function Studentappliedclg() {
           window.location.reload();
         });
       }
-    setIsLoading(false)
-
+      setIsLoading(false);
     });
   };
-  // useEffect(()=>{
-  //   getUserList();
-  // },[page])
-
-
+  
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
       const newSelected = rows.map((n) => n._id);
@@ -425,7 +412,6 @@ export default function Studentappliedclg() {
 
   const handleModalOpen = (value) => {
     setIsAssignLeadModalOpen(value);
-
     setIsLoading(false);
   };
 
@@ -434,7 +420,7 @@ export default function Studentappliedclg() {
     setIsLoading(true);
     const fd = new FormData();
     fd.append("lid", selected.join("&"));
-    fd.append("lt", ListType);
+    fd.append("lt",ListType);
     fd.append("cid", selectedCounsellor);
     fetch(
       process.env.NEXT_PUBLIC_API_ENDPOINT +
@@ -448,7 +434,7 @@ export default function Studentappliedclg() {
       }
     ).then(async (response) => {
       var res = await response.json();
-      // console.log(res);
+      //   console.log(res);
       setIsLoading(false);
       if (response.ok) {
         Swal.fire({
@@ -459,9 +445,8 @@ export default function Studentappliedclg() {
         }).then(() => {
           setIsLoading(false);
           setIsAssignLeadModalOpen(false);
-
           setSelectedCounsellor("");
-          setSelected([])
+          setSelected([]);
           getUserList();
         });
       } else {
@@ -480,8 +465,8 @@ export default function Studentappliedclg() {
     setCounsellorId(c._id)
     try {
       setIsRemarkLoading(true);
-      setIsRemarkHistoryModalOpen(true);
 
+      setIsRemarkHistoryModalOpen(true);
       fetch(
         process.env.NEXT_PUBLIC_API_ENDPOINT +
           `/admin/counsellor-lead-status?lid=${id}&lt=${ListType}&cid=${c._id}`,
@@ -494,15 +479,13 @@ export default function Studentappliedclg() {
         if (res.ok) {
           // console.log(res)
           let response = await res.json();
-          // console.log(response.data);
+          //   console.log(response.data);
           setRemarksHistory(response.data.remarks);
           setPipeLine(response.data.pipeline);
-
         } else {
           let response = await res.json();
         }
         setIsRemarkLoading(false);
-      
       });
     } catch (error) {
       console.error(error);
@@ -523,10 +506,18 @@ export default function Studentappliedclg() {
       return 1;
     }
   };
+
+//   useEffect(()=>{
+//     getUserList();
+//   },[page])
+ 
   const handlePage=(event, newPage)=>{
     event.preventDefault()
     setPage(newPage);
-    getUserList()
+    getUserList();
+    // console.log(newPage)
+    
+
   }
   const SetSelectedCounsellorID = (id) => {
     setSelectedCounsellor(id)
@@ -538,14 +529,14 @@ export default function Studentappliedclg() {
           <EnhancedTableToolbar
             numSelected={selected.length}
             userListData={getUserList}
-            totalrecord={totalrecord}
             rowsList={rows}
+            totalrecord={totalrecord}
             onSearchChange={(value) => handleSearchChange(value)}
             OnModalOpen={(value) => handleModalOpen(value)}
             counsellorList={(list) => setCounsellorList(list)}
             loader={setIsLoading}
           />
-          <TableContainer sx={{ maxHeight: "70vh" }}>
+          <TableContainer sx={{ maxHeight: "calc(70vh - 28px)" }}>
             <Table
               stickyHeader
               sx={{ minWidth: 750 }}
@@ -609,11 +600,9 @@ export default function Studentappliedclg() {
                           />
                         )}
                       </TableCell>
-                      <TableCell>{row.mobile || 'NA'}</TableCell>
-                      <TableCell>{row.email || 'NA'}</TableCell>
-                      <TableCell>{row.city || 'NA'}</TableCell>
-                      <TableCell>{row.budget || 'NA'}</TableCell>
-                      <TableCell>{row.course || 'NA'}</TableCell>
+                      <TableCell>{row.mobile || "NA"}</TableCell>
+                      <TableCell>{row.email || "NA"}</TableCell>
+                      <TableCell>{row.course || "NA"}</TableCell>
                       <TableCell><FormatTimestamp timestamp={row.createdAt} /></TableCell>
                     </TableRow>
                   );
@@ -622,7 +611,7 @@ export default function Studentappliedclg() {
             </Table>
           </TableContainer>
           <Pagination className="p-2 d-flex justify-content-center" count={count} page={page} color="primary" onChange={handlePage}/>
-        </Paper>
+        </Paper> 
       </Box>
       <AssignLeadModal
         isOpen={isAssignLeadModalOpen}
