@@ -375,9 +375,9 @@ export default function Studentappliedclg() {
 
     });
   };
-  // useEffect(()=>{
-  //   getUserList();
-  // },[page])
+  useEffect(()=>{
+    getUserList();
+  },[page])
 
 
   const handleSelectAllClick = (event) => {
@@ -526,7 +526,7 @@ export default function Studentappliedclg() {
   const handlePage=(event, newPage)=>{
     event.preventDefault()
     setPage(newPage);
-    getUserList()
+   
   }
   const SetSelectedCounsellorID = (id) => {
     setSelectedCounsellor(id)

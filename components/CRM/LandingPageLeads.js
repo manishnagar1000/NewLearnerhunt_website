@@ -555,9 +555,9 @@ export default function Studentappliedclg() {
 
     });
   };
-  // useEffect(()=>{
-  //   getUserList();
-  // },[page])
+  useEffect(()=>{
+    getUserList();
+  },[page])
   const formatTimestamp = (timestamp) => {
     const dateObject = new Date(timestamp);
 
@@ -703,7 +703,7 @@ export default function Studentappliedclg() {
   const handlePage = (event, newPage) => {
     event.preventDefault()
     setPage(newPage);
-    getUserList()
+   
   }
   const steps = [
     "First Followup Complete",

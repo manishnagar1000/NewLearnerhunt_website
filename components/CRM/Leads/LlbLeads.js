@@ -507,14 +507,13 @@ export default function LLBPageLeads() {
     }
   };
 
-  // useEffect(()=>{
-  //   getUserList();
-  // },[page])
+  useEffect(()=>{
+    getUserList();
+  },[page])
  
   const handlePage=(event, newPage)=>{
     event.preventDefault()
     setPage(newPage);
-    getUserList()
     // console.log(newPage)
     
 

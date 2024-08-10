@@ -1,4 +1,4 @@
-    import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -173,7 +173,7 @@ function EnhancedTableToolbar(props) {
       fd.append("data", JSON.stringify(json));
       fetch(
         process.env.NEXT_PUBLIC_API_ENDPOINT +
-          `/admin/iilmleads-template-upload`,
+        `/admin/iilmleads-template-upload`,
         {
           method: "POST",
           body: fd,
@@ -264,7 +264,7 @@ function EnhancedTableToolbar(props) {
               placeholder="Search..."
               onChange={handleSearchChange}
             />
-              <div className="d-flex justify-content-end">
+            <div className="d-flex justify-content-end">
               <Tooltip title="Upload UgLeads Form Excel" arrow>
                 <Button className="m-4" variant="primary" {...getRootProps()}>
                   <input {...getInputProps()} />
@@ -280,7 +280,7 @@ function EnhancedTableToolbar(props) {
               >
                 <Tooltip title="Download UgLeads Excel Template" arrow>
                   <Button
-                  className="m-4" variant="success">
+                    className="m-4" variant="success">
                     <FileDownloadIcon />
                     Download
                   </Button>
@@ -322,7 +322,7 @@ export default function IilmLeads() {
   const [page, setPage] = React.useState(1);
   const [totalrecord, setTotalrecord] = React.useState(0);
   const [count, setCount] = React.useState(0);
-  
+
 
   const [isAssignLeadModalOpen, setIsAssignLeadModalOpen] = useState(false);
   const [isRemarkHistoryModalOpen, setIsRemarkHistoryModalOpen] = useState(false);
@@ -338,7 +338,7 @@ export default function IilmLeads() {
     setIsLoading(true);
     fetch(
       process.env.NEXT_PUBLIC_API_ENDPOINT +
-        `/admin/learnerhunt-landing-page-leads?lt=${ListType}&page=${page}`,
+      `/admin/learnerhunt-landing-page-leads?lt=${ListType}&page=${page}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("pt")}`,
@@ -366,7 +366,7 @@ export default function IilmLeads() {
       setIsLoading(false);
     });
   };
-  
+
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
       const newSelected = rows.map((n) => n._id);
@@ -420,11 +420,11 @@ export default function IilmLeads() {
     setIsLoading(true);
     const fd = new FormData();
     fd.append("lid", selected.join("&"));
-    fd.append("lt",ListType);
+    fd.append("lt", ListType);
     fd.append("cid", selectedCounsellor);
     fetch(
       process.env.NEXT_PUBLIC_API_ENDPOINT +
-        `/admin/assign-leads-to-counsellor`,
+      `/admin/assign-leads-to-counsellor`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("pt")}`,
@@ -469,7 +469,7 @@ export default function IilmLeads() {
       setIsRemarkHistoryModalOpen(true);
       fetch(
         process.env.NEXT_PUBLIC_API_ENDPOINT +
-          `/admin/counsellor-lead-status?lid=${id}&lt=${ListType}&cid=${c._id}`,
+        `/admin/counsellor-lead-status?lid=${id}&lt=${ListType}&cid=${c._id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("pt")}`,
@@ -507,16 +507,15 @@ export default function IilmLeads() {
     }
   };
 
-//   useEffect(()=>{
-//     getUserList();
-//   },[page])
- 
-  const handlePage=(event, newPage)=>{
+  useEffect(() => {
+    getUserList();
+  }, [page])
+
+  const handlePage = (event, newPage) => {
     event.preventDefault()
     setPage(newPage);
-    getUserList();
     // console.log(newPage)
-    
+
 
   }
   const SetSelectedCounsellorID = (id) => {
@@ -610,8 +609,8 @@ export default function IilmLeads() {
               </TableBody>
             </Table>
           </TableContainer>
-          <Pagination className="p-2 d-flex justify-content-center" count={count} page={page} color="primary" onChange={handlePage}/>
-        </Paper> 
+          <Pagination className="p-2 d-flex justify-content-center" count={count} page={page} color="primary" onChange={handlePage} />
+        </Paper>
       </Box>
       <AssignLeadModal
         isOpen={isAssignLeadModalOpen}
